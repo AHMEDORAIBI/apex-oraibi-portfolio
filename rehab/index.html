@@ -375,6 +375,31 @@ html[dir="rtl"] .timeline-item::before{left:auto;right:-17px}
 @media(max-width:850px){.calendar-shell{grid-template-columns:repeat(2,1fr)}.cal-head{display:none}.appt-hero{flex-direction:column}}
 @media(max-width:650px){.appt-kpi-grid,.appt-summary-grid{grid-template-columns:1fr 1fr}.appt-toolbar input,.appt-toolbar select{width:100%}.appt-toolbar-left{width:100%}}
 
+
+/* RELEASE 1.3 — TREATMENT PLANS + THERAPY SESSIONS */
+.clinical-kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px}
+.clinical-toolbar{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.clinical-toolbar-left{display:flex;gap:8px;flex-wrap:wrap}
+.clinical-toolbar input,.clinical-toolbar select{height:38px;border:1px solid var(--border);border-radius:6px;background:#fff;padding:0 11px;font-size:10px;outline:none}
+.clinical-toolbar input{width:245px}
+.plan-card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.plan-card{border:1px solid var(--border);border-radius:8px;padding:15px;background:#fff}
+.plan-card h4{font-size:11px;color:var(--navy)}
+.plan-card p{font-size:8px;color:var(--muted);margin-top:5px;line-height:1.5}
+.plan-progress{height:7px;background:#e8edef;border-radius:10px;overflow:hidden;margin:12px 0 7px}
+.plan-progress span{display:block;height:100%;background:var(--teal);border-radius:10px}
+.goal-list{display:grid;gap:8px;margin-top:10px}
+.goal-item{display:flex;justify-content:space-between;gap:12px;padding:10px;border:1px solid var(--border);border-radius:7px;background:#fafcfc}
+.goal-item strong{font-size:9px;color:var(--navy)}
+.goal-item span{font-size:8px;color:var(--muted)}
+.session-note-box{border:1px solid var(--border);border-radius:8px;padding:14px;background:#fafcfc;line-height:1.7;font-size:10px;color:#40515d}
+.measure-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.measure-box{border:1px solid var(--border);border-radius:7px;padding:12px;background:#fff}
+.measure-box span{display:block;font-size:8px;color:var(--muted)}
+.measure-box strong{display:block;font-size:14px;color:var(--navy);margin-top:6px}
+@media(max-width:1100px){.clinical-kpis{grid-template-columns:repeat(3,1fr)}.plan-card-grid{grid-template-columns:1fr 1fr}.measure-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:650px){.clinical-kpis,.plan-card-grid,.measure-grid{grid-template-columns:1fr}.clinical-toolbar-left{width:100%}.clinical-toolbar input,.clinical-toolbar select{width:100%}}
+
 </style>
 </head>
 <body>
@@ -567,6 +592,93 @@ html[dir="rtl"] .timeline-item::before{left:auto;right:-17px}
     </section>
 
 
+
+
+    <section id="treatmentPage" class="hidden">
+      <div class="content">
+        <div class="hero-row">
+          <div><h2 data-i18n="Treatment Plans">Treatment Plans</h2><p data-i18n="Clinical goals, prescribed sessions and patient progress.">Clinical goals, prescribed sessions and patient progress.</p></div>
+          <div class="hero-actions"><button class="action-btn primary" onclick="clinicalDemo('plan')">+ <span data-i18n="New Treatment Plan">New Treatment Plan</span></button></div>
+        </div>
+        <div class="clinical-kpis">
+          <div class="kpi-card"><span class="kpi-label" data-i18n="Active Plans">Active Plans</span><strong class="kpi-value">176</strong><div class="kpi-note">82.2% <span data-i18n="of active patients">of active patients</span></div></div>
+          <div class="kpi-card"><span class="kpi-label" data-i18n="Reviews Due">Reviews Due</span><strong class="kpi-value">14</strong><div class="kpi-note"><span class="warning">6</span> <span data-i18n="due today">due today</span></div></div>
+          <div class="kpi-card"><span class="kpi-label" data-i18n="Plans Near Completion">Plans Near Completion</span><strong class="kpi-value">22</strong><div class="kpi-note" data-i18n="2 sessions or less">2 sessions or less</div></div>
+          <div class="kpi-card"><span class="kpi-label" data-i18n="Completed This Month">Completed This Month</span><strong class="kpi-value">31</strong></div>
+          <div class="kpi-card"><span class="kpi-label" data-i18n="Average Goal Progress">Average Goal Progress</span><strong class="kpi-value">78%</strong></div>
+        </div>
+        <section class="card">
+          <div class="clinical-toolbar">
+            <div class="clinical-toolbar-left">
+              <input id="planSearch" placeholder="Search plan, patient or therapist..." data-i18n-placeholder="Search plan, patient or therapist..." oninput="renderTreatmentPlans()">
+              <select id="planService" onchange="renderTreatmentPlans()"><option value="" data-i18n="All Services">All Services</option><option>Physiotherapy</option><option>Occupational Therapy</option><option>Speech Therapy</option></select>
+              <select id="planStatus" onchange="renderTreatmentPlans()"><option value="" data-i18n="All Statuses">All Statuses</option><option>Active</option><option>Review Due</option><option>Completed</option></select>
+            </div>
+          </div>
+          <div class="table-wrap"><table><thead><tr><th data-i18n="Plan ID">Plan ID</th><th data-i18n="Patient">Patient</th><th data-i18n="Service">Service</th><th data-i18n="Therapist">Therapist</th><th data-i18n="Sessions">Sessions</th><th data-i18n="Progress">Progress</th><th data-i18n="Next Review">Next Review</th><th data-i18n="Status">Status</th><th data-i18n="Action">Action</th></tr></thead><tbody id="treatmentPlansBody"></tbody></table></div>
+        </section>
+      </div>
+    </section>
+
+    <section id="plan360Page" class="hidden">
+      <div class="content">
+        <button class="action-btn" style="margin-bottom:14px" onclick="openPage('treatment')">← <span data-i18n="Back to Treatment Plans">Back to Treatment Plans</span></button>
+        <section class="patient-hero">
+          <div class="patient-hero-left"><div class="patient-avatar">TP</div><div><h2 id="plan360Title"></h2><p id="plan360Meta"></p><div class="patient-tags"><span id="plan360Status" class="badge confirmed"></span></div></div></div>
+          <div class="patient-actions"><button class="action-btn" onclick="clinicalDemo('review')" data-i18n="Review Plan">Review Plan</button><button class="action-btn teal" onclick="clinicalDemo('session')">+ <span data-i18n="Record Session">Record Session</span></button></div>
+        </section>
+        <div class="patient-summary-grid">
+          <div class="kpi-card"><span class="kpi-label" data-i18n="Prescribed Sessions">Prescribed Sessions</span><strong id="plTotal" class="kpi-value"></strong></div>
+          <div class="kpi-card"><span class="kpi-label" data-i18n="Completed Sessions">Completed Sessions</span><strong id="plDone" class="kpi-value"></strong></div>
+          <div class="kpi-card"><span class="kpi-label" data-i18n="Remaining">Remaining</span><strong id="plRemain" class="kpi-value"></strong></div>
+          <div class="kpi-card"><span class="kpi-label" data-i18n="Goal Progress">Goal Progress</span><strong id="plProgress" class="kpi-value"></strong></div>
+          <div class="kpi-card"><span class="kpi-label" data-i18n="Next Review">Next Review</span><strong id="plReview" class="kpi-value" style="font-size:14px"></strong></div>
+        </div>
+        <div class="dashboard-grid">
+          <section class="card"><div class="card-head"><div><h3 data-i18n="Clinical Goals">Clinical Goals</h3><p data-i18n="Measurable objectives for this treatment plan">Measurable objectives for this treatment plan</p></div></div><div id="planGoals" class="goal-list"></div></section>
+          <section class="card"><div class="card-head"><div><h3 data-i18n="Plan Information">Plan Information</h3></div></div><div class="list">
+            <div class="list-row"><span data-i18n="Patient">Patient</span><strong id="plPatient"></strong></div><div class="list-row"><span data-i18n="Therapist">Therapist</span><strong id="plTherapist"></strong></div>
+            <div class="list-row"><span data-i18n="Service">Service</span><strong id="plService"></strong></div><div class="list-row"><span data-i18n="Start Date">Start Date</span><strong id="plStart"></strong></div>
+            <div class="list-row"><span data-i18n="Diagnosis">Diagnosis</span><strong id="plDiagnosis"></strong></div>
+          </div></section>
+        </div>
+      </div>
+    </section>
+
+    <section id="sessionsPage" class="hidden">
+      <div class="content">
+        <div class="hero-row"><div><h2 data-i18n="Therapy Sessions">Therapy Sessions</h2><p data-i18n="Document therapy delivery, clinical outcomes and treatment progress.">Document therapy delivery, clinical outcomes and treatment progress.</p></div><div class="hero-actions"><button class="action-btn primary" onclick="clinicalDemo('session')">+ <span data-i18n="Record Session">Record Session</span></button></div></div>
+        <div class="clinical-kpis">
+          <div class="kpi-card"><span class="kpi-label" data-i18n="Sessions Today">Sessions Today</span><strong class="kpi-value">34</strong></div>
+          <div class="kpi-card"><span class="kpi-label" data-i18n="Completed">Completed</span><strong class="kpi-value">25</strong></div>
+          <div class="kpi-card"><span class="kpi-label" data-i18n="In Progress">In Progress</span><strong class="kpi-value">3</strong></div>
+          <div class="kpi-card"><span class="kpi-label" data-i18n="Notes Pending">Notes Pending</span><strong class="kpi-value">4</strong></div>
+          <div class="kpi-card"><span class="kpi-label" data-i18n="Average Duration">Average Duration</span><strong class="kpi-value">46 min</strong></div>
+        </div>
+        <section class="card"><div class="clinical-toolbar"><div class="clinical-toolbar-left"><input id="sessionSearch" placeholder="Search session, patient or therapist..." data-i18n-placeholder="Search session, patient or therapist..." oninput="renderTherapySessions()"><select id="sessionStatus" onchange="renderTherapySessions()"><option value="" data-i18n="All Statuses">All Statuses</option><option>Completed</option><option>In Progress</option><option>Notes Pending</option></select></div></div>
+        <div class="table-wrap"><table><thead><tr><th data-i18n="Session ID">Session ID</th><th data-i18n="Date">Date</th><th data-i18n="Patient">Patient</th><th data-i18n="Service">Service</th><th data-i18n="Therapist">Therapist</th><th data-i18n="Duration">Duration</th><th data-i18n="Outcome">Outcome</th><th data-i18n="Status">Status</th><th data-i18n="Action">Action</th></tr></thead><tbody id="therapySessionsBody"></tbody></table></div></section>
+      </div>
+    </section>
+
+    <section id="session360Page" class="hidden">
+      <div class="content">
+        <button class="action-btn" style="margin-bottom:14px" onclick="openPage('sessions')">← <span data-i18n="Back to Therapy Sessions">Back to Therapy Sessions</span></button>
+        <section class="patient-hero"><div class="patient-hero-left"><div class="patient-avatar">TS</div><div><h2 id="session360Title"></h2><p id="session360Meta"></p><div class="patient-tags"><span id="session360Status" class="badge confirmed"></span></div></div></div><div class="patient-actions"><button class="action-btn teal" onclick="clinicalDemo('note')" data-i18n="Update Clinical Note">Update Clinical Note</button></div></section>
+        <div class="measure-grid">
+          <div class="measure-box"><span data-i18n="Pain Before">Pain Before</span><strong id="sPainBefore"></strong></div>
+          <div class="measure-box"><span data-i18n="Pain After">Pain After</span><strong id="sPainAfter"></strong></div>
+          <div class="measure-box"><span data-i18n="Duration">Duration</span><strong id="sDuration"></strong></div>
+          <div class="measure-box"><span data-i18n="Goal Progress">Goal Progress</span><strong id="sProgress"></strong></div>
+        </div>
+        <div class="dashboard-grid equal" style="margin-top:16px">
+          <section class="card"><div class="card-head"><div><h3 data-i18n="Session Information">Session Information</h3></div></div><div class="list">
+            <div class="list-row"><span data-i18n="Patient">Patient</span><strong id="sPatient"></strong></div><div class="list-row"><span data-i18n="Treatment Plan">Treatment Plan</span><strong id="sPlan"></strong></div>
+            <div class="list-row"><span data-i18n="Therapist">Therapist</span><strong id="sTherapist"></strong></div><div class="list-row"><span data-i18n="Service">Service</span><strong id="sService"></strong></div>
+          </div></section>
+          <section class="card"><div class="card-head"><div><h3 data-i18n="Clinical Note">Clinical Note</h3></div></div><div id="sNote" class="session-note-box"></div></section>
+        </div>
+      </div>
+    </section>
 
     <section id="appointmentsPage" class="hidden">
       <div class="content">
@@ -955,11 +1067,67 @@ const I18N = {
     ,"Session Fee":"رسوم الجلسة","Payer":"جهة الدفع","Payment Status":"حالة السداد"
     ,"Search patient, therapist or appointment...":"ابحث عن مريض أو معالج أو موعد..."
 
+    ,"Clinical goals, prescribed sessions and patient progress.":"الأهداف السريرية والجلسات المقررة وتقدم المرضى."
+    ,"New Treatment Plan":"خطة علاج جديدة","Active Plans":"الخطط النشطة","of active patients":"من المرضى النشطين"
+    ,"Reviews Due":"مراجعات مستحقة","due today":"مستحقة اليوم","Plans Near Completion":"خطط قاربت على الاكتمال"
+    ,"2 sessions or less":"جلستان أو أقل","Completed This Month":"المكتملة هذا الشهر","Average Goal Progress":"متوسط تقدم الأهداف"
+    ,"Plan ID":"رقم الخطة","Next Review":"المراجعة القادمة","Back to Treatment Plans":"العودة إلى خطط العلاج"
+    ,"Review Plan":"مراجعة الخطة","Record Session":"تسجيل جلسة","Prescribed Sessions":"الجلسات المقررة"
+    ,"Completed Sessions":"الجلسات المكتملة","Goal Progress":"تقدم الأهداف","Clinical Goals":"الأهداف السريرية"
+    ,"Measurable objectives for this treatment plan":"الأهداف القابلة للقياس لهذه الخطة العلاجية","Plan Information":"بيانات الخطة"
+    ,"Diagnosis":"التشخيص","Document therapy delivery, clinical outcomes and treatment progress.":"توثيق تقديم العلاج والنتائج السريرية وتقدم العلاج."
+    ,"In Progress":"قيد الجلسة","Notes Pending":"ملاحظات معلقة","Average Duration":"متوسط المدة","Session ID":"رقم الجلسة"
+    ,"Back to Therapy Sessions":"العودة إلى الجلسات العلاجية","Update Clinical Note":"تحديث الملاحظة السريرية"
+    ,"Pain Before":"الألم قبل","Pain After":"الألم بعد","Session Information":"بيانات الجلسة","Clinical Note":"الملاحظة السريرية"
+    ,"Search plan, patient or therapist...":"ابحث عن خطة أو مريض أو معالج...","Search session, patient or therapist...":"ابحث عن جلسة أو مريض أو معالج..."
+
+
 
   }
 };
 
 
+
+
+const TREATMENT_PLANS=[
+{id:"TP-260184",patient:"Fatima Ali",service:"Physiotherapy",therapist:"Dr. Sara Ahmed",total:12,done:8,progress:72,review:"20 Aug 2026",status:"Review Due",start:"02 Jul 2026",diagnosis:"Post-operative knee rehabilitation",goals:[["Knee flexion","110° → 125°","82%"],["Pain reduction","6/10 → 2/10","75%"],["Independent stairs","Target: 1 flight","60%"]]},
+{id:"TP-260172",patient:"Ahmed Salman",service:"Occupational Therapy",therapist:"Maryam Hasan",total:12,done:10,progress:86,review:"22 Aug 2026",status:"Active",start:"18 Jun 2026",diagnosis:"Upper limb functional rehabilitation",goals:[["Grip strength","18kg → 28kg","88%"],["ADL independence","Moderate → Minimal assist","84%"]]},
+{id:"TP-260155",patient:"Noor Hussain",service:"Speech Therapy",therapist:"Layla Mohammed",total:16,done:14,progress:91,review:"24 Aug 2026",status:"Active",start:"10 May 2026",diagnosis:"Speech and language delay",goals:[["Articulation accuracy","65% → 90%","92%"],["Vocabulary expansion","+150 words","90%"]]},
+{id:"TP-260141-A",patient:"Yousef Khalid",service:"Physiotherapy",therapist:"Dr. Sara Ahmed",total:16,done:13,progress:79,review:"25 Aug 2026",status:"Active",start:"21 Apr 2026",diagnosis:"Post-trauma functional rehabilitation",goals:[["Walking endurance","10 → 25 min","78%"],["Lower limb strength","3/5 → 4+/5","80%"]]}
+];
+const THERAPY_SESSIONS=[
+{id:"TS-260820-01",date:"20 Aug 2026",patient:"Ahmed Salman",service:"Occupational Therapy",therapist:"Maryam Hasan",duration:"50 min",outcome:"Functional gain",status:"In Progress",plan:"TP-260172",painBefore:"3/10",painAfter:"2/10",progress:"+4%",note:"Upper limb functional tasks completed with improved grip control and reduced assistance."},
+{id:"TS-260819-07",date:"19 Aug 2026",patient:"Fatima Ali",service:"Physiotherapy",therapist:"Dr. Sara Ahmed",duration:"45 min",outcome:"Improved ROM",status:"Completed",plan:"TP-260184",painBefore:"4/10",painAfter:"2/10",progress:"+6%",note:"Range of motion improved. Progressive strengthening tolerated well. Continue current protocol."},
+{id:"TS-260819-05",date:"19 Aug 2026",patient:"Noor Hussain",service:"Speech Therapy",therapist:"Layla Mohammed",duration:"40 min",outcome:"Improved articulation",status:"Completed",plan:"TP-260155",painBefore:"N/A",painAfter:"N/A",progress:"+3%",note:"Improved articulation accuracy during structured tasks. Home practice reinforced with caregiver."},
+{id:"TS-260818-04",date:"18 Aug 2026",patient:"Yousef Khalid",service:"Physiotherapy",therapist:"Dr. Sara Ahmed",duration:"45 min",outcome:"Improving",status:"Notes Pending",plan:"TP-260141-A",painBefore:"5/10",painAfter:"3/10",progress:"+5%",note:"Session completed. Detailed clinical note pending therapist sign-off."}
+];
+let currentPlan=TREATMENT_PLANS[0],currentSession=THERAPY_SESSIONS[0];
+
+function renderTreatmentPlans(){
+ const q=(document.getElementById("planSearch")?.value||"").toLowerCase(),svc=document.getElementById("planService")?.value||"",st=document.getElementById("planStatus")?.value||"";
+ document.getElementById("treatmentPlansBody").innerHTML=TREATMENT_PLANS.filter(p=>(!q||[p.id,p.patient,p.therapist].join(" ").toLowerCase().includes(q))&&(!svc||p.service===svc)&&(!st||p.status===st)).map(p=>`<tr><td>${p.id}</td><td><button class="patient-link" onclick="openPlan360('${p.id}')">${p.patient}</button></td><td>${p.service}</td><td>${p.therapist}</td><td>${p.done} / ${p.total}</td><td><strong>${p.progress}%</strong></td><td>${p.review}</td><td><span class="badge ${p.status==="Review Due"?"waiting":"confirmed"}">${p.status}</span></td><td><button class="action-btn" style="min-height:30px;font-size:8px" onclick="openPlan360('${p.id}')">View 360°</button></td></tr>`).join("");
+}
+function openPlan360(id){
+ currentPlan=TREATMENT_PLANS.find(p=>p.id===id)||TREATMENT_PLANS[0]; hideClinicalPages(); document.getElementById("plan360Page").classList.remove("hidden");
+ document.querySelectorAll(".nav-item").forEach(el=>el.classList.toggle("active",el.dataset.page==="treatment"));
+ document.getElementById("pageTitle").textContent=currentLang==="ar"?"خطة العلاج 360°":"Treatment Plan 360°";document.getElementById("pageSubtitle").textContent=currentPlan.id+" · "+currentPlan.patient;
+ const p=currentPlan;document.getElementById("plan360Title").textContent=p.patient;document.getElementById("plan360Meta").textContent=p.id+" · "+p.service+" · "+p.therapist;document.getElementById("plan360Status").textContent=p.status;
+ document.getElementById("plTotal").textContent=p.total;document.getElementById("plDone").textContent=p.done;document.getElementById("plRemain").textContent=p.total-p.done;document.getElementById("plProgress").textContent=p.progress+"%";document.getElementById("plReview").textContent=p.review;
+ document.getElementById("plPatient").textContent=p.patient;document.getElementById("plTherapist").textContent=p.therapist;document.getElementById("plService").textContent=p.service;document.getElementById("plStart").textContent=p.start;document.getElementById("plDiagnosis").textContent=p.diagnosis;
+ document.getElementById("planGoals").innerHTML=p.goals.map(g=>`<div class="goal-item"><div><strong>${g[0]}</strong><span>${g[1]}</span></div><strong>${g[2]}</strong></div>`).join("");window.scrollTo(0,0);
+}
+function renderTherapySessions(){
+ const q=(document.getElementById("sessionSearch")?.value||"").toLowerCase(),st=document.getElementById("sessionStatus")?.value||"";
+ document.getElementById("therapySessionsBody").innerHTML=THERAPY_SESSIONS.filter(s=>(!q||[s.id,s.patient,s.therapist].join(" ").toLowerCase().includes(q))&&(!st||s.status===st)).map(s=>`<tr><td>${s.id}</td><td>${s.date}</td><td><button class="patient-link" onclick="openSession360('${s.id}')">${s.patient}</button></td><td>${s.service}</td><td>${s.therapist}</td><td>${s.duration}</td><td>${s.outcome}</td><td><span class="badge ${s.status==="Completed"?"confirmed":"waiting"}">${s.status}</span></td><td><button class="action-btn" style="min-height:30px;font-size:8px" onclick="openSession360('${s.id}')">View 360°</button></td></tr>`).join("");
+}
+function openSession360(id){
+ currentSession=THERAPY_SESSIONS.find(s=>s.id===id)||THERAPY_SESSIONS[0];hideClinicalPages();document.getElementById("session360Page").classList.remove("hidden");
+ document.querySelectorAll(".nav-item").forEach(el=>el.classList.toggle("active",el.dataset.page==="sessions"));document.getElementById("pageTitle").textContent=currentLang==="ar"?"الجلسة العلاجية 360°":"Therapy Session 360°";document.getElementById("pageSubtitle").textContent=currentSession.id+" · "+currentSession.patient;
+ const s=currentSession;document.getElementById("session360Title").textContent=s.patient;document.getElementById("session360Meta").textContent=s.id+" · "+s.date+" · "+s.service;document.getElementById("session360Status").textContent=s.status;
+ document.getElementById("sPainBefore").textContent=s.painBefore;document.getElementById("sPainAfter").textContent=s.painAfter;document.getElementById("sDuration").textContent=s.duration;document.getElementById("sProgress").textContent=s.progress;document.getElementById("sPatient").textContent=s.patient;document.getElementById("sPlan").textContent=s.plan;document.getElementById("sTherapist").textContent=s.therapist;document.getElementById("sService").textContent=s.service;document.getElementById("sNote").textContent=s.note;window.scrollTo(0,0);
+}
+function hideClinicalPages(){["dashboardPage","treatmentPage","plan360Page","sessionsPage","session360Page","appointmentsPage","appointment360Page","patientsPage","patient360Page","placeholderPage"].forEach(id=>document.getElementById(id)?.classList.add("hidden"))}
+function clinicalDemo(type){alert((currentLang==="ar"?"نموذج سريري تجريبي":"Clinical Demo")+" — "+type);}
 
 const APPOINTMENTS = [
  {id:"APT-260820-01",date:"20 Aug 2026",day:20,time:"09:00",patient:"Fatima Ali",patientId:"PAT-260184",service:"Physiotherapy",therapist:"Dr. Sara Ahmed",room:"PT-02",status:"Confirmed",duration:"45 min",visitType:"Follow-up",source:"Reception",created:"17 Aug 2026",plan:"TP-260184",sessionNo:"9 / 12",diagnosis:"Post-operative knee rehabilitation",previous:"19 Aug 2026",fee:85,payer:"Self Pay",outstanding:85,payment:"Pending"},
@@ -1309,50 +1477,38 @@ function setLanguage(lang){
 }
 
 function openPage(page){
-  ["dashboardPage","appointmentsPage","appointment360Page","patientsPage","patient360Page","placeholderPage"].forEach(id=>document.getElementById(id)?.classList.add("hidden"));
-
-  document.querySelectorAll(".nav-item").forEach(el=>{
-    el.classList.toggle("active",el.dataset.page===page);
-  });
-
+  hideClinicalPages();
+  document.querySelectorAll(".nav-item").forEach(el=>el.classList.toggle("active",el.dataset.page===page));
   document.getElementById("pageTitle").textContent=t(PAGE_NAMES[page]||"Dashboard");
-
   if(page==="dashboard"){
     document.getElementById("dashboardPage").classList.remove("hidden");
     document.getElementById("pageSubtitle").textContent=t("Clinical, therapy and financial performance overview");
   }else if(page==="patients"){
-    document.getElementById("patientsPage").classList.remove("hidden");
-    document.getElementById("pageSubtitle").textContent=currentLang==="ar"
-      ? "ملفات المرضى والتشخيص وخطط العلاج والنشاط العلاجي"
-      : "Patient profiles, diagnoses, treatment plans and therapy activity";
-    renderPatients();
+    document.getElementById("patientsPage").classList.remove("hidden");document.getElementById("pageSubtitle").textContent=currentLang==="ar"?"ملفات المرضى والتشخيص وخطط العلاج والنشاط العلاجي":"Patient profiles, diagnoses, treatment plans and therapy activity";renderPatients();
   }else if(page==="appointments"){
-    document.getElementById("appointmentsPage").classList.remove("hidden");
-    document.getElementById("pageSubtitle").textContent=currentLang==="ar"
-      ? "إدارة المواعيد وتوفر المعالجين وزيارات المرضى"
-      : "Schedules, therapist availability and patient visits";
-    renderAppointments();
-    renderAppointmentCalendar();
+    document.getElementById("appointmentsPage").classList.remove("hidden");document.getElementById("pageSubtitle").textContent=currentLang==="ar"?"إدارة المواعيد وتوفر المعالجين وزيارات المرضى":"Schedules, therapist availability and patient visits";renderAppointments();renderAppointmentCalendar();
+  }else if(page==="treatment"){
+    document.getElementById("treatmentPage").classList.remove("hidden");document.getElementById("pageSubtitle").textContent=currentLang==="ar"?"الأهداف السريرية والجلسات المقررة وتقدم المرضى":"Clinical goals, prescribed sessions and patient progress";renderTreatmentPlans();
+  }else if(page==="sessions"){
+    document.getElementById("sessionsPage").classList.remove("hidden");document.getElementById("pageSubtitle").textContent=currentLang==="ar"?"توثيق الجلسات والنتائج السريرية وتقدم العلاج":"Therapy delivery, clinical outcomes and treatment progress";renderTherapySessions();
   }else{
-    document.getElementById("placeholderPage").classList.remove("hidden");
-    document.getElementById("pageSubtitle").textContent=currentLang==="ar" ? "سيتم تفعيل هذا القسم في الإصدار التالي" : "This module will be activated in the next release";
-    document.getElementById("placeholderTitle").textContent=t(PAGE_NAMES[page]||"Module");
-    document.getElementById("placeholderText").textContent=currentLang==="ar" ? "سيتم تفعيل هذا القسم في الإصدار التالي." : "This module will be activated in the next release.";
+    document.getElementById("placeholderPage").classList.remove("hidden");document.getElementById("pageSubtitle").textContent=currentLang==="ar"?"سيتم تفعيل هذا القسم في الإصدار التالي":"This module will be activated in the next release";document.getElementById("placeholderTitle").textContent=t(PAGE_NAMES[page]||"Module");document.getElementById("placeholderText").textContent=currentLang==="ar"?"سيتم تفعيل هذا القسم في الإصدار التالي.":"This module will be activated in the next release.";
   }
-
   window.scrollTo({top:0,behavior:"smooth"});
 }
 
 function startDemoTour(){
   alert(currentLang==="ar"
-    ? "VITALIS Release 1.2 — لوحة التحكم والمرضى 360° والمواعيد 360° + التقويم مفعلة."
-    : "VITALIS Release 1.2 — Dashboard, Patients 360° and Appointments 360° + Calendar are active.");
+    ? "VITALIS Release 1.3 — تم تفعيل خطط العلاج والجلسات العلاجية."
+    : "VITALIS Release 1.3 — Treatment Plans and Therapy Sessions are now active.");
 }
 
 applyLanguage();
 renderPatients();
 renderAppointments();
 renderAppointmentCalendar();
+renderTreatmentPlans();
+renderTherapySessions();
 </script>
 </body>
 </html>
