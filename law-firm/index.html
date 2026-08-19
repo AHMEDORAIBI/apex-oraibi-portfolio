@@ -88,7 +88,7 @@
     }
     .topbar h1{font-size:20px;color:var(--navy)}
     .topbar p{margin-top:4px;color:var(--muted);font-size:11px}
-    .top-actions{display:flex;align-items:center;gap:10px}
+    .top-actions{display:flex;align-items:center;gap:10px;min-width:0;flex-wrap:nowrap}
     .search{width:260px;height:38px;border:1px solid var(--border);border-radius:6px;padding:0 12px;outline:none}
     .top-btn{height:38px;min-width:38px;border:1px solid var(--border);background:white;border-radius:6px;cursor:pointer;color:var(--navy)}
     .profile{display:flex;align-items:center;gap:9px;padding:4px 10px 4px 5px;border:1px solid var(--border);border-radius:7px}
@@ -1063,14 +1063,42 @@
   
     /* RELEASE 1.11 — BILINGUAL AR / EN */
     .lang-switcher{
-      display:inline-flex;align-items:center;gap:3px;padding:3px;border:1px solid var(--border);
-      border-radius:7px;background:#fff;flex:0 0 auto
+      display:inline-flex !important;
+      align-items:center;
+      gap:0;
+      height:38px;
+      border:1px solid var(--border);
+      border-radius:6px;
+      background:#fff;
+      overflow:hidden;
+      flex:0 0 auto;
+      white-space:nowrap;
     }
     .lang-btn{
-      border:0;background:transparent;color:var(--muted);height:30px;padding:0 10px;border-radius:5px;
-      font-size:10px;font-weight:800;cursor:pointer
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      height:36px;
+      min-width:46px;
+      padding:0 12px;
+      border:0;
+      background:#fff;
+      color:var(--navy);
+      font-size:10px;
+      font-weight:800;
+      cursor:pointer;
     }
-    .lang-btn.active{background:var(--navy);color:#fff;box-shadow:0 1px 2px rgba(11,29,43,.14)}
+    .lang-btn + .lang-btn{
+      border-left:1px solid var(--border);
+    }
+    .lang-btn.active{
+      background:var(--navy);
+      color:#fff;
+    }
+    html[dir="rtl"] .lang-btn + .lang-btn{
+      border-left:0;
+      border-right:1px solid var(--border);
+    }
     html[dir="rtl"] body{direction:rtl;text-align:right;font-family:Tahoma,Arial,Helvetica,sans-serif}
     html[dir="rtl"] .app{grid-template-columns:1fr 245px}
     html[dir="rtl"] .sidebar{right:0;left:auto}
@@ -1241,8 +1269,8 @@
       <div class="top-actions">
         <input class="search" id="globalSearch" placeholder="Search client, case or invoice...">
         <div class="lang-switcher" aria-label="Language">
-          <button id="langEnBtn" class="lang-btn active" type="button" onclick="setLexoraLanguage('en')">EN</button>
-          <button id="langArBtn" class="lang-btn" type="button" onclick="setLexoraLanguage('ar')">العربية</button>
+          <button id="langEnBtn" class="lang-btn active" type="button" onclick="setLexoraLanguage('en')" title="English">EN</button>
+          <button id="langArBtn" class="lang-btn" type="button" onclick="setLexoraLanguage('ar')" title="العربية">العربية</button>
         </div>
         <button class="top-btn">♢</button>
         <div class="profile">
