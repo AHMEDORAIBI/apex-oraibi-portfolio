@@ -758,6 +758,90 @@
       .expense-actions button{flex:1}
     }
 
+
+    /* BANKING & TREASURY */
+    .treasury-kpi-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:15px;margin-bottom:16px}
+    .treasury-tabs{display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid var(--border);margin-bottom:18px}
+    .treasury-tab-btn{
+      border:0;background:transparent;padding:10px 12px;font-size:10px;font-weight:700;color:var(--muted);
+      cursor:pointer;border-bottom:2px solid transparent
+    }
+    .treasury-tab-btn.active{color:var(--navy);border-bottom-color:var(--gold)}
+    .treasury-panel{display:none}
+    .treasury-panel.active{display:block}
+
+    .account-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+    .account-card{
+      background:white;border:1px solid var(--border);border-radius:8px;padding:18px;position:relative;overflow:hidden
+    }
+    .account-card::after{
+      content:"";position:absolute;width:90px;height:90px;border:1px solid rgba(201,164,92,.18);border-radius:50%;
+      right:-35px;top:-35px
+    }
+    .account-card span{display:block;font-size:9px;color:var(--muted)}
+    .account-card strong{display:block;margin-top:8px;font-size:20px;color:var(--navy)}
+    .account-card small{display:block;margin-top:8px;font-size:9px;color:var(--muted)}
+    .account-card .account-name{font-size:12px;font-weight:700;color:var(--navy)}
+    .account-card .account-type{margin-top:4px;color:#8d6e31}
+    .account-balance-row{display:flex;justify-content:space-between;gap:10px;align-items:end;margin-top:18px}
+    .account-action{
+      border:1px solid var(--border);background:white;color:var(--navy);border-radius:6px;padding:7px 10px;font-size:9px;cursor:pointer
+    }
+
+    .treasury-toolbar{
+      display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px
+    }
+    .treasury-toolbar-left{display:flex;gap:10px;flex-wrap:wrap}
+    .treasury-toolbar input,.treasury-toolbar select{
+      height:40px;border:1px solid var(--border);border-radius:6px;background:white;padding:0 12px;font-size:11px;outline:none
+    }
+    .treasury-toolbar input{width:280px}
+
+    .trx-type{display:inline-flex;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700}
+    .trx-type.receipt{background:#edf5f0;color:#347b57}
+    .trx-type.expense{background:#fbeaea;color:#a74646}
+    .trx-type.transfer{background:#eef2f7;color:#36506d}
+    .trx-type.deposit{background:#f7f1e7;color:#8f6b27}
+    .trx-type.adjustment{background:#f0eafa;color:#6a4b91}
+
+    .direction-in{color:var(--success);font-weight:700}
+    .direction-out{color:var(--danger);font-weight:700}
+
+    .funds-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .fund-list{display:flex;flex-direction:column}
+    .fund-row{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:13px 0;border-bottom:1px solid #f0f2f4}
+    .fund-row strong{font-size:11px;color:var(--navy)}
+    .fund-row span{font-size:9px;color:var(--muted);margin-top:3px;display:block}
+
+    .transfer-flow{
+      display:grid;grid-template-columns:1fr 50px 1fr;gap:12px;align-items:center;margin-top:10px
+    }
+    .transfer-box{padding:16px;border:1px solid var(--border);border-radius:8px;background:var(--soft)}
+    .transfer-box span{display:block;font-size:9px;color:var(--muted)}
+    .transfer-box strong{display:block;margin-top:7px;font-size:12px;color:var(--navy)}
+    .transfer-arrow{text-align:center;font-size:20px;color:var(--gold)}
+
+    .cheque-status{display:inline-flex;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700}
+    .cheque-status.pending{background:#fbf4e5;color:#9a6d1f}
+    .cheque-status.deposited{background:#edf5f0;color:#347b57}
+
+    @media(max-width:1250px){
+      .treasury-kpi-grid{grid-template-columns:repeat(3,1fr)}
+      .account-grid{grid-template-columns:repeat(2,1fr)}
+    }
+    @media(max-width:950px){
+      .funds-grid{grid-template-columns:1fr}
+      .transfer-flow{grid-template-columns:1fr}
+      .transfer-arrow{transform:rotate(90deg)}
+    }
+    @media(max-width:650px){
+      .treasury-kpi-grid{grid-template-columns:1fr 1fr}
+      .account-grid{grid-template-columns:1fr}
+      .treasury-toolbar{align-items:stretch}
+      .treasury-toolbar-left{width:100%}
+      .treasury-toolbar input,.treasury-toolbar select{width:100%}
+    }
+
     /* PLACEHOLDER */
     .placeholder{min-height:500px;display:grid;place-items:center;text-align:center}
     .placeholder-box{max-width:520px;padding:45px;background:white;border:1px solid var(--border);border-radius:10px}
@@ -2596,6 +2680,159 @@
     </div>
 
 
+
+    <!-- BANKING & TREASURY -->
+    <div id="bankingPage" class="hidden">
+      <div class="content">
+
+        <div class="hero-row">
+          <div>
+            <h2>Banking & Treasury</h2>
+            <p>Monitor bank accounts, cash, undeposited funds and treasury movements.</p>
+          </div>
+          <div class="hero-actions">
+            <button class="action-btn action-secondary" onclick="showTransferDemo()">+ New Transfer</button>
+            <button class="action-btn action-secondary" onclick="showDepositDemo()">+ Cash Deposit</button>
+            <button class="action-btn action-primary" onclick="showAdjustmentDemo()">+ Adjustment</button>
+          </div>
+        </div>
+
+        <div class="treasury-kpi-grid">
+          <div class="kpi-card"><span class="kpi-label">Total Available Funds</span><strong class="kpi-value money">BHD 18,450.000</strong><div class="kpi-note">Bank + Cash + Undeposited</div></div>
+          <div class="kpi-card"><span class="kpi-label">Bank Balance</span><strong class="kpi-value money">BHD 16,920.000</strong><div class="kpi-note">Across 2 bank accounts</div></div>
+          <div class="kpi-card"><span class="kpi-label">Cash on Hand</span><strong class="kpi-value money">BHD 780.000</strong><div class="kpi-note">Main cash + petty cash</div></div>
+          <div class="kpi-card"><span class="kpi-label">Undeposited Funds</span><strong class="kpi-value money">BHD 750.000</strong><div class="kpi-note">Pending cheque deposit</div></div>
+          <div class="kpi-card"><span class="kpi-label">Today's Inflow</span><strong class="kpi-value money">BHD 1,500.000</strong><div class="kpi-note"><span class="positive">Collections received</span></div></div>
+          <div class="kpi-card"><span class="kpi-label">Today's Outflow</span><strong class="kpi-value money">BHD 430.000</strong><div class="kpi-note">Expenses and payments</div></div>
+        </div>
+
+        <section class="card">
+          <div class="treasury-tabs">
+            <button class="treasury-tab-btn active" onclick="openTreasuryTab('accounts',this)">Accounts</button>
+            <button class="treasury-tab-btn" onclick="openTreasuryTab('transactions',this)">Transactions</button>
+            <button class="treasury-tab-btn" onclick="openTreasuryTab('transfers',this)">Transfers</button>
+            <button class="treasury-tab-btn" onclick="openTreasuryTab('undeposited',this)">Undeposited Funds</button>
+            <button class="treasury-tab-btn" onclick="openTreasuryTab('cashflow',this)">Cash Flow</button>
+          </div>
+
+          <!-- ACCOUNTS -->
+          <div id="treasury-tab-accounts" class="treasury-panel active">
+            <div class="account-grid" id="treasuryAccountsGrid"></div>
+          </div>
+
+          <!-- TRANSACTIONS -->
+          <div id="treasury-tab-transactions" class="treasury-panel">
+            <div class="treasury-toolbar">
+              <div class="treasury-toolbar-left">
+                <input id="treasurySearch" type="search" placeholder="Search transaction or source..." oninput="renderTreasuryTransactions()">
+                <select id="treasuryTypeFilter" onchange="renderTreasuryTransactions()">
+                  <option value="">All Types</option>
+                  <option value="Receipt">Receipt</option>
+                  <option value="Expense">Expense</option>
+                  <option value="Transfer">Transfer</option>
+                  <option value="Deposit">Deposit</option>
+                  <option value="Adjustment">Adjustment</option>
+                </select>
+                <select id="treasuryAccountFilter" onchange="renderTreasuryTransactions()">
+                  <option value="">All Accounts</option>
+                  <option value="BBK Operating Account">BBK Operating Account</option>
+                  <option value="NBB Main Account">NBB Main Account</option>
+                  <option value="Cash on Hand">Cash on Hand</option>
+                  <option value="Petty Cash">Petty Cash</option>
+                  <option value="Undeposited Funds">Undeposited Funds</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Date</th><th>Transaction</th><th>Type</th><th>Source</th><th>Account</th><th>Inflow</th><th>Outflow</th><th>Reference</th></tr>
+                </thead>
+                <tbody id="treasuryTransactionsBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- TRANSFERS -->
+          <div id="treasury-tab-transfers" class="treasury-panel">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Transfer</th><th>Date</th><th>From</th><th>To</th><th>Amount</th><th>Reference</th><th>Status</th></tr>
+                </thead>
+                <tbody id="treasuryTransfersBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- UNDEPOSITED -->
+          <div id="treasury-tab-undeposited" class="treasury-panel">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Reference</th><th>Client</th><th>Type</th><th>Cheque No.</th><th>Bank</th><th>Date</th><th>Amount</th><th>Status</th><th>Action</th></tr>
+                </thead>
+                <tbody id="undepositedFundsBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- CASH FLOW -->
+          <div id="treasury-tab-cashflow" class="treasury-panel">
+            <div class="funds-grid">
+              <div>
+                <div class="card-head"><div><h3>Cash Inflows</h3><p>Sources of funds</p></div></div>
+                <div class="fund-list">
+                  <div class="fund-row"><div><strong>Client Collections</strong><span>Invoices and receipts</span></div><strong class="direction-in">BHD 9,780.000</strong></div>
+                  <div class="fund-row"><div><strong>Client Advances</strong><span>Unallocated funds</span></div><strong class="direction-in">BHD 400.000</strong></div>
+                  <div class="fund-row"><div><strong>Other Receipts</strong><span>Adjustments and miscellaneous</span></div><strong class="direction-in">BHD 250.000</strong></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="card-head"><div><h3>Cash Outflows</h3><p>Uses of funds</p></div></div>
+                <div class="fund-list">
+                  <div class="fund-row"><div><strong>Office Expenses</strong><span>Operating costs</span></div><strong class="direction-out">BHD 845.000</strong></div>
+                  <div class="fund-row"><div><strong>Case Expenses</strong><span>Matter-related costs</span></div><strong class="direction-out">BHD 310.000</strong></div>
+                  <div class="fund-row"><div><strong>Client Recoverable Payments</strong><span>Paid on behalf of clients</span></div><strong class="direction-out">BHD 185.000</strong></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <div class="dashboard-grid equal">
+          <section class="card">
+            <div class="card-head"><div><h3>Recent Internal Transfer</h3><p>Movement between office accounts</p></div></div>
+            <div class="transfer-flow">
+              <div class="transfer-box"><span>From</span><strong>NBB Main Account</strong><span>BHD 6,070.000 balance</span></div>
+              <div class="transfer-arrow">→</div>
+              <div class="transfer-box"><span>To</span><strong>BBK Operating Account</strong><span>BHD 10,850.000 balance</span></div>
+            </div>
+            <div class="total-line grand"><span>Transferred</span><strong>BHD 1,000.000</strong></div>
+          </section>
+
+          <section class="card">
+            <div class="card-head"><div><h3>Liquidity Position</h3><p>Current funds available to the firm</p></div></div>
+            <div class="collection-summary">
+              <div><span>Bank</span><strong>BHD 16,920</strong></div>
+              <div><span>Cash</span><strong>BHD 780</strong></div>
+              <div><span>Undeposited</span><strong>BHD 750</strong></div>
+            </div>
+            <div class="total-line grand" style="margin-top:18px;"><span>Total Available Funds</span><strong>BHD 18,450.000</strong></div>
+          </section>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <span>LEXORA — Banking & Treasury</span>
+        <span>Designed & Developed by <strong style="color:#a78035">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
+
     <!-- PLACEHOLDER -->
     <div id="placeholderPage" class="hidden">
       <div class="content placeholder">
@@ -2812,6 +3049,36 @@
 
 
 
+
+
+  const TREASURY_ACCOUNTS = [
+    {name:"BBK Operating Account",type:"Bank Account",balance:10850,detail:"Primary operating account"},
+    {name:"NBB Main Account",type:"Bank Account",balance:6070,detail:"Main banking account"},
+    {name:"Cash on Hand",type:"Cash Account",balance:580,detail:"Main office cash"},
+    {name:"Petty Cash",type:"Cash Account",balance:200,detail:"Daily small expenses"},
+    {name:"Undeposited Funds",type:"Clearing Account",balance:750,detail:"Cheques pending deposit"}
+  ];
+
+  const TREASURY_TRANSACTIONS = [
+    {date:"19 Aug 2026",no:"TRX-0081",type:"Receipt",source:"RC-2026-036",account:"BBK Operating Account",inflow:500,outflow:0,reference:"BP26081714"},
+    {date:"19 Aug 2026",no:"TRX-0082",type:"Expense",source:"EXP-2026-033",account:"Cash on Hand",inflow:0,outflow:85,reference:"CASH-1908-03"},
+    {date:"19 Aug 2026",no:"TRX-0083",type:"Expense",source:"EXP-2026-031",account:"BBK Operating Account",inflow:0,outflow:350,reference:"TRF-180826-01"},
+    {date:"19 Aug 2026",no:"TRX-0084",type:"Transfer",source:"TRF-2026-007",account:"NBB Main Account",inflow:0,outflow:1000,reference:"TRF-260819"},
+    {date:"19 Aug 2026",no:"TRX-0085",type:"Transfer",source:"TRF-2026-007",account:"BBK Operating Account",inflow:1000,outflow:0,reference:"TRF-260819"},
+    {date:"19 Aug 2026",no:"TRX-0086",type:"Receipt",source:"RC-2026-040",account:"Undeposited Funds",inflow:400,outflow:0,reference:"CHQ-88210"},
+    {date:"18 Aug 2026",no:"TRX-0079",type:"Receipt",source:"RC-2026-039",account:"Cash on Hand",inflow:800,outflow:0,reference:"CASH-1808"},
+    {date:"18 Aug 2026",no:"TRX-0080",type:"Deposit",source:"DEP-2026-004",account:"BBK Operating Account",inflow:500,outflow:0,reference:"DEP-1808"}
+  ];
+
+  const TREASURY_TRANSFERS = [
+    {no:"TRF-2026-007",date:"19 Aug 2026",from:"NBB Main Account",to:"BBK Operating Account",amount:1000,reference:"TRF-260819",status:"Posted"},
+    {no:"TRF-2026-006",date:"15 Aug 2026",from:"BBK Operating Account",to:"Petty Cash",amount:200,reference:"PC-1508",status:"Posted"}
+  ];
+
+  const UNDEPOSITED_FUNDS = [
+    {ref:"UF-2026-004",client:"Apex Contracting W.L.L",type:"Cheque",chequeNo:"88210",bank:"ABC Bank",date:"19 Aug 2026",amount:400,status:"Pending"},
+    {ref:"UF-2026-003",client:"Gulf Trading W.L.L",type:"Cheque",chequeNo:"77104",bank:"NBB",date:"17 Aug 2026",amount:350,status:"Pending"}
+  ];
 
   const EXPENSES = [
     {
@@ -3486,7 +3753,7 @@
   }
 
   function hideAllPages(){
-    ["dashboardPage","clientsPage","client360Page","casesPage","case360Page","hearingsPage","proposalsPage","proposal360Page","invoicesPage","invoice360Page","collectionsPage","receipt360Page","expensesPage","expense360Page","placeholderPage"].forEach(id=>{
+    ["dashboardPage","clientsPage","client360Page","casesPage","case360Page","hearingsPage","proposalsPage","proposal360Page","invoicesPage","invoice360Page","collectionsPage","receipt360Page","expensesPage","expense360Page","bankingPage","placeholderPage"].forEach(id=>{
       document.getElementById(id).classList.add("hidden");
     });
   }
@@ -3532,6 +3799,11 @@
       document.getElementById("expensesPage").classList.remove("hidden");
       document.getElementById("pageSubtitle").textContent="Office, case and client-recoverable expenses";
       renderExpenses();
+    }else if(page==="banking"){
+      document.getElementById("bankingPage").classList.remove("hidden");
+      document.getElementById("pageSubtitle").textContent="Bank accounts, cash, transfers and treasury movements";
+      renderTreasuryModule();
+      openTreasuryTab("accounts",document.querySelector(".treasury-tab-btn"));
     }else{
       document.getElementById("placeholderPage").classList.remove("hidden");
       document.getElementById("placeholderTitle").textContent=PAGE_NAMES[page];
@@ -3828,6 +4100,148 @@
 
 
 
+
+
+  function renderTreasuryModule(){
+    renderTreasuryAccounts();
+    renderTreasuryTransactions();
+    renderTreasuryTransfers();
+    renderUndepositedFunds();
+  }
+
+  function openTreasuryTab(tab,button){
+    document.querySelectorAll(".treasury-panel").forEach(p=>p.classList.remove("active"));
+    document.querySelectorAll(".treasury-tab-btn").forEach(b=>b.classList.remove("active"));
+
+    document.getElementById("treasury-tab-"+tab).classList.add("active");
+    if(button) button.classList.add("active");
+  }
+
+  function renderTreasuryAccounts(){
+    document.getElementById("treasuryAccountsGrid").innerHTML=TREASURY_ACCOUNTS.map(a=>`
+      <div class="account-card">
+        <span class="account-name">${a.name}</span>
+        <span class="account-type">${a.type}</span>
+        <div class="account-balance-row">
+          <div>
+            <span>Current System Balance</span>
+            <strong>${formatMoney(a.balance)}</strong>
+            <small>${a.detail}</small>
+          </div>
+          <button class="account-action" onclick="accountDemo('${a.name.replaceAll("'","\\'")}')">View</button>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  function treasuryTypeClass(type){
+    return String(type).toLowerCase();
+  }
+
+  function renderTreasuryTransactions(){
+    const search=(document.getElementById("treasurySearch")?.value||"").trim().toLowerCase();
+    const type=document.getElementById("treasuryTypeFilter")?.value||"";
+    const account=document.getElementById("treasuryAccountFilter")?.value||"";
+
+    const rows=TREASURY_TRANSACTIONS.filter(t=>{
+      const matchesSearch=!search || [t.no,t.source,t.reference,t.account].join(" ").toLowerCase().includes(search);
+      const matchesType=!type || t.type===type;
+      const matchesAccount=!account || t.account===account;
+      return matchesSearch && matchesType && matchesAccount;
+    }).map(t=>`
+      <tr>
+        <td>${t.date}</td>
+        <td>${t.no}</td>
+        <td><span class="trx-type ${treasuryTypeClass(t.type)}">${t.type}</span></td>
+        <td>${t.source}</td>
+        <td>${t.account}</td>
+        <td class="direction-in">${t.inflow?formatMoney(t.inflow):"—"}</td>
+        <td class="direction-out">${t.outflow?formatMoney(t.outflow):"—"}</td>
+        <td>${t.reference}</td>
+      </tr>
+    `).join("");
+
+    document.getElementById("treasuryTransactionsBody").innerHTML=rows || `
+      <tr><td colspan="8" style="text-align:center;padding:28px;color:#7a8491;">No treasury transactions match the selected filters.</td></tr>
+    `;
+  }
+
+  function renderTreasuryTransfers(){
+    document.getElementById("treasuryTransfersBody").innerHTML=TREASURY_TRANSFERS.map(t=>`
+      <tr>
+        <td>${t.no}</td><td>${t.date}</td><td>${t.from}</td><td>${t.to}</td>
+        <td>${formatMoney(t.amount)}</td><td>${t.reference}</td><td><span class="pill active">${t.status}</span></td>
+      </tr>
+    `).join("");
+  }
+
+  function renderUndepositedFunds(){
+    document.getElementById("undepositedFundsBody").innerHTML=UNDEPOSITED_FUNDS.map(u=>`
+      <tr>
+        <td>${u.ref}</td><td>${u.client}</td><td>${u.type}</td><td>${u.chequeNo}</td><td>${u.bank}</td>
+        <td>${u.date}</td><td>${formatMoney(u.amount)}</td>
+        <td><span class="cheque-status ${u.status.toLowerCase()}">${u.status}</span></td>
+        <td><button class="table-action" onclick="depositChequeDemo('${u.ref}')">Deposit to Bank</button></td>
+      </tr>
+    `).join("");
+  }
+
+  function accountDemo(name){
+    const a=TREASURY_ACCOUNTS.find(x=>x.name===name);
+    if(!a) return;
+
+    alert(
+      name+"\\n\\n"+
+      "Account Type: "+a.type+"\\n"+
+      "System Balance: "+formatMoney(a.balance)+"\\n\\n"+
+      "The full account view can include statement movements, reconciliation status and linked source transactions."
+    );
+  }
+
+  function showTransferDemo(){
+    alert(
+      "New Internal Transfer — Demo\\n\\n"+
+      "Prepared workflow:\\n"+
+      "• From Account\\n"+
+      "• To Account\\n"+
+      "• Transfer Date\\n"+
+      "• Amount\\n"+
+      "• Reference Number\\n"+
+      "• Notes\\n\\n"+
+      "Internal transfers move funds between accounts without affecting revenue or expenses."
+    );
+  }
+
+  function showDepositDemo(){
+    alert(
+      "Cash Deposit — Demo\\n\\n"+
+      "Example:\\n"+
+      "Cash on Hand → BBK Operating Account\\n"+
+      "Amount: BHD 500.000\\n\\n"+
+      "The transfer changes account balances only and does not create revenue."
+    );
+  }
+
+  function showAdjustmentDemo(){
+    alert(
+      "Treasury Adjustment — Demo\\n\\n"+
+      "Adjustments are controlled transactions used for approved corrections or opening balances and remain visible in the audit trail."
+    );
+  }
+
+  function depositChequeDemo(ref){
+    const u=UNDEPOSITED_FUNDS.find(x=>x.ref===ref);
+    if(!u) return;
+
+    alert(
+      "Deposit Cheque to Bank — Demo\\n\\n"+
+      "Reference: "+u.ref+"\\n"+
+      "Client: "+u.client+"\\n"+
+      "Cheque: "+u.chequeNo+"\\n"+
+      "Amount: "+formatMoney(u.amount)+"\\n\\n"+
+      "The workflow moves the amount from Undeposited Funds to the selected bank account."
+    );
+  }
 
   let currentExpense = EXPENSES[0];
 
@@ -4703,7 +5117,7 @@
       "5. Professional Fee Proposal\n"+
       "6. Invoice & Collection\n"+
       "7. Management Reports\n\n"+
-      "Dashboard, Clients, Cases, Tasks & Hearings, Proposals, Invoices, Collections and Expenses are active through Release 1.7. Expenses now separate Office, Case and Client-Recoverable costs with Expense 360°, VAT, payment method and client/case linking."
+      "Dashboard, Clients, Cases, Tasks & Hearings, Proposals, Invoices, Collections, Expenses and Banking & Treasury are active through Release 1.8. Treasury includes bank accounts, cash, undeposited funds, internal transfers and source-linked financial transactions."
     );
   }
 
@@ -4715,6 +5129,7 @@
   renderInvoices();
   renderCollections();
   renderExpenses();
+  renderTreasuryModule();
 </script>
 
 </body>
