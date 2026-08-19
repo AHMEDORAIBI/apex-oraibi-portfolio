@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>APEX ORAIBI | Business Systems Portfolio</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --navy: #071525;
+      --navy-2: #0c2137;
+      --gold: #c9a45c;
+      --gold-light: #e2c47e;
+      --white: #ffffff;
+      --text: #172231;
+      --muted: #758091;
+      --light: #f4f6f8;
+      --border: #e6e9ed;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--light);
+      color: var(--text);
+    }
+
+    /* ==============================
+       HEADER
+    ============================== */
+
+    header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 10;
+      padding: 28px 7%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: white;
+    }
+
+    .brand-mark {
+      width: 46px;
+      height: 46px;
+      border: 1px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--gold);
+    }
+
+    .brand strong {
+      display: block;
+      font-size: 17px;
+      letter-spacing: 2px;
+    }
+
+    .brand span {
+      display: block;
+      margin-top: 4px;
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: #b7c0ca;
+    }
+
+    nav {
+      display: flex;
+      gap: 30px;
+    }
+
+    nav a {
+      color: #cdd4db;
+      text-decoration: none;
+      font-size: 13px;
+      transition: 0.2s;
+    }
+
+    nav a:hover {
+      color: var(--gold);
+    }
+
+    /* ==============================
+       HERO
+    ============================== */
+
+    .hero {
+      min-height: 660px;
+      padding: 150px 7% 100px;
+      display: flex;
+      align-items: center;
+      background:
+        radial-gradient(
+          circle at 75% 40%,
+          rgba(201,164,92,0.13),
+          transparent 32%
+        ),
+        linear-gradient(
+          135deg,
+          #06111e 0%,
+          #0b2035 60%,
+          #081827 100%
+        );
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      right: -160px;
+      bottom: -260px;
+      border: 1px solid rgba(201,164,92,.15);
+      border-radius: 50%;
+    }
+
+    .hero-content {
+      width: 650px;
+      max-width: 100%;
+      position: relative;
+      z-index: 2;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 24px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: var(--gold);
+    }
+
+    .hero h1 {
+      font-size: clamp(44px, 6vw, 78px);
+      line-height: 1.02;
+      font-weight: 600;
+      letter-spacing: -3px;
+    }
+
+    .hero h1 span {
+      display: block;
+      color: var(--gold-light);
+    }
+
+    .hero p {
+      max-width: 590px;
+      margin-top: 28px;
+      color: #b7c1cc;
+      font-size: 17px;
+      line-height: 1.8;
+    }
+
+    .hero-actions {
+      margin-top: 38px;
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 24px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      border-radius: 4px;
+      transition: .25s;
+    }
+
+    .btn-primary {
+      background: var(--gold);
+      color: var(--navy);
+    }
+
+    .btn-primary:hover {
+      background: var(--gold-light);
+    }
+
+    .btn-outline {
+      border: 1px solid rgba(255,255,255,.2);
+      color: white;
+    }
+
+    .btn-outline:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    /* ==============================
+       INTRO
+    ============================== */
+
+    .intro {
+      padding: 90px 7% 55px;
+      text-align: center;
+      background: white;
+    }
+
+    .section-label {
+      color: var(--gold);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+    }
+
+    .intro h2 {
+      margin-top: 15px;
+      font-size: 36px;
+      font-weight: 600;
+      color: var(--navy);
+    }
+
+    .intro p {
+      margin: 18px auto 0;
+      max-width: 720px;
+      color: var(--muted);
+      line-height: 1.8;
+      font-size: 15px;
+    }
+
+    /* ==============================
+       SYSTEM CARDS
+    ============================== */
+
+    .systems {
+      padding: 35px 7% 100px;
+      background: white;
+    }
+
+    .systems-grid {
+      max-width: 1250px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    .system-card {
+      position: relative;
+      min-height: 330px;
+      padding: 34px;
+      border: 1px solid var(--border);
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      transition: .3s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .system-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 22px 55px rgba(7,21,37,.10);
+      border-color: #d8c18f;
+    }
+
+    .system-number {
+      position: absolute;
+      top: 25px;
+      right: 28px;
+      color: #e6e9ed;
+      font-size: 44px;
+      font-weight: 700;
+    }
+
+    .system-icon {
+      width: 54px;
+      height: 54px;
+      border-radius: 7px;
+      background: #f5f0e5;
+      color: #9d7b39;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 30px;
+    }
+
+    .system-card h3 {
+      color: var(--navy);
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .system-card .type {
+      color: var(--gold);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.8px;
+      margin-bottom: 17px;
+    }
+
+    .system-card p {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+      flex: 1;
+    }
+
+    .explore {
+      margin-top: 25px;
+      color: var(--navy);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .explore:hover {
+      color: var(--gold);
+    }
+
+    .coming {
+      color: #9aa2ac;
+      cursor: default;
+    }
+
+    .featured {
+      background: var(--navy);
+      border-color: var(--navy);
+    }
+
+    .featured h3 {
+      color: white;
+    }
+
+    .featured p {
+      color: #aeb8c3;
+    }
+
+    .featured .explore {
+      color: var(--gold-light);
+    }
+
+    .featured .system-number {
+      color: rgba(255,255,255,.06);
+    }
+
+    /* ==============================
+       ABOUT
+    ============================== */
+
+    .about {
+      padding: 100px 7%;
+      background: #f5f6f7;
+    }
+
+    .about-inner {
+      max-width: 1150px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 90px;
+      align-items: center;
+    }
+
+    .about h2 {
+      margin-top: 14px;
+      color: var(--navy);
+      font-size: 36px;
+      line-height: 1.25;
+    }
+
+    .about p {
+      margin-top: 20px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.9;
+    }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    .stat {
+      padding: 28px;
+      background: white;
+      border: 1px solid var(--border);
+    }
+
+    .stat strong {
+      display: block;
+      color: var(--navy);
+      font-size: 30px;
+    }
+
+    .stat span {
+      display: block;
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    /* ==============================
+       FOOTER
+    ============================== */
+
+    footer {
+      background: #050d17;
+      padding: 40px 7%;
+      color: #8994a1;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      font-size: 12px;
+    }
+
+    footer strong {
+      color: var(--gold);
+      letter-spacing: 1px;
+    }
+
+    /* ==============================
+       RESPONSIVE
+    ============================== */
+
+    @media (max-width: 950px) {
+
+      nav {
+        display: none;
+      }
+
+      .systems-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .about-inner {
+        grid-template-columns: 1fr;
+        gap: 45px;
+      }
+    }
+
+    @media (max-width: 650px) {
+
+      header {
+        padding: 20px 6%;
+      }
+
+      .hero {
+        min-height: 620px;
+        padding: 135px 6% 80px;
+      }
+
+      .hero h1 {
+        letter-spacing: -2px;
+      }
+
+      .intro,
+      .systems,
+      .about {
+        padding-left: 6%;
+        padding-right: 6%;
+      }
+
+      .systems-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .system-card {
+        min-height: 300px;
+      }
+
+      .about-stats {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      footer {
+        flex-direction: column;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+
+<header>
+
+  <div class="brand">
+    <div class="brand-mark">AO</div>
+
+    <div>
+      <strong>APEX ORAIBI</strong>
+      <span>BUSINESS SYSTEMS</span>
+    </div>
+  </div>
+
+  <nav>
+    <a href="#systems">Systems</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+</header>
+
+
+<section class="hero">
+
+  <div class="hero-content">
+
+    <span class="eyebrow">
+      BUSINESS SYSTEMS & AUTOMATION
+    </span>
+
+    <h1>
+      Systems designed
+      <span>around the business.</span>
+    </h1>
+
+    <p>
+      A portfolio of purpose-built management systems
+      designed to simplify operations, connect financial
+      information and provide management with clearer
+      visibility over the business.
+    </p>
+
+    <div class="hero-actions">
+
+      <a href="#systems" class="btn btn-primary">
+        Explore Systems
+      </a>
+
+      <a href="#about" class="btn btn-outline">
+        About APEX ORAIBI
+      </a>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<section class="intro" id="systems">
+
+  <span class="section-label">SYSTEM PORTFOLIO</span>
+
+  <h2>Solutions for different industries</h2>
+
+  <p>
+    Each demonstration system is designed around the
+    operational and financial requirements of its industry,
+    rather than applying one generic workflow to every business.
+  </p>
+
+</section>
+
+
+<section class="systems">
+
+  <div class="systems-grid">
+
+    <!-- LAW FIRM -->
+    <article class="system-card featured">
+
+      <span class="system-number">01</span>
+
+      <div class="system-icon">⚖</div>
+
+      <span class="type">LEGAL MANAGEMENT</span>
+
+      <h3>LEXORA Law Firm</h3>
+
+      <p>
+        Integrated management of clients, cases, hearings,
+        professional fee proposals, invoices, collections,
+        expenses, treasury and management reporting.
+      </p>
+
+      <a href="law-firm/" class="explore">
+        Explore Demo →
+      </a>
+
+    </article>
+
+
+    <!-- COLLECTION -->
+    <article class="system-card">
+
+      <span class="system-number">02</span>
+
+      <div class="system-icon">$</div>
+
+      <span class="type">COLLECTION MANAGEMENT</span>
+
+      <h3>Collection System</h3>
+
+      <p>
+        Portfolio management for debt files, collectors,
+        payment plans, collection activity and performance
+        monitoring.
+      </p>
+
+      <span class="explore coming">
+        Coming Soon
+      </span>
+
+    </article>
+
+
+    <!-- REAL ESTATE -->
+    <article class="system-card">
+
+      <span class="system-number">03</span>
+
+      <div class="system-icon">▦</div>
+
+      <span class="type">PROPERTY MANAGEMENT</span>
+
+      <h3>Real Estate System</h3>
+
+      <p>
+        Manage buildings, units, tenants, contracts,
+        monthly rent dues, collections and arrears from
+        one operational dashboard.
+      </p>
+
+      <span class="explore coming">
+        Coming Soon
+      </span>
+
+    </article>
+
+
+    <!-- REHABILITATION -->
+    <article class="system-card">
+
+      <span class="system-number">04</span>
+
+      <div class="system-icon">✚</div>
+
+      <span class="type">HEALTHCARE OPERATIONS</span>
+
+      <h3>Rehabilitation Center</h3>
+
+      <p>
+        Patient profiles, appointments, treatment plans,
+        therapy sessions, billing, expenses and operational
+        reporting.
+      </p>
+
+      <span class="explore coming">
+        Coming Soon
+      </span>
+
+    </article>
+
+
+    <!-- ENFORCEMENT -->
+    <article class="system-card">
+
+      <span class="system-number">05</span>
+
+      <div class="system-icon">§</div>
+
+      <span class="type">ENFORCEMENT MANAGEMENT</span>
+
+      <h3>Private Enforcement</h3>
+
+      <p>
+        Manage enforcement files, parties, financial claims,
+        collections, expenses, settlements and executive
+        reporting.
+      </p>
+
+      <span class="explore coming">
+        Coming Soon
+      </span>
+
+    </article>
+
+
+    <!-- FUTURE -->
+    <article class="system-card">
+
+      <span class="system-number">+</span>
+
+      <div class="system-icon">◇</div>
+
+      <span class="type">CUSTOM BUSINESS SYSTEMS</span>
+
+      <h3>Custom Solutions</h3>
+
+      <p>
+        Bespoke operational, accounting and management
+        systems can be designed around the workflow and
+        reporting requirements of each organization.
+      </p>
+
+      <span class="explore coming">
+        Tailored to Business
+      </span>
+
+    </article>
+
+  </div>
+
+</section>
+
+
+<section class="about" id="about">
+
+  <div class="about-inner">
+
+    <div>
+
+      <span class="section-label">APEX ORAIBI</span>
+
+      <h2>
+        From business workflow
+        to practical digital system.
+      </h2>
+
+      <p>
+        APEX ORAIBI focuses on translating real operational,
+        accounting and management requirements into practical
+        systems that make information easier to manage,
+        monitor and analyze.
+      </p>
+
+      <p>
+        The portfolio demonstrates how different industries
+        can have systems designed around their actual
+        processes rather than adapting their operations to
+        generic software.
+      </p>
+
+    </div>
+
+
+    <div class="about-stats">
+
+      <div class="stat">
+        <strong>5</strong>
+        <span>Industry Demonstrations</span>
+      </div>
+
+      <div class="stat">
+        <strong>360°</strong>
+        <span>Operational Visibility</span>
+      </div>
+
+      <div class="stat">
+        <strong>AR / EN</strong>
+        <span>Bilingual Ready</span>
+      </div>
+
+      <div class="stat">
+        <strong>BHD</strong>
+        <span>Bahrain Focused</span>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<footer id="contact">
+
+  <span>
+    © 2026 APEX ORAIBI. Business Systems Portfolio.
+  </span>
+
+  <span>
+    Designed & Developed by
+    <strong>APEX ORAIBI</strong>
+  </span>
+
+</footer>
+
+</body>
+</html>
