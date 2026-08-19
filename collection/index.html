@@ -378,6 +378,62 @@
       .case-actions button{flex:1}
     }
 
+
+    /* FOLLOW-UPS */
+    .followup-kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-bottom:16px}
+    .followup-toolbar{display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+    .followup-toolbar-left{display:flex;gap:10px;flex-wrap:wrap}
+    .followup-toolbar input,.followup-toolbar select{
+      height:40px;border:1px solid var(--border);border-radius:6px;background:white;padding:0 12px;font-size:11px;outline:none
+    }
+    .followup-toolbar input{width:280px}
+
+    .queue-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:16px}
+    .queue-list{display:flex;flex-direction:column;gap:10px}
+    .queue-card{
+      border:1px solid var(--border);border-radius:8px;padding:14px;background:white;
+      display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start
+    }
+    .queue-card strong{font-size:11px;color:var(--navy)}
+    .queue-card span{display:block;margin-top:4px;font-size:9px;color:var(--muted)}
+    .queue-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+    .queue-actions button{
+      border:1px solid var(--border);background:white;color:var(--navy);border-radius:5px;padding:6px 8px;font-size:9px;cursor:pointer
+    }
+
+    .followup-type{display:inline-flex;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700}
+    .followup-type.call{background:#eef2f7;color:#36506d}
+    .followup-type.whatsapp{background:#edf5f0;color:#347b57}
+    .followup-type.visit{background:#f7f1e7;color:#8f6b27}
+    .followup-type.email{background:#f0eafa;color:#6a4b91}
+    .followup-type.meeting{background:#eaf8f7;color:#158a8a}
+
+    .followup-status{display:inline-flex;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700}
+    .followup-status.pending{background:#fbf4e5;color:#9a6d1f}
+    .followup-status.completed{background:#edf5f0;color:#347b57}
+    .followup-status.overdue{background:#fbeaea;color:#a74646}
+
+    .collector-workload{display:flex;flex-direction:column;gap:12px}
+    .collector-workload-row{padding:13px;border:1px solid var(--border);border-radius:7px;background:var(--soft)}
+    .collector-workload-row strong{font-size:11px;color:var(--navy)}
+    .collector-workload-row span{display:block;margin-top:4px;font-size:9px;color:var(--muted)}
+    .collector-workload-row .progress{margin-top:9px}
+
+    @media(max-width:1250px){
+      .followup-kpi-grid{grid-template-columns:repeat(3,1fr)}
+    }
+    @media(max-width:950px){
+      .queue-grid{grid-template-columns:1fr}
+    }
+    @media(max-width:650px){
+      .followup-kpi-grid{grid-template-columns:1fr 1fr}
+      .followup-toolbar{align-items:stretch}
+      .followup-toolbar-left{width:100%}
+      .followup-toolbar input,.followup-toolbar select{width:100%}
+      .queue-card{grid-template-columns:1fr}
+      .queue-actions{justify-content:flex-start}
+    }
+
     .placeholder{min-height:500px;display:grid;place-items:center;text-align:center}
     .placeholder-box{max-width:520px;padding:45px;background:white;border:1px solid var(--border);border-radius:10px}
     .placeholder-box span{font-size:9px;color:var(--teal);letter-spacing:2px;font-weight:700}
@@ -1235,6 +1291,116 @@
     </div>
 
 
+
+    <!-- FOLLOW-UPS -->
+    <div id="followupsPage" class="hidden">
+      <div class="content">
+
+        <div class="hero-row">
+          <div>
+            <h2>Follow-ups</h2>
+            <p>Manage collector actions, daily work queues and debtor contact history.</p>
+          </div>
+          <div class="hero-actions">
+            <button class="action-btn action-secondary" onclick="showBulkAssignDemo()">Bulk Assign</button>
+            <button class="action-btn action-primary" onclick="showAddFollowupDemo()">+ New Follow-up</button>
+          </div>
+        </div>
+
+        <div class="followup-kpi-grid">
+          <div class="kpi-card"><span class="kpi-label">Due Today</span><strong class="kpi-value">18</strong><div class="kpi-note">Collector actions due</div></div>
+          <div class="kpi-card"><span class="kpi-label">Completed Today</span><strong class="kpi-value">11</strong><div class="kpi-note"><span class="positive">61%</span> completion</div></div>
+          <div class="kpi-card"><span class="kpi-label">Overdue</span><strong class="kpi-value">7</strong><div class="kpi-note"><span class="danger">Requires action</span></div></div>
+          <div class="kpi-card"><span class="kpi-label">Field Visits</span><strong class="kpi-value">5</strong><div class="kpi-note">Scheduled this week</div></div>
+          <div class="kpi-card"><span class="kpi-label">Calls Planned</span><strong class="kpi-value">24</strong><div class="kpi-note">Next 3 days</div></div>
+        </div>
+
+        <div class="queue-grid">
+          <section class="card">
+            <div class="card-head">
+              <div><h3>Daily Work Queue</h3><p>Prioritized actions for collection team</p></div>
+            </div>
+
+            <div class="followup-toolbar">
+              <div class="followup-toolbar-left">
+                <input id="followupSearch" type="search" placeholder="Search debtor, case or collector..." oninput="renderFollowups()">
+                <select id="followupTypeFilter" onchange="renderFollowups()">
+                  <option value="">All Types</option>
+                  <option value="Call">Call</option>
+                  <option value="WhatsApp">WhatsApp</option>
+                  <option value="Field Visit">Field Visit</option>
+                  <option value="Email">Email</option>
+                  <option value="Meeting">Meeting</option>
+                </select>
+                <select id="followupStatusFilter" onchange="renderFollowups()">
+                  <option value="">All Statuses</option>
+                  <option value="Pending">Pending</option>
+                  <option value="Completed">Completed</option>
+                  <option value="Overdue">Overdue</option>
+                </select>
+              </div>
+            </div>
+
+            <div id="followupQueue" class="queue-list"></div>
+          </section>
+
+          <section class="card">
+            <div class="card-head">
+              <div><h3>Collector Workload</h3><p>Open actions by collector</p></div>
+            </div>
+
+            <div class="collector-workload">
+              <div class="collector-workload-row">
+                <strong>Sara Ahmed</strong>
+                <span>14 open follow-ups · 5 due today</span>
+                <div class="progress"><span style="width:78%"></span></div>
+              </div>
+
+              <div class="collector-workload-row">
+                <strong>Khalid Ali</strong>
+                <span>11 open follow-ups · 4 due today</span>
+                <div class="progress"><span style="width:66%"></span></div>
+              </div>
+
+              <div class="collector-workload-row">
+                <strong>Mohammed Hasan</strong>
+                <span>9 open follow-ups · 3 due today</span>
+                <div class="progress"><span style="width:54%"></span></div>
+              </div>
+
+              <div class="collector-workload-row">
+                <strong>Fatima Abbas</strong>
+                <span>8 open follow-ups · 2 due today</span>
+                <div class="progress"><span style="width:48%"></span></div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <section class="card" style="margin-top:16px;">
+          <div class="card-head">
+            <div><h3>Follow-up History</h3><p>Latest completed collection actions</p></div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Date</th><th>Case</th><th>Debtor</th><th>Type</th><th>Collector</th><th>Outcome</th><th>Status</th></tr>
+              </thead>
+              <tbody id="followupHistoryBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+      </div>
+
+      <footer class="footer">
+        <span>RECOVA — Follow-ups</span>
+        <span>Designed & Developed by <strong style="color:#1aa6a6">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
+
     <div id="placeholderPage" class="hidden">
       <div class="content placeholder">
         <div class="placeholder-box">
@@ -1873,6 +2039,112 @@
   }
 
 
+
+  const FOLLOWUPS = [
+    {id:"FU-001",date:"19 Aug 2026",caseNo:"COL-260184",debtorId:"DBT-001",debtor:"Ahmed Trading",type:"Call",collector:"Sara Ahmed",priority:"High",status:"Pending",outcome:"Confirm source of payment",time:"02:30 PM"},
+    {id:"FU-002",date:"19 Aug 2026",caseNo:"COL-260191",debtorId:"DBT-002",debtor:"Al Noor Market",type:"WhatsApp",collector:"Sara Ahmed",priority:"High",status:"Completed",outcome:"PTP reconfirmed for 20 Aug",time:"11:15 AM"},
+    {id:"FU-003",date:"19 Aug 2026",caseNo:"COL-260203",debtorId:"DBT-003",debtor:"Modern Workshop",type:"Field Visit",collector:"Khalid Ali",priority:"High",status:"Pending",outcome:"Obtain revised payment plan",time:"03:00 PM"},
+    {id:"FU-004",date:"19 Aug 2026",caseNo:"COL-260211",debtorId:"DBT-004",debtor:"Hassan Ali",type:"Meeting",collector:"Fatima Abbas",priority:"Medium",status:"Pending",outcome:"Settlement negotiation",time:"04:00 PM"},
+    {id:"FU-005",date:"18 Aug 2026",caseNo:"COL-260170",debtorId:"DBT-005",debtor:"Al Manar Stores",type:"Call",collector:"Khalid Ali",priority:"Medium",status:"Completed",outcome:"Installment confirmed",time:"01:10 PM"},
+    {id:"FU-006",date:"18 Aug 2026",caseNo:"COL-260184",debtorId:"DBT-001",debtor:"Ahmed Trading",type:"WhatsApp",collector:"Sara Ahmed",priority:"High",status:"Overdue",outcome:"Reminder pending response",time:"09:30 AM"},
+    {id:"FU-007",date:"18 Aug 2026",caseNo:"COL-260203",debtorId:"DBT-003",debtor:"Modern Workshop",type:"Email",collector:"Khalid Ali",priority:"Low",status:"Completed",outcome:"Account statement sent",time:"10:20 AM"}
+  ];
+
+  function followupTypeClass(type){
+    if(type==="Call") return "call";
+    if(type==="WhatsApp") return "whatsapp";
+    if(type==="Field Visit") return "visit";
+    if(type==="Email") return "email";
+    return "meeting";
+  }
+
+  function renderFollowups(){
+    const search=(document.getElementById("followupSearch")?.value||"").trim().toLowerCase();
+    const type=document.getElementById("followupTypeFilter")?.value||"";
+    const status=document.getElementById("followupStatusFilter")?.value||"";
+
+    const filtered=FOLLOWUPS.filter(f=>{
+      const a=!search || [f.debtor,f.caseNo,f.collector].join(" ").toLowerCase().includes(search);
+      const b=!type || f.type===type;
+      const c=!status || f.status===status;
+      return a&&b&&c;
+    });
+
+    document.getElementById("followupQueue").innerHTML=filtered.map(f=>`
+      <div class="queue-card">
+        <div>
+          <strong>${f.time} · ${f.debtor}</strong>
+          <span>${f.caseNo} · ${f.collector}</span>
+          <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;">
+            <span class="followup-type ${followupTypeClass(f.type)}">${f.type}</span>
+            <span class="followup-status ${f.status.toLowerCase()}">${f.status}</span>
+          </div>
+          <span style="margin-top:8px;">${f.outcome}</span>
+        </div>
+        <div class="queue-actions">
+          <button onclick="openCase360('${f.caseNo}')">Case</button>
+          <button onclick="openDebtor360('${f.debtorId}')">Debtor</button>
+          <button onclick="completeFollowupDemo('${f.id}')">Complete</button>
+        </div>
+      </div>
+    `).join("") || `<div style="padding:25px;text-align:center;color:#7a8491">No follow-ups match the selected filters.</div>`;
+
+    document.getElementById("followupHistoryBody").innerHTML=FOLLOWUPS
+      .filter(f=>f.status==="Completed")
+      .map(f=>`
+        <tr>
+          <td>${f.date} · ${f.time}</td>
+          <td><button class="case-link" onclick="openCase360('${f.caseNo}')">${f.caseNo}</button></td>
+          <td><button class="debtor-link" onclick="openDebtor360('${f.debtorId}')">${f.debtor}</button></td>
+          <td><span class="followup-type ${followupTypeClass(f.type)}">${f.type}</span></td>
+          <td>${f.collector}</td>
+          <td>${f.outcome}</td>
+          <td><span class="followup-status completed">Completed</span></td>
+        </tr>
+      `).join("");
+  }
+
+  function showAddFollowupDemo(){
+    alert(
+      "New Follow-up — Demo\\n\\n"+
+      "Prepared fields:\\n"+
+      "• Case\\n"+
+      "• Debtor\\n"+
+      "• Follow-up Type\\n"+
+      "• Date & Time\\n"+
+      "• Collector\\n"+
+      "• Priority\\n"+
+      "• Objective / Notes\\n"+
+      "• Next Action"
+    );
+  }
+
+  function showBulkAssignDemo(){
+    alert(
+      "Bulk Assign — Demo\\n\\n"+
+      "This workflow can distribute selected follow-ups or debtor accounts across collectors based on workload, portfolio or client."
+    );
+  }
+
+  function completeFollowupDemo(id){
+    const f=FOLLOWUPS.find(x=>x.id===id);
+    if(!f) return;
+
+    alert(
+      "Complete Follow-up — Demo\\n\\n"+
+      "Debtor: "+f.debtor+"\\n"+
+      "Case: "+f.caseNo+"\\n"+
+      "Type: "+f.type+"\\n\\n"+
+      "Completion can capture:\\n"+
+      "• Contact Outcome\\n"+
+      "• Amount Promised\\n"+
+      "• Next Follow-up Date\\n"+
+      "• Settlement Interest\\n"+
+      "• Escalation Required"
+    );
+  }
+
+
   const PAGE_NAMES = {
     dashboard:"Collection Dashboard",
     clients:"Clients",
@@ -1908,7 +2180,7 @@
 
     document.getElementById("pageTitle").textContent=PAGE_NAMES[page]||"RECOVA";
 
-    ["dashboardPage","clientsPage","client360Page","debtorsPage","debtor360Page","casesPage","case360Page","placeholderPage"].forEach(id=>{
+    ["dashboardPage","clientsPage","client360Page","debtorsPage","debtor360Page","casesPage","case360Page","followupsPage","placeholderPage"].forEach(id=>{
       const el=document.getElementById(id);
       if(el) el.classList.add("hidden");
     });
@@ -1928,6 +2200,10 @@
       document.getElementById("casesPage").classList.remove("hidden");
       document.getElementById("pageSubtitle").textContent="Assigned debt files, recovery stages and collector performance";
       renderCases();
+    }else if(page==="followups"){
+      document.getElementById("followupsPage").classList.remove("hidden");
+      document.getElementById("pageSubtitle").textContent="Collector actions, daily work queue and debtor contact history";
+      renderFollowups();
     }else{
       document.getElementById("placeholderPage").classList.remove("hidden");
       document.getElementById("placeholderTitle").textContent=PAGE_NAMES[page];
@@ -1972,7 +2248,7 @@
       "5. Follow-ups & PTP\\n"+
       "6. Collections & Settlements\\n"+
       "7. Commission & Reports\\n\\n"+
-      "Release 1.3 activates Dashboard, Clients, Debtors, Collection Cases and their 360° views."
+      "Release 1.4 activates Dashboard, Clients, Debtors, Collection Cases and Follow-ups with a daily collector work queue."
     );
   }
 
@@ -1980,6 +2256,7 @@
   renderClients();
   renderDebtors();
   renderCases();
+  renderFollowups();
 </script>
 
 </body>
