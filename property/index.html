@@ -759,6 +759,34 @@
       .reports-toolbar input,.reports-toolbar select,.audit-toolbar input,.audit-toolbar select{width:100%}
     }
 
+
+    /* RELEASE 1.11 — BILINGUAL AR / EN */
+    .lang-switcher{
+      display:inline-flex;align-items:center;gap:3px;padding:3px;border:1px solid var(--border);
+      border-radius:7px;background:#fff
+    }
+    .lang-btn{
+      border:0;background:transparent;color:var(--muted);height:30px;padding:0 10px;border-radius:5px;
+      font-size:10px;font-weight:800;cursor:pointer
+    }
+    .lang-btn.active{background:var(--navy);color:#fff}
+    html[dir="rtl"] body{direction:rtl;text-align:right}
+    html[dir="rtl"] .sidebar{right:0;left:auto}
+    html[dir="rtl"] .main{margin-left:0;margin-right:var(--sidebar-width)}
+    html[dir="rtl"] .topbar,html[dir="rtl"] .hero-row,html[dir="rtl"] .card-head,
+    html[dir="rtl"] .list-row,html[dir="rtl"] .template-item{direction:rtl}
+    html[dir="rtl"] table{direction:rtl}
+    html[dir="rtl"] th,html[dir="rtl"] td{text-align:right}
+    html[dir="rtl"] .permission-table td,html[dir="rtl"] .permission-table th{text-align:center}
+    html[dir="rtl"] .permission-table td:first-child,html[dir="rtl"] .permission-table th:first-child{text-align:right}
+    html[dir="rtl"] .bank-account-card::after{right:auto;left:-35px}
+    html[dir="rtl"] .transfer-arrow{transform:rotate(180deg)}
+    html[dir="rtl"] input,html[dir="rtl"] select{direction:rtl;text-align:right}
+    html[dir="rtl"] .nav-item{text-align:right}
+    @media(max-width:900px){
+      html[dir="rtl"] .main{margin-right:0}
+    }
+
     .placeholder{min-height:500px;display:grid;place-items:center;text-align:center}
     .placeholder-box{max-width:520px;padding:45px;background:white;border:1px solid var(--border);border-radius:10px}
     .placeholder-box span{font-size:9px;color:var(--emerald);letter-spacing:2px;font-weight:700}
@@ -907,6 +935,11 @@
           <div><strong>Ahmed Oraibi</strong><span>Administrator</span></div>
         </div>
       </div>
+    
+        <div class="lang-switcher" aria-label="Language">
+          <button id="langEnBtn" class="lang-btn active" type="button" onclick="setEstaraLanguage('en')">EN</button>
+          <button id="langArBtn" class="lang-btn" type="button" onclick="setEstaraLanguage('ar')">العربية</button>
+        </div>
     </header>
 
     <div id="dashboardPage">
@@ -4354,6 +4387,339 @@
   }
 
 
+
+  /* =========================================================
+     ESTARA RELEASE 1.11 — FULL UI LANGUAGE ENGINE
+     Static interface EN/AR + RTL/LTR + persistent preference
+     ========================================================= */
+  const ESTARA_AR = {
+    "Dashboard":"لوحة التحكم",
+    "Buildings":"المباني",
+    "Units":"الوحدات",
+    "Tenants":"المستأجرون",
+    "Contracts":"العقود",
+    "Monthly Dues":"الاستحقاقات الشهرية",
+    "Collections":"التحصيلات",
+    "Arrears":"المتأخرات",
+    "Property Expenses":"مصاريف العقارات",
+    "Banking & Treasury":"البنوك والخزينة",
+    "Reports & Analytics":"التقارير والتحليلات",
+    "Reports":"التقارير",
+    "Users & Permissions":"المستخدمون والصلاحيات",
+    "Users":"المستخدمون",
+    "Settings":"الإعدادات",
+    "Audit Log":"سجل التدقيق",
+    "Overview":"نظرة عامة",
+    "Activity":"النشاط",
+    "Allocation":"التخصيص",
+    "Recovery":"الاسترداد",
+    "Due Allocations":"تخصيص الاستحقاقات",
+    "Outstanding Dues":"الاستحقاقات المتأخرة",
+    "Follow-ups":"المتابعات",
+    "Accounts":"الحسابات",
+    "Transactions":"الحركات",
+    "Transfers":"التحويلات",
+    "Owner Funds":"أموال الملاك",
+    "Cash Flow":"التدفق النقدي",
+    "Add Building":"إضافة مبنى",
+    "+ Add Building":"+ إضافة مبنى",
+    "+ Add Expense":"+ إضافة مصروف",
+    "+ Record Collection":"+ تسجيل تحصيل",
+    "+ Create Follow-up":"+ إنشاء متابعة",
+    "+ New Transfer":"+ تحويل جديد",
+    "+ Cash Deposit":"+ إيداع نقدي",
+    "+ Owner Settlement":"+ تسوية مالك",
+    "+ Add User":"+ إضافة مستخدم",
+    "Save Settings":"حفظ الإعدادات",
+    "Export Excel":"تصدير Excel",
+    "Export Aging":"تصدير الأعمار",
+    "Export Audit":"تصدير سجل التدقيق",
+    "Executive PDF":"PDF تنفيذي",
+    "Open Key Report":"فتح التقرير الرئيسي",
+    "View 360°":"عرض 360°",
+    "View Building":"عرض المبنى",
+    "View Unit":"عرض الوحدة",
+    "View Tenant":"عرض المستأجر",
+    "View Contract":"عرض العقد",
+    "Print Receipt":"طباعة الإيصال",
+    "Allocate Payment":"تخصيص الدفعة",
+    "Recharge Expense":"إعادة تحميل المصروف",
+    "View Attachment":"عرض المرفق",
+    "Preview":"معاينة",
+    "Print":"طباعة",
+    "Back to Collections":"العودة إلى التحصيلات",
+    "Back to Arrears":"العودة إلى المتأخرات",
+    "Back to Property Expenses":"العودة إلى مصاريف العقارات",
+    "Back to Reports":"العودة إلى التقارير",
+    "Total Buildings":"إجمالي المباني",
+    "Total Units":"إجمالي الوحدات",
+    "Occupied Units":"الوحدات المؤجرة",
+    "Vacant Units":"الوحدات الشاغرة",
+    "Occupancy":"الإشغال",
+    "Occupancy Rate":"نسبة الإشغال",
+    "Monthly Rent":"الإيجار الشهري",
+    "Monthly Rent Due":"الإيجار الشهري المستحق",
+    "Collected":"المحصل",
+    "Collected Today":"المحصل اليوم",
+    "Collected This Month":"المحصل هذا الشهر",
+    "Allocated":"المخصص",
+    "Unallocated":"غير المخصص",
+    "Receipts":"الإيصالات",
+    "Total Arrears":"إجمالي المتأخرات",
+    "0–30 Days":"0–30 يومًا",
+    "31–60 Days":"31–60 يومًا",
+    "61–90 Days":"61–90 يومًا",
+    "90+ Days":"أكثر من 90 يومًا",
+    "Total Expenses":"إجمالي المصاريف",
+    "Maintenance":"الصيانة",
+    "Utilities":"الخدمات",
+    "Management":"الإدارة",
+    "Government":"رسوم حكومية",
+    "Other":"أخرى",
+    "Recoverable":"قابل للاسترداد",
+    "Owner Cost":"تكلفة على المالك",
+    "Rent Collection Bank":"حسابات تحصيل الإيجار",
+    "Cash on Hand":"النقد بالصندوق",
+    "Undeposited Cheques":"شيكات غير مودعة",
+    "Owner Funds Payable":"أموال مستحقة للملاك",
+    "Today's Net Movement":"صافي حركة اليوم",
+    "Total Funds":"إجمالي الأموال",
+    "Portfolio Rent":"إيجار المحفظة",
+    "Company Profile":"بيانات الشركة",
+    "Rent Rules":"قواعد الإيجار",
+    "Financial Settings":"الإعدادات المالية",
+    "Notifications":"الإشعارات",
+    "Document Templates":"قوالب المستندات",
+    "Company Name":"اسم الشركة",
+    "Arabic Name":"الاسم بالعربية",
+    "CR Number":"رقم السجل التجاري",
+    "VAT Number":"الرقم الضريبي",
+    "Default Due Day":"يوم الاستحقاق الافتراضي",
+    "Auto Generate Dues":"إنشاء الاستحقاقات تلقائيًا",
+    "Allocation Priority":"أولوية التخصيص",
+    "Arrears Escalation":"تصعيد المتأخرات",
+    "Currency":"العملة",
+    "VAT Rate":"نسبة الضريبة",
+    "Receipt Prefix":"بادئة الإيصال",
+    "Expense Prefix":"بادئة المصروف",
+    "Contract Prefix":"بادئة العقد",
+    "Due Prefix":"بادئة الاستحقاق",
+    "Rent Due Reminder":"تذكير استحقاق الإيجار",
+    "Arrears Alert":"تنبيه المتأخرات",
+    "Contract Expiry Alert":"تنبيه انتهاء العقد",
+    "Owner Settlement Ready":"جاهزية تسوية المالك",
+    "Rent Receipt":"إيصال الإيجار",
+    "Tenancy Contract":"عقد الإيجار",
+    "Arrears Notice":"إشعار المتأخرات",
+    "Owner Settlement Statement":"كشف تسوية المالك",
+    "Total Users":"إجمالي المستخدمين",
+    "Property Managers":"مديرو العقارات",
+    "Finance Users":"مستخدمو المالية",
+    "Managers":"المديرون",
+    "Active Today":"النشطون اليوم",
+    "Permission Matrix":"مصفوفة الصلاحيات",
+    "Module":"القسم",
+    "Admin":"المشرف",
+    "Manager":"المدير",
+    "Property Manager":"مدير العقار",
+    "Finance":"المالية",
+    "Support":"الدعم",
+    "Full":"كامل",
+    "View":"عرض",
+    "Limited":"محدود",
+    "Create":"إنشاء",
+    "Approve":"اعتماد",
+    "Own Buildings":"مبانيه فقط",
+    "Today's Actions":"إجراءات اليوم",
+    "Rent Actions":"إجراءات الإيجار",
+    "Property Updates":"تحديثات العقارات",
+    "Financial Actions":"الإجراءات المالية",
+    "Active Users Today":"المستخدمون النشطون اليوم",
+    "Date & Time":"التاريخ والوقت",
+    "User":"المستخدم",
+    "Action":"الإجراء",
+    "Reference":"المرجع",
+    "Description":"الوصف",
+    "Date":"التاريخ",
+    "Tenant":"المستأجر",
+    "Building":"المبنى",
+    "Unit":"الوحدة",
+    "Contract":"العقد",
+    "Status":"الحالة",
+    "Amount":"المبلغ",
+    "Balance":"الرصيد",
+    "Payment Method":"طريقة الدفع",
+    "Receipt":"الإيصال",
+    "Method":"الطريقة",
+    "Vendor":"المورد",
+    "Category":"التصنيف",
+    "Total":"الإجمالي",
+    "Net Amount":"صافي المبلغ",
+    "VAT":"ضريبة القيمة المضافة",
+    "Expense Date":"تاريخ المصروف",
+    "Account":"الحساب",
+    "Attachment":"المرفق",
+    "Recorded By":"سجل بواسطة",
+    "Received By":"استلم بواسطة",
+    "Recovery Type":"نوع الاسترداد",
+    "Recoverable?":"قابل للاسترداد؟",
+    "Recoverable From":"يسترد من",
+    "Recovery Status":"حالة الاسترداد",
+    "Recovered Amount":"المبلغ المسترد",
+    "Months Overdue":"الأشهر المتأخرة",
+    "Oldest Due":"أقدم استحقاق",
+    "Last Payment":"آخر دفعة",
+    "Next Follow-up":"المتابعة القادمة",
+    "Last Contact":"آخر تواصل",
+    "Follow-up":"المتابعة",
+    "Aging":"عمر الدين",
+    "Months":"الأشهر",
+    "Rent Due":"الإيجار المستحق",
+    "Balance Before":"الرصيد قبل",
+    "Allocated Amount":"المبلغ المخصص",
+    "Balance After":"الرصيد بعد",
+    "Status After":"الحالة بعد",
+    "From":"من",
+    "To":"إلى",
+    "Inflow":"تدفق داخل",
+    "Outflow":"تدفق خارج",
+    "Owner / Client":"المالك / العميل",
+    "Gross Rent Collected":"إجمالي الإيجار المحصل",
+    "Net Owner Funds":"صافي أموال المالك",
+    "Approved":"معتمد",
+    "Pending":"قيد الانتظار",
+    "Active":"نشط",
+    "Inactive":"غير نشط",
+    "Paid":"مدفوع",
+    "Partial":"جزئي",
+    "Unpaid":"غير مدفوع",
+    "Upcoming":"قادم",
+    "Open":"مفتوح",
+    "Promised":"وعد بالسداد",
+    "Escalated":"مصعّد",
+    "Posted":"مرحل",
+    "Enabled":"مفعّل",
+    "Oldest Unpaid First":"الأقدم غير المدفوع أولًا",
+    "After 60 Days":"بعد 60 يومًا",
+    "1st of Month":"أول الشهر",
+    "All Buildings":"جميع المباني",
+    "All Owners":"جميع الملاك",
+    "All Categories":"جميع التصنيفات",
+    "All Payment Methods":"جميع طرق الدفع",
+    "All Allocation Statuses":"جميع حالات التخصيص",
+    "All Aging Buckets":"جميع فئات الأعمار",
+    "All Follow-up Statuses":"جميع حالات المتابعة",
+    "All Recovery Types":"جميع أنواع الاسترداد",
+    "All Types":"جميع الأنواع",
+    "All Modules":"جميع الأقسام",
+    "All Actions":"جميع الإجراءات",
+    "This Month":"هذا الشهر",
+    "This Quarter":"هذا الربع",
+    "This Year":"هذه السنة",
+    "Cash":"نقدًا",
+    "Bank Transfer":"تحويل بنكي",
+    "Cheque":"شيك",
+    "Receipt 360°":"الإيصال 360°",
+    "Arrears 360°":"المتأخرات 360°",
+    "Expense 360°":"المصروف 360°",
+    "Property Expense 360°":"المصروف العقاري 360°",
+    "Report Preview":"معاينة التقرير",
+    "Executive Property Summary":"الملخص التنفيذي للعقارات",
+    "Rent Collection Report":"تقرير تحصيل الإيجارات",
+    "Arrears Aging Report":"تقرير أعمار المتأخرات",
+    "Occupancy & Vacancy Report":"تقرير الإشغال والشواغر",
+    "Contract Expiry Report":"تقرير انتهاء العقود",
+    "Property Expense Analysis":"تحليل مصاريف العقارات",
+    "Owner Settlement Report":"تقرير تسوية الملاك",
+    "Building Performance Report":"تقرير أداء المباني",
+    "Cash Flow & Bank Position":"التدفق النقدي والموقف البنكي"
+  };
+
+  const ESTARA_EN = {};
+  let ESTARA_LANG = "en";
+  const ESTARA_ORIGINAL_TEXT = new WeakMap();
+  const ESTARA_ORIGINAL_PLACEHOLDER = new WeakMap();
+
+  function estaraTranslateText(value){
+    const s=(value||"").trim();
+    if(!s) return value;
+    if(ESTARA_LANG==="ar"){
+      if(ESTARA_AR[s]) return value.replace(s,ESTARA_AR[s]);
+      let out=value;
+      Object.keys(ESTARA_AR).sort((a,b)=>b.length-a.length).forEach(k=>{
+        if(out.includes(k)) out=out.split(k).join(ESTARA_AR[k]);
+      });
+      return out;
+    }
+    return value;
+  }
+
+  function applyEstaraLanguage(){
+    document.documentElement.lang=ESTARA_LANG==="ar"?"ar":"en";
+    document.documentElement.dir=ESTARA_LANG==="ar"?"rtl":"ltr";
+
+    const en=document.getElementById("langEnBtn");
+    const ar=document.getElementById("langArBtn");
+    if(en) en.classList.toggle("active",ESTARA_LANG==="en");
+    if(ar) ar.classList.toggle("active",ESTARA_LANG==="ar");
+
+    document.querySelectorAll("body *").forEach(el=>{
+      if(el.closest(".lang-switcher")) return;
+      if(["SCRIPT","STYLE","INPUT","TEXTAREA"].includes(el.tagName)) return;
+
+      Array.from(el.childNodes).forEach(node=>{
+        if(node.nodeType!==Node.TEXT_NODE || !node.nodeValue.trim()) return;
+        if(!ESTARA_ORIGINAL_TEXT.has(node)) ESTARA_ORIGINAL_TEXT.set(node,node.nodeValue);
+        const original=ESTARA_ORIGINAL_TEXT.get(node);
+        node.nodeValue=ESTARA_LANG==="ar"?estaraTranslateText(original):original;
+      });
+
+      if(el.tagName==="OPTION"){
+        if(!ESTARA_ORIGINAL_TEXT.has(el)) ESTARA_ORIGINAL_TEXT.set(el,el.textContent);
+        const original=ESTARA_ORIGINAL_TEXT.get(el);
+        el.textContent=ESTARA_LANG==="ar"?estaraTranslateText(original):original;
+      }
+    });
+
+    document.querySelectorAll("input[placeholder],textarea[placeholder]").forEach(el=>{
+      if(!ESTARA_ORIGINAL_PLACEHOLDER.has(el)) ESTARA_ORIGINAL_PLACEHOLDER.set(el,el.placeholder);
+      const original=ESTARA_ORIGINAL_PLACEHOLDER.get(el);
+      if(ESTARA_LANG==="ar"){
+        let p=original
+          .replace("Search","ابحث")
+          .replace("tenant","مستأجر")
+          .replace("building","مبنى")
+          .replace("unit","وحدة")
+          .replace("contract","عقد")
+          .replace("reference","مرجع")
+          .replace("transaction","حركة")
+          .replace("user","مستخدم")
+          .replace("module","قسم")
+          .replace("expense","مصروف")
+          .replace("vendor","مورد");
+        el.placeholder=p;
+      }else el.placeholder=original;
+    });
+  }
+
+  function setEstaraLanguage(lang){
+    ESTARA_LANG=lang==="ar"?"ar":"en";
+    try{localStorage.setItem("estaraLanguage",ESTARA_LANG)}catch(e){}
+    applyEstaraLanguage();
+  }
+
+  function initEstaraLanguage(){
+    let saved="en";
+    try{saved=localStorage.getItem("estaraLanguage")||"en"}catch(e){}
+    ESTARA_LANG=saved==="ar"?"ar":"en";
+    applyEstaraLanguage();
+
+    // Dynamic page content is retranslated after navigation/rendering.
+    const observer=new MutationObserver(()=>requestAnimationFrame(applyEstaraLanguage));
+    observer.observe(document.body,{childList:true,subtree:true});
+  }
+
+
   const PAGE_NAMES = {
     dashboard:"Property Dashboard",
     buildings:"Buildings",
@@ -4488,7 +4854,7 @@
       "6. Monthly Dues & Collections\\n"+
       "7. Arrears\\n"+
       "8. Expenses & Reports\\n\\n"+
-      "ESTARA core demo is complete through Release 1.10: Dashboard, Buildings, Units, Tenants, Contracts, Monthly Dues, Collections, Arrears, Property Expenses, Banking & Treasury, Reports, Users, Settings and Audit Log."
+      "ESTARA Release 1.11 adds English / Arabic interface switching, RTL / LTR layout and persistent language preference across the full property management demo."
     );
   }
 
@@ -4504,6 +4870,7 @@
   renderBankModule();
   renderPropertyUsers();
   renderPropertyAudit();
+  initEstaraLanguage();
 </script>
 
 </body>
