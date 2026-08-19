@@ -250,6 +250,76 @@
       .portfolio-grid{grid-template-columns:1fr}
     }
 
+
+    /* DEBTORS */
+    .debtor-kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-bottom:16px}
+    .debtor-toolbar{display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+    .debtor-toolbar-left{display:flex;gap:10px;flex-wrap:wrap}
+    .debtor-toolbar input,.debtor-toolbar select{
+      height:40px;border:1px solid var(--border);border-radius:6px;background:white;padding:0 12px;font-size:11px;outline:none
+    }
+    .debtor-toolbar input{width:280px}
+    .debtor-link{border:0;background:transparent;color:var(--navy);font-weight:700;cursor:pointer;padding:0}
+    .debtor-link:hover{color:var(--teal)}
+    .debtor-status{display:inline-flex;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700}
+    .debtor-status.active{background:#edf5f0;color:#347b57}
+    .debtor-status.ptp{background:#f7f1e7;color:#8f6b27}
+    .debtor-status.escalate{background:#fbeaea;color:#a74646}
+    .debtor-status.settled{background:#eef2f7;color:#36506d}
+
+    .risk-badge{display:inline-flex;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700}
+    .risk-badge.low{background:#edf5f0;color:#347b57}
+    .risk-badge.medium{background:#fbf4e5;color:#9a6d1f}
+    .risk-badge.high{background:#fbeaea;color:#a74646}
+
+    .debtor-hero{
+      display:flex;justify-content:space-between;gap:20px;align-items:flex-start;background:white;border:1px solid var(--border);
+      border-radius:8px;padding:22px;margin-bottom:16px
+    }
+    .debtor-hero-left{display:flex;gap:16px;align-items:flex-start}
+    .debtor-avatar{
+      width:58px;height:58px;border-radius:10px;background:var(--navy);color:var(--teal2);
+      display:grid;place-items:center;font-size:18px;font-weight:700
+    }
+    .debtor-hero h2{font-size:23px;color:var(--navy)}
+    .debtor-hero p{margin-top:6px;color:var(--muted);font-size:11px}
+    .debtor-tags{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
+    .debtor-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .debtor-summary-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-bottom:16px}
+    .debtor-overview-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:16px}
+
+    .contact-card{
+      padding:14px;border:1px solid var(--border);border-radius:7px;background:var(--soft)
+    }
+    .contact-card span{display:block;font-size:9px;color:var(--muted)}
+    .contact-card strong{display:block;margin-top:6px;font-size:11px;color:var(--navy)}
+    .contact-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+
+    .promise-card{
+      padding:14px;border:1px solid var(--border);border-radius:7px;background:white
+    }
+    .promise-card strong{display:block;font-size:11px;color:var(--navy)}
+    .promise-card span{display:block;margin-top:4px;font-size:9px;color:var(--muted)}
+    .promise-card + .promise-card{margin-top:10px}
+
+    @media(max-width:1250px){
+      .debtor-kpi-grid,.debtor-summary-grid{grid-template-columns:repeat(3,1fr)}
+    }
+    @media(max-width:950px){
+      .debtor-overview-grid{grid-template-columns:1fr}
+      .contact-grid{grid-template-columns:1fr}
+    }
+    @media(max-width:650px){
+      .debtor-kpi-grid,.debtor-summary-grid{grid-template-columns:1fr 1fr}
+      .debtor-toolbar{align-items:stretch}
+      .debtor-toolbar-left{width:100%}
+      .debtor-toolbar input,.debtor-toolbar select{width:100%}
+      .debtor-hero{flex-direction:column}
+      .debtor-hero-left{flex-direction:column}
+      .debtor-actions{width:100%}
+      .debtor-actions button{flex:1}
+    }
+
     .placeholder{min-height:500px;display:grid;place-items:center;text-align:center}
     .placeholder-box{max-width:520px;padding:45px;background:white;border:1px solid var(--border);border-radius:10px}
     .placeholder-box span{font-size:9px;color:var(--teal);letter-spacing:2px;font-weight:700}
@@ -752,6 +822,186 @@
     </div>
 
 
+
+    <!-- DEBTORS -->
+    <div id="debtorsPage" class="hidden">
+      <div class="content">
+
+        <div class="hero-row">
+          <div>
+            <h2>Debtors</h2>
+            <p>Track debtor balances, risk, payment commitments and collection activity.</p>
+          </div>
+          <div class="hero-actions">
+            <button class="action-btn action-secondary">Export Excel</button>
+            <button class="action-btn action-primary" onclick="showAddDebtorDemo()">+ Add Debtor</button>
+          </div>
+        </div>
+
+        <div class="debtor-kpi-grid">
+          <div class="kpi-card"><span class="kpi-label">Total Debtors</span><strong class="kpi-value">132</strong><div class="kpi-note">Active debtor accounts</div></div>
+          <div class="kpi-card"><span class="kpi-label">Outstanding</span><strong class="kpi-value money">BHD 150,850.000</strong><div class="kpi-note">Remaining collectible balance</div></div>
+          <div class="kpi-card"><span class="kpi-label">Active PTP</span><strong class="kpi-value">27</strong><div class="kpi-note">Current promises to pay</div></div>
+          <div class="kpi-card"><span class="kpi-label">High Risk</span><strong class="kpi-value">18</strong><div class="kpi-note"><span class="danger">Escalation candidates</span></div></div>
+          <div class="kpi-card"><span class="kpi-label">Settled</span><strong class="kpi-value">38</strong><div class="kpi-note">Closed debtor accounts</div></div>
+        </div>
+
+        <section class="card">
+          <div class="debtor-toolbar">
+            <div class="debtor-toolbar-left">
+              <input id="debtorSearch" type="search" placeholder="Search debtor, CPR/CR, client or case..." oninput="renderDebtors()">
+              <select id="debtorStatusFilter" onchange="renderDebtors()">
+                <option value="">All Statuses</option>
+                <option value="Active">Active</option>
+                <option value="PTP">PTP</option>
+                <option value="Escalate">Escalate</option>
+                <option value="Settled">Settled</option>
+              </select>
+              <select id="debtorRiskFilter" onchange="renderDebtors()">
+                <option value="">All Risk Levels</option>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+              </select>
+            </div>
+            <span style="font-size:10px;color:var(--muted)">Open any debtor to view Debtor 360°</span>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Debtor ID</th><th>Debtor Name</th><th>Client</th><th>Case</th><th>Original Balance</th>
+                  <th>Collected</th><th>Outstanding</th><th>Risk</th><th>Status</th><th>Collector</th><th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="debtorsTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+      </div>
+
+      <footer class="footer">
+        <span>RECOVA — Debtors</span>
+        <span>Designed & Developed by <strong style="color:#1aa6a6">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
+    <!-- DEBTOR 360 -->
+    <div id="debtor360Page" class="hidden">
+      <div class="content">
+
+        <div style="margin-bottom:14px;">
+          <button class="action-btn action-secondary" onclick="openPage('debtors')">← Back to Debtors</button>
+        </div>
+
+        <section class="debtor-hero">
+          <div class="debtor-hero-left">
+            <div id="debtor360Avatar" class="debtor-avatar">AT</div>
+            <div>
+              <h2 id="debtor360Name">Ahmed Trading</h2>
+              <p id="debtor360Meta">Commercial Debtor · Gulf Finance B.S.C.</p>
+              <div class="debtor-tags">
+                <span id="debtor360Status" class="debtor-status escalate">Escalate</span>
+                <span id="debtor360Risk" class="risk-badge high">High Risk</span>
+                <span class="client-type">Debtor 360°</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="debtor-actions">
+            <button class="action-btn action-secondary" onclick="openDebtorClient()">View Client</button>
+            <button class="action-btn action-secondary">+ Follow-up</button>
+            <button class="action-btn action-secondary">+ Promise to Pay</button>
+            <button class="action-btn action-primary">Record Collection</button>
+          </div>
+        </section>
+
+        <div class="debtor-summary-grid">
+          <div class="kpi-card"><span class="kpi-label">Original Balance</span><strong id="dOriginal" class="kpi-value money"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Collected</span><strong id="dCollected" class="kpi-value money"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Outstanding</span><strong id="dOutstanding" class="kpi-value money"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Recovery Rate</span><strong id="dRate" class="kpi-value"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Next PTP</span><strong id="dNextPtp" class="kpi-value money"></strong></div>
+        </div>
+
+        <section class="card">
+          <div class="tabs">
+            <button class="tab-btn active" onclick="openDebtorTab('overview',this)">Overview</button>
+            <button class="tab-btn" onclick="openDebtorTab('cases',this)">Collection Case</button>
+            <button class="tab-btn" onclick="openDebtorTab('followups',this)">Follow-ups</button>
+            <button class="tab-btn" onclick="openDebtorTab('ptp',this)">Promises to Pay</button>
+            <button class="tab-btn" onclick="openDebtorTab('collections',this)">Collections</button>
+            <button class="tab-btn" onclick="openDebtorTab('activity',this)">Activity</button>
+          </div>
+
+          <div id="debtor-tab-overview" class="tab-panel active">
+            <div class="debtor-overview-grid">
+              <div>
+                <div class="card-head"><div><h3>Debtor Information</h3><p>Identity and contact details</p></div></div>
+                <div class="contact-grid">
+                  <div class="contact-card"><span>Debtor ID</span><strong id="dId"></strong></div>
+                  <div class="contact-card"><span>CPR / CR</span><strong id="dCr"></strong></div>
+                  <div class="contact-card"><span>Mobile</span><strong id="dMobile"></strong></div>
+                  <div class="contact-card"><span>Email</span><strong id="dEmail"></strong></div>
+                  <div class="contact-card"><span>Address</span><strong id="dAddress"></strong></div>
+                  <div class="contact-card"><span>Assigned Collector</span><strong id="dCollector"></strong></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="card-head"><div><h3>Current Collection Position</h3><p>Latest debtor status</p></div></div>
+                <div class="info-grid" style="grid-template-columns:1fr;">
+                  <div class="info-item"><span>Client</span><strong id="dClient"></strong></div>
+                  <div class="info-item"><span>Collection Case</span><strong id="dCase"></strong></div>
+                  <div class="info-item"><span>Last Contact</span><strong id="dLastContact"></strong></div>
+                  <div class="info-item"><span>Next Action</span><strong id="dNextAction"></strong></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="debtor-tab-cases" class="tab-panel">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Case</th><th>Client</th><th>Assigned Date</th><th>Original Balance</th><th>Collected</th><th>Outstanding</th><th>Status</th></tr></thead>
+                <tbody id="debtorCaseBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="debtor-tab-followups" class="tab-panel">
+            <div class="timeline" id="debtorFollowupsTimeline"></div>
+          </div>
+
+          <div id="debtor-tab-ptp" class="tab-panel">
+            <div id="debtorPtpList"></div>
+          </div>
+
+          <div id="debtor-tab-collections" class="tab-panel">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Date</th><th>Receipt</th><th>Method</th><th>Reference</th><th>Amount</th></tr></thead>
+                <tbody id="debtorCollectionsBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="debtor-tab-activity" class="tab-panel">
+            <div class="timeline" id="debtorActivityTimeline"></div>
+          </div>
+        </section>
+
+      </div>
+
+      <footer class="footer">
+        <span>RECOVA — Debtor 360°</span>
+        <span>Designed & Developed by <strong style="color:#1aa6a6">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
+
     <div id="placeholderPage" class="hidden">
       <div class="content placeholder">
         <div class="placeholder-box">
@@ -969,6 +1219,219 @@
   }
 
 
+
+  const DEBTORS = [
+    {
+      id:"DBT-001",name:"Ahmed Trading",kind:"Commercial Debtor",cr:"CR-884210",mobile:"+973 3900 8877",email:"accounts@ahmedtrading.demo",
+      address:"Manama, Bahrain",clientId:"CLI-001",client:"Gulf Finance B.S.C.",caseNo:"COL-260184",
+      assignedDate:"10 Feb 2026",original:25000,collected:6500,outstanding:18500,recovery:26.0,status:"Escalate",risk:"High",collector:"Sara Ahmed",
+      lastContact:"18 Aug 2026 · Phone Call",nextAction:"Escalation call and settlement review",nextPtp:2500,
+      case:[["COL-260184","Gulf Finance B.S.C.","10 Feb 2026",25000,6500,18500,"Escalate"]],
+      followups:[
+        ["18 Aug 2026","Phone Call","Debtor requested two days to confirm payment source."],
+        ["15 Aug 2026","WhatsApp","Payment reminder sent with account details."],
+        ["11 Aug 2026","Field Visit","Business location verified and debtor contacted."]
+      ],
+      ptp:[
+        ["19 Aug 2026",2500,"Due Today","Open"],
+        ["10 Aug 2026",1500,"Broken","Broken"],
+        ["02 Aug 2026",1000,"Paid","Completed"]
+      ],
+      collections:[
+        ["19 Aug 2026","RC-260421","Bank Transfer","FT-260819-11",2500],
+        ["02 Aug 2026","RC-260360","BenefitPay","BP-260802-09",1000],
+        ["20 Jul 2026","RC-260315","Bank Transfer","FT-260720-04",3000]
+      ],
+      activity:[
+        ["19 Aug 2026","Payment received","BHD 2,500.000 received and posted."],
+        ["18 Aug 2026","Escalation required","Account remains high risk due to broken PTP history."],
+        ["15 Aug 2026","Reminder sent","Payment reminder sent through WhatsApp."]
+      ]
+    },
+    {
+      id:"DBT-002",name:"Al Noor Market",kind:"Commercial Debtor",cr:"CR-741102",mobile:"+973 3666 5522",email:"admin@alnoormarket.demo",
+      address:"Muharraq, Bahrain",clientId:"CLI-003",client:"Prime Services W.L.L",caseNo:"COL-260191",
+      assignedDate:"01 Mar 2026",original:14500,collected:4750,outstanding:9750,recovery:32.8,status:"PTP",risk:"Medium",collector:"Sara Ahmed",
+      lastContact:"19 Aug 2026 · PTP Follow-up",nextAction:"Confirm PTP payment on 20 Aug",nextPtp:1800,
+      case:[["COL-260191","Prime Services W.L.L","01 Mar 2026",14500,4750,9750,"PTP"]],
+      followups:[["19 Aug 2026","Phone Call","Debtor reconfirmed payment for 20 Aug."],["16 Aug 2026","Email","Payment plan shared with debtor."]],
+      ptp:[["20 Aug 2026",1800,"Upcoming","Open"],["05 Aug 2026",1200,"Paid","Completed"]],
+      collections:[["19 Aug 2026","RC-260422","BenefitPay","BP-260819-14",750],["05 Aug 2026","RC-260372","Bank Transfer","FT-260805-03",1200]],
+      activity:[["19 Aug 2026","PTP confirmed","Debtor reconfirmed BHD 1,800.000 payment."],["19 Aug 2026","Payment received","BHD 750.000 received."]]
+    },
+    {
+      id:"DBT-003",name:"Modern Workshop",kind:"Commercial Debtor",cr:"CR-551204",mobile:"+973 3777 1133",email:"finance@modernworkshop.demo",
+      address:"Salmabad, Bahrain",clientId:"CLI-002",client:"Bahrain Leasing Co.",caseNo:"COL-260203",
+      assignedDate:"10 Feb 2026",original:31000,collected:8700,outstanding:22300,recovery:28.1,status:"Active",risk:"High",collector:"Khalid Ali",
+      lastContact:"17 Aug 2026 · Field Visit",nextAction:"Follow up field visit and obtain updated payment plan",nextPtp:3000,
+      case:[["COL-260203","Bahrain Leasing Co.","10 Feb 2026",31000,8700,22300,"Active"]],
+      followups:[["17 Aug 2026","Field Visit","Workshop visited and owner contacted."],["12 Aug 2026","Phone Call","Debtor requested revised settlement schedule."]],
+      ptp:[["21 Aug 2026",3000,"Upcoming","Open"]],
+      collections:[["18 Aug 2026","RC-260418","Bank Transfer","FT-260818-08",3000]],
+      activity:[["18 Aug 2026","Payment received","BHD 3,000.000 received."],["17 Aug 2026","Field visit completed","Debtor requested time to restructure balance."]]
+    },
+    {
+      id:"DBT-004",name:"Hassan Ali",kind:"Individual Debtor",cr:"CPR-880011223",mobile:"+973 3999 6600",email:"hassan.ali@example.demo",
+      address:"Riffa, Bahrain",clientId:"CLI-004",client:"Apex Credit Solutions",caseNo:"COL-260211",
+      assignedDate:"12 Apr 2026",original:9000,collected:4200,outstanding:4800,recovery:46.7,status:"PTP",risk:"Medium",collector:"Fatima Abbas",
+      lastContact:"18 Aug 2026 · Settlement Discussion",nextAction:"Review settlement proposal",nextPtp:1200,
+      case:[["COL-260211","Apex Credit Solutions","12 Apr 2026",9000,4200,4800,"Negotiation"]],
+      followups:[["18 Aug 2026","Meeting","Settlement proposal discussed with debtor."],["16 Aug 2026","Phone Call","Debtor requested reduced settlement amount."]],
+      ptp:[["18 Aug 2026",1200,"Broken","Broken"],["10 Aug 2026",1200,"Paid","Completed"]],
+      collections:[["16 Aug 2026","RC-260409","Cash","CASH-1608",1200]],
+      activity:[["18 Aug 2026","Settlement proposed","Settlement option under review."],["18 Aug 2026","PTP broken","Scheduled payment not received."]]
+    },
+    {
+      id:"DBT-005",name:"Al Manar Stores",kind:"Commercial Debtor",cr:"CR-660912",mobile:"+973 3444 9122",email:"info@almanarstores.demo",
+      address:"Isa Town, Bahrain",clientId:"CLI-001",client:"Gulf Finance B.S.C.",caseNo:"COL-260170",
+      assignedDate:"05 Jan 2026",original:18000,collected:12000,outstanding:6000,recovery:66.7,status:"PTP",risk:"Low",collector:"Khalid Ali",
+      lastContact:"18 Aug 2026 · Phone Call",nextAction:"Collect agreed installment",nextPtp:1800,
+      case:[["COL-260170","Gulf Finance B.S.C.","05 Jan 2026",18000,12000,6000,"PTP"]],
+      followups:[["18 Aug 2026","Phone Call","Installment confirmed."],["12 Aug 2026","SMS","Reminder sent."]],
+      ptp:[["22 Aug 2026",1800,"Upcoming","Open"],["08 Aug 2026",1800,"Paid","Completed"]],
+      collections:[["08 Aug 2026","RC-260382","BenefitPay","BP-260808-02",1800]],
+      activity:[["18 Aug 2026","PTP confirmed","Next installment confirmed for 22 Aug."]]
+    }
+  ];
+
+  let currentDebtor = DEBTORS[0];
+
+  function renderDebtors(){
+    const search=(document.getElementById("debtorSearch")?.value||"").trim().toLowerCase();
+    const status=document.getElementById("debtorStatusFilter")?.value||"";
+    const risk=document.getElementById("debtorRiskFilter")?.value||"";
+
+    const rows=DEBTORS.filter(d=>{
+      const a=!search || [d.id,d.name,d.cr,d.client,d.caseNo].join(" ").toLowerCase().includes(search);
+      const b=!status || d.status===status;
+      const c=!risk || d.risk===risk;
+      return a&&b&&c;
+    }).map(d=>`
+      <tr>
+        <td>${d.id}</td>
+        <td><button class="debtor-link" onclick="openDebtor360('${d.id}')">${d.name}</button></td>
+        <td>${d.client}</td>
+        <td>${d.caseNo}</td>
+        <td>${formatMoney(d.original)}</td>
+        <td>${formatMoney(d.collected)}</td>
+        <td>${formatMoney(d.outstanding)}</td>
+        <td><span class="risk-badge ${d.risk.toLowerCase()}">${d.risk}</span></td>
+        <td><span class="debtor-status ${d.status.toLowerCase()}">${d.status}</span></td>
+        <td>${d.collector}</td>
+        <td><button class="table-action" onclick="openDebtor360('${d.id}')">View 360°</button></td>
+      </tr>
+    `).join("");
+
+    document.getElementById("debtorsTableBody").innerHTML=rows || `<tr><td colspan="11" style="text-align:center;padding:28px;color:#7a8491">No debtors found.</td></tr>`;
+  }
+
+  function openDebtor360(id){
+    currentDebtor=DEBTORS.find(d=>d.id===id)||DEBTORS[0];
+
+    ["dashboardPage","clientsPage","client360Page","debtorsPage","placeholderPage"].forEach(x=>{
+      const el=document.getElementById(x);
+      if(el) el.classList.add("hidden");
+    });
+
+    document.getElementById("debtor360Page").classList.remove("hidden");
+    document.getElementById("pageTitle").textContent="Debtor 360°";
+    document.getElementById("pageSubtitle").textContent=currentDebtor.name+" · "+currentDebtor.caseNo;
+
+    populateDebtor360();
+
+    document.querySelectorAll(".nav-item").forEach(item=>{
+      item.classList.toggle("active",item.dataset.page==="debtors");
+    });
+
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+
+  function populateDebtor360(){
+    const d=currentDebtor;
+
+    document.getElementById("debtor360Avatar").textContent=initials(d.name);
+    document.getElementById("debtor360Name").textContent=d.name;
+    document.getElementById("debtor360Meta").textContent=d.kind+" · "+d.client;
+
+    document.getElementById("debtor360Status").textContent=d.status;
+    document.getElementById("debtor360Status").className="debtor-status "+d.status.toLowerCase();
+
+    document.getElementById("debtor360Risk").textContent=d.risk+" Risk";
+    document.getElementById("debtor360Risk").className="risk-badge "+d.risk.toLowerCase();
+
+    document.getElementById("dOriginal").textContent=formatMoney(d.original);
+    document.getElementById("dCollected").textContent=formatMoney(d.collected);
+    document.getElementById("dOutstanding").textContent=formatMoney(d.outstanding);
+    document.getElementById("dRate").textContent=d.recovery.toFixed(1)+"%";
+    document.getElementById("dNextPtp").textContent=formatMoney(d.nextPtp);
+
+    document.getElementById("dId").textContent=d.id;
+    document.getElementById("dCr").textContent=d.cr;
+    document.getElementById("dMobile").textContent=d.mobile;
+    document.getElementById("dEmail").textContent=d.email;
+    document.getElementById("dAddress").textContent=d.address;
+    document.getElementById("dCollector").textContent=d.collector;
+
+    document.getElementById("dClient").textContent=d.client;
+    document.getElementById("dCase").textContent=d.caseNo;
+    document.getElementById("dLastContact").textContent=d.lastContact;
+    document.getElementById("dNextAction").textContent=d.nextAction;
+
+    document.getElementById("debtorCaseBody").innerHTML=d.case.map(c=>`
+      <tr><td>${c[0]}</td><td>${c[1]}</td><td>${c[2]}</td><td>${formatMoney(c[3])}</td><td>${formatMoney(c[4])}</td><td>${formatMoney(c[5])}</td><td><span class="status active">${c[6]}</span></td></tr>
+    `).join("");
+
+    document.getElementById("debtorFollowupsTimeline").innerHTML=d.followups.map(f=>`
+      <div class="timeline-item"><div class="timeline-dot"></div><div><strong>${f[0]} — ${f[1]}</strong><p>${f[2]}</p></div></div>
+    `).join("");
+
+    document.getElementById("debtorPtpList").innerHTML=d.ptp.map(p=>`
+      <div class="promise-card">
+        <strong>${p[0]} · ${formatMoney(p[1])}</strong>
+        <span>${p[2]} · ${p[3]}</span>
+      </div>
+    `).join("");
+
+    document.getElementById("debtorCollectionsBody").innerHTML=d.collections.map(c=>`
+      <tr><td>${c[0]}</td><td>${c[1]}</td><td>${c[2]}</td><td>${c[3]}</td><td>${formatMoney(c[4])}</td></tr>
+    `).join("") || `<tr><td colspan="5" style="text-align:center;padding:25px;color:#7a8491">No collections recorded.</td></tr>`;
+
+    document.getElementById("debtorActivityTimeline").innerHTML=d.activity.map(a=>`
+      <div class="timeline-item"><div class="timeline-dot"></div><div><strong>${a[0]} — ${a[1]}</strong><p>${a[2]}</p></div></div>
+    `).join("");
+
+    openDebtorTab("overview",document.querySelector('#debtor360Page .tab-btn'));
+  }
+
+  function openDebtorTab(tab,button){
+    document.querySelectorAll('[id^="debtor-tab-"]').forEach(x=>x.classList.remove("active"));
+    document.querySelectorAll("#debtor360Page .tab-btn").forEach(x=>x.classList.remove("active"));
+    document.getElementById("debtor-tab-"+tab).classList.add("active");
+    if(button) button.classList.add("active");
+  }
+
+  function openDebtorClient(){
+    if(currentDebtor?.clientId) openClient360(currentDebtor.clientId);
+  }
+
+  function showAddDebtorDemo(){
+    alert(
+      "Add Debtor — Demo\\n\\n"+
+      "Prepared fields:\\n"+
+      "• Debtor Type\\n"+
+      "• Name\\n"+
+      "• CPR / CR\\n"+
+      "• Mobile / Email\\n"+
+      "• Address\\n"+
+      "• Client\\n"+
+      "• Original Balance\\n"+
+      "• Assigned Collector\\n"+
+      "• Risk Level\\n"+
+      "• Status"
+    );
+  }
+
+
   const PAGE_NAMES = {
     dashboard:"Collection Dashboard",
     clients:"Clients",
@@ -1004,10 +1467,10 @@
 
     document.getElementById("pageTitle").textContent=PAGE_NAMES[page]||"RECOVA";
 
-    document.getElementById("dashboardPage").classList.add("hidden");
-    document.getElementById("clientsPage").classList.add("hidden");
-    document.getElementById("client360Page").classList.add("hidden");
-    document.getElementById("placeholderPage").classList.add("hidden");
+    ["dashboardPage","clientsPage","client360Page","debtorsPage","debtor360Page","placeholderPage"].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el) el.classList.add("hidden");
+    });
 
     if(page==="dashboard"){
       document.getElementById("dashboardPage").classList.remove("hidden");
@@ -1016,6 +1479,10 @@
       document.getElementById("clientsPage").classList.remove("hidden");
       document.getElementById("pageSubtitle").textContent="Creditor portfolios and client recovery performance";
       renderClients();
+    }else if(page==="debtors"){
+      document.getElementById("debtorsPage").classList.remove("hidden");
+      document.getElementById("pageSubtitle").textContent="Debtor balances, risk and payment commitments";
+      renderDebtors();
     }else{
       document.getElementById("placeholderPage").classList.remove("hidden");
       document.getElementById("placeholderTitle").textContent=PAGE_NAMES[page];
@@ -1060,12 +1527,13 @@
       "5. Follow-ups & PTP\\n"+
       "6. Collections & Settlements\\n"+
       "7. Commission & Reports\\n\\n"+
-      "Release 1.1 activates the executive dashboard plus Clients and Client Portfolio 360°."
+      "Release 1.2 activates Dashboard, Clients, Client Portfolio 360°, Debtors and Debtor 360°."
     );
   }
 
   setCurrentDate();
   renderClients();
+  renderDebtors();
 </script>
 
 </body>
