@@ -195,6 +195,39 @@
     .insight strong{display:block;color:var(--navy);font-size:11px}
     .insight p{margin-top:7px;color:var(--muted);font-size:10px;line-height:1.6}
 
+
+    /* BUILDINGS */
+    .building-kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-bottom:16px}
+    .building-toolbar{display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+    .building-toolbar-left{display:flex;gap:10px;flex-wrap:wrap}
+    .building-toolbar input,.building-toolbar select{height:40px;border:1px solid var(--border);border-radius:6px;background:white;padding:0 12px;font-size:11px;outline:none}
+    .building-toolbar input{width:280px}
+    .building-card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+    .building-list-card{border:1px solid var(--border);border-radius:9px;background:white;overflow:hidden;cursor:pointer;transition:.2s}
+    .building-list-card:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(11,29,43,.08)}
+    .building-list-image{height:150px;position:relative;overflow:hidden;background:linear-gradient(135deg,#e5ecea,#b8cbc6)}
+    .building-list-image .tower{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:92px;height:118px;background:#eef3f2;border:1px solid #c7d4d1}
+    .building-list-image .tower:before{content:"";position:absolute;left:13px;top:15px;width:13px;height:13px;background:#90b9ae;box-shadow:27px 0 0 #90b9ae,54px 0 0 #90b9ae,0 26px 0 #90b9ae,27px 26px 0 #90b9ae,54px 26px 0 #90b9ae,0 52px 0 #90b9ae,27px 52px 0 #90b9ae,54px 52px 0 #90b9ae}
+    .building-list-body{padding:15px}.building-list-body h3{font-size:14px;color:var(--navy)}.building-list-body p{margin-top:5px;font-size:9px;color:var(--muted)}
+    .building-status,.building-type,.unit-status,.rent-status{display:inline-flex;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700}
+    .building-status.active,.unit-status.occupied,.rent-status.paid{background:#edf5f0;color:#347b57}
+    .building-status.inactive,.unit-status.vacant{background:#eef2f7;color:#36506d}
+    .unit-status.maintenance,.rent-status.partial{background:#fbf4e5;color:#9a6d1f}
+    .rent-status.overdue{background:#fbeaea;color:#a74646}
+    .building-type{background:#eef2f7;color:#36506d}
+    .building-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:13px}
+    .building-stat{padding:8px;background:var(--soft);border-radius:5px}.building-stat span{display:block;font-size:8px;color:var(--muted)}.building-stat strong{display:block;margin-top:4px;font-size:10px;color:var(--navy)}
+    .building-hero{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;background:white;border:1px solid var(--border);border-radius:8px;padding:22px;margin-bottom:16px}
+    .building-hero-left{display:flex;gap:16px;align-items:flex-start}.building-avatar{width:64px;height:64px;border-radius:10px;background:var(--navy);color:var(--emerald2);display:grid;place-items:center;font-size:22px;font-weight:700}
+    .building-hero h2{font-size:23px;color:var(--navy)}.building-hero p{margin-top:6px;color:var(--muted);font-size:11px}.building-tags,.building-actions{display:flex;gap:7px;flex-wrap:wrap}.building-tags{margin-top:10px}
+    .building-summary-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-bottom:16px}
+    .tabs{display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid var(--border);margin-bottom:18px}.tab-btn{border:0;background:transparent;padding:10px 12px;font-size:10px;font-weight:700;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent}.tab-btn.active{color:var(--navy);border-bottom-color:var(--emerald)}.tab-panel{display:none}.tab-panel.active{display:block}
+    .info-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.info-item{padding:14px;background:var(--soft);border:1px solid var(--border);border-radius:6px}.info-item span{display:block;font-size:9px;color:var(--muted)}.info-item strong{display:block;margin-top:6px;font-size:11px;color:var(--navy)}
+    .building-overview-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:16px}.occupancy-box{padding:18px;border:1px solid var(--border);border-radius:8px;background:var(--soft)}.occupancy-box strong{display:block;font-size:24px;color:var(--navy)}.occupancy-box span{display:block;margin-top:5px;font-size:9px;color:var(--muted)}.occupancy-progress{height:9px;background:#e9edf0;border-radius:20px;overflow:hidden;margin-top:12px}.occupancy-progress span{display:block;height:100%;background:var(--emerald);border-radius:20px}
+    @media(max-width:1250px){.building-kpi-grid,.building-summary-grid{grid-template-columns:repeat(3,1fr)}.building-card-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:950px){.building-overview-grid,.info-grid{grid-template-columns:1fr}}
+    @media(max-width:650px){.building-kpi-grid,.building-summary-grid{grid-template-columns:1fr 1fr}.building-toolbar{align-items:stretch}.building-toolbar-left{width:100%}.building-toolbar input,.building-toolbar select{width:100%}.building-card-grid{grid-template-columns:1fr}.building-hero{flex-direction:column}.building-hero-left{flex-direction:column}.building-actions{width:100%}.building-actions button{flex:1}}
+
     .placeholder{min-height:500px;display:grid;place-items:center;text-align:center}
     .placeholder-box{max-width:520px;padding:45px;background:white;border:1px solid var(--border);border-radius:10px}
     .placeholder-box span{font-size:9px;color:var(--emerald);letter-spacing:2px;font-weight:700}
@@ -556,6 +589,74 @@
       </footer>
     </div>
 
+
+    <div id="buildingsPage" class="hidden">
+      <div class="content">
+        <div class="hero-row">
+          <div><h2>Buildings</h2><p>Manage property buildings, occupancy, rent performance and their units.</p></div>
+          <div class="hero-actions"><button class="action-btn action-secondary">Export Excel</button><button class="action-btn action-primary" onclick="showAddBuildingDemo()">+ Add Building</button></div>
+        </div>
+        <div class="building-kpi-grid">
+          <div class="kpi-card"><span class="kpi-label">Total Buildings</span><strong class="kpi-value">12</strong><div class="kpi-note">Across 5 locations</div></div>
+          <div class="kpi-card"><span class="kpi-label">Total Units</span><strong class="kpi-value">186</strong><div class="kpi-note">Residential & commercial</div></div>
+          <div class="kpi-card"><span class="kpi-label">Occupied Units</span><strong class="kpi-value">171</strong><div class="kpi-note"><span class="positive">91.9%</span> occupancy</div></div>
+          <div class="kpi-card"><span class="kpi-label">Vacant Units</span><strong class="kpi-value">15</strong><div class="kpi-note">Ready / maintenance</div></div>
+          <div class="kpi-card"><span class="kpi-label">Monthly Rent</span><strong class="kpi-value money">BHD 42,850.000</strong><div class="kpi-note">Current month due</div></div>
+        </div>
+        <section class="card">
+          <div class="building-toolbar">
+            <div class="building-toolbar-left">
+              <input id="buildingSearch" type="search" placeholder="Search building, location or owner..." oninput="renderBuildings()">
+              <select id="buildingTypeFilter" onchange="renderBuildings()"><option value="">All Types</option><option>Residential</option><option>Commercial</option><option>Mixed Use</option></select>
+              <select id="buildingStatusFilter" onchange="renderBuildings()"><option value="">All Statuses</option><option>Active</option><option>Inactive</option></select>
+            </div>
+            <span style="font-size:10px;color:var(--muted)">Open a building to view Building 360°</span>
+          </div>
+          <div id="buildingCardGrid" class="building-card-grid"></div>
+        </section>
+      </div>
+      <footer class="footer"><span>ESTARA — Buildings</span><span>Designed & Developed by <strong style="color:#1f8a70">APEX ORAIBI</strong></span></footer>
+    </div>
+
+    <div id="building360Page" class="hidden">
+      <div class="content">
+        <div style="margin-bottom:14px;"><button class="action-btn action-secondary" onclick="openPage('buildings')">← Back to Buildings</button></div>
+        <section class="building-hero">
+          <div class="building-hero-left">
+            <div id="building360Avatar" class="building-avatar">SR</div>
+            <div><h2 id="building360Name"></h2><p id="building360Meta"></p><div class="building-tags"><span id="building360Status" class="building-status active"></span><span id="building360Type" class="building-type"></span><span class="building-type" style="background:#eaf8f3;color:#1f8a70">Building 360°</span></div></div>
+          </div>
+          <div class="building-actions"><button class="action-btn action-secondary" onclick="showAddUnitDemo()">+ Add Unit</button><button class="action-btn action-secondary">+ Add Tenant</button><button class="action-btn action-primary">Generate Building Report</button></div>
+        </section>
+        <div class="building-summary-grid">
+          <div class="kpi-card"><span class="kpi-label">Total Units</span><strong id="bUnits" class="kpi-value"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Occupied</span><strong id="bOccupied" class="kpi-value"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Vacant</span><strong id="bVacant" class="kpi-value"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Monthly Rent</span><strong id="bRent" class="kpi-value money"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Arrears</span><strong id="bArrears" class="kpi-value money"></strong></div>
+        </div>
+        <section class="card">
+          <div class="tabs">
+            <button class="tab-btn active" onclick="openBuildingTab('overview',this)">Overview</button><button class="tab-btn" onclick="openBuildingTab('units',this)">Units</button><button class="tab-btn" onclick="openBuildingTab('tenants',this)">Tenants</button><button class="tab-btn" onclick="openBuildingTab('collections',this)">Collections</button><button class="tab-btn" onclick="openBuildingTab('arrears',this)">Arrears</button><button class="tab-btn" onclick="openBuildingTab('activity',this)">Activity</button>
+          </div>
+          <div id="building-tab-overview" class="tab-panel active">
+            <div class="building-overview-grid">
+              <div><div class="card-head"><div><h3>Building Information</h3><p>Property profile and ownership details</p></div></div><div class="info-grid">
+                <div class="info-item"><span>Building ID</span><strong id="bId"></strong></div><div class="info-item"><span>Location</span><strong id="bLocation"></strong></div><div class="info-item"><span>Owner / Client</span><strong id="bOwner"></strong></div><div class="info-item"><span>Property Type</span><strong id="bTypeInfo"></strong></div><div class="info-item"><span>Manager</span><strong id="bManager"></strong></div><div class="info-item"><span>Year Built</span><strong id="bYear"></strong></div>
+              </div></div>
+              <div><div class="card-head"><div><h3>Occupancy Performance</h3><p>Current building utilization</p></div></div><div class="occupancy-box"><strong id="bOccupancyPct"></strong><span>Occupied units</span><div class="occupancy-progress"><span id="bOccupancyBar"></span></div></div><div class="occupancy-box" style="margin-top:12px;"><strong id="bCollectionPct"></strong><span>Current month rent collected</span><div class="occupancy-progress"><span id="bCollectionBar"></span></div></div></div>
+            </div>
+          </div>
+          <div id="building-tab-units" class="tab-panel"><div class="table-wrap"><table><thead><tr><th>Unit</th><th>Type</th><th>Floor</th><th>Monthly Rent</th><th>Tenant</th><th>Contract</th><th>Status</th><th>Rent Status</th></tr></thead><tbody id="buildingUnitsBody"></tbody></table></div></div>
+          <div id="building-tab-tenants" class="tab-panel"><div class="table-wrap"><table><thead><tr><th>Tenant</th><th>Unit</th><th>Mobile</th><th>Contract Start</th><th>Monthly Rent</th><th>Status</th></tr></thead><tbody id="buildingTenantsBody"></tbody></table></div></div>
+          <div id="building-tab-collections" class="tab-panel"><div class="table-wrap"><table><thead><tr><th>Date</th><th>Receipt</th><th>Tenant</th><th>Unit</th><th>Method</th><th>Amount</th></tr></thead><tbody id="buildingCollectionsBody"></tbody></table></div></div>
+          <div id="building-tab-arrears" class="tab-panel"><div class="table-wrap"><table><thead><tr><th>Tenant</th><th>Unit</th><th>Months Overdue</th><th>Arrears</th><th>Last Payment</th><th>Status</th></tr></thead><tbody id="buildingArrearsBody"></tbody></table></div></div>
+          <div id="building-tab-activity" class="tab-panel"><div id="buildingActivityTimeline" class="list"></div></div>
+        </section>
+      </div>
+      <footer class="footer"><span>ESTARA — Building 360°</span><span>Designed & Developed by <strong style="color:#1f8a70">APEX ORAIBI</strong></span></footer>
+    </div>
+
     <div id="placeholderPage" class="hidden">
       <div class="content placeholder">
         <div class="placeholder-box">
@@ -571,6 +672,74 @@
 </section>
 
 <script>
+
+  const BUILDINGS = [
+    {id:"BLD-001",name:"Seef Residence",location:"Seef District, Bahrain",owner:"Al Noor Properties",type:"Residential",status:"Active",manager:"Mariam Hassan",year:"2019",units:32,occupied:32,vacant:0,monthlyRent:12800,arrears:420,collectionRate:96,
+      unitsList:[["101","1 Bedroom","1st","BHD 350.000","Omar Ali","CTR-260011","Occupied","Paid"],["605","2 Bedroom","6th","BHD 450.000","—","—","Vacant","—"],["804","2 Bedroom","8th","BHD 420.000","Fatima Ali","CTR-260033","Occupied","Overdue"]],
+      tenants:[["Omar Ali","101","+973 3900 1101","01 Jan 2026","BHD 350.000","Active"],["Fatima Ali","804","+973 3666 2201","01 Feb 2026","BHD 420.000","Active"]],
+      collections:[["19 Aug 2026","RC-PR-260411","Omar Ali","101","BenefitPay",350],["18 Aug 2026","RC-PR-260405","Fatima Ali","804","Bank Transfer",420]],
+      arrearsList:[["Fatima Ali","804",1,420,"01 Jul 2026","Overdue"]],
+      activity:[["19 Aug 2026","Rent received","Unit 101 · BHD 350.000"],["18 Aug 2026","Collection posted","Unit 804 · BHD 420.000"],["15 Aug 2026","Vacancy updated","Unit 605 marked vacant."]]},
+    {id:"BLD-002",name:"Riffa Plaza",location:"East Riffa, Bahrain",owner:"Riffa Investments",type:"Mixed Use",status:"Active",manager:"Ali Nasser",year:"2017",units:24,occupied:22,vacant:2,monthlyRent:10900,arrears:1350,collectionRate:91,
+      unitsList:[["GF-01","Retail","Ground","BHD 700.000","Modern Cafe","CTR-260041","Occupied","Paid"],["GF-03","Retail","Ground","BHD 650.000","Al Noor Trading","CTR-260045","Occupied","Partial"],["1F-08","Office","1st","BHD 380.000","—","—","Vacant","—"]],
+      tenants:[["Modern Cafe","GF-01","+973 3777 8810","01 Jan 2026","BHD 700.000","Active"],["Al Noor Trading","GF-03","+973 3888 9944","01 Mar 2026","BHD 650.000","Active"]],
+      collections:[["19 Aug 2026","RC-PR-260414","Al Noor Trading","GF-03","Bank Transfer",650]],arrearsList:[["Al Noor Trading","GF-03",1,650,"05 Jul 2026","Partial"]],activity:[["19 Aug 2026","Payment received","GF-03 · BHD 650.000"]]},
+    {id:"BLD-003",name:"Juffair Heights",location:"Juffair, Bahrain",owner:"Gulf Real Estate",type:"Residential",status:"Active",manager:"Noor Ahmed",year:"2021",units:28,occupied:25,vacant:3,monthlyRent:10200,arrears:2450,collectionRate:87,
+      unitsList:[["703","1 Bedroom","7th","BHD 390.000","Hassan Ahmed","CTR-260071","Occupied","Overdue"],["901","1 Bedroom","9th","BHD 340.000","—","—","Vacant","—"],["1204","2 Bedroom","12th","BHD 450.000","Ahmed Salman","CTR-260084","Occupied","Overdue"]],
+      tenants:[["Hassan Ahmed","703","+973 3999 1100","01 Apr 2026","BHD 390.000","Active"],["Ahmed Salman","1204","+973 3555 2200","01 Mar 2026","BHD 450.000","Active"]],
+      collections:[["18 Aug 2026","RC-PR-260408","Hassan Ahmed","703","Cash",390]],arrearsList:[["Hassan Ahmed","703",1,390,"29 Jun 2026","Overdue"],["Ahmed Salman","1204",2,900,"10 Jun 2026","Overdue"]],activity:[["18 Aug 2026","Cash collection posted","Unit 703 · BHD 390.000"],["16 Aug 2026","Arrears reminder sent","Unit 1204 · BHD 900.000 overdue"]]},
+    {id:"BLD-004",name:"Adliya Court",location:"Adliya, Bahrain",owner:"Manama Holdings",type:"Commercial",status:"Active",manager:"Mariam Hassan",year:"2015",units:18,occupied:17,vacant:1,monthlyRent:6200,arrears:980,collectionRate:89,unitsList:[["OFF-01","Office","1st","BHD 420.000","Legal Point W.L.L","CTR-260101","Occupied","Paid"],["OFF-09","Office","3rd","BHD 380.000","—","—","Vacant","—"]],tenants:[["Legal Point W.L.L","OFF-01","+973 3222 1000","01 Jan 2026","BHD 420.000","Active"]],collections:[["15 Aug 2026","RC-PR-260390","Legal Point W.L.L","OFF-01","Bank Transfer",420]],arrearsList:[],activity:[["15 Aug 2026","Rent received","OFF-01 · BHD 420.000"]]},
+    {id:"BLD-005",name:"Muharraq View",location:"Muharraq, Bahrain",owner:"Eastern Property Co.",type:"Residential",status:"Inactive",manager:"Ali Nasser",year:"2013",units:16,occupied:13,vacant:3,monthlyRent:4750,arrears:2280,collectionRate:76,unitsList:[["302","2 Bedroom","3rd","BHD 320.000","Khalid Jassim","CTR-250211","Occupied","Overdue"],["405","2 Bedroom","4th","BHD 330.000","—","—","Vacant","—"]],tenants:[["Khalid Jassim","302","+973 3444 7711","01 Oct 2025","BHD 320.000","Active"]],collections:[],arrearsList:[["Khalid Jassim","302",2,640,"15 Jun 2026","Overdue"]],activity:[["01 Aug 2026","Building status changed","Property marked inactive for new leasing."]]}
+  ];
+
+  let currentBuilding = BUILDINGS[0];
+
+  function formatMoney(v){ return "BHD "+Number(v||0).toLocaleString("en-US",{minimumFractionDigits:3,maximumFractionDigits:3}); }
+  function initials(name){ return name.split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]).join("").toUpperCase(); }
+
+  function renderBuildings(){
+    const search=(document.getElementById("buildingSearch")?.value||"").trim().toLowerCase();
+    const type=document.getElementById("buildingTypeFilter")?.value||"";
+    const status=document.getElementById("buildingStatusFilter")?.value||"";
+    const rows=BUILDINGS.filter(b=>(!search||[b.name,b.location,b.owner,b.id].join(" ").toLowerCase().includes(search))&&(!type||b.type===type)&&(!status||b.status===status))
+      .map(b=>`<article class="building-list-card" onclick="openBuilding360('${b.id}')"><div class="building-list-image"><div class="tower"></div></div><div class="building-list-body"><h3>${b.name}</h3><p>${b.location} · ${b.type}</p><div style="margin-top:9px;display:flex;gap:6px;flex-wrap:wrap"><span class="building-status ${b.status.toLowerCase()}">${b.status}</span><span class="building-type">${b.owner}</span></div><div class="building-stats"><div class="building-stat"><span>Units</span><strong>${b.units}</strong></div><div class="building-stat"><span>Occupied</span><strong>${b.occupied}</strong></div><div class="building-stat"><span>Rent</span><strong>BHD ${Number(b.monthlyRent).toLocaleString("en-US")}</strong></div><div class="building-stat"><span>Arrears</span><strong>BHD ${Number(b.arrears).toLocaleString("en-US")}</strong></div></div></div></article>`).join("");
+    document.getElementById("buildingCardGrid").innerHTML=rows||`<div style="grid-column:1/-1;padding:30px;text-align:center;color:#7f8b93">No buildings found.</div>`;
+  }
+
+  function openBuilding360(id){
+    currentBuilding=BUILDINGS.find(b=>b.id===id)||BUILDINGS[0];
+    ["dashboardPage","buildingsPage","placeholderPage"].forEach(x=>document.getElementById(x)?.classList.add("hidden"));
+    document.getElementById("building360Page").classList.remove("hidden");
+    document.getElementById("pageTitle").textContent="Building 360°";
+    document.getElementById("pageSubtitle").textContent=currentBuilding.name+" · "+currentBuilding.location;
+    document.querySelectorAll(".nav-item").forEach(item=>item.classList.toggle("active",item.dataset.page==="buildings"));
+    populateBuilding360(); window.scrollTo({top:0,behavior:"smooth"});
+  }
+
+  function populateBuilding360(){
+    const b=currentBuilding, occupancy=b.units?(b.occupied/b.units)*100:0;
+    document.getElementById("building360Avatar").textContent=initials(b.name); document.getElementById("building360Name").textContent=b.name; document.getElementById("building360Meta").textContent=b.location+" · "+b.owner;
+    document.getElementById("building360Status").textContent=b.status; document.getElementById("building360Status").className="building-status "+b.status.toLowerCase(); document.getElementById("building360Type").textContent=b.type;
+    document.getElementById("bUnits").textContent=b.units; document.getElementById("bOccupied").textContent=b.occupied; document.getElementById("bVacant").textContent=b.vacant; document.getElementById("bRent").textContent=formatMoney(b.monthlyRent); document.getElementById("bArrears").textContent=formatMoney(b.arrears);
+    document.getElementById("bId").textContent=b.id; document.getElementById("bLocation").textContent=b.location; document.getElementById("bOwner").textContent=b.owner; document.getElementById("bTypeInfo").textContent=b.type; document.getElementById("bManager").textContent=b.manager; document.getElementById("bYear").textContent=b.year;
+    document.getElementById("bOccupancyPct").textContent=occupancy.toFixed(1)+"%"; document.getElementById("bOccupancyBar").style.width=occupancy+"%"; document.getElementById("bCollectionPct").textContent=b.collectionRate.toFixed(1)+"%"; document.getElementById("bCollectionBar").style.width=b.collectionRate+"%";
+    document.getElementById("buildingUnitsBody").innerHTML=b.unitsList.map(u=>`<tr><td>${u[0]}</td><td>${u[1]}</td><td>${u[2]}</td><td>${u[3]}</td><td>${u[4]}</td><td>${u[5]}</td><td><span class="unit-status ${String(u[6]).toLowerCase()}">${u[6]}</span></td><td>${u[7]==="—"?"—":`<span class="rent-status ${String(u[7]).toLowerCase()}">${u[7]}</span>`}</td></tr>`).join("");
+    document.getElementById("buildingTenantsBody").innerHTML=b.tenants.map(t=>`<tr><td>${t[0]}</td><td>${t[1]}</td><td>${t[2]}</td><td>${t[3]}</td><td>${t[4]}</td><td><span class="building-status active">${t[5]}</span></td></tr>`).join("")||`<tr><td colspan="6" style="text-align:center;padding:24px;color:#7f8b93">No tenants available.</td></tr>`;
+    document.getElementById("buildingCollectionsBody").innerHTML=b.collections.map(c=>`<tr><td>${c[0]}</td><td>${c[1]}</td><td>${c[2]}</td><td>${c[3]}</td><td>${c[4]}</td><td>${formatMoney(c[5])}</td></tr>`).join("")||`<tr><td colspan="6" style="text-align:center;padding:24px;color:#7f8b93">No recent collections.</td></tr>`;
+    document.getElementById("buildingArrearsBody").innerHTML=b.arrearsList.map(a=>`<tr><td>${a[0]}</td><td>${a[1]}</td><td>${a[2]}</td><td>${formatMoney(a[3])}</td><td>${a[4]}</td><td><span class="rent-status ${String(a[5]).toLowerCase()}">${a[5]}</span></td></tr>`).join("")||`<tr><td colspan="6" style="text-align:center;padding:24px;color:#7f8b93">No current arrears.</td></tr>`;
+    document.getElementById("buildingActivityTimeline").innerHTML=b.activity.map(a=>`<div class="list-row"><div class="list-left"><div class="list-icon">•</div><div><strong>${a[1]}</strong><span>${a[0]} · ${a[2]}</span></div></div></div>`).join("");
+    openBuildingTab("overview",document.querySelector("#building360Page .tab-btn"));
+  }
+
+  function openBuildingTab(tab,button){
+    document.querySelectorAll('[id^="building-tab-"]').forEach(x=>x.classList.remove("active"));
+    document.querySelectorAll("#building360Page .tab-btn").forEach(x=>x.classList.remove("active"));
+    document.getElementById("building-tab-"+tab).classList.add("active"); if(button) button.classList.add("active");
+  }
+
+  function showAddBuildingDemo(){ alert("Add Building — Demo\\n\\nBuilding Name, Property Type, Location, Owner / Client, Manager, Year Built, Number of Units, Status and Building Image."); }
+  function showAddUnitDemo(){ alert("Add Unit — Demo\\n\\nUnit Number, Unit Type, Floor, Monthly Rent, Status and Notes."); }
+
   const PAGE_NAMES = {
     dashboard:"Property Dashboard",
     buildings:"Buildings",
@@ -605,12 +774,15 @@
 
     document.getElementById("pageTitle").textContent=PAGE_NAMES[page]||"ESTARA";
 
+    ["dashboardPage","buildingsPage","building360Page","placeholderPage"].forEach(id=>document.getElementById(id)?.classList.add("hidden"));
     if(page==="dashboard"){
       document.getElementById("dashboardPage").classList.remove("hidden");
-      document.getElementById("placeholderPage").classList.add("hidden");
       document.getElementById("pageSubtitle").textContent="Buildings, occupancy, rent and arrears overview";
+    }else if(page==="buildings"){
+      document.getElementById("buildingsPage").classList.remove("hidden");
+      document.getElementById("pageSubtitle").textContent="Buildings, occupancy, rent performance and units";
+      renderBuildings();
     }else{
-      document.getElementById("dashboardPage").classList.add("hidden");
       document.getElementById("placeholderPage").classList.remove("hidden");
       document.getElementById("placeholderTitle").textContent=PAGE_NAMES[page];
       document.getElementById("pageSubtitle").textContent="ESTARA Property Management System";
@@ -655,11 +827,12 @@
       "6. Monthly Dues & Collections\\n"+
       "7. Arrears\\n"+
       "8. Expenses & Reports\\n\\n"+
-      "Release 1.0 activates the executive property dashboard."
+      "Release 1.1 activates the Property Dashboard plus Buildings, Building 360° and unit-level visibility."
     );
   }
 
   setCurrentDate();
+  renderBuildings();
 </script>
 
 </body>
