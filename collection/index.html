@@ -947,35 +947,51 @@
       .footer{flex-direction:column;padding-left:18px;padding-right:18px}
     }
   
-    /* RELEASE 1.11 — BILINGUAL AR / EN */
-    .lang-switcher{
-      display:inline-flex !important;
+    /* RECOVA 1.11 — FORCE VISIBLE LANGUAGE SWITCH */
+    .top-actions{
+      display:flex;
       align-items:center;
-      gap:0;
+      gap:8px;
+      min-width:0;
+      flex-wrap:nowrap;
+      overflow:visible;
+    }
+    .search{width:220px}
+
+    .lang-switcher{
+      display:flex !important;
+      visibility:visible !important;
+      opacity:1 !important;
+      align-items:center;
+      flex:0 0 auto;
       height:38px;
-      border:1px solid var(--border);
-      border-radius:6px;
+      min-width:118px;
+      border:2px solid var(--teal);
+      border-radius:7px;
       background:#fff;
       overflow:hidden;
-      flex:0 0 auto;
-      white-space:nowrap;
+      position:relative;
+      z-index:1000;
+      box-shadow:0 2px 8px rgba(7,21,37,.08);
     }
     .lang-btn{
-      display:inline-flex;
+      display:flex !important;
       align-items:center;
       justify-content:center;
-      height:36px;
-      min-width:46px;
-      padding:0 12px;
+      flex:1 1 50%;
+      height:100%;
+      min-width:56px;
+      padding:0 9px;
       border:0;
       background:#fff;
       color:var(--navy);
       font-size:10px;
       font-weight:800;
       cursor:pointer;
+      white-space:nowrap;
     }
     .lang-btn + .lang-btn{border-left:1px solid var(--border)}
-    .lang-btn.active{background:var(--navy);color:#fff}
+    .lang-btn.active{background:var(--teal);color:#fff}
     html[dir="rtl"] .lang-btn + .lang-btn{border-left:0;border-right:1px solid var(--border)}
 
     html[dir="rtl"] body{direction:rtl;text-align:right;font-family:Tahoma,Arial,Helvetica,sans-serif}
@@ -991,16 +1007,23 @@
     html[dir="rtl"] .permission-table th:first-child{text-align:right}
     html[dir="rtl"] .account-card::after{right:auto;left:-35px}
     html[dir="rtl"] .transfer-arrow{transform:rotate(180deg)}
-    html[dir="rtl"] .ptp-event{text-align:right}
-    html[dir="rtl"] .fee-formula{direction:rtl}
 
-    .top-actions{min-width:0;flex-wrap:nowrap}
-
+    @media(max-width:1100px){
+      .search{width:160px}
+      .profile{padding-right:6px}
+    }
     @media(max-width:950px){
+      .search{display:none}
+      .lang-switcher{min-width:112px}
       html[dir="rtl"] .app{display:block}
       html[dir="rtl"] .sidebar{transform:translateX(100%)}
       html[dir="rtl"] .sidebar.open{transform:translateX(0)}
       html[dir="rtl"] .main{grid-column:auto}
+    }
+    @media(max-width:650px){
+      .profile{display:none}
+      .top-actions{gap:6px}
+      .lang-switcher{min-width:108px;height:36px}
     }
 
 </style>
@@ -1107,9 +1130,9 @@
 
       <div class="top-actions">
         <input class="search" placeholder="Search debtor, account or case...">
-        <div class="lang-switcher" aria-label="Language">
-          <button id="langEnBtn" class="lang-btn active" type="button" onclick="setRecovaLanguage('en')" title="English">EN</button>
-          <button id="langArBtn" class="lang-btn" type="button" onclick="setRecovaLanguage('ar')" title="العربية">العربية</button>
+        <div class="lang-switcher" id="recovaLanguageSwitcher" aria-label="Language switcher">
+          <button id="langEnBtn" class="lang-btn active" type="button" onclick="setRecovaLanguage('en')">EN</button>
+          <button id="langArBtn" class="lang-btn" type="button" onclick="setRecovaLanguage('ar')">العربية</button>
         </div>
         <button class="top-btn">♢</button>
         <div class="profile">
@@ -5258,302 +5281,99 @@
 
 
 <script>
-/* =========================================================
-   RECOVA Release 1.11 — Arabic / English Interface
-   ========================================================= */
-
-const RECOVA_AR = {
-  "COLLECTION MANAGEMENT SYSTEM":"نظام إدارة التحصيل",
-  "Recover faster. Track smarter. Collect with control.":"تحصيل أسرع. متابعة أذكى. وسيطرة أكبر.",
-  "Manage client portfolios, debtor accounts, collection cases, promises to pay, settlements, field follow-ups and performance from one operational platform.":"إدارة محافظ العملاء وحسابات المدينين وملفات التحصيل ووعود السداد والتسويات والمتابعات الميدانية والأداء من منصة تشغيلية واحدة.",
-  "WELCOME TO RECOVA":"مرحبًا بك في RECOVA",
-  "Sign in":"تسجيل الدخول","Sign In":"تسجيل الدخول",
-  "Access the collection management demo workspace.":"الدخول إلى مساحة العمل التجريبية لنظام التحصيل.",
-  "Email Address":"البريد الإلكتروني","Password":"كلمة المرور",
-  "Explore Demo":"استعراض النسخة التجريبية",
-  "Demo access is for portfolio presentation purposes.":"الدخول التجريبي مخصص لأغراض عرض المحفظة.",
-  "WORKSPACE":"مساحة العمل","FINANCIAL":"المالية","MANAGEMENT":"الإدارة",
+const RECOVA_TRANSLATIONS = {
   "Dashboard":"لوحة التحكم","Collection Dashboard":"لوحة تحكم التحصيل",
-  "Portfolio, recovery and collector performance overview":"نظرة عامة على المحفظة والتحصيل وأداء المحصلين",
   "Clients":"العملاء","Debtors":"المدينون","Collection Cases":"ملفات التحصيل",
-  "Follow-ups":"المتابعات","Promises to Pay":"وعود السداد",
-  "Collections":"التحصيلات","Settlements":"التسويات","Commission & Fees":"العمولات والأتعاب",
-  "Expenses":"المصروفات","Banking & Treasury":"البنوك والخزينة",
-  "Reports & Analytics":"التقارير والتحليلات","Users & Permissions":"المستخدمون والصلاحيات",
-  "Settings":"الإعدادات","Audit Log":"سجل التدقيق",
-  "Good morning,":"صباح الخير،","Welcome to RECOVA Collections.":"مرحبًا بك في RECOVA للتحصيل.",
-  "Start Demo Tour":"بدء الجولة التجريبية","+ New Action":"+ إجراء جديد",
+  "Follow-ups":"المتابعات","Promises to Pay":"وعود السداد","Collections":"التحصيلات",
+  "Settlements":"التسويات","Commission & Fees":"العمولات والأتعاب","Expenses":"المصروفات",
+  "Banking & Treasury":"البنوك والخزينة","Reports & Analytics":"التقارير والتحليلات",
+  "Users & Permissions":"المستخدمون والصلاحيات","Settings":"الإعدادات","Audit Log":"سجل التدقيق",
+  "WORKSPACE":"مساحة العمل","FINANCIAL":"المالية","MANAGEMENT":"الإدارة",
+  "Good morning,":"صباح الخير،","Start Demo Tour":"بدء الجولة التجريبية","New Action":"إجراء جديد",
   "Assigned Portfolio":"المحفظة المسندة","Collected":"المحصل","Outstanding":"المستحق",
   "Active Debtors":"المدينون النشطون","PTP Due Today":"وعود السداد المستحقة اليوم",
   "Broken Promises":"وعود مكسورة","Assigned vs Collected":"المسند مقابل المحصل",
-  "Last 6 months collection performance":"أداء التحصيل لآخر 6 أشهر",
-  "Assigned":"المسند","Recovery Performance":"أداء التحصيل",
-  "Overall assigned portfolio":"إجمالي المحفظة المسندة","RECOVERED":"تم التحصيل",
-  "Priority Collection Cases":"ملفات التحصيل ذات الأولوية",
-  "Accounts requiring immediate follow-up":"حسابات تتطلب متابعة فورية",
-  "Top Collectors":"أفضل المحصلين","Current month performance":"أداء الشهر الحالي",
-  "Promises to Pay":"وعود السداد","Upcoming debtor commitments":"التزامات السداد القادمة",
-  "Recent Activities":"أحدث الأنشطة","Latest collection actions":"أحدث إجراءات التحصيل",
-  "Management Insights":"مؤشرات الإدارة","Highlights generated from current collection data":"أبرز المؤشرات المستخرجة من بيانات التحصيل الحالية",
-
-  "Total Clients":"إجمالي العملاء","Assigned Value":"القيمة المسندة","Active Accounts":"الحسابات النشطة",
-  "Settled Accounts":"الحسابات المسواة","Search client, CR or contact...":"ابحث عن عميل أو سجل أو جهة اتصال...",
-  "All Statuses":"جميع الحالات","All Sectors":"جميع القطاعات","Finance":"المالية","Leasing":"التأجير",
-  "Services":"الخدمات","Trading":"التجارة","Client ID":"رقم العميل","Client Name":"اسم العميل",
-  "Sector":"القطاع","Recovery Rate":"نسبة التحصيل","Open any client to view Portfolio 360°":"افتح أي عميل لعرض المحفظة 360°",
-  "Back to Clients":"العودة إلى العملاء","Portfolio 360°":"المحفظة 360°","+ Add Portfolio":"+ إضافة محفظة",
-  "+ Add Contact":"+ إضافة جهة اتصال","Generate Client Report":"إنشاء تقرير العميل",
-  "Client Information":"بيانات العميل","Creditor profile and contact information":"بيانات الدائن ومعلومات التواصل",
-  "CR Number":"رقم السجل","Contact Person":"جهة الاتصال","Mobile":"الهاتف","Email":"البريد الإلكتروني",
-  "Commission Rate":"نسبة العمولة","Portfolio Health":"صحة المحفظة","Key performance indicators":"مؤشرات الأداء الرئيسية",
-  "Active Cases":"الملفات النشطة","PTP Active":"وعود السداد النشطة","Broken PTP":"وعود سداد مكسورة",
-  "Portfolios":"المحافظ","Debtors":"المدينون","Commission & Fees":"العمولات والأتعاب","Activity":"النشاط",
-  "Received Date":"تاريخ الاستلام","Accounts":"الحسابات","Original Balance":"الرصيد الأصلي",
-  "Collector":"المحصل","Receipt":"الإيصال","Method":"الطريقة","Amount":"المبلغ",
-  "Collected Amount":"المبلغ المحصل","Commission Earned":"العمولة المكتسبة","Net Due to Client":"صافي المستحق للعميل",
-
-  "Total Debtors":"إجمالي المدينين","Active PTP":"وعود السداد النشطة","High Risk":"مخاطر عالية","Settled":"مسوى",
-  "Search debtor, CPR/CR, client or case...":"ابحث عن مدين أو CPR/CR أو عميل أو ملف...",
-  "All Risk Levels":"جميع مستويات المخاطر","Low":"منخفض","Medium":"متوسط","High":"مرتفع",
-  "Debtor ID":"رقم المدين","Debtor Name":"اسم المدين","Risk":"المخاطر",
-  "Open any debtor to view Debtor 360°":"افتح أي مدين لعرض المدين 360°","Back to Debtors":"العودة إلى المدينين",
-  "Commercial Debtor":"مدين تجاري","Individual Debtor":"مدين فرد","High Risk":"مخاطر عالية",
-  "View Client":"عرض العميل","+ Follow-up":"+ متابعة","+ Promise to Pay":"+ وعد سداد","Record Collection":"تسجيل تحصيل",
-  "Debtor Information":"بيانات المدين","Identity and contact details":"بيانات الهوية والتواصل",
-  "Assigned Collector":"المحصل المسؤول","Current Collection Position":"موقف التحصيل الحالي",
-  "Latest debtor status":"أحدث حالة للمدين","Collection Case":"ملف التحصيل","Last Contact":"آخر تواصل","Next Action":"الإجراء القادم",
-
-  "Manage assigned debt files, recovery stages, collectors and settlement activity.":"إدارة ملفات الديون المسندة ومراحل التحصيل والمحصلين ونشاط التسويات.",
-  "+ New Collection Case":"+ ملف تحصيل جديد","PTP Stage":"مرحلة وعد السداد","Negotiation":"تفاوض","Escalated":"مصعّد",
-  "Current collection workload":"عبء التحصيل الحالي","Promise to pay cases":"ملفات وعد السداد",
-  "Settlement discussions":"مناقشات التسوية","Immediate attention":"يتطلب اهتمامًا فوريًا","Closed successfully":"مغلق بنجاح",
-  "Search case, debtor, client or collector...":"ابحث عن ملف أو مدين أو عميل أو محصل...",
-  "All Collectors":"جميع المحصلين","Recovery":"التحصيل","Stage":"المرحلة",
-  "Open any case to view Collection Case 360°":"افتح أي ملف لعرض ملف التحصيل 360°",
-  "Back to Collection Cases":"العودة إلى ملفات التحصيل","Case 360°":"الملف 360°","View Debtor":"عرض المدين",
-  "Assigned Amount":"المبلغ المسند","Next PTP":"وعد السداد القادم",
-  "Case Information":"بيانات الملف","Core assignment and recovery details":"بيانات الإسناد والتحصيل الأساسية",
-  "Case Number":"رقم الملف","Assigned Date":"تاريخ الإسناد","Current Stage":"المرحلة الحالية",
-  "Recovery Position":"موقف التحصيل","Current case performance":"أداء الملف الحالي",
-  "Settlement":"التسوية","Settlement Status":"حالة التسوية","Proposed Amount":"المبلغ المقترح",
-  "Proposed Date":"تاريخ الاقتراح","Approval Status":"حالة الاعتماد",
-
-  "Manage collector actions, daily work queues and debtor contact history.":"إدارة إجراءات المحصلين وقوائم العمل اليومية وسجل التواصل مع المدينين.",
-  "Bulk Assign":"توزيع جماعي","+ New Follow-up":"+ متابعة جديدة","Due Today":"مستحق اليوم",
-  "Completed Today":"مكتمل اليوم","Overdue":"متأخر","Field Visits":"زيارات ميدانية","Calls Planned":"مكالمات مخططة",
-  "Daily Work Queue":"قائمة العمل اليومية","Prioritized actions for collection team":"الإجراءات ذات الأولوية لفريق التحصيل",
-  "Search debtor, case or collector...":"ابحث عن مدين أو ملف أو محصل...","All Types":"جميع الأنواع",
-  "Call":"مكالمة","WhatsApp":"واتساب","Field Visit":"زيارة ميدانية","Email":"بريد إلكتروني","Meeting":"اجتماع",
-  "Pending":"قيد الانتظار","Completed":"مكتمل","Collector Workload":"عبء عمل المحصلين","Open actions by collector":"الإجراءات المفتوحة حسب المحصل",
-  "Follow-up History":"سجل المتابعات","Latest completed collection actions":"أحدث إجراءات التحصيل المكتملة","Outcome":"النتيجة",
-
-  "Track debtor commitments, due dates, broken promises and recovery outcomes.":"متابعة التزامات المدينين وتواريخ الاستحقاق والوعود المكسورة ونتائج التحصيل.",
-  "+ New Promise to Pay":"+ وعد سداد جديد","Paid PTP":"وعود سداد مدفوعة","Promise Value":"قيمة وعود السداد",
-  "PTP Register":"سجل وعود السداد","Open, due, paid and broken promises":"الوعود المفتوحة والمستحقة والمدفوعة والمكسورة",
-  "Due Today":"مستحق اليوم","Paid":"مدفوع","Broken":"مكسور","PTP Calendar":"تقويم وعود السداد",
-  "Broken Promise Watchlist":"قائمة مراقبة الوعود المكسورة","Repeated or high-risk broken commitments":"الوعود المكسورة المتكررة أو عالية المخاطر",
-  "Broken Date":"تاريخ كسر الوعد","Previous Broken":"وعود سابقة مكسورة","Recommended Action":"الإجراء الموصى به",
-  "Back to Promises to Pay":"العودة إلى وعود السداد","Mark Broken":"تعيين كمكسور","Mark Paid":"تعيين كمدفوع",
-  "Promised Amount":"المبلغ الموعود","Due Date":"تاريخ الاستحقاق","Case Outstanding":"الرصيد المستحق للملف",
-  "Contact Method":"طريقة التواصل","Promise Information":"بيانات وعد السداد","Commitment details":"تفاصيل الالتزام",
-  "PTP Reference":"مرجع وعد السداد","Created Date":"تاريخ الإنشاء","Promise Source":"مصدر الوعد",
-  "Collector Notes":"ملاحظات المحصل","Promise context and follow-up guidance":"سياق الوعد وإرشادات المتابعة",
-  "PTP Timeline":"التسلسل الزمني لوعد السداد","Creation, reminders and payment outcome":"الإنشاء والتذكيرات ونتيجة السداد",
-
-  "Record debtor payments, issue receipts and allocate collections to collection cases.":"تسجيل مدفوعات المدينين وإصدار الإيصالات وتخصيص التحصيلات لملفات التحصيل.",
-  "+ Record Collection":"+ تسجيل تحصيل","Collected Today":"المحصل اليوم","This Month":"هذا الشهر",
-  "Allocated":"مخصص","Unallocated":"غير مخصص","Receipts":"الإيصالات",
-  "Search receipt, debtor, case or reference...":"ابحث عن إيصال أو مدين أو ملف أو مرجع...",
-  "All Payment Methods":"جميع طرق السداد","Cash":"نقدًا","BenefitPay":"بنفت بي","Bank Transfer":"تحويل بنكي","Cheque":"شيك",
-  "All Allocation Statuses":"جميع حالات التخصيص","Partial":"جزئي",
-  "Open any receipt to view Receipt 360°":"افتح أي إيصال لعرض الإيصال 360°",
-  "Payment Method Mix":"مزيج طرق السداد","Current month collection channels":"قنوات التحصيل للشهر الحالي",
-  "Allocation Control":"مراقبة التخصيص","Collection allocation performance":"أداء تخصيص التحصيلات",
-  "Allocated Percentage":"نسبة التخصيص","Receipt 360°":"الإيصال 360°","Back to Collections":"العودة إلى التحصيلات",
-  "Print Receipt":"طباعة الإيصال","Allocate Payment":"تخصيص الدفعة","Receipt Amount":"مبلغ الإيصال",
-  "Receipt Date":"تاريخ الإيصال","Receipt Information":"بيانات الإيصال","Payment and source details":"بيانات الدفعة والمصدر",
-  "Bank / Cash Account":"الحساب البنكي / النقدي","Received By":"استلم بواسطة",
-  "Allocation Position":"موقف التخصيص","How this payment has been applied":"كيفية تطبيق هذه الدفعة",
-  "Allocation Progress":"تقدم التخصيص","Case Allocation":"تخصيص الملف",
-  "Collection applied to outstanding debt file":"التحصيل المطبق على ملف الدين المستحق",
-  "Outstanding Before":"المستحق قبل","Allocated Amount":"المبلغ المخصص","Outstanding After":"المستحق بعد",
-  "Receipt Timeline":"التسلسل الزمني للإيصال","Payment and allocation activity":"نشاط الدفع والتخصيص",
-
-  "Manage negotiated settlement offers, client approvals and settlement completion.":"إدارة عروض التسوية المتفاوض عليها واعتمادات العملاء وإكمال التسويات.",
-  "+ New Settlement":"+ تسوية جديدة","Open Settlements":"التسويات المفتوحة","Proposed Value":"القيمة المقترحة",
-  "Approved":"معتمد","Recovered via Settlement":"المحصل عبر التسوية",
-  "Search settlement, debtor, client or case...":"ابحث عن تسوية أو مدين أو عميل أو ملف...",
-  "Draft":"مسودة","Rejected":"مرفوض","Open any settlement to view Settlement 360°":"افتح أي تسوية لعرض التسوية 360°",
-  "Settlement Performance":"أداء التسويات","Current settlement conversion indicators":"مؤشرات تحويل التسويات الحالية",
-  "Proposal to Approval":"من الاقتراح إلى الاعتماد","Approval to Completion":"من الاعتماد إلى الإكمال",
-  "Average Discount":"متوسط الخصم","Average Days":"متوسط الأيام",
-  "Client Approval Queue":"قائمة انتظار اعتماد العميل","Settlements awaiting creditor decision":"تسويات بانتظار قرار الدائن",
-  "Back to Settlements":"العودة إلى التسويات","Reject":"رفض","Approve":"اعتماد","Outstanding Balance":"الرصيد المستحق",
-  "Settlement Amount":"مبلغ التسوية","Discount Amount":"مبلغ الخصم","Discount %":"نسبة الخصم","Valid Until":"صالح حتى",
-  "Settlement Information":"بيانات التسوية","Negotiated commercial terms":"الشروط التجارية المتفاوض عليها",
-  "Settlement Reference":"مرجع التسوية","Prepared By":"أعد بواسطة","Prepared Date":"تاريخ الإعداد",
-  "Approval Workflow":"مسار الاعتماد","Internal and client approval sequence":"تسلسل الاعتماد الداخلي واعتماد العميل",
-  "Payment Terms":"شروط السداد","Settlement payment schedule":"جدول سداد التسوية",
-  "Settlement Timeline":"التسلسل الزمني للتسوية","Proposal, approval and payment activity":"نشاط الاقتراح والاعتماد والسداد",
-
-  "Calculate collection commission, net client settlements and fee performance.":"حساب عمولة التحصيل وصافي تسويات العملاء وأداء الأتعاب.",
-  "Export Fee Report":"تصدير تقرير الأتعاب","+ Calculate Commission":"+ احتساب العمولة",
-  "Gross Collections":"إجمالي التحصيلات","Commission Earned":"العمولة المكتسبة","Net Due to Clients":"صافي المستحق للعملاء",
-  "Pending Approval":"بانتظار الاعتماد","Settled Fee Batches":"دفعات أتعاب مسواة",
-  "Search batch, client or period...":"ابحث عن دفعة أو عميل أو فترة...","Calculated":"محسوب",
-  "Open any batch to view Fee 360°":"افتح أي دفعة لعرض الأتعاب 360°","Client Net Settlement":"صافي تسوية العميل",
-  "Current calculated client positions":"مواقف العملاء المحسوبة حاليًا","Fee Performance":"أداء الأتعاب",
-  "Collection-to-fee conversion":"تحويل التحصيل إلى أتعاب","Average Rate":"متوسط النسبة","Highest Rate":"أعلى نسبة",
-  "Approved Fees":"أتعاب معتمدة","Pending Fees":"أتعاب معلقة","Back to Commission & Fees":"العودة إلى العمولات والأتعاب",
-  "Download Statement":"تنزيل الكشف","Recalculate":"إعادة الاحتساب","Approve Fees":"اعتماد الأتعاب",
-  "Commission":"العمولة","Period":"الفترة","Commission Calculation":"احتساب العمولة",
-  "Fee formula for this client batch":"معادلة الأتعاب لهذه الدفعة","Batch Information":"بيانات الدفعة",
-  "Client and approval details":"بيانات العميل والاعتماد","Calculated By":"احتسب بواسطة","Calculation Date":"تاريخ الاحتساب",
-  "Collection Breakdown":"تفصيل التحصيلات","Receipts included in this fee calculation":"الإيصالات المشمولة في احتساب الأتعاب",
-  "Net to Client":"صافي العميل","Fee Timeline":"التسلسل الزمني للأتعاب","Calculation, approval and settlement activity":"نشاط الاحتساب والاعتماد والتسوية",
-
-  "Track office, field, legal and client-related costs across the collection operation.":"متابعة مصروفات المكتب والميدان والقانون والمصروفات المتعلقة بالعملاء.",
-  "+ New Expense":"+ مصروف جديد","Total Expenses":"إجمالي المصروفات","Office Expenses":"مصروفات المكتب",
-  "Field Expenses":"المصروفات الميدانية","Legal / External":"قانونية / خارجية","Client Recoverable":"قابل للاسترداد من العميل",
-  "Search expense, vendor, client or case...":"ابحث عن مصروف أو مورد أو عميل أو ملف...",
-  "Office":"مكتب","Field":"ميداني","Legal":"قانوني","Open any expense to view Expense 360°":"افتح أي مصروف لعرض المصروف 360°",
-  "Back to Expenses":"العودة إلى المصروفات","View Case":"عرض الملف","View Attachment":"عرض المرفق","Recharge Client":"إعادة تحميل العميل",
-  "Net Amount":"صافي المبلغ","VAT":"ضريبة القيمة المضافة","Total Paid":"إجمالي المدفوع","Expense Date":"تاريخ المصروف",
-  "Expense Information":"بيانات المصروف","Classification and payment details":"بيانات التصنيف والسداد",
-  "Vendor / Payee":"المورد / المستفيد","Category":"التصنيف","Payment Method":"طريقة السداد","Account":"الحساب",
-  "Attachment":"المرفق","Collection Link":"ربط التحصيل","Related client and case where applicable":"العميل والملف المرتبطان عند الاقتضاء",
-  "Recoverable":"قابل للاسترداد","Recorded By":"سجل بواسطة","Expense Timeline":"التسلسل الزمني للمصروف","Creation and payment activity":"نشاط الإنشاء والسداد",
-
-  "Monitor collection bank accounts, cash, client funds, transfers and treasury movements.":"مراقبة حسابات التحصيل البنكية والنقد وأموال العملاء والتحويلات وحركات الخزينة.",
-  "+ New Transfer":"+ تحويل جديد","+ Cash Deposit":"+ إيداع نقدي","+ Client Settlement":"+ تسوية عميل",
-  "Total Funds":"إجمالي الأموال","Collection Bank":"حسابات بنك التحصيل","Cash on Hand":"النقد بالصندوق",
-  "Undeposited":"غير مودع","Client Funds Payable":"أموال مستحقة للعملاء","Today's Net Movement":"صافي حركة اليوم",
-  "Accounts":"الحسابات","Transactions":"الحركات","Transfers":"التحويلات","Client Funds":"أموال العملاء","Cash Flow":"التدفق النقدي",
-  "Search transaction or reference...":"ابحث عن حركة أو مرجع...","Collection":"تحصيل","Expense":"مصروف","Transfer":"تحويل",
-  "Deposit":"إيداع","Client Settlement":"تسوية عميل","Transaction":"الحركة","Source":"المصدر","Inflow":"تدفق داخل","Outflow":"تدفق خارج",
-  "From":"من","To":"إلى","Inflows":"التدفقات الداخلة","Sources of collection funds":"مصادر أموال التحصيل",
-  "Debtor Collections":"تحصيلات المدينين","Receipts and settlements":"الإيصالات والتسويات","Other Receipts":"إيصالات أخرى",
-  "Miscellaneous income":"إيرادات متنوعة","Outflows":"التدفقات الخارجة","Uses of collection funds":"استخدامات أموال التحصيل",
-  "Operating Expenses":"المصروفات التشغيلية","Office and field costs":"تكاليف المكتب والميدان","Client Settlements":"تسويات العملاء",
-  "Net funds transferred to clients":"صافي الأموال المحولة للعملاء","Recent Internal Transfer":"أحدث تحويل داخلي",
-  "Movement between collection accounts":"حركة بين حسابات التحصيل","Transferred":"تم التحويل",
-  "Client Funds Position":"موقف أموال العملاء","Funds awaiting distribution to clients":"أموال بانتظار التوزيع للعملاء",
-  "Approved for Settlement":"معتمد للتسوية",
-
-  "Collection, client, collector and financial intelligence for management.":"تحليلات التحصيل والعملاء والمحصلين والبيانات المالية للإدارة.",
-  "Executive PDF":"PDF تنفيذي","Open Key Report":"فتح التقرير الرئيسي","Current portfolio":"المحفظة الحالية",
-  "All Clients":"جميع العملاء","This Month":"هذا الشهر","This Quarter":"هذا الربع","This Year":"هذه السنة",
-  "EXECUTIVE":"تنفيذي","Executive Summary":"الملخص التنفيذي","COLLECTION":"التحصيل","Recovery Performance":"أداء التحصيل",
-  "TEAM":"الفريق","Collector Performance":"أداء المحصلين","PTP":"وعد السداد","Promises to Pay Report":"تقرير وعود السداد",
-  "SETTLEMENTS":"التسويات","Settlement Performance":"أداء التسويات","CLIENT":"العميل","Client Portfolio Report":"تقرير محفظة العميل",
-  "FINANCIAL":"مالي","Commission & Fees Report":"تقرير العمولات والأتعاب","Expense Analysis":"تحليل المصروفات",
-  "TREASURY":"الخزينة","Cash Flow & Client Funds":"التدفق النقدي وأموال العملاء",
-  "REPORT PREVIEW":"معاينة التقرير","Back to Reports":"العودة إلى التقارير","Print":"طباعة",
-
-  "Manage collection team roles and module access.":"إدارة أدوار فريق التحصيل وصلاحيات الأقسام.",
-  "+ Add User":"+ إضافة مستخدم","Total Users":"إجمالي المستخدمين","Collectors":"المحصلون",
-  "Finance Users":"مستخدمو المالية","Managers":"المديرون","Active Today":"النشطون اليوم",
-  "User":"المستخدم","Role":"الدور","Department":"القسم","Last Login":"آخر دخول",
-  "Permission Matrix":"مصفوفة الصلاحيات","Illustrative role-based access":"صلاحيات توضيحية حسب الدور",
-  "Module":"القسم","Admin":"المشرف","Manager":"المدير","Collector":"المحصل","Support":"الدعم",
-  "Full":"كامل","View":"عرض","Limited":"محدود","Create":"إنشاء","Approve":"اعتماد","Own":"خاص به",
-
-  "Configure company, collection rules, financial settings and document templates.":"تهيئة بيانات الشركة وقواعد التحصيل والإعدادات المالية وقوالب المستندات.",
-  "Save Settings":"حفظ الإعدادات","Company Profile":"بيانات الشركة","Core company information used across reports and documents.":"بيانات الشركة الأساسية المستخدمة في التقارير والمستندات.",
-  "Company Name":"اسم الشركة","Arabic Name":"الاسم بالعربية","VAT Number":"الرقم الضريبي",
-  "Collection Rules":"قواعد التحصيل","Default business rules for cases and collector workflows.":"قواعد العمل الافتراضية للملفات ومسارات عمل المحصلين.",
-  "Default Risk Level":"مستوى المخاطر الافتراضي","Broken PTP Escalation":"تصعيد وعد السداد المكسور",
-  "Default Follow-up Cycle":"دورة المتابعة الافتراضية","Settlement Approval":"اعتماد التسوية",
-  "Financial Settings":"الإعدادات المالية","Currency":"العملة","VAT Rate":"نسبة الضريبة",
-  "Receipt Prefix":"بادئة الإيصال","Expense Prefix":"بادئة المصروف","Settlement Prefix":"بادئة التسوية","Fee Prefix":"بادئة الأتعاب",
-  "Notifications":"الإشعارات","Operational alerts for collection team.":"تنبيهات تشغيلية لفريق التحصيل.",
-  "PTP Due Reminder":"تذكير استحقاق وعد السداد","Broken PTP Alert":"تنبيه وعد سداد مكسور",
-  "Overdue Follow-up":"متابعة متأخرة","Client Settlement Ready":"تسوية العميل جاهزة",
-  "Document Templates":"قوالب المستندات","Templates used throughout the collection workflow.":"القوالب المستخدمة ضمن دورة عمل التحصيل.",
-  "Collection Receipt":"إيصال التحصيل","Settlement Proposal":"عرض التسوية","Client Settlement Statement":"كشف تسوية العميل",
-  "Preview":"معاينة",
-
-  "Track system, collection and financial activity by user.":"متابعة نشاط النظام والتحصيل والمالية حسب المستخدم.",
-  "Export Audit":"تصدير سجل التدقيق","Today's Actions":"إجراءات اليوم","Collection Actions":"إجراءات التحصيل",
-  "Financial Actions":"الإجراءات المالية","Case Updates":"تحديثات الملفات","Active Users Today":"المستخدمون النشطون اليوم",
-  "Search user, module or reference...":"ابحث عن مستخدم أو قسم أو مرجع...","All Modules":"جميع الأقسام","All Actions":"جميع الإجراءات",
-  "Create":"إنشاء","Update":"تحديث","Reverse":"عكس","Login":"تسجيل دخول",
-  "Date & Time":"التاريخ والوقت","Reference":"المرجع","Description":"الوصف",
-
-  "Active":"نشط","Inactive":"غير نشط","Open":"مفتوح","Due Today":"مستحق اليوم","Paid":"مدفوع",
-  "Broken":"مكسور","Pending":"قيد الانتظار","Approved":"معتمد","Rejected":"مرفوض","Completed":"مكتمل",
-  "Calculated":"محسوب","Settled":"مسوى","Escalate":"تصعيد","Negotiation":"تفاوض",
-  "Status":"الحالة","Action":"الإجراء","Date":"التاريخ","Client":"العميل","Debtor":"المدين",
-  "Case":"الملف","Outstanding":"المستحق","Collector":"المحصل","Reference":"المرجع","Description":"الوصف",
+  "Recovery Performance":"أداء التحصيل","Priority Collection Cases":"ملفات التحصيل ذات الأولوية",
+  "Top Collectors":"أفضل المحصلين","Recent Activities":"أحدث الأنشطة","Management Insights":"مؤشرات الإدارة",
+  "Export Excel":"تصدير Excel","Add Client":"إضافة عميل","Add Debtor":"إضافة مدين",
+  "Record Collection":"تسجيل تحصيل","New Settlement":"تسوية جديدة","New Expense":"مصروف جديد",
+  "New Transfer":"تحويل جديد","Cash Deposit":"إيداع نقدي","Client Settlement":"تسوية عميل",
+  "Executive PDF":"PDF تنفيذي","Open Key Report":"فتح التقرير الرئيسي",
+  "Save Settings":"حفظ الإعدادات","Export Audit":"تصدير سجل التدقيق",
+  "View":"عرض","View Client":"عرض العميل","View Debtor":"عرض المدين","View Case":"عرض الملف",
+  "Overview":"نظرة عامة","Activity":"النشاط","Status":"الحالة","Action":"الإجراء",
+  "Client":"العميل","Debtor":"المدين","Case":"الملف","Collector":"المحصل",
+  "Amount":"المبلغ","Date":"التاريخ","Reference":"المرجع","Description":"الوصف",
+  "Active":"نشط","Inactive":"غير نشط","Pending":"قيد الانتظار","Completed":"مكتمل",
+  "Approved":"معتمد","Rejected":"مرفوض","Settled":"مسوى","Paid":"مدفوع","Broken":"مكسور",
+  "Cash":"نقدًا","Bank Transfer":"تحويل بنكي","Cheque":"شيك","BenefitPay":"بنفت بي",
+  "Search debtor, account or case...":"ابحث عن مدين أو حساب أو ملف...",
   "Designed & Developed by":"تصميم وتطوير","DEMO ENVIRONMENT":"بيئة تجريبية"
 };
 
-const RECOVA_ORIGINAL_TEXT = new WeakMap();
-const RECOVA_ORIGINAL_PLACEHOLDER = new WeakMap();
+const RECOVA_ORIG = new WeakMap();
+const RECOVA_PLACE = new WeakMap();
 let RECOVA_LANG = "en";
 let RECOVA_OBSERVER = null;
-let RECOVA_APPLYING = false;
+let RECOVA_LOCK = false;
 
-function recovaTranslateString(value){
-  if(RECOVA_LANG!=="ar") return value;
-  let out=value;
-  Object.keys(RECOVA_AR).sort((a,b)=>b.length-a.length).forEach(k=>{
-    if(out.includes(k)) out=out.split(k).join(RECOVA_AR[k]);
+function recovaTranslateText(value){
+  if(RECOVA_LANG !== "ar") return value;
+  let out = value;
+  Object.keys(RECOVA_TRANSLATIONS).sort((a,b)=>b.length-a.length).forEach(k=>{
+    out = out.split(k).join(RECOVA_TRANSLATIONS[k]);
   });
   return out;
 }
 
 function applyRecovaLanguage(){
-  if(RECOVA_APPLYING) return;
-  RECOVA_APPLYING=true;
+  if(RECOVA_LOCK) return;
+  RECOVA_LOCK = true;
   if(RECOVA_OBSERVER) RECOVA_OBSERVER.disconnect();
 
-  document.documentElement.lang=RECOVA_LANG==="ar"?"ar":"en";
-  document.documentElement.dir=RECOVA_LANG==="ar"?"rtl":"ltr";
+  document.documentElement.lang = RECOVA_LANG === "ar" ? "ar" : "en";
+  document.documentElement.dir = RECOVA_LANG === "ar" ? "rtl" : "ltr";
 
-  const en=document.getElementById("langEnBtn");
-  const ar=document.getElementById("langArBtn");
-  if(en) en.classList.toggle("active",RECOVA_LANG==="en");
-  if(ar) ar.classList.toggle("active",RECOVA_LANG==="ar");
+  const en = document.getElementById("langEnBtn");
+  const ar = document.getElementById("langArBtn");
+  if(en) en.classList.toggle("active", RECOVA_LANG === "en");
+  if(ar) ar.classList.toggle("active", RECOVA_LANG === "ar");
 
   document.querySelectorAll("body *").forEach(el=>{
-    if(el.closest(".lang-switcher")) return;
+    if(el.closest("#recovaLanguageSwitcher")) return;
     if(["SCRIPT","STYLE","INPUT","TEXTAREA"].includes(el.tagName)) return;
 
     Array.from(el.childNodes).forEach(node=>{
-      if(node.nodeType!==Node.TEXT_NODE || !node.nodeValue.trim()) return;
-      if(!RECOVA_ORIGINAL_TEXT.has(node)) RECOVA_ORIGINAL_TEXT.set(node,node.nodeValue);
-      const original=RECOVA_ORIGINAL_TEXT.get(node);
-      node.nodeValue=RECOVA_LANG==="ar"?recovaTranslateString(original):original;
+      if(node.nodeType !== 3 || !node.nodeValue.trim()) return;
+      if(!RECOVA_ORIG.has(node)) RECOVA_ORIG.set(node,node.nodeValue);
+      const original = RECOVA_ORIG.get(node);
+      node.nodeValue = RECOVA_LANG === "ar" ? recovaTranslateText(original) : original;
     });
   });
 
   document.querySelectorAll("input[placeholder],textarea[placeholder]").forEach(el=>{
-    if(!RECOVA_ORIGINAL_PLACEHOLDER.has(el)) RECOVA_ORIGINAL_PLACEHOLDER.set(el,el.placeholder);
-    const original=RECOVA_ORIGINAL_PLACEHOLDER.get(el);
-    el.placeholder=RECOVA_LANG==="ar"?recovaTranslateString(original):original;
+    if(!RECOVA_PLACE.has(el)) RECOVA_PLACE.set(el,el.placeholder);
+    const original = RECOVA_PLACE.get(el);
+    el.placeholder = RECOVA_LANG === "ar" ? recovaTranslateText(original) : original;
   });
 
-  RECOVA_APPLYING=false;
+  RECOVA_LOCK = false;
   if(RECOVA_OBSERVER){
     RECOVA_OBSERVER.observe(document.body,{childList:true,subtree:true});
   }
 }
 
 function setRecovaLanguage(lang){
-  RECOVA_LANG=lang==="ar"?"ar":"en";
-  try{localStorage.setItem("recovaLanguage",RECOVA_LANG)}catch(e){}
+  RECOVA_LANG = lang === "ar" ? "ar" : "en";
+  try{ localStorage.setItem("recovaLanguage",RECOVA_LANG); }catch(e){}
   applyRecovaLanguage();
 }
 
 function initRecovaLanguage(){
-  let saved="en";
-  try{saved=localStorage.getItem("recovaLanguage")||"en"}catch(e){}
-  RECOVA_LANG=saved==="ar"?"ar":"en";
+  try{ RECOVA_LANG = localStorage.getItem("recovaLanguage") || "en"; }catch(e){ RECOVA_LANG="en"; }
   applyRecovaLanguage();
-
-  RECOVA_OBSERVER=new MutationObserver(()=>{
-    if(!RECOVA_APPLYING) requestAnimationFrame(applyRecovaLanguage);
+  RECOVA_OBSERVER = new MutationObserver(()=>{
+    if(!RECOVA_LOCK) requestAnimationFrame(applyRecovaLanguage);
   });
   RECOVA_OBSERVER.observe(document.body,{childList:true,subtree:true});
 }
