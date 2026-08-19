@@ -23,6 +23,25 @@
       --muted: #758091;
       --light: #f4f6f8;
       --border: #e6e9ed;
+
+      /* System identity colors */
+      --law: #c9a45c;
+      --law-dark: #071525;
+
+      --collection: #1aa6a6;
+      --collection-soft: #eaf8f7;
+
+      --property: #1f8a70;
+      --property-soft: #eaf7f2;
+
+      --rehab: #2f8ec4;
+      --rehab-soft: #edf6fb;
+
+      --enforcement: #a86f3d;
+      --enforcement-soft: #f8f0ea;
+
+      --custom: #6f6b86;
+      --custom-soft: #f2f1f6;
     }
 
     body {
@@ -274,7 +293,70 @@
     .system-card:hover {
       transform: translateY(-6px);
       box-shadow: 0 22px 55px rgba(7,21,37,.10);
-      border-color: #d8c18f;
+    }
+
+    .system-card::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 4px;
+      background: var(--card-accent, var(--gold));
+    }
+
+    .system-card .system-icon {
+      background: var(--card-soft, #f5f0e5);
+      color: var(--card-accent, #9d7b39);
+    }
+
+    .system-card .type {
+      color: var(--card-accent, var(--gold));
+    }
+
+    .system-card .explore {
+      color: var(--card-accent, var(--navy));
+    }
+
+    .system-card .explore:hover {
+      opacity: .78;
+    }
+
+    .system-card:hover {
+      border-color: var(--card-accent, #d8c18f);
+      box-shadow:
+        0 22px 55px rgba(7,21,37,.10),
+        0 0 0 1px color-mix(in srgb, var(--card-accent, var(--gold)) 28%, transparent);
+    }
+
+    .law-card {
+      --card-accent: var(--law);
+      --card-soft: #f5f0e5;
+    }
+
+    .collection-card {
+      --card-accent: var(--collection);
+      --card-soft: var(--collection-soft);
+    }
+
+    .property-card {
+      --card-accent: var(--property);
+      --card-soft: var(--property-soft);
+    }
+
+    .rehab-card {
+      --card-accent: var(--rehab);
+      --card-soft: var(--rehab-soft);
+    }
+
+    .enforcement-card {
+      --card-accent: var(--enforcement);
+      --card-soft: var(--enforcement-soft);
+    }
+
+    .custom-card {
+      --card-accent: var(--custom);
+      --card-soft: var(--custom-soft);
     }
 
     .system-number {
@@ -333,7 +415,7 @@
     }
 
     .explore:hover {
-      color: var(--gold);
+      opacity: .78;
     }
 
     .coming {
@@ -358,9 +440,25 @@
       color: var(--gold-light);
     }
 
+    .featured::before {
+      background: var(--gold);
+    }
+
     .featured .system-number {
       color: rgba(255,255,255,.06);
     }
+
+    .collection-card .system-number { color: rgba(26,166,166,.13); }
+    .property-card .system-number { color: rgba(31,138,112,.13); }
+    .rehab-card .system-number { color: rgba(47,142,196,.13); }
+    .enforcement-card .system-number { color: rgba(168,111,61,.13); }
+    .custom-card .system-number { color: rgba(111,107,134,.13); }
+
+    .collection-card:hover { background: linear-gradient(180deg,#ffffff 0%,#fbfefe 100%); }
+    .property-card:hover { background: linear-gradient(180deg,#ffffff 0%,#fbfefc 100%); }
+    .rehab-card:hover { background: linear-gradient(180deg,#ffffff 0%,#fbfdff 100%); }
+    .enforcement-card:hover { background: linear-gradient(180deg,#ffffff 0%,#fffdfb 100%); }
+
 
     /* ==============================
        ABOUT
@@ -579,7 +677,7 @@
   <div class="systems-grid">
 
     <!-- LAW FIRM -->
-    <article class="system-card featured">
+    <article class="system-card featured law-card">
 
       <span class="system-number">01</span>
 
@@ -595,7 +693,7 @@
         expenses, treasury and management reporting.
       </p>
 
-      <a href="law-firm/" class="explore">
+      <a href="law-firm/" class="explore" title="Open LEXORA demo">
         Explore Demo →
       </a>
 
@@ -603,7 +701,7 @@
 
 
    <!-- COLLECTION -->
-<article class="system-card">
+<article class="system-card collection-card">
 
   <span class="system-number">02</span>
 
@@ -611,7 +709,7 @@
 
   <span class="type">COLLECTION MANAGEMENT</span>
 
-  <h3>Collection System</h3>
+  <h3>RECOVA Collections</h3>
 
   <p>
     Portfolio management for debt files, collectors,
@@ -619,14 +717,14 @@
     monitoring.
   </p>
 
-  <a href="collection/" class="explore">
+  <a href="collection/" class="explore" title="Open RECOVA demo">
     Explore Demo →
   </a>
 
 </article>
 
     <!-- REAL ESTATE -->
-    <article class="system-card">
+    <article class="system-card property-card">
 
       <span class="system-number">03</span>
 
@@ -634,7 +732,7 @@
 
       <span class="type">PROPERTY MANAGEMENT</span>
 
-      <h3>Real Estate System</h3>
+      <h3>ESTARA Property</h3>
 
       <p>
         Manage buildings, units, tenants, contracts,
@@ -642,15 +740,15 @@
         one operational dashboard.
       </p>
 
-      <span class="explore coming">
-        Coming Soon
-      </span>
+      <a href="property/" class="explore" title="Open ESTARA demo">
+        Explore Demo →
+      </a>
 
     </article>
 
 
     <!-- REHABILITATION -->
-    <article class="system-card">
+    <article class="system-card rehab-card">
 
       <span class="system-number">04</span>
 
@@ -658,7 +756,7 @@
 
       <span class="type">HEALTHCARE OPERATIONS</span>
 
-      <h3>Rehabilitation Center</h3>
+      <h3>VITALIS Rehab Center</h3>
 
       <p>
         Patient profiles, appointments, treatment plans,
@@ -666,15 +764,15 @@
         reporting.
       </p>
 
-      <span class="explore coming">
-        Coming Soon
-      </span>
+      <a href="rehabilitation/" class="explore" title="Open VITALIS demo">
+        Explore Demo →
+      </a>
 
     </article>
 
 
     <!-- ENFORCEMENT -->
-    <article class="system-card">
+    <article class="system-card enforcement-card">
 
       <span class="system-number">05</span>
 
@@ -682,7 +780,7 @@
 
       <span class="type">ENFORCEMENT MANAGEMENT</span>
 
-      <h3>Private Enforcement</h3>
+      <h3>ENFORZA Private Enforcement</h3>
 
       <p>
         Manage enforcement files, parties, financial claims,
@@ -690,15 +788,15 @@
         reporting.
       </p>
 
-      <span class="explore coming">
-        Coming Soon
-      </span>
+      <a href="enforcement/" class="explore" title="Open ENFORZA demo">
+        Explore Demo →
+      </a>
 
     </article>
 
 
     <!-- FUTURE -->
-    <article class="system-card">
+    <article class="system-card custom-card">
 
       <span class="system-number">+</span>
 
