@@ -3,16 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>LEXORA Law Firm | APEX ORAIBI Demo</title>
 
   <style>
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-    }
-
+    *{margin:0;padding:0;box-sizing:border-box}
     :root{
       --navy:#071525;
       --navy-2:#0d2238;
@@ -26,975 +20,263 @@
       --success:#2f8f61;
       --warning:#c58a2c;
       --danger:#b84b4b;
+      --soft:#fafbfc;
     }
 
-    body{
-      font-family:Arial,Helvetica,sans-serif;
-      background:var(--bg);
-      color:var(--text);
-      min-height:100vh;
-    }
-
-    button,
-    input{
-      font-family:inherit;
-    }
-
-    .hidden{
-      display:none !important;
-    }
+    body{font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+    button,input,select{font-family:inherit}
+    .hidden{display:none!important}
 
     /* LOGIN */
-
-    .login-screen{
-      min-height:100vh;
-      display:grid;
-      grid-template-columns:1.1fr .9fr;
-      background:var(--white);
-    }
-
+    .login-screen{min-height:100vh;display:grid;grid-template-columns:1.1fr .9fr;background:var(--white)}
     .login-left{
       background:
         radial-gradient(circle at 75% 30%,rgba(201,164,92,.14),transparent 28%),
         linear-gradient(135deg,#06111d 0%,#0a2035 70%,#081725 100%);
-      color:white;
-      padding:70px;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
+      color:white;padding:70px;display:flex;flex-direction:column;justify-content:space-between
     }
-
-    .login-brand{
-      display:flex;
-      align-items:center;
-      gap:16px;
-    }
-
-    .login-mark{
-      width:54px;
-      height:54px;
-      border:1px solid var(--gold);
-      color:var(--gold);
-      display:grid;
-      place-items:center;
-      font-weight:700;
-      font-size:20px;
-    }
-
-    .login-brand strong{
-      display:block;
-      letter-spacing:2px;
-      font-size:20px;
-    }
-
-    .login-brand span{
-      display:block;
-      margin-top:4px;
-      color:#b7c1cc;
-      font-size:10px;
-      letter-spacing:2px;
-    }
-
-    .login-copy{
-      max-width:610px;
-    }
-
-    .eyebrow{
-      color:var(--gold);
-      font-size:11px;
-      font-weight:700;
-      letter-spacing:3px;
-    }
-
-    .login-copy h1{
-      margin-top:22px;
-      font-size:58px;
-      line-height:1.05;
-      font-weight:600;
-    }
-
-    .login-copy p{
-      margin-top:25px;
-      color:#b7c1cc;
-      font-size:16px;
-      line-height:1.8;
-    }
-
-    .login-footer{
-      display:flex;
-      justify-content:space-between;
-      color:#82909e;
-      font-size:10px;
-      letter-spacing:1.5px;
-    }
-
-    .login-right{
-      display:grid;
-      place-items:center;
-      padding:40px;
-    }
-
-    .login-card{
-      width:100%;
-      max-width:420px;
-    }
-
-    .login-card h2{
-      font-size:30px;
-      color:var(--navy);
-      margin-top:14px;
-    }
-
-    .login-card > p{
-      margin-top:10px;
-      color:var(--muted);
-      font-size:14px;
-    }
-
-    .form-group{
-      margin-top:24px;
-    }
-
-    .form-group label{
-      display:block;
-      margin-bottom:8px;
-      font-size:12px;
-      font-weight:700;
-    }
-
-    .form-group input{
-      width:100%;
-      height:48px;
-      border:1px solid var(--border);
-      border-radius:6px;
-      padding:0 14px;
-      outline:none;
-      font-size:14px;
-    }
-
-    .form-group input:focus{
-      border-color:var(--gold);
-    }
-
-    .login-btn,
-    .demo-btn{
-      width:100%;
-      height:48px;
-      margin-top:20px;
-      border-radius:6px;
-      cursor:pointer;
-      font-weight:700;
-      border:none;
-    }
-
-    .login-btn{
-      background:var(--navy);
-      color:white;
-    }
-
-    .demo-btn{
-      background:white;
-      color:var(--navy);
-      border:1px solid var(--border);
-      margin-top:12px;
-    }
-
-    .demo-btn:hover{
-      border-color:var(--gold);
-      color:#8f6b27;
-    }
-
-    .login-note{
-      text-align:center;
-      margin-top:18px;
-      font-size:11px;
-      color:#9aa2aa;
-    }
+    .login-brand{display:flex;align-items:center;gap:16px}
+    .login-mark{width:54px;height:54px;border:1px solid var(--gold);color:var(--gold);display:grid;place-items:center;font-weight:700;font-size:20px}
+    .login-brand strong{display:block;letter-spacing:2px;font-size:20px}
+    .login-brand span{display:block;margin-top:4px;color:#b7c1cc;font-size:10px;letter-spacing:2px}
+    .login-copy{max-width:610px}
+    .eyebrow{color:var(--gold);font-size:11px;font-weight:700;letter-spacing:3px}
+    .login-copy h1{margin-top:22px;font-size:58px;line-height:1.05;font-weight:600}
+    .login-copy p{margin-top:25px;color:#b7c1cc;font-size:16px;line-height:1.8}
+    .login-footer{display:flex;justify-content:space-between;color:#82909e;font-size:10px;letter-spacing:1.5px}
+    .login-right{display:grid;place-items:center;padding:40px}
+    .login-card{width:100%;max-width:420px}
+    .login-card h2{font-size:30px;color:var(--navy);margin-top:14px}
+    .login-card>p{margin-top:10px;color:var(--muted);font-size:14px}
+    .form-group{margin-top:24px}
+    .form-group label{display:block;margin-bottom:8px;font-size:12px;font-weight:700}
+    .form-group input{width:100%;height:48px;border:1px solid var(--border);border-radius:6px;padding:0 14px;outline:none;font-size:14px}
+    .form-group input:focus{border-color:var(--gold)}
+    .login-btn,.demo-btn{width:100%;height:48px;margin-top:20px;border-radius:6px;cursor:pointer;font-weight:700;border:none}
+    .login-btn{background:var(--navy);color:white}
+    .demo-btn{background:white;color:var(--navy);border:1px solid var(--border);margin-top:12px}
+    .demo-btn:hover{border-color:var(--gold);color:#8f6b27}
+    .login-note{text-align:center;margin-top:18px;font-size:11px;color:#9aa2aa}
 
     /* APP */
-
-    .app{
-      min-height:100vh;
-      display:grid;
-      grid-template-columns:245px 1fr;
-    }
-
+    .app{min-height:100vh;display:grid;grid-template-columns:245px 1fr}
     .sidebar{
-      background:var(--navy);
-      color:white;
-      min-height:100vh;
-      position:fixed;
-      left:0;
-      top:0;
-      width:245px;
-      padding:26px 18px;
-      display:flex;
-      flex-direction:column;
-      z-index:50;
+      background:var(--navy);color:white;min-height:100vh;position:fixed;left:0;top:0;width:245px;
+      padding:26px 18px;display:flex;flex-direction:column;z-index:50
     }
-
-    .sidebar-brand{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      padding:0 10px 24px;
-      border-bottom:1px solid rgba(255,255,255,.08);
-    }
-
-    .sidebar-logo{
-      width:40px;
-      height:40px;
-      border:1px solid var(--gold);
-      display:grid;
-      place-items:center;
-      color:var(--gold);
-      font-weight:700;
-    }
-
-    .sidebar-brand strong{
-      display:block;
-      letter-spacing:1.5px;
-      font-size:14px;
-    }
-
-    .sidebar-brand span{
-      display:block;
-      color:#8fa0af;
-      margin-top:3px;
-      font-size:9px;
-      letter-spacing:1.5px;
-    }
-
-    .nav-title{
-      margin:24px 10px 10px;
-      color:#667889;
-      font-size:9px;
-      letter-spacing:1.6px;
-      font-weight:700;
-    }
-
+    .sidebar-brand{display:flex;align-items:center;gap:12px;padding:0 10px 24px;border-bottom:1px solid rgba(255,255,255,.08)}
+    .sidebar-logo{width:40px;height:40px;border:1px solid var(--gold);display:grid;place-items:center;color:var(--gold);font-weight:700}
+    .sidebar-brand strong{display:block;letter-spacing:1.5px;font-size:14px}
+    .sidebar-brand span{display:block;color:#8fa0af;margin-top:3px;font-size:9px;letter-spacing:1.5px}
+    .nav-title{margin:24px 10px 10px;color:#667889;font-size:9px;letter-spacing:1.6px;font-weight:700}
     .nav-item{
-      width:100%;
-      display:flex;
-      align-items:center;
-      gap:12px;
-      padding:11px 12px;
-      margin-bottom:4px;
-      border:0;
-      background:transparent;
-      color:#b8c2cb;
-      border-radius:6px;
-      cursor:pointer;
-      text-align:left;
-      font-size:13px;
+      width:100%;display:flex;align-items:center;gap:12px;padding:11px 12px;margin-bottom:4px;border:0;
+      background:transparent;color:#b8c2cb;border-radius:6px;cursor:pointer;text-align:left;font-size:13px
     }
-
-    .nav-item:hover{
-      background:rgba(255,255,255,.05);
-      color:white;
-    }
-
-    .nav-item.active{
-      background:rgba(201,164,92,.13);
-      color:var(--gold-light);
-    }
-
-    .nav-icon{
-      width:18px;
-      text-align:center;
-      font-size:15px;
-    }
-
-    .sidebar-bottom{
-      margin-top:auto;
-      border-top:1px solid rgba(255,255,255,.08);
-      padding:18px 10px 0;
-    }
-
-    .demo-tag{
-      display:inline-flex;
-      align-items:center;
-      gap:7px;
-      color:#b9c3cc;
-      font-size:9px;
-      letter-spacing:1.2px;
-    }
-
-    .demo-dot{
-      width:7px;
-      height:7px;
-      background:#44b776;
-      border-radius:50%;
-    }
-
-    .apex{
-      margin-top:12px;
-      color:#667889;
-      font-size:9px;
-      line-height:1.5;
-    }
-
-    .apex strong{
-      display:block;
-      color:var(--gold);
-      margin-top:2px;
-      letter-spacing:1px;
-    }
-
-    .main{
-      grid-column:2;
-      min-width:0;
-    }
-
+    .nav-item:hover{background:rgba(255,255,255,.05);color:white}
+    .nav-item.active{background:rgba(201,164,92,.13);color:var(--gold-light)}
+    .nav-icon{width:18px;text-align:center;font-size:15px}
+    .sidebar-bottom{margin-top:auto;border-top:1px solid rgba(255,255,255,.08);padding:18px 10px 0}
+    .demo-tag{display:inline-flex;align-items:center;gap:7px;color:#b9c3cc;font-size:9px;letter-spacing:1.2px}
+    .demo-dot{width:7px;height:7px;background:#44b776;border-radius:50%}
+    .apex{margin-top:12px;color:#667889;font-size:9px;line-height:1.5}
+    .apex strong{display:block;color:var(--gold);margin-top:2px;letter-spacing:1px}
+    .main{grid-column:2;min-width:0}
     .topbar{
-      height:78px;
-      background:white;
-      border-bottom:1px solid var(--border);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding:0 30px;
-      position:sticky;
-      top:0;
-      z-index:30;
+      height:78px;background:white;border-bottom:1px solid var(--border);display:flex;align-items:center;
+      justify-content:space-between;padding:0 30px;position:sticky;top:0;z-index:30
     }
-
-    .topbar h1{
-      font-size:20px;
-      color:var(--navy);
-    }
-
-    .topbar p{
-      margin-top:4px;
-      color:var(--muted);
-      font-size:11px;
-    }
-
-    .top-actions{
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
-
-    .search{
-      width:260px;
-      height:38px;
-      border:1px solid var(--border);
-      border-radius:6px;
-      padding:0 12px;
-      outline:none;
-    }
-
-    .top-btn{
-      height:38px;
-      min-width:38px;
-      border:1px solid var(--border);
-      background:white;
-      border-radius:6px;
-      cursor:pointer;
-      color:var(--navy);
-    }
-
-    .profile{
-      display:flex;
-      align-items:center;
-      gap:9px;
-      padding:4px 10px 4px 5px;
-      border:1px solid var(--border);
-      border-radius:7px;
-    }
-
-    .avatar{
-      width:30px;
-      height:30px;
-      border-radius:50%;
-      background:var(--navy);
-      color:white;
-      display:grid;
-      place-items:center;
-      font-size:10px;
-      font-weight:700;
-    }
-
-    .profile strong{
-      display:block;
-      font-size:11px;
-    }
-
-    .profile span{
-      display:block;
-      margin-top:2px;
-      color:var(--muted);
-      font-size:9px;
-    }
-
-    .content{
-      padding:30px;
-    }
-
-    .hero-row{
-      display:flex;
-      justify-content:space-between;
-      gap:20px;
-      align-items:flex-start;
-      margin-bottom:25px;
-    }
-
-    .hero-row h2{
-      font-size:26px;
-      color:var(--navy);
-    }
-
-    .hero-row h2 span{
-      color:#9a742d;
-    }
-
-    .hero-row p{
-      margin-top:7px;
-      color:var(--muted);
-      font-size:13px;
-    }
-
-    .hero-actions{
-      display:flex;
-      gap:10px;
-    }
-
-    .action-btn{
-      min-height:40px;
-      padding:0 16px;
-      border-radius:6px;
-      cursor:pointer;
-      font-weight:700;
-      font-size:12px;
-    }
-
-    .action-secondary{
-      background:white;
-      color:var(--navy);
-      border:1px solid var(--border);
-    }
-
-    .action-primary{
-      background:var(--navy);
-      color:white;
-      border:1px solid var(--navy);
-    }
+    .topbar h1{font-size:20px;color:var(--navy)}
+    .topbar p{margin-top:4px;color:var(--muted);font-size:11px}
+    .top-actions{display:flex;align-items:center;gap:10px}
+    .search{width:260px;height:38px;border:1px solid var(--border);border-radius:6px;padding:0 12px;outline:none}
+    .top-btn{height:38px;min-width:38px;border:1px solid var(--border);background:white;border-radius:6px;cursor:pointer;color:var(--navy)}
+    .profile{display:flex;align-items:center;gap:9px;padding:4px 10px 4px 5px;border:1px solid var(--border);border-radius:7px}
+    .avatar{width:30px;height:30px;border-radius:50%;background:var(--navy);color:white;display:grid;place-items:center;font-size:10px;font-weight:700}
+    .profile strong{display:block;font-size:11px}
+    .profile span{display:block;margin-top:2px;color:var(--muted);font-size:9px}
+    .content{padding:30px}
+    .hero-row{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:25px}
+    .hero-row h2{font-size:26px;color:var(--navy)}
+    .hero-row h2 span{color:#9a742d}
+    .hero-row p{margin-top:7px;color:var(--muted);font-size:13px}
+    .hero-actions{display:flex;gap:10px}
+    .action-btn{min-height:40px;padding:0 16px;border-radius:6px;cursor:pointer;font-weight:700;font-size:12px}
+    .action-secondary{background:white;color:var(--navy);border:1px solid var(--border)}
+    .action-primary{background:var(--navy);color:white;border:1px solid var(--navy)}
+    .action-gold{background:var(--gold);color:var(--navy);border:1px solid var(--gold)}
 
     /* KPI */
+    .kpi-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:15px}
+    .kpi-card{background:white;border:1px solid var(--border);border-radius:8px;padding:18px}
+    .kpi-label{font-size:11px;color:var(--muted)}
+    .kpi-value{display:block;margin-top:13px;font-size:23px;color:var(--navy)}
+    .kpi-value.money{font-size:17px}
+    .kpi-note{margin-top:11px;font-size:9px;color:var(--muted)}
+    .positive{color:var(--success);font-weight:700}
+    .warning{color:var(--warning);font-weight:700}
 
-    .kpi-grid{
-      display:grid;
-      grid-template-columns:repeat(6,1fr);
-      gap:15px;
-    }
-
-    .kpi-card{
-      background:white;
-      border:1px solid var(--border);
-      border-radius:8px;
-      padding:18px;
-    }
-
-    .kpi-label{
-      font-size:11px;
-      color:var(--muted);
-    }
-
-    .kpi-value{
-      display:block;
-      margin-top:13px;
-      font-size:23px;
-      color:var(--navy);
-    }
-
-    .kpi-value.money{
-      font-size:17px;
-    }
-
-    .kpi-note{
-      margin-top:11px;
-      font-size:9px;
-      color:var(--muted);
-    }
-
-    .positive{
-      color:var(--success);
-      font-weight:700;
-    }
-
-    .warning{
-      color:var(--warning);
-      font-weight:700;
-    }
-
-    /* GRID */
-
-    .dashboard-grid{
-      display:grid;
-      grid-template-columns:2fr 1fr;
-      gap:16px;
-      margin-top:16px;
-    }
-
-    .dashboard-grid.equal{
-      grid-template-columns:1fr 1fr;
-    }
-
-    .card{
-      background:white;
-      border:1px solid var(--border);
-      border-radius:8px;
-      padding:20px;
-      min-width:0;
-    }
-
-    .card-head{
-      display:flex;
-      justify-content:space-between;
-      gap:12px;
-      align-items:flex-start;
-      margin-bottom:18px;
-    }
-
-    .card-head h3{
-      font-size:14px;
-      color:var(--navy);
-    }
-
-    .card-head p{
-      margin-top:4px;
-      color:var(--muted);
-      font-size:10px;
-    }
+    /* GENERIC */
+    .dashboard-grid{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-top:16px}
+    .dashboard-grid.equal{grid-template-columns:1fr 1fr}
+    .card{background:white;border:1px solid var(--border);border-radius:8px;padding:20px;min-width:0}
+    .card-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:18px}
+    .card-head h3{font-size:14px;color:var(--navy)}
+    .card-head p{margin-top:4px;color:var(--muted);font-size:10px}
+    .muted{color:var(--muted)}
+    .pill{display:inline-flex;align-items:center;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700}
+    .pill.active{background:#edf5f0;color:#347b57}
+    .pill.inactive{background:#f3f4f6;color:#7a8491}
+    .pill.company{background:#eef2f7;color:#36506d}
+    .pill.individual{background:#f7f1e7;color:#8f6b27}
 
     /* CHART */
+    .chart{height:230px;display:flex;align-items:flex-end;gap:24px;border-bottom:1px solid var(--border);padding:0 10px 12px}
+    .chart-group{flex:1;display:flex;justify-content:center;align-items:flex-end;gap:5px;height:100%;position:relative}
+    .bar{width:18px;border-radius:3px 3px 0 0}
+    .revenue{background:var(--navy)}
+    .expense{background:var(--gold)}
+    .month{position:absolute;bottom:-27px;font-size:9px;color:var(--muted)}
+    .chart-legend{margin-top:34px;display:flex;gap:18px;font-size:10px;color:var(--muted)}
+    .legend-dot{width:8px;height:8px;display:inline-block;margin-right:5px;border-radius:50%}
+    .circle-meter{width:150px;height:150px;margin:10px auto 18px;border-radius:50%;background:conic-gradient(var(--gold) 0 78.6%,#e9edf0 78.6%);display:grid;place-items:center}
+    .circle-inner{width:112px;height:112px;border-radius:50%;background:white;display:grid;place-items:center;text-align:center}
+    .circle-inner strong{display:block;font-size:24px;color:var(--navy)}
+    .circle-inner span{font-size:9px;color:var(--muted)}
+    .collection-summary{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--border);padding-top:15px;gap:10px}
+    .collection-summary span{display:block;font-size:9px;color:var(--muted)}
+    .collection-summary strong{display:block;margin-top:4px;font-size:11px}
 
-    .chart{
-      height:230px;
-      display:flex;
-      align-items:flex-end;
-      gap:24px;
-      border-bottom:1px solid var(--border);
-      padding:0 10px 12px;
-    }
+    /* TABLES */
+    .table-wrap{overflow:auto}
+    table{width:100%;border-collapse:collapse;font-size:10px}
+    th{text-align:left;color:var(--muted);font-weight:700;padding:10px;border-bottom:1px solid var(--border);white-space:nowrap}
+    td{padding:12px 10px;border-bottom:1px solid #f0f2f4;white-space:nowrap}
+    .status{display:inline-flex;padding:5px 8px;border-radius:20px;background:#edf5f0;color:#347b57;font-size:9px;font-weight:700}
+    .case-bars{display:flex;flex-direction:column;gap:16px}
+    .case-bar-line{display:grid;grid-template-columns:95px 1fr 25px;gap:10px;align-items:center;font-size:10px}
+    .progress{height:7px;border-radius:20px;background:#eceff2;overflow:hidden}
+    .progress span{display:block;height:100%;background:var(--navy);border-radius:20px}
 
-    .chart-group{
-      flex:1;
-      display:flex;
-      justify-content:center;
-      align-items:flex-end;
-      gap:5px;
-      height:100%;
-      position:relative;
-    }
-
-    .bar{
-      width:18px;
-      border-radius:3px 3px 0 0;
-    }
-
-    .revenue{
-      background:var(--navy);
-    }
-
-    .expense{
-      background:var(--gold);
-    }
-
-    .month{
-      position:absolute;
-      bottom:-27px;
-      font-size:9px;
-      color:var(--muted);
-    }
-
-    .chart-legend{
-      margin-top:34px;
-      display:flex;
-      gap:18px;
-      font-size:10px;
-      color:var(--muted);
-    }
-
-    .legend-dot{
-      width:8px;
-      height:8px;
-      display:inline-block;
-      margin-right:5px;
-      border-radius:50%;
-    }
-
-    .circle-meter{
-      width:150px;
-      height:150px;
-      margin:10px auto 18px;
-      border-radius:50%;
-      background:conic-gradient(var(--gold) 0 78.6%,#e9edf0 78.6%);
-      display:grid;
-      place-items:center;
-    }
-
-    .circle-inner{
-      width:112px;
-      height:112px;
-      border-radius:50%;
-      background:white;
-      display:grid;
-      place-items:center;
-      text-align:center;
-    }
-
-    .circle-inner strong{
-      display:block;
-      font-size:24px;
-      color:var(--navy);
-    }
-
-    .circle-inner span{
-      font-size:9px;
-      color:var(--muted);
-    }
-
-    .collection-summary{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      border-top:1px solid var(--border);
-      padding-top:15px;
-      gap:10px;
-    }
-
-    .collection-summary span{
-      display:block;
-      font-size:9px;
-      color:var(--muted);
-    }
-
-    .collection-summary strong{
-      display:block;
-      margin-top:4px;
-      font-size:11px;
-    }
-
-    /* TABLE */
-
-    .table-wrap{
-      overflow:auto;
-    }
-
-    table{
-      width:100%;
-      border-collapse:collapse;
-      font-size:10px;
-    }
-
-    th{
-      text-align:left;
-      color:var(--muted);
-      font-weight:700;
-      padding:10px;
-      border-bottom:1px solid var(--border);
-      white-space:nowrap;
-    }
-
-    td{
-      padding:12px 10px;
-      border-bottom:1px solid #f0f2f4;
-      white-space:nowrap;
-    }
-
-    .status{
-      display:inline-flex;
-      padding:5px 8px;
-      border-radius:20px;
-      background:#edf5f0;
-      color:#347b57;
-      font-size:9px;
-      font-weight:700;
-    }
-
-    .case-bars{
-      display:flex;
-      flex-direction:column;
-      gap:16px;
-    }
-
-    .case-bar-line{
-      display:grid;
-      grid-template-columns:95px 1fr 25px;
-      gap:10px;
-      align-items:center;
-      font-size:10px;
-    }
-
-    .progress{
-      height:7px;
-      border-radius:20px;
-      background:#eceff2;
-      overflow:hidden;
-    }
-
-    .progress span{
-      display:block;
-      height:100%;
-      background:var(--navy);
-      border-radius:20px;
-    }
-
-    /* TRANSACTIONS */
-
-    .list{
-      display:flex;
-      flex-direction:column;
-    }
-
-    .list-row{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:15px;
-      padding:13px 0;
-      border-bottom:1px solid #f0f2f4;
-    }
-
-    .list-left{
-      display:flex;
-      align-items:center;
-      gap:11px;
-      min-width:0;
-    }
-
-    .list-icon{
-      width:34px;
-      height:34px;
-      flex:0 0 34px;
-      border-radius:6px;
-      background:#f3f5f7;
-      display:grid;
-      place-items:center;
-      font-size:13px;
-    }
-
-    .list-row strong{
-      display:block;
-      font-size:11px;
-    }
-
-    .list-row span{
-      display:block;
-      margin-top:3px;
-      font-size:9px;
-      color:var(--muted);
-    }
-
-    .amount-in{
-      color:var(--success);
-      font-size:11px !important;
-      font-weight:700;
-    }
-
-    .amount-out{
-      color:var(--danger);
-      font-size:11px !important;
-      font-weight:700;
-    }
+    /* LISTS */
+    .list{display:flex;flex-direction:column}
+    .list-row{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:13px 0;border-bottom:1px solid #f0f2f4}
+    .list-left{display:flex;align-items:center;gap:11px;min-width:0}
+    .list-icon{width:34px;height:34px;flex:0 0 34px;border-radius:6px;background:#f3f5f7;display:grid;place-items:center;font-size:13px}
+    .list-row strong{display:block;font-size:11px}
+    .list-row span{display:block;margin-top:3px;font-size:9px;color:var(--muted)}
+    .amount-in{color:var(--success)!important;font-size:11px!important;font-weight:700}
+    .amount-out{color:var(--danger)!important;font-size:11px!important;font-weight:700}
 
     /* INSIGHTS */
+    .insights{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .insight{border:1px solid var(--border);border-radius:7px;padding:16px;background:#fafbfc}
+    .insight strong{display:block;color:var(--navy);font-size:11px}
+    .insight p{margin-top:7px;color:var(--muted);font-size:10px;line-height:1.6}
 
-    .insights{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:12px;
+    /* CLIENTS */
+    .clients-toolbar{
+      display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:16px
+    }
+    .clients-toolbar-left{display:flex;gap:10px;flex-wrap:wrap}
+    .clients-toolbar input,.clients-toolbar select{
+      height:40px;border:1px solid var(--border);border-radius:6px;background:white;padding:0 12px;font-size:11px;outline:none
+    }
+    .clients-toolbar input{width:280px}
+    .client-kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:16px}
+    .client-name-btn{border:0;background:transparent;color:var(--navy);font-weight:700;cursor:pointer;padding:0}
+    .client-name-btn:hover{color:#9a742d}
+    .table-action{
+      border:1px solid var(--border);background:white;color:var(--navy);border-radius:5px;padding:6px 9px;font-size:9px;cursor:pointer
     }
 
-    .insight{
-      border:1px solid var(--border);
-      border-radius:7px;
-      padding:16px;
-      background:#fafbfc;
+    /* CLIENT 360 */
+    .client-hero{
+      display:flex;justify-content:space-between;gap:20px;align-items:flex-start;background:white;border:1px solid var(--border);
+      border-radius:8px;padding:22px;margin-bottom:16px
     }
-
-    .insight strong{
-      display:block;
-      color:var(--navy);
-      font-size:11px;
+    .client-hero-left{display:flex;gap:16px;align-items:flex-start}
+    .client-avatar{
+      width:58px;height:58px;border-radius:10px;background:var(--navy);color:var(--gold-light);display:grid;place-items:center;font-size:18px;font-weight:700
     }
-
-    .insight p{
-      margin-top:7px;
-      color:var(--muted);
-      font-size:10px;
-      line-height:1.6;
+    .client-hero h2{font-size:23px;color:var(--navy)}
+    .client-hero p{margin-top:6px;color:var(--muted);font-size:11px}
+    .client-tags{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
+    .client-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .client-summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:16px}
+    .summary-card{background:white;border:1px solid var(--border);border-radius:8px;padding:18px}
+    .summary-card span{font-size:10px;color:var(--muted)}
+    .summary-card strong{display:block;margin-top:10px;font-size:18px;color:var(--navy)}
+    .tabs{display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid var(--border);margin-bottom:18px}
+    .tab-btn{
+      border:0;background:transparent;padding:10px 12px;font-size:10px;font-weight:700;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent
     }
-
-    .footer{
-      display:flex;
-      justify-content:space-between;
-      gap:20px;
-      color:#929aa3;
-      font-size:9px;
-      padding:22px 30px 30px;
-    }
-
-    .mobile-menu{
-      display:none;
-    }
+    .tab-btn.active{color:var(--navy);border-bottom-color:var(--gold)}
+    .tab-panel{display:none}
+    .tab-panel.active{display:block}
+    .info-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    .info-item{padding:14px;background:var(--soft);border:1px solid var(--border);border-radius:6px}
+    .info-item span{display:block;font-size:9px;color:var(--muted)}
+    .info-item strong{display:block;margin-top:6px;font-size:11px;color:var(--navy)}
+    .timeline{display:flex;flex-direction:column;gap:14px}
+    .timeline-item{display:grid;grid-template-columns:16px 1fr;gap:12px}
+    .timeline-dot{width:10px;height:10px;border-radius:50%;background:var(--gold);margin-top:3px}
+    .timeline-item strong{font-size:11px;color:var(--navy)}
+    .timeline-item p{margin-top:4px;font-size:10px;color:var(--muted);line-height:1.5}
 
     /* PLACEHOLDER */
+    .placeholder{min-height:500px;display:grid;place-items:center;text-align:center}
+    .placeholder-box{max-width:520px;padding:45px;background:white;border:1px solid var(--border);border-radius:10px}
+    .placeholder-box span{font-size:9px;color:var(--gold);letter-spacing:2px;font-weight:700}
+    .placeholder-box h2{margin-top:13px;color:var(--navy);font-size:25px}
+    .placeholder-box p{margin-top:12px;color:var(--muted);font-size:13px;line-height:1.7}
 
-    .placeholder{
-      min-height:500px;
-      display:grid;
-      place-items:center;
-      text-align:center;
-    }
-
-    .placeholder-box{
-      max-width:520px;
-      padding:45px;
-      background:white;
-      border:1px solid var(--border);
-      border-radius:10px;
-    }
-
-    .placeholder-box span{
-      font-size:9px;
-      color:var(--gold);
-      letter-spacing:2px;
-      font-weight:700;
-    }
-
-    .placeholder-box h2{
-      margin-top:13px;
-      color:var(--navy);
-      font-size:25px;
-    }
-
-    .placeholder-box p{
-      margin-top:12px;
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.7;
-    }
-
-    /* RESPONSIVE */
+    .footer{display:flex;justify-content:space-between;gap:20px;color:#929aa3;font-size:9px;padding:22px 30px 30px}
+    .mobile-menu{display:none}
 
     @media(max-width:1250px){
-      .kpi-grid{
-        grid-template-columns:repeat(3,1fr);
-      }
+      .kpi-grid{grid-template-columns:repeat(3,1fr)}
+      .client-kpi-grid,.client-summary-grid{grid-template-columns:repeat(2,1fr)}
     }
-
     @media(max-width:950px){
-
-      .login-screen{
-        grid-template-columns:1fr;
-      }
-
-      .login-left{
-        display:none;
-      }
-
-      .app{
-        display:block;
-      }
-
-      .sidebar{
-        transform:translateX(-100%);
-        transition:.25s;
-      }
-
-      .sidebar.open{
-        transform:translateX(0);
-      }
-
-      .main{
-        grid-column:auto;
-      }
-
-      .mobile-menu{
-        display:inline-grid;
-        place-items:center;
-      }
-
-      .search{
-        display:none;
-      }
-
-      .dashboard-grid,
-      .dashboard-grid.equal{
-        grid-template-columns:1fr;
-      }
-
-      .insights{
-        grid-template-columns:1fr 1fr;
-      }
+      .login-screen{grid-template-columns:1fr}
+      .login-left{display:none}
+      .app{display:block}
+      .sidebar{transform:translateX(-100%);transition:.25s}
+      .sidebar.open{transform:translateX(0)}
+      .main{grid-column:auto}
+      .mobile-menu{display:inline-grid;place-items:center}
+      .search{display:none}
+      .dashboard-grid,.dashboard-grid.equal{grid-template-columns:1fr}
+      .insights{grid-template-columns:1fr 1fr}
+      .info-grid{grid-template-columns:1fr}
     }
-
     @media(max-width:650px){
-
-      .topbar{
-        padding:0 16px;
-      }
-
-      .topbar p,
-      .profile div{
-        display:none;
-      }
-
-      .content{
-        padding:18px;
-      }
-
-      .hero-row{
-        flex-direction:column;
-      }
-
-      .hero-actions{
-        width:100%;
-      }
-
-      .hero-actions button{
-        flex:1;
-      }
-
-      .kpi-grid{
-        grid-template-columns:1fr 1fr;
-      }
-
-      .kpi-value.money{
-        font-size:14px;
-      }
-
-      .collection-summary{
-        grid-template-columns:1fr;
-      }
-
-      .insights{
-        grid-template-columns:1fr;
-      }
-
-      .footer{
-        flex-direction:column;
-        padding-left:18px;
-        padding-right:18px;
-      }
+      .topbar{padding:0 16px}
+      .topbar p,.profile div{display:none}
+      .content{padding:18px}
+      .hero-row,.client-hero{flex-direction:column}
+      .hero-actions,.client-actions{width:100%}
+      .hero-actions button,.client-actions button{flex:1}
+      .kpi-grid,.client-kpi-grid,.client-summary-grid{grid-template-columns:1fr 1fr}
+      .kpi-value.money{font-size:14px}
+      .collection-summary{grid-template-columns:1fr}
+      .insights{grid-template-columns:1fr}
+      .footer{flex-direction:column;padding-left:18px;padding-right:18px}
+      .clients-toolbar{align-items:stretch}
+      .clients-toolbar-left{width:100%}
+      .clients-toolbar input,.clients-toolbar select{width:100%}
+      .client-hero-left{flex-direction:column}
     }
-
   </style>
 </head>
 
 <body>
 
-<!-- LOGIN -->
-
 <section id="loginScreen" class="login-screen">
-
   <div class="login-left">
-
     <div class="login-brand">
       <div class="login-mark">L</div>
-
       <div>
         <strong>LEXORA</strong>
         <span>LAW FIRM</span>
@@ -1002,41 +284,25 @@
     </div>
 
     <div class="login-copy">
-
       <span class="eyebrow">LEGAL MANAGEMENT SYSTEM</span>
-
-      <h1>
-        Legal operations.
-        Financial clarity.
-        One workspace.
-      </h1>
-
+      <h1>Legal operations. Financial clarity. One workspace.</h1>
       <p>
-        Manage clients, cases, hearings, professional fees,
-        invoices, collections, expenses and management reporting
-        from one integrated legal management platform.
+        Manage clients, cases, hearings, professional fees, invoices, collections,
+        expenses and management reporting from one integrated legal management platform.
       </p>
-
     </div>
 
     <div class="login-footer">
       <span>DEMO ENVIRONMENT</span>
       <span>DESIGNED BY APEX ORAIBI</span>
     </div>
-
   </div>
 
   <div class="login-right">
-
     <div class="login-card">
-
       <span class="eyebrow">WELCOME TO LEXORA</span>
-
       <h2>Sign in</h2>
-
-      <p>
-        Access the legal management demo workspace.
-      </p>
+      <p>Access the legal management demo workspace.</p>
 
       <div class="form-group">
         <label>Email Address</label>
@@ -1048,292 +314,175 @@
         <input id="password" type="password" value="demo123">
       </div>
 
-      <button class="login-btn" onclick="enterDemo()">
-        Sign In
-      </button>
+      <button class="login-btn" onclick="enterDemo()">Sign In</button>
+      <button class="demo-btn" onclick="enterDemo()">Explore Demo</button>
 
-      <button class="demo-btn" onclick="enterDemo()">
-        Explore Demo
-      </button>
-
-      <div class="login-note">
-        Demo access is for portfolio presentation purposes.
-      </div>
-
+      <div class="login-note">Demo access is for portfolio presentation purposes.</div>
     </div>
-
   </div>
-
 </section>
-
-
-<!-- APPLICATION -->
 
 <section id="application" class="app hidden">
 
   <aside id="sidebar" class="sidebar">
-
     <div class="sidebar-brand">
-
       <div class="sidebar-logo">L</div>
-
       <div>
         <strong>LEXORA</strong>
         <span>LAW FIRM</span>
       </div>
-
     </div>
 
     <div class="nav-title">WORKSPACE</div>
 
     <button class="nav-item active" data-page="dashboard">
-      <span class="nav-icon">⌂</span>
-      Dashboard
+      <span class="nav-icon">⌂</span>Dashboard
     </button>
 
     <button class="nav-item" data-page="clients">
-      <span class="nav-icon">♙</span>
-      Clients
+      <span class="nav-icon">♙</span>Clients
     </button>
 
     <button class="nav-item" data-page="cases">
-      <span class="nav-icon">⚖</span>
-      Cases
+      <span class="nav-icon">⚖</span>Cases
     </button>
 
     <button class="nav-item" data-page="hearings">
-      <span class="nav-icon">◫</span>
-      Tasks & Hearings
+      <span class="nav-icon">◫</span>Tasks & Hearings
     </button>
 
     <div class="nav-title">FINANCIAL</div>
 
     <button class="nav-item" data-page="proposals">
-      <span class="nav-icon">▤</span>
-      Proposals
+      <span class="nav-icon">▤</span>Proposals
     </button>
 
     <button class="nav-item" data-page="invoices">
-      <span class="nav-icon">▧</span>
-      Invoices
+      <span class="nav-icon">▧</span>Invoices
     </button>
 
     <button class="nav-item" data-page="collections">
-      <span class="nav-icon">↙</span>
-      Collections
+      <span class="nav-icon">↙</span>Collections
     </button>
 
     <button class="nav-item" data-page="expenses">
-      <span class="nav-icon">↗</span>
-      Expenses
+      <span class="nav-icon">↗</span>Expenses
     </button>
 
     <button class="nav-item" data-page="banking">
-      <span class="nav-icon">▣</span>
-      Banking & Treasury
+      <span class="nav-icon">▣</span>Banking & Treasury
     </button>
 
     <div class="nav-title">MANAGEMENT</div>
 
     <button class="nav-item" data-page="reports">
-      <span class="nav-icon">◩</span>
-      Reports & Analytics
+      <span class="nav-icon">◩</span>Reports & Analytics
     </button>
 
     <button class="nav-item" data-page="settings">
-      <span class="nav-icon">⚙</span>
-      Settings
+      <span class="nav-icon">⚙</span>Settings
     </button>
 
     <button class="nav-item" data-page="users">
-      <span class="nav-icon">♧</span>
-      Users & Permissions
+      <span class="nav-icon">♧</span>Users & Permissions
     </button>
 
     <button class="nav-item" data-page="audit">
-      <span class="nav-icon">◎</span>
-      Audit Log
+      <span class="nav-icon">◎</span>Audit Log
     </button>
 
     <div class="sidebar-bottom">
-
       <div class="demo-tag">
-        <span class="demo-dot"></span>
-        DEMO ENVIRONMENT
+        <span class="demo-dot"></span>DEMO ENVIRONMENT
       </div>
-
       <div class="apex">
         Designed & Developed by
         <strong>APEX ORAIBI</strong>
       </div>
-
     </div>
-
   </aside>
-
 
   <main class="main">
 
     <header class="topbar">
-
       <div style="display:flex;align-items:center;gap:12px;">
-
-        <button
-          class="top-btn mobile-menu"
-          onclick="toggleSidebar()"
-        >
-          ☰
-        </button>
-
+        <button class="top-btn mobile-menu" onclick="toggleSidebar()">☰</button>
         <div>
           <h1 id="pageTitle">Executive Dashboard</h1>
-          <p id="pageSubtitle">
-            Legal and financial performance overview
-          </p>
+          <p id="pageSubtitle">Legal and financial performance overview</p>
         </div>
-
       </div>
 
       <div class="top-actions">
-
-        <input
-          class="search"
-          placeholder="Search client, case or invoice..."
-        >
-
-        <button class="top-btn">
-          EN
-        </button>
-
-        <button class="top-btn">
-          ♢
-        </button>
-
+        <input class="search" id="globalSearch" placeholder="Search client, case or invoice...">
+        <button class="top-btn">EN</button>
+        <button class="top-btn">♢</button>
         <div class="profile">
-
           <div class="avatar">AO</div>
-
           <div>
             <strong>Ahmed Oraibi</strong>
             <span>Administrator</span>
           </div>
-
         </div>
-
       </div>
-
     </header>
 
-
     <!-- DASHBOARD -->
-
     <div id="dashboardPage">
-
       <div class="content">
 
         <div class="hero-row">
-
           <div>
-            <h2>
-              Good morning,
-              <span>Ahmed</span>
-            </h2>
-
-            <p id="currentDate">
-              Welcome to LEXORA Law Firm.
-            </p>
+            <h2>Good morning, <span>Ahmed</span></h2>
+            <p id="currentDate">Welcome to LEXORA Law Firm.</p>
           </div>
 
           <div class="hero-actions">
-
-            <button
-              class="action-btn action-secondary"
-              onclick="startTour()"
-            >
-              ▶ Start Demo Tour
-            </button>
-
-            <button
-              class="action-btn action-primary"
-            >
-              + New Action
-            </button>
-
+            <button class="action-btn action-secondary" onclick="startTour()">▶ Start Demo Tour</button>
+            <button class="action-btn action-primary">+ New Action</button>
           </div>
-
         </div>
 
-
         <div class="kpi-grid">
-
           <div class="kpi-card">
             <span class="kpi-label">Active Cases</span>
             <strong class="kpi-value">24</strong>
-            <div class="kpi-note">
-              <span class="positive">↑ 9.1%</span>
-              vs last month
-            </div>
+            <div class="kpi-note"><span class="positive">↑ 9.1%</span> vs last month</div>
           </div>
 
           <div class="kpi-card">
             <span class="kpi-label">Active Clients</span>
             <strong class="kpi-value">18</strong>
-            <div class="kpi-note">
-              <span class="positive">+3</span>
-              new this month
-            </div>
+            <div class="kpi-note"><span class="positive">+3</span> new this month</div>
           </div>
 
           <div class="kpi-card">
             <span class="kpi-label">Total Invoiced</span>
-            <strong class="kpi-value money">
-              BHD 12,450.000
-            </strong>
-            <div class="kpi-note">
-              <span class="positive">↑ 12.4%</span>
-              vs last month
-            </div>
+            <strong class="kpi-value money">BHD 12,450.000</strong>
+            <div class="kpi-note"><span class="positive">↑ 12.4%</span> vs last month</div>
           </div>
 
           <div class="kpi-card">
             <span class="kpi-label">Collected</span>
-            <strong class="kpi-value money">
-              BHD 9,780.000
-            </strong>
-            <div class="kpi-note">
-              <span class="positive">78.6%</span>
-              collection rate
-            </div>
+            <strong class="kpi-value money">BHD 9,780.000</strong>
+            <div class="kpi-note"><span class="positive">78.6%</span> collection rate</div>
           </div>
 
           <div class="kpi-card">
             <span class="kpi-label">Outstanding</span>
-            <strong class="kpi-value money">
-              BHD 2,670.000
-            </strong>
-            <div class="kpi-note">
-              <span class="warning">BHD 1,100</span>
-              overdue
-            </div>
+            <strong class="kpi-value money">BHD 2,670.000</strong>
+            <div class="kpi-note"><span class="warning">BHD 1,100</span> overdue</div>
           </div>
 
           <div class="kpi-card">
             <span class="kpi-label">Expenses</span>
-            <strong class="kpi-value money">
-              BHD 1,340.000
-            </strong>
-            <div class="kpi-note">
-              BHD 420 this month
-            </div>
+            <strong class="kpi-value money">BHD 1,340.000</strong>
+            <div class="kpi-note">BHD 420 this month</div>
           </div>
-
         </div>
 
-
         <div class="dashboard-grid">
-
           <section class="card">
-
             <div class="card-head">
               <div>
                 <h3>Revenue vs Expenses</h3>
@@ -1342,68 +491,45 @@
             </div>
 
             <div class="chart">
-
               <div class="chart-group">
                 <div class="bar revenue" style="height:52%"></div>
                 <div class="bar expense" style="height:20%"></div>
                 <span class="month">Mar</span>
               </div>
-
               <div class="chart-group">
                 <div class="bar revenue" style="height:64%"></div>
                 <div class="bar expense" style="height:28%"></div>
                 <span class="month">Apr</span>
               </div>
-
               <div class="chart-group">
                 <div class="bar revenue" style="height:70%"></div>
                 <div class="bar expense" style="height:25%"></div>
                 <span class="month">May</span>
               </div>
-
               <div class="chart-group">
                 <div class="bar revenue" style="height:66%"></div>
                 <div class="bar expense" style="height:31%"></div>
                 <span class="month">Jun</span>
               </div>
-
               <div class="chart-group">
                 <div class="bar revenue" style="height:82%"></div>
                 <div class="bar expense" style="height:27%"></div>
                 <span class="month">Jul</span>
               </div>
-
               <div class="chart-group">
                 <div class="bar revenue" style="height:94%"></div>
                 <div class="bar expense" style="height:34%"></div>
                 <span class="month">Aug</span>
               </div>
-
             </div>
 
             <div class="chart-legend">
-              <span>
-                <i
-                  class="legend-dot"
-                  style="background:#071525"
-                ></i>
-                Revenue
-              </span>
-
-              <span>
-                <i
-                  class="legend-dot"
-                  style="background:#c9a45c"
-                ></i>
-                Expenses
-              </span>
+              <span><i class="legend-dot" style="background:#071525"></i>Revenue</span>
+              <span><i class="legend-dot" style="background:#c9a45c"></i>Expenses</span>
             </div>
-
           </section>
 
-
           <section class="card">
-
             <div class="card-head">
               <div>
                 <h3>Collection Performance</h3>
@@ -1412,44 +538,24 @@
             </div>
 
             <div class="circle-meter">
-
               <div class="circle-inner">
                 <div>
                   <strong>78.6%</strong>
                   <span>COLLECTED</span>
                 </div>
               </div>
-
             </div>
 
             <div class="collection-summary">
-
-              <div>
-                <span>Total Due</span>
-                <strong>BHD 12,450</strong>
-              </div>
-
-              <div>
-                <span>Collected</span>
-                <strong>BHD 9,780</strong>
-              </div>
-
-              <div>
-                <span>Outstanding</span>
-                <strong>BHD 2,670</strong>
-              </div>
-
+              <div><span>Total Due</span><strong>BHD 12,450</strong></div>
+              <div><span>Collected</span><strong>BHD 9,780</strong></div>
+              <div><span>Outstanding</span><strong>BHD 2,670</strong></div>
             </div>
-
           </section>
-
         </div>
 
-
         <div class="dashboard-grid">
-
           <section class="card">
-
             <div class="card-head">
               <div>
                 <h3>Upcoming Hearings</h3>
@@ -1458,66 +564,28 @@
             </div>
 
             <div class="table-wrap">
-
               <table>
-
                 <thead>
                   <tr>
-                    <th>Case No.</th>
-                    <th>Client</th>
-                    <th>Court</th>
-                    <th>Lawyer</th>
-                    <th>Date</th>
-                    <th>Status</th>
+                    <th>Case No.</th><th>Client</th><th>Court</th><th>Lawyer</th><th>Date</th><th>Status</th>
                   </tr>
                 </thead>
-
                 <tbody>
-
                   <tr>
-                    <td>2026/1842</td>
-                    <td>Gulf Trading W.L.L</td>
-                    <td>High Civil Court</td>
-                    <td>Ali Hasan</td>
-                    <td>20 Aug</td>
-                    <td>
-                      <span class="status">Upcoming</span>
-                    </td>
+                    <td>2026/1842</td><td>Gulf Trading W.L.L</td><td>High Civil Court</td><td>Ali Hasan</td><td>20 Aug</td><td><span class="status">Upcoming</span></td>
                   </tr>
-
                   <tr>
-                    <td>2026/2190</td>
-                    <td>Ahmed Hassan</td>
-                    <td>Labour Court</td>
-                    <td>Sara Ahmed</td>
-                    <td>23 Aug</td>
-                    <td>
-                      <span class="status">Upcoming</span>
-                    </td>
+                    <td>2026/2190</td><td>Ahmed Hassan</td><td>Labour Court</td><td>Sara Ahmed</td><td>23 Aug</td><td><span class="status">Upcoming</span></td>
                   </tr>
-
                   <tr>
-                    <td>2026/2351</td>
-                    <td>Apex Contracting</td>
-                    <td>Execution Court</td>
-                    <td>Khalid Ali</td>
-                    <td>26 Aug</td>
-                    <td>
-                      <span class="status">Upcoming</span>
-                    </td>
+                    <td>2026/2351</td><td>Apex Contracting</td><td>Execution Court</td><td>Khalid Ali</td><td>26 Aug</td><td><span class="status">Upcoming</span></td>
                   </tr>
-
                 </tbody>
-
               </table>
-
             </div>
-
           </section>
 
-
           <section class="card">
-
             <div class="card-head">
               <div>
                 <h3>Case Overview</h3>
@@ -1526,58 +594,17 @@
             </div>
 
             <div class="case-bars">
-
-              <div class="case-bar-line">
-                <span>New</span>
-                <div class="progress">
-                  <span style="width:42%"></span>
-                </div>
-                <strong>5</strong>
-              </div>
-
-              <div class="case-bar-line">
-                <span>In Progress</span>
-                <div class="progress">
-                  <span style="width:90%"></span>
-                </div>
-                <strong>11</strong>
-              </div>
-
-              <div class="case-bar-line">
-                <span>Judgment</span>
-                <div class="progress">
-                  <span style="width:27%"></span>
-                </div>
-                <strong>3</strong>
-              </div>
-
-              <div class="case-bar-line">
-                <span>Execution</span>
-                <div class="progress">
-                  <span style="width:27%"></span>
-                </div>
-                <strong>3</strong>
-              </div>
-
-              <div class="case-bar-line">
-                <span>Closed</span>
-                <div class="progress">
-                  <span style="width:18%"></span>
-                </div>
-                <strong>2</strong>
-              </div>
-
+              <div class="case-bar-line"><span>New</span><div class="progress"><span style="width:42%"></span></div><strong>5</strong></div>
+              <div class="case-bar-line"><span>In Progress</span><div class="progress"><span style="width:90%"></span></div><strong>11</strong></div>
+              <div class="case-bar-line"><span>Judgment</span><div class="progress"><span style="width:27%"></span></div><strong>3</strong></div>
+              <div class="case-bar-line"><span>Execution</span><div class="progress"><span style="width:27%"></span></div><strong>3</strong></div>
+              <div class="case-bar-line"><span>Closed</span><div class="progress"><span style="width:18%"></span></div><strong>2</strong></div>
             </div>
-
           </section>
-
         </div>
 
-
         <div class="dashboard-grid equal">
-
           <section class="card">
-
             <div class="card-head">
               <div>
                 <h3>Recent Financial Transactions</h3>
@@ -1586,66 +613,26 @@
             </div>
 
             <div class="list">
-
               <div class="list-row">
-                <div class="list-left">
-                  <div class="list-icon">↙</div>
-                  <div>
-                    <strong>Payment Received</strong>
-                    <span>RC-2026-036 · Gulf Trading</span>
-                  </div>
-                </div>
-                <span class="amount-in">
-                  + BHD 500.000
-                </span>
+                <div class="list-left"><div class="list-icon">↙</div><div><strong>Payment Received</strong><span>RC-2026-036 · Gulf Trading</span></div></div>
+                <span class="amount-in">+ BHD 500.000</span>
               </div>
-
               <div class="list-row">
-                <div class="list-left">
-                  <div class="list-icon">↗</div>
-                  <div>
-                    <strong>Office Rent</strong>
-                    <span>EXP-2026-031 · Bank Transfer</span>
-                  </div>
-                </div>
-                <span class="amount-out">
-                  - BHD 350.000
-                </span>
+                <div class="list-left"><div class="list-icon">↗</div><div><strong>Office Rent</strong><span>EXP-2026-031 · Bank Transfer</span></div></div>
+                <span class="amount-out">- BHD 350.000</span>
               </div>
-
               <div class="list-row">
-                <div class="list-left">
-                  <div class="list-icon">▧</div>
-                  <div>
-                    <strong>Invoice Created</strong>
-                    <span>INV-2026-043 · Apex Contracting</span>
-                  </div>
-                </div>
-                <span>
-                  BHD 3,300.000
-                </span>
+                <div class="list-left"><div class="list-icon">▧</div><div><strong>Invoice Created</strong><span>INV-2026-043 · Apex Contracting</span></div></div>
+                <span>BHD 3,300.000</span>
               </div>
-
               <div class="list-row">
-                <div class="list-left">
-                  <div class="list-icon">↙</div>
-                  <div>
-                    <strong>Professional Fees</strong>
-                    <span>RC-2026-031 · Bank Transfer</span>
-                  </div>
-                </div>
-                <span class="amount-in">
-                  + BHD 1,000.000
-                </span>
+                <div class="list-left"><div class="list-icon">↙</div><div><strong>Professional Fees</strong><span>RC-2026-031 · Bank Transfer</span></div></div>
+                <span class="amount-in">+ BHD 1,000.000</span>
               </div>
-
             </div>
-
           </section>
 
-
           <section class="card">
-
             <div class="card-head">
               <div>
                 <h3>Recent Activities</h3>
@@ -1654,56 +641,15 @@
             </div>
 
             <div class="list">
-
-              <div class="list-row">
-                <div class="list-left">
-                  <div class="list-icon">⚖</div>
-                  <div>
-                    <strong>Case updated</strong>
-                    <span>Case 2026/1842 · 15 min ago</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="list-row">
-                <div class="list-left">
-                  <div class="list-icon">♙</div>
-                  <div>
-                    <strong>New client added</strong>
-                    <span>Al Noor Trading · 38 min ago</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="list-row">
-                <div class="list-left">
-                  <div class="list-icon">◫</div>
-                  <div>
-                    <strong>Hearing scheduled</strong>
-                    <span>Case 2026/2351 · 1 hour ago</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="list-row">
-                <div class="list-left">
-                  <div class="list-icon">▤</div>
-                  <div>
-                    <strong>Proposal approved</strong>
-                    <span>PR-2026-018 · 2 hours ago</span>
-                  </div>
-                </div>
-              </div>
-
+              <div class="list-row"><div class="list-left"><div class="list-icon">⚖</div><div><strong>Case updated</strong><span>Case 2026/1842 · 15 min ago</span></div></div></div>
+              <div class="list-row"><div class="list-left"><div class="list-icon">♙</div><div><strong>New client added</strong><span>Al Noor Trading · 38 min ago</span></div></div></div>
+              <div class="list-row"><div class="list-left"><div class="list-icon">◫</div><div><strong>Hearing scheduled</strong><span>Case 2026/2351 · 1 hour ago</span></div></div></div>
+              <div class="list-row"><div class="list-left"><div class="list-icon">▤</div><div><strong>Proposal approved</strong><span>PR-2026-018 · 2 hours ago</span></div></div></div>
             </div>
-
           </section>
-
         </div>
 
-
         <section class="card" style="margin-top:16px;">
-
           <div class="card-head">
             <div>
               <h3>Management Insights</h3>
@@ -1712,104 +658,258 @@
           </div>
 
           <div class="insights">
-
-            <div class="insight">
-              <strong>Collection improved</strong>
-              <p>
-                Collection performance is 8.4% higher than
-                the previous month.
-              </p>
-            </div>
-
-            <div class="insight">
-              <strong>Outstanding receivables</strong>
-              <p>
-                BHD 1,100 remains overdue and requires
-                collection follow-up.
-              </p>
-            </div>
-
-            <div class="insight">
-              <strong>Commercial matters</strong>
-              <p>
-                Commercial cases currently represent 42%
-                of professional fee revenue.
-              </p>
-            </div>
-
-            <div class="insight">
-              <strong>Legal workload</strong>
-              <p>
-                Three legal tasks require immediate
-                attention before upcoming hearings.
-              </p>
-            </div>
-
+            <div class="insight"><strong>Collection improved</strong><p>Collection performance is 8.4% higher than the previous month.</p></div>
+            <div class="insight"><strong>Outstanding receivables</strong><p>BHD 1,100 remains overdue and requires collection follow-up.</p></div>
+            <div class="insight"><strong>Commercial matters</strong><p>Commercial cases currently represent 42% of professional fee revenue.</p></div>
+            <div class="insight"><strong>Legal workload</strong><p>Three legal tasks require immediate attention before upcoming hearings.</p></div>
           </div>
-
         </section>
-
       </div>
 
       <footer class="footer">
-
-        <span>
-          © 2026 LEXORA Law Firm — Demo Environment
-        </span>
-
-        <span>
-          Designed & Developed by
-          <strong style="color:#a78035">
-            APEX ORAIBI
-          </strong>
-        </span>
-
+        <span>© 2026 LEXORA Law Firm — Demo Environment</span>
+        <span>Designed & Developed by <strong style="color:#a78035">APEX ORAIBI</strong></span>
       </footer>
-
     </div>
 
+    <!-- CLIENTS -->
+    <div id="clientsPage" class="hidden">
+      <div class="content">
 
-    <!-- PLACEHOLDER -->
+        <div class="hero-row">
+          <div>
+            <h2>Clients</h2>
+            <p>Manage client profiles, legal matters and financial balances.</p>
+          </div>
 
-    <div id="placeholderPage" class="hidden">
-
-      <div class="content placeholder">
-
-        <div class="placeholder-box">
-
-          <span>NEXT DEVELOPMENT RELEASE</span>
-
-          <h2 id="placeholderTitle">
-            Module
-          </h2>
-
-          <p>
-            This module is already included in the system
-            structure and will be activated in the next
-            development release.
-          </p>
-
-          <button
-            class="action-btn action-primary"
-            style="margin-top:22px"
-            onclick="openPage('dashboard')"
-          >
-            Back to Dashboard
-          </button>
-
+          <div class="hero-actions">
+            <button class="action-btn action-secondary">Export Excel</button>
+            <button class="action-btn action-primary" onclick="showAddClientDemo()">+ Add Client</button>
+          </div>
         </div>
 
+        <div class="client-kpi-grid">
+          <div class="kpi-card">
+            <span class="kpi-label">Total Clients</span>
+            <strong class="kpi-value">20</strong>
+            <div class="kpi-note">18 active clients</div>
+          </div>
+
+          <div class="kpi-card">
+            <span class="kpi-label">Companies</span>
+            <strong class="kpi-value">13</strong>
+            <div class="kpi-note">Corporate clients</div>
+          </div>
+
+          <div class="kpi-card">
+            <span class="kpi-label">Individuals</span>
+            <strong class="kpi-value">7</strong>
+            <div class="kpi-note">Individual clients</div>
+          </div>
+
+          <div class="kpi-card">
+            <span class="kpi-label">Outstanding</span>
+            <strong class="kpi-value money">BHD 4,550.000</strong>
+            <div class="kpi-note"><span class="warning">BHD 1,100</span> overdue</div>
+          </div>
+        </div>
+
+        <section class="card">
+          <div class="clients-toolbar">
+            <div class="clients-toolbar-left">
+              <input id="clientSearch" type="search" placeholder="Search client name, CPR or CR..." oninput="renderClients()">
+              <select id="clientTypeFilter" onchange="renderClients()">
+                <option value="">All Types</option>
+                <option value="Company">Company</option>
+                <option value="Individual">Individual</option>
+              </select>
+              <select id="clientStatusFilter" onchange="renderClients()">
+                <option value="">All Statuses</option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+              </select>
+            </div>
+
+            <span class="muted" style="font-size:10px;">
+              Click any client name to open Client 360°
+            </span>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Client ID</th>
+                  <th>Client Name</th>
+                  <th>Type</th>
+                  <th>CR / CPR</th>
+                  <th>Mobile</th>
+                  <th>Active Cases</th>
+                  <th>Outstanding</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="clientsTableBody"></tbody>
+            </table>
+          </div>
+        </section>
       </div>
 
+      <footer class="footer">
+        <span>LEXORA — Clients Module</span>
+        <span>Designed & Developed by <strong style="color:#a78035">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
+    <!-- CLIENT 360 -->
+    <div id="client360Page" class="hidden">
+      <div class="content">
+
+        <div style="margin-bottom:14px;">
+          <button class="action-btn action-secondary" onclick="openPage('clients')">← Back to Clients</button>
+        </div>
+
+        <section class="client-hero">
+          <div class="client-hero-left">
+            <div id="client360Avatar" class="client-avatar">GT</div>
+            <div>
+              <h2 id="client360Name">Gulf Trading W.L.L</h2>
+              <p id="client360Meta">Corporate Client · Bahrain</p>
+              <div class="client-tags">
+                <span id="client360TypeTag" class="pill company">Company</span>
+                <span id="client360StatusTag" class="pill active">Active</span>
+                <span class="pill" style="background:#f4f1e9;color:#8c6c2b">Client 360°</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="client-actions">
+            <button class="action-btn action-secondary">+ Add Note</button>
+            <button class="action-btn action-secondary">+ Add Case</button>
+            <button class="action-btn action-gold">Create Invoice</button>
+          </div>
+        </section>
+
+        <div class="client-summary-grid">
+          <div class="summary-card"><span>Active Cases</span><strong id="client360Cases">3</strong></div>
+          <div class="summary-card"><span>Total Invoiced</span><strong id="client360Invoiced">BHD 5,500.000</strong></div>
+          <div class="summary-card"><span>Collected</span><strong id="client360Collected">BHD 4,000.000</strong></div>
+          <div class="summary-card"><span>Outstanding</span><strong id="client360Outstanding">BHD 1,500.000</strong></div>
+        </div>
+
+        <section class="card">
+          <div class="tabs">
+            <button class="tab-btn active" data-tab="overview" onclick="openClientTab('overview', this)">Overview</button>
+            <button class="tab-btn" data-tab="cases" onclick="openClientTab('cases', this)">Cases</button>
+            <button class="tab-btn" data-tab="invoices" onclick="openClientTab('invoices', this)">Invoices</button>
+            <button class="tab-btn" data-tab="collections" onclick="openClientTab('collections', this)">Collections</button>
+            <button class="tab-btn" data-tab="documents" onclick="openClientTab('documents', this)">Documents</button>
+            <button class="tab-btn" data-tab="activity" onclick="openClientTab('activity', this)">Activity</button>
+          </div>
+
+          <div id="tab-overview" class="tab-panel active">
+            <div class="dashboard-grid equal" style="margin-top:0;">
+              <div>
+                <div class="card-head">
+                  <div>
+                    <h3>Client Information</h3>
+                    <p>Core profile and contact details</p>
+                  </div>
+                </div>
+
+                <div class="info-grid">
+                  <div class="info-item"><span>Client ID</span><strong id="infoClientId">CL-001</strong></div>
+                  <div class="info-item"><span>CR / CPR</span><strong id="infoCr">123456-1</strong></div>
+                  <div class="info-item"><span>Contact Person</span><strong id="infoContact">Mohammed Ali</strong></div>
+                  <div class="info-item"><span>Mobile</span><strong id="infoMobile">+973 3900 1001</strong></div>
+                  <div class="info-item"><span>Email</span><strong id="infoEmail">finance@gulftrading.demo</strong></div>
+                  <div class="info-item"><span>Address</span><strong id="infoAddress">Manama, Bahrain</strong></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="card-head">
+                  <div>
+                    <h3>Recent Activity</h3>
+                    <p>Latest client related actions</p>
+                  </div>
+                </div>
+
+                <div class="timeline" id="clientTimeline"></div>
+              </div>
+            </div>
+          </div>
+
+          <div id="tab-cases" class="tab-panel">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Case No.</th><th>Type</th><th>Court</th><th>Lawyer</th><th>Next Hearing</th><th>Status</th></tr>
+                </thead>
+                <tbody id="clientCasesBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="tab-invoices" class="tab-panel">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Invoice</th><th>Date</th><th>Total</th><th>Paid</th><th>Balance</th><th>Status</th></tr>
+                </thead>
+                <tbody id="clientInvoicesBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="tab-collections" class="tab-panel">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Receipt</th><th>Date</th><th>Method</th><th>Reference</th><th>Amount</th></tr>
+                </thead>
+                <tbody id="clientCollectionsBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="tab-documents" class="tab-panel">
+            <div class="list" id="clientDocumentsList"></div>
+          </div>
+
+          <div id="tab-activity" class="tab-panel">
+            <div class="timeline" id="clientActivityTimeline"></div>
+          </div>
+        </section>
+      </div>
+
+      <footer class="footer">
+        <span>LEXORA — Client 360°</span>
+        <span>Designed & Developed by <strong style="color:#a78035">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
+    <!-- PLACEHOLDER -->
+    <div id="placeholderPage" class="hidden">
+      <div class="content placeholder">
+        <div class="placeholder-box">
+          <span>NEXT DEVELOPMENT RELEASE</span>
+          <h2 id="placeholderTitle">Module</h2>
+          <p>
+            This module is already included in the system structure and will be activated in the next development release.
+          </p>
+          <button class="action-btn action-primary" style="margin-top:22px" onclick="openPage('dashboard')">
+            Back to Dashboard
+          </button>
+        </div>
+      </div>
     </div>
 
   </main>
-
 </section>
 
-
 <script>
-
   const PAGE_NAMES = {
     dashboard: "Executive Dashboard",
     clients: "Clients",
@@ -1826,142 +926,388 @@
     audit: "Audit Log"
   };
 
+  const CLIENTS = [
+    {
+      id:"CL-001",
+      name:"Gulf Trading W.L.L",
+      type:"Company",
+      cr:"123456-1",
+      mobile:"+973 3900 1001",
+      status:"Active",
+      country:"Bahrain",
+      contact:"Mohammed Ali",
+      email:"finance@gulftrading.demo",
+      address:"Manama, Bahrain",
+      activeCases:3,
+      invoiced:5500,
+      collected:4000,
+      outstanding:1500,
+      cases:[
+        ["2026/1842","Commercial","High Civil Court","Ali Hasan","20 Aug 2026","In Progress"],
+        ["2026/1730","Execution","Execution Court","Khalid Ali","29 Aug 2026","Execution"],
+        ["2025/3381","Civil","High Civil Court","Sara Ahmed","—","Closed"]
+      ],
+      invoices:[
+        ["INV-2026-041","10 Aug 2026",2200,1500,700,"Partial"],
+        ["INV-2026-045","15 Aug 2026",1650,1000,650,"Partial"],
+        ["INV-2026-048","18 Aug 2026",1650,1500,150,"Partial"]
+      ],
+      collections:[
+        ["RC-2026-031","12 Aug 2026","Bank Transfer","FT26081201",1000],
+        ["RC-2026-036","17 Aug 2026","BenefitPay","BP26081714",500],
+        ["RC-2026-040","18 Aug 2026","Bank Transfer","FT26081808",2500]
+      ],
+      documents:[
+        ["Commercial Registration.pdf","Client Documents","08 Aug 2026"],
+        ["Professional Fee Agreement.pdf","Agreements","08 Aug 2026"],
+        ["Case Documents - 2026-1842.zip","Court Documents","12 Aug 2026"]
+      ],
+      activity:[
+        ["19 Aug 2026","Case 2026/1842 updated","Next hearing and internal notes were updated."],
+        ["18 Aug 2026","Collection recorded","BHD 2,500.000 received by bank transfer."],
+        ["15 Aug 2026","Invoice INV-2026-045 issued","Professional fees invoice created."],
+        ["08 Aug 2026","Client profile created","Gulf Trading W.L.L added to LEXORA."]
+      ]
+    },
+    {
+      id:"CL-002",
+      name:"Ahmed Hassan",
+      type:"Individual",
+      cr:"900101234",
+      mobile:"+973 3600 2202",
+      status:"Active",
+      country:"Bahrain",
+      contact:"Ahmed Hassan",
+      email:"ahmed.hassan@example.demo",
+      address:"Riffa, Bahrain",
+      activeCases:1,
+      invoiced:1650,
+      collected:1650,
+      outstanding:0,
+      cases:[
+        ["2026/2190","Labour","Labour Court","Sara Ahmed","23 Aug 2026","In Progress"]
+      ],
+      invoices:[
+        ["INV-2026-042","12 Aug 2026",1650,1650,0,"Paid"]
+      ],
+      collections:[
+        ["RC-2026-034","13 Aug 2026","BenefitPay","BP26081302",1650]
+      ],
+      documents:[
+        ["CPR Copy.pdf","Client Documents","09 Aug 2026"],
+        ["Employment Contract.pdf","Case Documents","10 Aug 2026"]
+      ],
+      activity:[
+        ["13 Aug 2026","Invoice fully settled","BHD 1,650.000 received via BenefitPay."],
+        ["12 Aug 2026","Invoice INV-2026-042 issued","Labour case professional fees."],
+        ["09 Aug 2026","Client profile created","Ahmed Hassan added to LEXORA."]
+      ]
+    },
+    {
+      id:"CL-003",
+      name:"Apex Contracting W.L.L",
+      type:"Company",
+      cr:"145870-2",
+      mobile:"+973 3333 1840",
+      status:"Active",
+      country:"Bahrain",
+      contact:"Yousef Abdulla",
+      email:"accounts@apexcontracting.demo",
+      address:"Hidd, Bahrain",
+      activeCases:4,
+      invoiced:3300,
+      collected:0,
+      outstanding:3300,
+      cases:[
+        ["2026/2351","Execution","Execution Court","Khalid Ali","26 Aug 2026","Execution"],
+        ["2026/2018","Commercial","High Civil Court","Ali Hasan","01 Sep 2026","In Progress"]
+      ],
+      invoices:[
+        ["INV-2026-043","15 Aug 2026",3300,0,3300,"Unpaid"]
+      ],
+      collections:[],
+      documents:[
+        ["Commercial Registration.pdf","Client Documents","12 Aug 2026"],
+        ["Power of Attorney.pdf","Agreements","13 Aug 2026"]
+      ],
+      activity:[
+        ["18 Aug 2026","Hearing scheduled","Case 2026/2351 hearing scheduled for 26 August."],
+        ["15 Aug 2026","Invoice INV-2026-043 issued","BHD 3,300.000 currently unpaid."],
+        ["12 Aug 2026","Client profile created","Apex Contracting added to LEXORA."]
+      ]
+    },
+    {
+      id:"CL-004",
+      name:"Al Noor Trading",
+      type:"Company",
+      cr:"110022-3",
+      mobile:"+973 3888 1200",
+      status:"Active",
+      country:"Bahrain",
+      contact:"Hassan Jassim",
+      email:"admin@alnoor.demo",
+      address:"Muharraq, Bahrain",
+      activeCases:2,
+      invoiced:1100,
+      collected:800,
+      outstanding:300,
+      cases:[["2026/2410","Commercial","Minor Civil Court","Ali Hasan","02 Sep 2026","New"]],
+      invoices:[["INV-2026-046","17 Aug 2026",1100,800,300,"Partial"]],
+      collections:[["RC-2026-039","18 Aug 2026","Cash","CASH-1808",800]],
+      documents:[["CR Copy.pdf","Client Documents","17 Aug 2026"]],
+      activity:[["18 Aug 2026","Collection recorded","BHD 800.000 received in cash."],["17 Aug 2026","Client profile created","Al Noor Trading added to LEXORA."]]
+    },
+    {
+      id:"CL-005",
+      name:"Fatima Ali",
+      type:"Individual",
+      cr:"881245678",
+      mobile:"+973 3666 4100",
+      status:"Active",
+      country:"Bahrain",
+      contact:"Fatima Ali",
+      email:"fatima.ali@example.demo",
+      address:"Isa Town, Bahrain",
+      activeCases:1,
+      invoiced:750,
+      collected:500,
+      outstanding:250,
+      cases:[["2026/2104","Civil","Minor Civil Court","Sara Ahmed","05 Sep 2026","In Progress"]],
+      invoices:[["INV-2026-044","16 Aug 2026",750,500,250,"Partial"]],
+      collections:[["RC-2026-037","17 Aug 2026","BenefitPay","BP26081722",500]],
+      documents:[["CPR Copy.pdf","Client Documents","14 Aug 2026"]],
+      activity:[["17 Aug 2026","Collection recorded","BHD 500.000 received via BenefitPay."],["14 Aug 2026","Client profile created","Fatima Ali added to LEXORA."]]
+    },
+    {
+      id:"CL-006",
+      name:"Bahrain Logistics W.L.L",
+      type:"Company",
+      cr:"884411-1",
+      mobile:"+973 3777 9300",
+      status:"Inactive",
+      country:"Bahrain",
+      contact:"Omar Saleh",
+      email:"legal@bahrainlogistics.demo",
+      address:"Sitra, Bahrain",
+      activeCases:0,
+      invoiced:900,
+      collected:900,
+      outstanding:0,
+      cases:[["2025/3012","Commercial","High Civil Court","Khalid Ali","—","Closed"]],
+      invoices:[["INV-2025-098","20 Dec 2025",900,900,0,"Paid"]],
+      collections:[["RC-2025-110","28 Dec 2025","Bank Transfer","FT25122804",900]],
+      documents:[["Commercial Registration.pdf","Client Documents","15 Dec 2025"]],
+      activity:[["05 Jan 2026","Client marked inactive","No active legal matters remain."],["28 Dec 2025","Invoice fully settled","BHD 900.000 received."]]
+    }
+  ];
+
+  let currentClient = CLIENTS[0];
+
+  function formatMoney(value){
+    return "BHD " + Number(value || 0).toLocaleString("en-US",{minimumFractionDigits:3,maximumFractionDigits:3});
+  }
+
+  function initials(name){
+    return name.split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]).join("").toUpperCase();
+  }
 
   function enterDemo(){
-
-    document
-      .getElementById("loginScreen")
-      .classList
-      .add("hidden");
-
-    document
-      .getElementById("application")
-      .classList
-      .remove("hidden");
-
+    document.getElementById("loginScreen").classList.add("hidden");
+    document.getElementById("application").classList.remove("hidden");
     openPage("dashboard");
   }
 
-
   function toggleSidebar(){
-
-    document
-      .getElementById("sidebar")
-      .classList
-      .toggle("open");
+    document.getElementById("sidebar").classList.toggle("open");
   }
 
+  function hideAllPages(){
+    ["dashboardPage","clientsPage","client360Page","placeholderPage"].forEach(id=>{
+      document.getElementById(id).classList.add("hidden");
+    });
+  }
 
   function openPage(page){
-
-    document
-      .querySelectorAll(".nav-item")
-      .forEach(item => {
-
-        item.classList.toggle(
-          "active",
-          item.dataset.page === page
-        );
-
-      });
-
-    document.getElementById("pageTitle").textContent =
-      PAGE_NAMES[page] || "LEXORA";
-
-    if(page === "dashboard"){
-
-      document
-        .getElementById("dashboardPage")
-        .classList
-        .remove("hidden");
-
-      document
-        .getElementById("placeholderPage")
-        .classList
-        .add("hidden");
-
-      document.getElementById("pageSubtitle").textContent =
-        "Legal and financial performance overview";
-
-    }else{
-
-      document
-        .getElementById("dashboardPage")
-        .classList
-        .add("hidden");
-
-      document
-        .getElementById("placeholderPage")
-        .classList
-        .remove("hidden");
-
-      document
-        .getElementById("placeholderTitle")
-        .textContent = PAGE_NAMES[page];
-
-      document.getElementById("pageSubtitle").textContent =
-        "LEXORA Law Firm Management System";
-    }
-
-    if(window.innerWidth <= 950){
-
-      document
-        .getElementById("sidebar")
-        .classList
-        .remove("open");
-    }
-  }
-
-
-  document
-    .querySelectorAll(".nav-item")
-    .forEach(item => {
-
-      item.addEventListener("click", () => {
-        openPage(item.dataset.page);
-      });
-
+    document.querySelectorAll(".nav-item").forEach(item=>{
+      item.classList.toggle("active",item.dataset.page===page);
     });
 
+    document.getElementById("pageTitle").textContent = PAGE_NAMES[page] || "LEXORA";
 
-  function setCurrentDate(){
+    hideAllPages();
 
-    const date = new Date();
+    if(page==="dashboard"){
+      document.getElementById("dashboardPage").classList.remove("hidden");
+      document.getElementById("pageSubtitle").textContent="Legal and financial performance overview";
+    }else if(page==="clients"){
+      document.getElementById("clientsPage").classList.remove("hidden");
+      document.getElementById("pageSubtitle").textContent="Client profiles, legal matters and balances";
+      renderClients();
+    }else{
+      document.getElementById("placeholderPage").classList.remove("hidden");
+      document.getElementById("placeholderTitle").textContent=PAGE_NAMES[page];
+      document.getElementById("pageSubtitle").textContent="LEXORA Law Firm Management System";
+    }
 
-    const formatted =
-      new Intl.DateTimeFormat(
-        "en-GB",
-        {
-          weekday:"long",
-          day:"2-digit",
-          month:"long",
-          year:"numeric"
-        }
-      ).format(date);
-
-    document.getElementById("currentDate").textContent =
-      formatted +
-      " · Here's what's happening across the firm today.";
+    if(window.innerWidth<=950){
+      document.getElementById("sidebar").classList.remove("open");
+    }
   }
 
+  document.querySelectorAll(".nav-item").forEach(item=>{
+    item.addEventListener("click",()=>openPage(item.dataset.page));
+  });
 
-  function startTour(){
+  function renderClients(){
+    const search=(document.getElementById("clientSearch")?.value||"").trim().toLowerCase();
+    const type=document.getElementById("clientTypeFilter")?.value||"";
+    const status=document.getElementById("clientStatusFilter")?.value||"";
 
+    const rows=CLIENTS.filter(c=>{
+      const matchesSearch=!search || [c.id,c.name,c.cr,c.mobile].join(" ").toLowerCase().includes(search);
+      const matchesType=!type || c.type===type;
+      const matchesStatus=!status || c.status===status;
+      return matchesSearch && matchesType && matchesStatus;
+    }).map(c=>`
+      <tr>
+        <td>${c.id}</td>
+        <td><button class="client-name-btn" onclick="openClient360('${c.id}')">${c.name}</button></td>
+        <td><span class="pill ${c.type==='Company'?'company':'individual'}">${c.type}</span></td>
+        <td>${c.cr}</td>
+        <td>${c.mobile}</td>
+        <td>${c.activeCases}</td>
+        <td>${formatMoney(c.outstanding)}</td>
+        <td><span class="pill ${c.status==='Active'?'active':'inactive'}">${c.status}</span></td>
+        <td><button class="table-action" onclick="openClient360('${c.id}')">View 360°</button></td>
+      </tr>
+    `).join("");
+
+    document.getElementById("clientsTableBody").innerHTML = rows || `
+      <tr><td colspan="9" style="text-align:center;padding:28px;color:#7a8491;">No clients match the selected filters.</td></tr>
+    `;
+  }
+
+  function openClient360(clientId){
+    currentClient=CLIENTS.find(c=>c.id===clientId)||CLIENTS[0];
+    hideAllPages();
+    document.getElementById("client360Page").classList.remove("hidden");
+    document.getElementById("pageTitle").textContent="Client 360°";
+    document.getElementById("pageSubtitle").textContent=currentClient.name;
+    populateClient360();
+    document.querySelectorAll(".nav-item").forEach(item=>item.classList.toggle("active",item.dataset.page==="clients"));
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+
+  function populateClient360(){
+    const c=currentClient;
+
+    document.getElementById("client360Avatar").textContent=initials(c.name);
+    document.getElementById("client360Name").textContent=c.name;
+    document.getElementById("client360Meta").textContent=(c.type==="Company"?"Corporate Client":"Individual Client")+" · "+c.country;
+    document.getElementById("client360TypeTag").textContent=c.type;
+    document.getElementById("client360TypeTag").className="pill "+(c.type==="Company"?"company":"individual");
+    document.getElementById("client360StatusTag").textContent=c.status;
+    document.getElementById("client360StatusTag").className="pill "+(c.status==="Active"?"active":"inactive");
+
+    document.getElementById("client360Cases").textContent=c.activeCases;
+    document.getElementById("client360Invoiced").textContent=formatMoney(c.invoiced);
+    document.getElementById("client360Collected").textContent=formatMoney(c.collected);
+    document.getElementById("client360Outstanding").textContent=formatMoney(c.outstanding);
+
+    document.getElementById("infoClientId").textContent=c.id;
+    document.getElementById("infoCr").textContent=c.cr;
+    document.getElementById("infoContact").textContent=c.contact;
+    document.getElementById("infoMobile").textContent=c.mobile;
+    document.getElementById("infoEmail").textContent=c.email;
+    document.getElementById("infoAddress").textContent=c.address;
+
+    const activityHtml=c.activity.map(a=>`
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div>
+          <strong>${a[0]} — ${a[1]}</strong>
+          <p>${a[2]}</p>
+        </div>
+      </div>
+    `).join("");
+
+    document.getElementById("clientTimeline").innerHTML=activityHtml.slice(0) || "<p class='muted'>No recent activity.</p>";
+    document.getElementById("clientActivityTimeline").innerHTML=activityHtml || "<p class='muted'>No activity recorded.</p>";
+
+    document.getElementById("clientCasesBody").innerHTML=c.cases.map(x=>`
+      <tr>
+        <td>${x[0]}</td><td>${x[1]}</td><td>${x[2]}</td><td>${x[3]}</td><td>${x[4]}</td>
+        <td><span class="pill active">${x[5]}</span></td>
+      </tr>
+    `).join("") || `<tr><td colspan="6" style="text-align:center;padding:25px;color:#7a8491;">No cases found.</td></tr>`;
+
+    document.getElementById("clientInvoicesBody").innerHTML=c.invoices.map(x=>`
+      <tr>
+        <td>${x[0]}</td><td>${x[1]}</td><td>${formatMoney(x[2])}</td><td>${formatMoney(x[3])}</td><td>${formatMoney(x[4])}</td>
+        <td><span class="pill ${x[5]==='Paid'?'active':'company'}">${x[5]}</span></td>
+      </tr>
+    `).join("") || `<tr><td colspan="6" style="text-align:center;padding:25px;color:#7a8491;">No invoices found.</td></tr>`;
+
+    document.getElementById("clientCollectionsBody").innerHTML=c.collections.map(x=>`
+      <tr>
+        <td>${x[0]}</td><td>${x[1]}</td><td>${x[2]}</td><td>${x[3]}</td><td>${formatMoney(x[4])}</td>
+      </tr>
+    `).join("") || `<tr><td colspan="5" style="text-align:center;padding:25px;color:#7a8491;">No collections recorded.</td></tr>`;
+
+    document.getElementById("clientDocumentsList").innerHTML=c.documents.map(d=>`
+      <div class="list-row">
+        <div class="list-left">
+          <div class="list-icon">▤</div>
+          <div><strong>${d[0]}</strong><span>${d[1]} · ${d[2]}</span></div>
+        </div>
+        <button class="table-action">View</button>
+      </div>
+    `).join("") || `<p class="muted">No documents uploaded.</p>`;
+
+    openClientTab("overview",document.querySelector('.tab-btn[data-tab="overview"]'));
+  }
+
+  function openClientTab(tab,button){
+    document.querySelectorAll(".tab-panel").forEach(p=>p.classList.remove("active"));
+    document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
+    document.getElementById("tab-"+tab).classList.add("active");
+    if(button) button.classList.add("active");
+  }
+
+  function showAddClientDemo(){
     alert(
-      "LEXORA Demo Tour\n\n" +
-      "1. Executive Dashboard\n" +
-      "2. Client 360°\n" +
-      "3. Case 360°\n" +
-      "4. Professional Fee Proposal\n" +
-      "5. Invoice & Collection\n" +
-      "6. Management Reports\n\n" +
-      "The interactive guided tour will be activated as the modules are completed."
+      "Add Client — Demo\n\n"+
+      "The full client form will be activated in the next functional release.\n\n"+
+      "Fields prepared:\n"+
+      "• Client Type\n• Arabic / English Name\n• CPR / CR\n• Mobile\n• Email\n• Address\n• Contact Person\n• Status"
     );
   }
 
+  function setCurrentDate(){
+    const date=new Date();
+    const formatted=new Intl.DateTimeFormat("en-GB",{
+      weekday:"long",day:"2-digit",month:"long",year:"numeric"
+    }).format(date);
+    document.getElementById("currentDate").textContent=
+      formatted+" · Here's what's happening across the firm today.";
+  }
+
+  function startTour(){
+    alert(
+      "LEXORA Demo Tour\n\n"+
+      "1. Executive Dashboard\n"+
+      "2. Clients\n"+
+      "3. Client 360°\n"+
+      "4. Case 360°\n"+
+      "5. Professional Fee Proposal\n"+
+      "6. Invoice & Collection\n"+
+      "7. Management Reports\n\n"+
+      "Clients + Client 360° are now active in Release 1.1."
+    );
+  }
 
   setCurrentDate();
-
+  renderClients();
 </script>
 
 </body>
