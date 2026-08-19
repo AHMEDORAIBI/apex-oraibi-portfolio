@@ -604,6 +604,76 @@
       .expense-mix-grid{grid-template-columns:1fr}
     }
 
+
+    /* BANKING & TREASURY */
+    .bank-kpi-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:15px;margin-bottom:16px}
+    .bank-tabs{display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid var(--border);margin-bottom:18px}
+    .bank-tab-btn{
+      border:0;background:transparent;padding:10px 12px;font-size:10px;font-weight:700;color:var(--muted);
+      cursor:pointer;border-bottom:2px solid transparent
+    }
+    .bank-tab-btn.active{color:var(--navy);border-bottom-color:var(--emerald)}
+    .bank-panel{display:none}
+    .bank-panel.active{display:block}
+
+    .bank-account-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+    .bank-account-card{
+      background:white;border:1px solid var(--border);border-radius:8px;padding:18px;position:relative;overflow:hidden
+    }
+    .bank-account-card::after{
+      content:"";position:absolute;width:90px;height:90px;border:1px solid rgba(31,138,112,.16);border-radius:50%;
+      right:-35px;top:-35px
+    }
+    .bank-account-card .account-name{font-size:12px;font-weight:700;color:var(--navy)}
+    .bank-account-card .account-type{display:block;margin-top:4px;font-size:9px;color:var(--emerald)}
+    .bank-account-card .account-balance{display:block;margin-top:16px;font-size:21px;color:var(--navy)}
+    .bank-account-card small{display:block;margin-top:7px;font-size:9px;color:var(--muted)}
+    .bank-account-card button{margin-top:14px}
+
+    .bank-toolbar{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+    .bank-toolbar-left{display:flex;gap:10px;flex-wrap:wrap}
+    .bank-toolbar input,.bank-toolbar select{
+      height:40px;border:1px solid var(--border);border-radius:6px;background:white;padding:0 12px;font-size:11px;outline:none
+    }
+    .bank-toolbar input{width:280px}
+
+    .trx-type{display:inline-flex;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700}
+    .trx-type.collection{background:#edf5f0;color:#347b57}
+    .trx-type.expense{background:#fbeaea;color:#a74646}
+    .trx-type.transfer{background:#eef2f7;color:#36506d}
+    .trx-type.deposit{background:#f7f1e7;color:#8f6b27}
+    .trx-type.owner{background:#f0eafa;color:#6a4b91}
+    .direction-in{color:var(--success);font-weight:700}
+    .direction-out{color:var(--danger);font-weight:700}
+
+    .owner-funds-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .owner-funds-card{padding:16px;border:1px solid var(--border);border-radius:8px;background:var(--soft)}
+    .owner-funds-card span{display:block;font-size:9px;color:var(--muted)}
+    .owner-funds-card strong{display:block;margin-top:7px;font-size:16px;color:var(--navy)}
+
+    .transfer-flow{display:grid;grid-template-columns:1fr 50px 1fr;gap:12px;align-items:center}
+    .transfer-box{padding:16px;border:1px solid var(--border);border-radius:8px;background:var(--soft)}
+    .transfer-box span{display:block;font-size:9px;color:var(--muted)}
+    .transfer-box strong{display:block;margin-top:7px;font-size:12px;color:var(--navy)}
+    .transfer-arrow{text-align:center;font-size:20px;color:var(--emerald)}
+
+    @media(max-width:1250px){
+      .bank-kpi-grid{grid-template-columns:repeat(3,1fr)}
+      .bank-account-grid{grid-template-columns:repeat(2,1fr)}
+      .owner-funds-grid{grid-template-columns:repeat(2,1fr)}
+    }
+    @media(max-width:950px){
+      .transfer-flow{grid-template-columns:1fr}
+      .transfer-arrow{transform:rotate(90deg)}
+    }
+    @media(max-width:650px){
+      .bank-kpi-grid{grid-template-columns:1fr 1fr}
+      .bank-account-grid,.owner-funds-grid{grid-template-columns:1fr}
+      .bank-toolbar{align-items:stretch}
+      .bank-toolbar-left{width:100%}
+      .bank-toolbar input,.bank-toolbar select{width:100%}
+    }
+
     .placeholder{min-height:500px;display:grid;place-items:center;text-align:center}
     .placeholder-box{max-width:520px;padding:45px;background:white;border:1px solid var(--border);border-radius:10px}
     .placeholder-box span{font-size:9px;color:var(--emerald);letter-spacing:2px;font-weight:700}
@@ -2217,6 +2287,138 @@
     </div>
 
 
+
+    <!-- BANKING & TREASURY -->
+    <div id="bankingPage" class="hidden">
+      <div class="content">
+        <div class="hero-row">
+          <div>
+            <h2>Banking & Treasury</h2>
+            <p>Monitor rent collection accounts, cash, cheques, property expenses and owner funds.</p>
+          </div>
+          <div class="hero-actions">
+            <button class="action-btn action-secondary" onclick="showBankTransferDemo()">+ New Transfer</button>
+            <button class="action-btn action-secondary" onclick="showCashDepositDemo()">+ Cash Deposit</button>
+            <button class="action-btn action-primary" onclick="showOwnerSettlementDemo()">+ Owner Settlement</button>
+          </div>
+        </div>
+
+        <div class="bank-kpi-grid">
+          <div class="kpi-card"><span class="kpi-label">Total Funds</span><strong class="kpi-value money">BHD 67,840.000</strong><div class="kpi-note">Bank + Cash + Undeposited</div></div>
+          <div class="kpi-card"><span class="kpi-label">Rent Collection Bank</span><strong class="kpi-value money">BHD 54,920.000</strong><div class="kpi-note">Across collection accounts</div></div>
+          <div class="kpi-card"><span class="kpi-label">Cash on Hand</span><strong class="kpi-value money">BHD 2,470.000</strong><div class="kpi-note">Office and field cash</div></div>
+          <div class="kpi-card"><span class="kpi-label">Undeposited Cheques</span><strong class="kpi-value money">BHD 3,950.000</strong><div class="kpi-note">Pending bank deposit</div></div>
+          <div class="kpi-card"><span class="kpi-label">Owner Funds Payable</span><strong class="kpi-value money">BHD 6,500.000</strong><div class="kpi-note"><span class="warning">Awaiting distribution</span></div></div>
+          <div class="kpi-card"><span class="kpi-label">Today's Net Movement</span><strong class="kpi-value money">BHD 1,980.000</strong><div class="kpi-note"><span class="positive">Positive inflow</span></div></div>
+        </div>
+
+        <section class="card">
+          <div class="bank-tabs">
+            <button class="bank-tab-btn active" onclick="openBankTab('accounts',this)">Accounts</button>
+            <button class="bank-tab-btn" onclick="openBankTab('transactions',this)">Transactions</button>
+            <button class="bank-tab-btn" onclick="openBankTab('transfers',this)">Transfers</button>
+            <button class="bank-tab-btn" onclick="openBankTab('ownerfunds',this)">Owner Funds</button>
+            <button class="bank-tab-btn" onclick="openBankTab('cashflow',this)">Cash Flow</button>
+          </div>
+
+          <div id="bank-tab-accounts" class="bank-panel active">
+            <div id="bankAccountsGrid" class="bank-account-grid"></div>
+          </div>
+
+          <div id="bank-tab-transactions" class="bank-panel">
+            <div class="bank-toolbar">
+              <div class="bank-toolbar-left">
+                <input id="bankTransactionSearch" type="search" placeholder="Search transaction, source or reference..." oninput="renderBankTransactions()">
+                <select id="bankTransactionTypeFilter" onchange="renderBankTransactions()">
+                  <option value="">All Types</option>
+                  <option value="Collection">Collection</option>
+                  <option value="Expense">Expense</option>
+                  <option value="Transfer">Transfer</option>
+                  <option value="Deposit">Deposit</option>
+                  <option value="Owner Settlement">Owner Settlement</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Date</th><th>Transaction</th><th>Type</th><th>Source</th><th>Account</th><th>Inflow</th><th>Outflow</th><th>Reference</th></tr>
+                </thead>
+                <tbody id="bankTransactionsBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="bank-tab-transfers" class="bank-panel">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Transfer</th><th>Date</th><th>From</th><th>To</th><th>Amount</th><th>Reference</th><th>Status</th></tr></thead>
+                <tbody id="bankTransfersBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="bank-tab-ownerfunds" class="bank-panel">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Owner / Client</th><th>Gross Rent Collected</th><th>Property Expenses</th><th>Recoverable</th><th>Net Owner Funds</th><th>Status</th><th>Action</th></tr></thead>
+                <tbody id="ownerFundsBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="bank-tab-cashflow" class="bank-panel">
+            <div class="dashboard-grid equal" style="margin-top:0;">
+              <div>
+                <div class="card-head"><div><h3>Inflows</h3><p>Sources of property cash</p></div></div>
+                <div class="list">
+                  <div class="list-row"><div class="list-left"><div class="list-icon">↙</div><div><strong>Rent Collections</strong><span>Tenant receipts and arrears payments</span></div></div><strong>BHD 39,250</strong></div>
+                  <div class="list-row"><div class="list-left"><div class="list-icon">↙</div><div><strong>Recoverable Expenses</strong><span>Tenant / client recoveries</span></div></div><strong>BHD 620</strong></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="card-head"><div><h3>Outflows</h3><p>Uses of property cash</p></div></div>
+                <div class="list">
+                  <div class="list-row"><div class="list-left"><div class="list-icon">↗</div><div><strong>Property Expenses</strong><span>Maintenance, utilities and management</span></div></div><strong>BHD 6,940</strong></div>
+                  <div class="list-row"><div class="list-left"><div class="list-icon">↗</div><div><strong>Owner Settlements</strong><span>Net funds transferred to property owners</span></div></div><strong>BHD 31,600</strong></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="dashboard-grid equal">
+          <section class="card">
+            <div class="card-head"><div><h3>Recent Internal Transfer</h3><p>Movement between property accounts</p></div></div>
+            <div class="transfer-flow">
+              <div class="transfer-box"><span>From</span><strong>Cash on Hand</strong><span>BHD 2,470 balance</span></div>
+              <div class="transfer-arrow">→</div>
+              <div class="transfer-box"><span>To</span><strong>BBK Rent Collection Account</strong><span>BHD 34,120 balance</span></div>
+            </div>
+            <div class="total-line grand"><span>Transferred</span><strong>BHD 1,200.000</strong></div>
+          </section>
+
+          <section class="card">
+            <div class="card-head"><div><h3>Owner Funds Position</h3><p>Funds awaiting distribution</p></div></div>
+            <div class="owner-funds-grid">
+              <div class="owner-funds-card"><span>Approved for Payment</span><strong>BHD 6,500</strong></div>
+              <div class="owner-funds-card"><span>Pending Expense Review</span><strong>BHD 2,180</strong></div>
+              <div class="owner-funds-card"><span>Recoverable Pending</span><strong>BHD 500</strong></div>
+              <div class="owner-funds-card"><span>Settled This Month</span><strong>BHD 31,600</strong></div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <span>ESTARA — Banking & Treasury</span>
+        <span>Designed & Developed by <strong style="color:#1f8a70">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
+
     <div id="placeholderPage" class="hidden">
       <div class="content placeholder">
         <div class="placeholder-box">
@@ -3488,6 +3690,174 @@
   }
 
 
+
+  const BANK_ACCOUNTS = [
+    {name:"BBK Rent Collection Account",type:"Rent Collection Bank",balance:34120,detail:"Primary rent collection account"},
+    {name:"NBB Rent Collection Account",type:"Rent Collection Bank",balance:20800,detail:"Secondary rent collection account"},
+    {name:"BBK Operating Account",type:"Operating Bank",balance:5480,detail:"Property operating expenses"},
+    {name:"Cash on Hand",type:"Cash",balance:1870,detail:"Main office cash"},
+    {name:"Field Cash",type:"Cash",balance:600,detail:"Property manager field cash"},
+    {name:"Undeposited Cheques",type:"Clearing",balance:3950,detail:"Cheques awaiting bank deposit"}
+  ];
+
+  const BANK_TRANSACTIONS = [
+    {date:"19 Aug 2026",no:"TRX-PM-260811",type:"Collection",source:"RC-PR-260411",account:"BBK Rent Collection Account",inflow:350,outflow:0,reference:"BP-1908-01"},
+    {date:"19 Aug 2026",no:"TRX-PM-260812",type:"Collection",source:"RC-PR-260414",account:"BBK Rent Collection Account",inflow:650,outflow:0,reference:"FT-1908-03"},
+    {date:"19 Aug 2026",no:"TRX-PM-260813",type:"Expense",source:"PEX-260081",account:"BBK Operating Account",inflow:0,outflow:150,reference:"INV-CT-8821"},
+    {date:"19 Aug 2026",no:"TRX-PM-260814",type:"Deposit",source:"DEP-PM-260018",account:"BBK Rent Collection Account",inflow:1200,outflow:0,reference:"DEP-1908"},
+    {date:"19 Aug 2026",no:"TRX-PM-260815",type:"Transfer",source:"TRF-PM-260012",account:"Cash on Hand",inflow:0,outflow:1200,reference:"TRF-1908-CASH"},
+    {date:"19 Aug 2026",no:"TRX-PM-260816",type:"Owner Settlement",source:"OWN-SET-260021",account:"BBK Rent Collection Account",inflow:0,outflow:6500,reference:"OWNER-AUG-01"},
+    {date:"18 Aug 2026",no:"TRX-PM-260807",type:"Expense",source:"PEX-260083",account:"Undeposited Cheques",inflow:0,outflow:550,reference:"CHQ-88190"}
+  ];
+
+  const BANK_TRANSFERS = [
+    {no:"TRF-PM-260012",date:"19 Aug 2026",from:"Cash on Hand",to:"BBK Rent Collection Account",amount:1200,reference:"TRF-1908-CASH",status:"Posted"},
+    {no:"TRF-PM-260011",date:"18 Aug 2026",from:"NBB Rent Collection Account",to:"BBK Operating Account",amount:2500,reference:"TRF-1808-OPS",status:"Posted"}
+  ];
+
+  const OWNER_FUNDS = [
+    {owner:"Al Noor Properties",gross:12800,expenses:1050,recoverable:150,net:11900,status:"Approved"},
+    {owner:"Riffa Investments",gross:10900,expenses:400,recoverable:0,net:10500,status:"Approved"},
+    {owner:"Gulf Real Estate",gross:10200,expenses:550,recoverable:0,net:9650,status:"Pending"},
+    {owner:"Manama Holdings",gross:6200,expenses:100,recoverable:100,net:6200,status:"Pending"}
+  ];
+
+  function renderBankModule(){
+    renderBankAccounts();
+    renderBankTransactions();
+    renderBankTransfers();
+    renderOwnerFunds();
+  }
+
+  function openBankTab(tab,button){
+    document.querySelectorAll(".bank-panel").forEach(p=>p.classList.remove("active"));
+    document.querySelectorAll(".bank-tab-btn").forEach(b=>b.classList.remove("active"));
+    document.getElementById("bank-tab-"+tab).classList.add("active");
+    if(button) button.classList.add("active");
+  }
+
+  function renderBankAccounts(){
+    document.getElementById("bankAccountsGrid").innerHTML=BANK_ACCOUNTS.map(a=>`
+      <div class="bank-account-card">
+        <span class="account-name">${a.name}</span>
+        <span class="account-type">${a.type}</span>
+        <strong class="account-balance">${formatMoney(a.balance)}</strong>
+        <small>${a.detail}</small>
+        <button class="action-btn action-secondary" style="min-height:32px;padding:0 10px;font-size:9px" onclick="bankAccountDemo('${a.name.replaceAll("'","\\'")}')">View Account</button>
+      </div>
+    `).join("");
+  }
+
+  function bankTypeClass(type){
+    if(type==="Collection") return "collection";
+    if(type==="Expense") return "expense";
+    if(type==="Transfer") return "transfer";
+    if(type==="Deposit") return "deposit";
+    return "owner";
+  }
+
+  function renderBankTransactions(){
+    const search=(document.getElementById("bankTransactionSearch")?.value||"").trim().toLowerCase();
+    const type=document.getElementById("bankTransactionTypeFilter")?.value||"";
+
+    const rows=BANK_TRANSACTIONS.filter(t=>{
+      const a=!search || [t.no,t.source,t.reference,t.account].join(" ").toLowerCase().includes(search);
+      const b=!type || t.type===type;
+      return a&&b;
+    }).map(t=>`
+      <tr>
+        <td>${t.date}</td>
+        <td>${t.no}</td>
+        <td><span class="trx-type ${bankTypeClass(t.type)}">${t.type}</span></td>
+        <td>${t.source}</td>
+        <td>${t.account}</td>
+        <td class="direction-in">${t.inflow?formatMoney(t.inflow):"—"}</td>
+        <td class="direction-out">${t.outflow?formatMoney(t.outflow):"—"}</td>
+        <td>${t.reference}</td>
+      </tr>
+    `).join("");
+
+    document.getElementById("bankTransactionsBody").innerHTML=rows || `<tr><td colspan="8" style="text-align:center;padding:28px;color:#7f8b93">No banking transactions found.</td></tr>`;
+  }
+
+  function renderBankTransfers(){
+    document.getElementById("bankTransfersBody").innerHTML=BANK_TRANSFERS.map(t=>`
+      <tr>
+        <td>${t.no}</td><td>${t.date}</td><td>${t.from}</td><td>${t.to}</td>
+        <td>${formatMoney(t.amount)}</td><td>${t.reference}</td><td><span class="building-status active">${t.status}</span></td>
+      </tr>
+    `).join("");
+  }
+
+  function renderOwnerFunds(){
+    document.getElementById("ownerFundsBody").innerHTML=OWNER_FUNDS.map(f=>`
+      <tr>
+        <td>${f.owner}</td>
+        <td>${formatMoney(f.gross)}</td>
+        <td>${formatMoney(f.expenses)}</td>
+        <td>${formatMoney(f.recoverable)}</td>
+        <td>${formatMoney(f.net)}</td>
+        <td><span class="building-status ${f.status==="Approved"?"active":"inactive"}">${f.status}</span></td>
+        <td><button class="action-btn action-secondary" style="min-height:30px;padding:0 10px;font-size:9px" onclick="ownerSettlementDemo('${f.owner.replaceAll("'","\\'")}')">Settle</button></td>
+      </tr>
+    `).join("");
+  }
+
+  function bankAccountDemo(name){
+    const a=BANK_ACCOUNTS.find(x=>x.name===name);
+    if(!a) return;
+    alert(
+      "Account — Demo\\n\\n"+
+      a.name+"\\n"+
+      "Type: "+a.type+"\\n"+
+      "Balance: "+formatMoney(a.balance)+"\\n\\n"+
+      "The full version can include bank statement import and reconciliation."
+    );
+  }
+
+  function showBankTransferDemo(){
+    alert(
+      "New Transfer — Demo\\n\\n"+
+      "Prepared workflow:\\n"+
+      "• From Account\\n"+
+      "• To Account\\n"+
+      "• Date\\n"+
+      "• Amount\\n"+
+      "• Reference\\n"+
+      "• Notes"
+    );
+  }
+
+  function showCashDepositDemo(){
+    alert(
+      "Cash Deposit — Demo\\n\\n"+
+      "Move rent collected in cash from Cash on Hand / Field Cash to a rent collection bank account."
+    );
+  }
+
+  function showOwnerSettlementDemo(){
+    alert(
+      "Owner Settlement — Demo\\n\\n"+
+      "Calculate gross rent collected, deduct property expenses, adjust recoverable items and settle the net owner funds."
+    );
+  }
+
+  function ownerSettlementDemo(owner){
+    const f=OWNER_FUNDS.find(x=>x.owner===owner);
+    if(!f) return;
+
+    alert(
+      "Owner Settlement — Demo\\n\\n"+
+      "Owner: "+f.owner+"\\n"+
+      "Gross Rent: "+formatMoney(f.gross)+"\\n"+
+      "Property Expenses: "+formatMoney(f.expenses)+"\\n"+
+      "Recoverable: "+formatMoney(f.recoverable)+"\\n"+
+      "Net Owner Funds: "+formatMoney(f.net)+"\\n"+
+      "Status: "+f.status
+    );
+  }
+
+
   const PAGE_NAMES = {
     dashboard:"Property Dashboard",
     buildings:"Buildings",
@@ -3522,7 +3892,7 @@
 
     document.getElementById("pageTitle").textContent=PAGE_NAMES[page]||"ESTARA";
 
-    ["dashboardPage","buildingsPage","building360Page","unitsPage","unit360Page","tenantsPage","tenant360Page","contractsPage","contract360Page","duesPage","due360Page","collectionsPage","propertyReceipt360Page","arrearsPage","arrears360Page","expensesPage","propertyExpense360Page","placeholderPage"].forEach(id=>document.getElementById(id)?.classList.add("hidden"));
+    ["dashboardPage","buildingsPage","building360Page","unitsPage","unit360Page","tenantsPage","tenant360Page","contractsPage","contract360Page","duesPage","due360Page","collectionsPage","propertyReceipt360Page","arrearsPage","arrears360Page","expensesPage","propertyExpense360Page","bankingPage","placeholderPage"].forEach(id=>document.getElementById(id)?.classList.add("hidden"));
     if(page==="dashboard"){
       document.getElementById("dashboardPage").classList.remove("hidden");
       document.getElementById("pageSubtitle").textContent="Buildings, occupancy, rent and arrears overview";
@@ -3558,6 +3928,11 @@
       document.getElementById("expensesPage").classList.remove("hidden");
       document.getElementById("pageSubtitle").textContent="Property expenses, allocation and recoverable cost tracking";
       renderPropertyExpenses();
+    }else if(page==="banking"){
+      document.getElementById("bankingPage").classList.remove("hidden");
+      document.getElementById("pageSubtitle").textContent="Rent collection accounts, cash, cheques and owner funds";
+      renderBankModule();
+      openBankTab("accounts",document.querySelector("#bankingPage .bank-tab-btn"));
     }else{
       document.getElementById("placeholderPage").classList.remove("hidden");
       document.getElementById("placeholderTitle").textContent=PAGE_NAMES[page];
@@ -3603,7 +3978,7 @@
       "6. Monthly Dues & Collections\\n"+
       "7. Arrears\\n"+
       "8. Expenses & Reports\\n\\n"+
-      "Release 1.8 activates Property Expenses with Expense 360°, building/unit allocation and recoverable expense tracking."
+      "Release 1.9 activates Banking & Treasury with rent collection accounts, cash, undeposited cheques, transfers and owner funds settlement."
     );
   }
 
@@ -3616,6 +3991,7 @@
   renderPropertyCollections();
   renderArrears();
   renderPropertyExpenses();
+  renderBankModule();
 </script>
 
 </body>
