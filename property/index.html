@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ESTARA Property | APEX ORAIBI Demo</title>
+
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --navy:#0b1d2b;
+      --navy2:#102b3d;
+      --emerald:#1f8a70;
+      --emerald2:#70c5ae;
+      --sand:#d6b980;
+      --white:#fff;
+      --bg:#f5f7f7;
+      --text:#17232c;
+      --muted:#7f8b93;
+      --border:#e2e7e7;
+      --success:#2f8f61;
+      --warning:#c58a2c;
+      --danger:#b84b4b;
+      --soft:#fafcfc;
+    }
+
+    body{font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+    button,input,select{font-family:inherit}
+    .hidden{display:none!important}
+
+    /* LOGIN */
+    .login-screen{min-height:100vh;display:grid;grid-template-columns:1.08fr .92fr;background:white}
+    .login-left{
+      background:
+        radial-gradient(circle at 72% 22%,rgba(31,138,112,.18),transparent 28%),
+        linear-gradient(135deg,#08131d 0%,#10293b 70%,#0a1d29 100%);
+      color:#fff;padding:70px;display:flex;flex-direction:column;justify-content:space-between
+    }
+    .login-brand{display:flex;align-items:center;gap:16px}
+    .login-mark{
+      width:54px;height:54px;border:1px solid var(--emerald2);color:var(--emerald2);
+      display:grid;place-items:center;font-weight:700;font-size:18px
+    }
+    .login-brand strong{display:block;letter-spacing:2px;font-size:20px}
+    .login-brand span{display:block;margin-top:4px;color:#b7c1cc;font-size:10px;letter-spacing:2px}
+    .login-copy{max-width:650px}
+    .eyebrow{color:var(--emerald2);font-size:11px;font-weight:700;letter-spacing:3px}
+    .login-copy h1{margin-top:22px;font-size:58px;line-height:1.05;font-weight:600}
+    .login-copy p{margin-top:25px;color:#b7c1cc;font-size:16px;line-height:1.8}
+    .login-footer{display:flex;justify-content:space-between;color:#82909e;font-size:10px;letter-spacing:1.5px}
+    .login-right{display:grid;place-items:center;padding:40px}
+    .login-card{width:100%;max-width:420px}
+    .login-card h2{font-size:30px;color:var(--navy);margin-top:14px}
+    .login-card>p{margin-top:10px;color:var(--muted);font-size:14px}
+    .form-group{margin-top:24px}
+    .form-group label{display:block;margin-bottom:8px;font-size:12px;font-weight:700}
+    .form-group input{width:100%;height:48px;border:1px solid var(--border);border-radius:6px;padding:0 14px;outline:none}
+    .login-btn,.demo-btn{width:100%;height:48px;margin-top:20px;border-radius:6px;cursor:pointer;font-weight:700;border:none}
+    .login-btn{background:var(--navy);color:white}
+    .demo-btn{background:white;color:var(--navy);border:1px solid var(--border);margin-top:12px}
+    .demo-note{text-align:center;margin-top:18px;font-size:11px;color:#9aa2aa}
+
+    /* APP */
+    .app{min-height:100vh;display:grid;grid-template-columns:245px 1fr}
+    .sidebar{
+      background:var(--navy);color:white;min-height:100vh;position:fixed;left:0;top:0;width:245px;
+      padding:26px 18px;display:flex;flex-direction:column;z-index:50
+    }
+    .sidebar-brand{display:flex;align-items:center;gap:12px;padding:0 10px 24px;border-bottom:1px solid rgba(255,255,255,.08)}
+    .sidebar-logo{width:40px;height:40px;border:1px solid var(--emerald2);display:grid;place-items:center;color:var(--emerald2);font-weight:700}
+    .sidebar-brand strong{display:block;letter-spacing:1.5px;font-size:14px}
+    .sidebar-brand span{display:block;color:#8fa0af;margin-top:3px;font-size:9px;letter-spacing:1.5px}
+    .nav-title{margin:24px 10px 10px;color:#667889;font-size:9px;letter-spacing:1.6px;font-weight:700}
+    .nav-item{
+      width:100%;display:flex;align-items:center;gap:12px;padding:11px 12px;margin-bottom:4px;border:0;
+      background:transparent;color:#b8c2cb;border-radius:6px;cursor:pointer;text-align:left;font-size:13px
+    }
+    .nav-item:hover{background:rgba(255,255,255,.05);color:white}
+    .nav-item.active{background:rgba(31,138,112,.16);color:var(--emerald2)}
+    .nav-icon{width:18px;text-align:center;font-size:15px}
+    .sidebar-bottom{margin-top:auto;border-top:1px solid rgba(255,255,255,.08);padding:18px 10px 0}
+    .demo-tag{display:inline-flex;align-items:center;gap:7px;color:#b9c3cc;font-size:9px;letter-spacing:1.2px}
+    .demo-dot{width:7px;height:7px;background:#44b776;border-radius:50%}
+    .apex{margin-top:12px;color:#667889;font-size:9px;line-height:1.5}
+    .apex strong{display:block;color:var(--emerald2);margin-top:2px;letter-spacing:1px}
+
+    .main{grid-column:2;min-width:0}
+    .topbar{
+      height:78px;background:white;border-bottom:1px solid var(--border);display:flex;align-items:center;
+      justify-content:space-between;padding:0 30px;position:sticky;top:0;z-index:30
+    }
+    .topbar h1{font-size:20px;color:var(--navy)}
+    .topbar p{margin-top:4px;color:var(--muted);font-size:11px}
+    .top-actions{display:flex;align-items:center;gap:10px}
+    .search{width:260px;height:38px;border:1px solid var(--border);border-radius:6px;padding:0 12px;outline:none}
+    .top-btn{height:38px;min-width:38px;border:1px solid var(--border);background:white;border-radius:6px;cursor:pointer;color:var(--navy)}
+    .profile{display:flex;align-items:center;gap:9px;padding:4px 10px 4px 5px;border:1px solid var(--border);border-radius:7px}
+    .avatar{width:30px;height:30px;border-radius:50%;background:var(--navy);color:white;display:grid;place-items:center;font-size:10px;font-weight:700}
+    .profile strong{display:block;font-size:11px}
+    .profile span{display:block;margin-top:2px;color:var(--muted);font-size:9px}
+
+    .content{padding:30px}
+    .hero-row{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:25px}
+    .hero-row h2{font-size:26px;color:var(--navy)}
+    .hero-row h2 span{color:var(--emerald)}
+    .hero-row p{margin-top:7px;color:var(--muted);font-size:13px}
+    .hero-actions{display:flex;gap:10px}
+    .action-btn{min-height:40px;padding:0 16px;border-radius:6px;cursor:pointer;font-weight:700;font-size:12px}
+    .action-secondary{background:white;color:var(--navy);border:1px solid var(--border)}
+    .action-primary{background:var(--navy);color:white;border:1px solid var(--navy)}
+
+    .kpi-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:15px}
+    .kpi-card{background:white;border:1px solid var(--border);border-radius:8px;padding:18px}
+    .kpi-label{font-size:11px;color:var(--muted)}
+    .kpi-value{display:block;margin-top:13px;font-size:23px;color:var(--navy)}
+    .kpi-value.money{font-size:17px}
+    .kpi-note{margin-top:11px;font-size:9px;color:var(--muted)}
+    .positive{color:var(--success);font-weight:700}
+    .warning{color:var(--warning);font-weight:700}
+    .danger{color:var(--danger);font-weight:700}
+
+    .dashboard-grid{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-top:16px}
+    .dashboard-grid.equal{grid-template-columns:1fr 1fr}
+    .card{background:white;border:1px solid var(--border);border-radius:8px;padding:20px;min-width:0}
+    .card-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:18px}
+    .card-head h3{font-size:14px;color:var(--navy)}
+    .card-head p{margin-top:4px;color:var(--muted);font-size:10px}
+
+    .property-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .property-card{
+      border:1px solid var(--border);border-radius:8px;background:white;overflow:hidden
+    }
+    .property-image{
+      height:120px;background:
+        linear-gradient(rgba(7,20,29,.10),rgba(7,20,29,.10)),
+        linear-gradient(135deg,#dfe8e6,#b7cbc5);
+      position:relative
+    }
+    .building-shape{
+      position:absolute;left:24px;bottom:0;width:74px;height:90px;background:#eef3f2;border:1px solid #c7d4d1
+    }
+    .building-shape:before,.building-shape:after{
+      content:"";position:absolute;left:12px;width:12px;height:12px;background:#8fb8ad;
+      box-shadow:24px 0 0 #8fb8ad,48px 0 0 #8fb8ad,0 23px 0 #8fb8ad,24px 23px 0 #8fb8ad,48px 23px 0 #8fb8ad,0 46px 0 #8fb8ad,24px 46px 0 #8fb8ad,48px 46px 0 #8fb8ad
+    }
+    .building-shape:before{top:13px}
+    .property-card-body{padding:14px}
+    .property-card-body strong{display:block;font-size:12px;color:var(--navy)}
+    .property-card-body span{display:block;margin-top:4px;font-size:9px;color:var(--muted)}
+    .property-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+    .property-meta div{padding:8px;background:var(--soft);border-radius:5px}
+    .property-meta b{display:block;font-size:10px;color:var(--navy)}
+    .property-meta small{display:block;margin-top:3px;font-size:8px;color:var(--muted)}
+
+    .chart{height:230px;display:flex;align-items:flex-end;gap:24px;border-bottom:1px solid var(--border);padding:0 10px 12px}
+    .chart-group{flex:1;display:flex;justify-content:center;align-items:flex-end;gap:5px;height:100%;position:relative}
+    .bar{width:18px;border-radius:3px 3px 0 0}
+    .due{background:var(--navy)}
+    .collected{background:var(--emerald)}
+    .month{position:absolute;bottom:-27px;font-size:9px;color:var(--muted)}
+    .chart-legend{margin-top:34px;display:flex;gap:18px;font-size:10px;color:var(--muted)}
+    .legend-dot{width:8px;height:8px;display:inline-block;margin-right:5px;border-radius:50%}
+
+    .circle-meter{
+      width:150px;height:150px;margin:10px auto 18px;border-radius:50%;
+      background:conic-gradient(var(--emerald) 0 91.6%,#e9edf0 91.6%);display:grid;place-items:center
+    }
+    .circle-inner{width:112px;height:112px;border-radius:50%;background:white;display:grid;place-items:center;text-align:center}
+    .circle-inner strong{display:block;font-size:24px;color:var(--navy)}
+    .circle-inner span{font-size:9px;color:var(--muted)}
+    .collection-summary{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--border);padding-top:15px;gap:10px}
+    .collection-summary span{display:block;font-size:9px;color:var(--muted)}
+    .collection-summary strong{display:block;margin-top:4px;font-size:11px}
+
+    .table-wrap{overflow:auto}
+    table{width:100%;border-collapse:collapse;font-size:10px}
+    th{text-align:left;color:var(--muted);font-weight:700;padding:10px;border-bottom:1px solid var(--border);white-space:nowrap}
+    td{padding:12px 10px;border-bottom:1px solid #f0f2f4;white-space:nowrap}
+
+    .status{display:inline-flex;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700}
+    .status.paid{background:#edf5f0;color:#347b57}
+    .status.partial{background:#fbf4e5;color:#9a6d1f}
+    .status.overdue{background:#fbeaea;color:#a74646}
+    .status.vacant{background:#eef2f7;color:#36506d}
+
+    .list{display:flex;flex-direction:column}
+    .list-row{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:13px 0;border-bottom:1px solid #f0f2f4}
+    .list-left{display:flex;align-items:center;gap:11px;min-width:0}
+    .list-icon{width:34px;height:34px;flex:0 0 34px;border-radius:6px;background:#f3f5f7;display:grid;place-items:center;font-size:13px}
+    .list-row strong{display:block;font-size:11px}
+    .list-row span{display:block;margin-top:3px;font-size:9px;color:var(--muted)}
+
+    .insights{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .insight{border:1px solid var(--border);border-radius:7px;padding:16px;background:#fafbfc}
+    .insight strong{display:block;color:var(--navy);font-size:11px}
+    .insight p{margin-top:7px;color:var(--muted);font-size:10px;line-height:1.6}
+
+    .placeholder{min-height:500px;display:grid;place-items:center;text-align:center}
+    .placeholder-box{max-width:520px;padding:45px;background:white;border:1px solid var(--border);border-radius:10px}
+    .placeholder-box span{font-size:9px;color:var(--emerald);letter-spacing:2px;font-weight:700}
+    .placeholder-box h2{margin-top:13px;color:var(--navy);font-size:25px}
+    .placeholder-box p{margin-top:12px;color:var(--muted);font-size:13px;line-height:1.7}
+
+    .footer{display:flex;justify-content:space-between;gap:20px;color:#929aa3;font-size:9px;padding:22px 30px 30px}
+    .mobile-menu{display:none}
+
+    @media(max-width:1250px){
+      .kpi-grid{grid-template-columns:repeat(3,1fr)}
+      .property-grid{grid-template-columns:repeat(2,1fr)}
+    }
+    @media(max-width:950px){
+      .login-screen{grid-template-columns:1fr}
+      .login-left{display:none}
+      .app{display:block}
+      .sidebar{transform:translateX(-100%);transition:.25s}
+      .sidebar.open{transform:translateX(0)}
+      .main{grid-column:auto}
+      .mobile-menu{display:inline-grid;place-items:center}
+      .search{display:none}
+      .dashboard-grid,.dashboard-grid.equal{grid-template-columns:1fr}
+      .insights{grid-template-columns:1fr 1fr}
+    }
+    @media(max-width:650px){
+      .topbar{padding:0 16px}
+      .topbar p,.profile div{display:none}
+      .content{padding:18px}
+      .hero-row{flex-direction:column}
+      .hero-actions{width:100%}
+      .hero-actions button{flex:1}
+      .kpi-grid{grid-template-columns:1fr 1fr}
+      .property-grid{grid-template-columns:1fr}
+      .collection-summary{grid-template-columns:1fr}
+      .insights{grid-template-columns:1fr}
+      .footer{flex-direction:column;padding-left:18px;padding-right:18px}
+    }
+  </style>
+</head>
+
+<body>
+
+<section id="loginScreen" class="login-screen">
+  <div class="login-left">
+    <div class="login-brand">
+      <div class="login-mark">E</div>
+      <div>
+        <strong>ESTARA</strong>
+        <span>PROPERTY MANAGEMENT</span>
+      </div>
+    </div>
+
+    <div class="login-copy">
+      <span class="eyebrow">PROPERTY MANAGEMENT SYSTEM</span>
+      <h1>Buildings, tenants and rent. One clear view.</h1>
+      <p>
+        Manage buildings, units, tenants, contracts, monthly rent, collections,
+        arrears and property performance from one modern property platform.
+      </p>
+    </div>
+
+    <div class="login-footer">
+      <span>DEMO ENVIRONMENT</span>
+      <span>DESIGNED BY APEX ORAIBI</span>
+    </div>
+  </div>
+
+  <div class="login-right">
+    <div class="login-card">
+      <span class="eyebrow">WELCOME TO ESTARA</span>
+      <h2>Sign in</h2>
+      <p>Access the property management demo workspace.</p>
+
+      <div class="form-group">
+        <label>Email Address</label>
+        <input value="demo@estara.local">
+      </div>
+
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" value="demo123">
+      </div>
+
+      <button class="login-btn" onclick="enterDemo()">Sign In</button>
+      <button class="demo-btn" onclick="enterDemo()">Explore Demo</button>
+
+      <div class="demo-note">Demo access is for portfolio presentation purposes.</div>
+    </div>
+  </div>
+</section>
+
+<section id="application" class="app hidden">
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-logo">E</div>
+      <div>
+        <strong>ESTARA</strong>
+        <span>PROPERTY MANAGEMENT</span>
+      </div>
+    </div>
+
+    <div class="nav-title">PROPERTY</div>
+    <button class="nav-item active" data-page="dashboard"><span class="nav-icon">⌂</span>Dashboard</button>
+    <button class="nav-item" data-page="buildings"><span class="nav-icon">▥</span>Buildings</button>
+    <button class="nav-item" data-page="units"><span class="nav-icon">▦</span>Units</button>
+    <button class="nav-item" data-page="tenants"><span class="nav-icon">♙</span>Tenants</button>
+    <button class="nav-item" data-page="contracts"><span class="nav-icon">▤</span>Contracts</button>
+
+    <div class="nav-title">RENT & COLLECTION</div>
+    <button class="nav-item" data-page="dues"><span class="nav-icon">◫</span>Monthly Dues</button>
+    <button class="nav-item" data-page="collections"><span class="nav-icon">↙</span>Collections</button>
+    <button class="nav-item" data-page="arrears"><span class="nav-icon">!</span>Arrears</button>
+    <button class="nav-item" data-page="expenses"><span class="nav-icon">↗</span>Property Expenses</button>
+    <button class="nav-item" data-page="banking"><span class="nav-icon">▣</span>Banking & Treasury</button>
+
+    <div class="nav-title">MANAGEMENT</div>
+    <button class="nav-item" data-page="reports"><span class="nav-icon">◩</span>Reports & Analytics</button>
+    <button class="nav-item" data-page="users"><span class="nav-icon">♧</span>Users & Permissions</button>
+    <button class="nav-item" data-page="settings"><span class="nav-icon">⚙</span>Settings</button>
+    <button class="nav-item" data-page="audit"><span class="nav-icon">◎</span>Audit Log</button>
+
+    <div class="sidebar-bottom">
+      <div class="demo-tag"><span class="demo-dot"></span>DEMO ENVIRONMENT</div>
+      <div class="apex">Designed & Developed by<strong>APEX ORAIBI</strong></div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <button class="top-btn mobile-menu" onclick="toggleSidebar()">☰</button>
+        <div>
+          <h1 id="pageTitle">Property Dashboard</h1>
+          <p id="pageSubtitle">Buildings, occupancy, rent and arrears overview</p>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <input class="search" placeholder="Search building, unit or tenant...">
+        <button class="top-btn">EN</button>
+        <button class="top-btn">♢</button>
+        <div class="profile">
+          <div class="avatar">AO</div>
+          <div><strong>Ahmed Oraibi</strong><span>Administrator</span></div>
+        </div>
+      </div>
+    </header>
+
+    <div id="dashboardPage">
+      <div class="content">
+
+        <div class="hero-row">
+          <div>
+            <h2>Good afternoon, <span>Ahmed</span></h2>
+            <p id="currentDate">Welcome to ESTARA Property Management.</p>
+          </div>
+
+          <div class="hero-actions">
+            <button class="action-btn action-secondary" onclick="startTour()">▶ Start Demo Tour</button>
+            <button class="action-btn action-primary" onclick="quickAction()">+ New Action</button>
+          </div>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <span class="kpi-label">Buildings</span>
+            <strong class="kpi-value">12</strong>
+            <div class="kpi-note">Across 5 locations</div>
+          </div>
+
+          <div class="kpi-card">
+            <span class="kpi-label">Total Units</span>
+            <strong class="kpi-value">186</strong>
+            <div class="kpi-note">Residential & commercial</div>
+          </div>
+
+          <div class="kpi-card">
+            <span class="kpi-label">Occupied Units</span>
+            <strong class="kpi-value">171</strong>
+            <div class="kpi-note"><span class="positive">91.9%</span> occupancy</div>
+          </div>
+
+          <div class="kpi-card">
+            <span class="kpi-label">Monthly Rent Due</span>
+            <strong class="kpi-value money">BHD 42,850.000</strong>
+            <div class="kpi-note">August 2026</div>
+          </div>
+
+          <div class="kpi-card">
+            <span class="kpi-label">Collected</span>
+            <strong class="kpi-value money">BHD 39,250.000</strong>
+            <div class="kpi-note"><span class="positive">91.6%</span> collection rate</div>
+          </div>
+
+          <div class="kpi-card">
+            <span class="kpi-label">Arrears</span>
+            <strong class="kpi-value money">BHD 7,480.000</strong>
+            <div class="kpi-note"><span class="danger">31 overdue dues</span></div>
+          </div>
+        </div>
+
+        <div class="dashboard-grid">
+          <section class="card">
+            <div class="card-head">
+              <div><h3>Monthly Rent Performance</h3><p>Due versus collected rent — last 6 months</p></div>
+            </div>
+
+            <div class="chart">
+              <div class="chart-group"><div class="bar due" style="height:72%"></div><div class="bar collected" style="height:66%"></div><span class="month">Mar</span></div>
+              <div class="chart-group"><div class="bar due" style="height:76%"></div><div class="bar collected" style="height:70%"></div><span class="month">Apr</span></div>
+              <div class="chart-group"><div class="bar due" style="height:82%"></div><div class="bar collected" style="height:74%"></div><span class="month">May</span></div>
+              <div class="chart-group"><div class="bar due" style="height:86%"></div><div class="bar collected" style="height:80%"></div><span class="month">Jun</span></div>
+              <div class="chart-group"><div class="bar due" style="height:90%"></div><div class="bar collected" style="height:84%"></div><span class="month">Jul</span></div>
+              <div class="chart-group"><div class="bar due" style="height:96%"></div><div class="bar collected" style="height:88%"></div><span class="month">Aug</span></div>
+            </div>
+
+            <div class="chart-legend">
+              <span><i class="legend-dot" style="background:#0b1d2b"></i>Rent Due</span>
+              <span><i class="legend-dot" style="background:#1f8a70"></i>Collected</span>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-head">
+              <div><h3>Collection Performance</h3><p>Current month rent collection</p></div>
+            </div>
+
+            <div class="circle-meter">
+              <div class="circle-inner"><div><strong>91.6%</strong><span>COLLECTED</span></div></div>
+            </div>
+
+            <div class="collection-summary">
+              <div><span>Due</span><strong>BHD 42,850</strong></div>
+              <div><span>Collected</span><strong>BHD 39,250</strong></div>
+              <div><span>Balance</span><strong>BHD 3,600</strong></div>
+            </div>
+          </section>
+        </div>
+
+        <section class="card" style="margin-top:16px;">
+          <div class="card-head">
+            <div><h3>Property Portfolio</h3><p>Top buildings by occupancy and collection</p></div>
+          </div>
+
+          <div class="property-grid">
+            <article class="property-card">
+              <div class="property-image"><div class="building-shape"></div></div>
+              <div class="property-card-body">
+                <strong>Seef Residence</strong>
+                <span>Seef District · Residential</span>
+                <div class="property-meta">
+                  <div><b>32</b><small>Units</small></div>
+                  <div><b>100%</b><small>Occupied</small></div>
+                  <div><b>96%</b><small>Collected</small></div>
+                </div>
+              </div>
+            </article>
+
+            <article class="property-card">
+              <div class="property-image"><div class="building-shape" style="width:88px;height:82px"></div></div>
+              <div class="property-card-body">
+                <strong>Riffa Plaza</strong>
+                <span>East Riffa · Mixed Use</span>
+                <div class="property-meta">
+                  <div><b>24</b><small>Units</small></div>
+                  <div><b>92%</b><small>Occupied</small></div>
+                  <div><b>91%</b><small>Collected</small></div>
+                </div>
+              </div>
+            </article>
+
+            <article class="property-card">
+              <div class="property-image"><div class="building-shape" style="width:64px;height:96px"></div></div>
+              <div class="property-card-body">
+                <strong>Juffair Heights</strong>
+                <span>Juffair · Residential</span>
+                <div class="property-meta">
+                  <div><b>28</b><small>Units</small></div>
+                  <div><b>89%</b><small>Occupied</small></div>
+                  <div><b>87%</b><small>Collected</small></div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <div class="dashboard-grid">
+          <section class="card">
+            <div class="card-head">
+              <div><h3>Arrears Watchlist</h3><p>Tenants requiring immediate follow-up</p></div>
+            </div>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Tenant</th><th>Building</th><th>Unit</th><th>Months</th><th>Arrears</th><th>Last Payment</th><th>Status</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Ahmed Salman</td><td>Juffair Heights</td><td>1204</td><td>2</td><td>BHD 900.000</td><td>10 Jun 2026</td><td><span class="status overdue">Overdue</span></td></tr>
+                  <tr><td>Al Noor Trading</td><td>Riffa Plaza</td><td>GF-03</td><td>1</td><td>BHD 650.000</td><td>05 Jul 2026</td><td><span class="status partial">Partial</span></td></tr>
+                  <tr><td>Fatima Ali</td><td>Seef Residence</td><td>804</td><td>1</td><td>BHD 420.000</td><td>01 Jul 2026</td><td><span class="status overdue">Overdue</span></td></tr>
+                  <tr><td>Hassan Ahmed</td><td>Juffair Heights</td><td>703</td><td>1</td><td>BHD 390.000</td><td>29 Jun 2026</td><td><span class="status overdue">Overdue</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-head">
+              <div><h3>Vacancy Snapshot</h3><p>Available units ready for leasing</p></div>
+            </div>
+
+            <div class="list">
+              <div class="list-row"><div class="list-left"><div class="list-icon">▦</div><div><strong>Seef Residence · 605</strong><span>2 Bedroom Apartment</span></div></div><strong>BHD 450</strong></div>
+              <div class="list-row"><div class="list-left"><div class="list-icon">▦</div><div><strong>Riffa Plaza · 1F-08</strong><span>Office Unit</span></div></div><strong>BHD 380</strong></div>
+              <div class="list-row"><div class="list-left"><div class="list-icon">▦</div><div><strong>Juffair Heights · 901</strong><span>1 Bedroom Apartment</span></div></div><strong>BHD 340</strong></div>
+              <div class="list-row"><div class="list-left"><div class="list-icon">▦</div><div><strong>Juffair Heights · 1002</strong><span>2 Bedroom Apartment</span></div></div><strong>BHD 430</strong></div>
+            </div>
+          </section>
+        </div>
+
+        <div class="dashboard-grid equal">
+          <section class="card">
+            <div class="card-head"><div><h3>Recent Collections</h3><p>Latest tenant payments</p></div></div>
+            <div class="list">
+              <div class="list-row"><div class="list-left"><div class="list-icon">↙</div><div><strong>BHD 450 received</strong><span>Seef Residence · Unit 605</span></div></div><span>Today</span></div>
+              <div class="list-row"><div class="list-left"><div class="list-icon">↙</div><div><strong>BHD 650 received</strong><span>Riffa Plaza · GF-03</span></div></div><span>Today</span></div>
+              <div class="list-row"><div class="list-left"><div class="list-icon">↙</div><div><strong>BHD 390 received</strong><span>Juffair Heights · 703</span></div></div><span>Yesterday</span></div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-head"><div><h3>Contract Alerts</h3><p>Upcoming expiries and renewals</p></div></div>
+            <div class="list">
+              <div class="list-row"><div class="list-left"><div class="list-icon">▤</div><div><strong>5 contracts expire this month</strong><span>Renewal follow-up required</span></div></div></div>
+              <div class="list-row"><div class="list-left"><div class="list-icon">▤</div><div><strong>2 contracts pending renewal</strong><span>Awaiting tenant confirmation</span></div></div></div>
+              <div class="list-row"><div class="list-left"><div class="list-icon">▤</div><div><strong>3 rent reviews due</strong><span>September 2026</span></div></div></div>
+            </div>
+          </section>
+        </div>
+
+        <section class="card" style="margin-top:16px;">
+          <div class="card-head"><div><h3>Management Insights</h3><p>Highlights from current property data</p></div></div>
+          <div class="insights">
+            <div class="insight"><strong>91.9% occupancy</strong><p>Portfolio occupancy remains strong across the active buildings.</p></div>
+            <div class="insight"><strong>BHD 7,480 arrears</strong><p>Focused follow-up is required on 31 overdue monthly dues.</p></div>
+            <div class="insight"><strong>15 vacant units</strong><p>Vacancy concentration is highest in Juffair Heights.</p></div>
+            <div class="insight"><strong>5 contracts expiring</strong><p>Renewal actions should be completed before month-end.</p></div>
+          </div>
+        </section>
+
+      </div>
+
+      <footer class="footer">
+        <span>© 2026 ESTARA Property — Demo Environment</span>
+        <span>Designed & Developed by <strong style="color:#1f8a70">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
+    <div id="placeholderPage" class="hidden">
+      <div class="content placeholder">
+        <div class="placeholder-box">
+          <span>NEXT DEVELOPMENT RELEASE</span>
+          <h2 id="placeholderTitle">Module</h2>
+          <p>This module is already prepared in the navigation and will be activated in the next development release.</p>
+          <button class="action-btn action-primary" style="margin-top:22px" onclick="openPage('dashboard')">Back to Dashboard</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</section>
+
+<script>
+  const PAGE_NAMES = {
+    dashboard:"Property Dashboard",
+    buildings:"Buildings",
+    units:"Units",
+    tenants:"Tenants",
+    contracts:"Contracts",
+    dues:"Monthly Dues",
+    collections:"Collections",
+    arrears:"Arrears",
+    expenses:"Property Expenses",
+    banking:"Banking & Treasury",
+    reports:"Reports & Analytics",
+    users:"Users & Permissions",
+    settings:"Settings",
+    audit:"Audit Log"
+  };
+
+  function enterDemo(){
+    document.getElementById("loginScreen").classList.add("hidden");
+    document.getElementById("application").classList.remove("hidden");
+    openPage("dashboard");
+  }
+
+  function toggleSidebar(){
+    document.getElementById("sidebar").classList.toggle("open");
+  }
+
+  function openPage(page){
+    document.querySelectorAll(".nav-item").forEach(item=>{
+      item.classList.toggle("active",item.dataset.page===page);
+    });
+
+    document.getElementById("pageTitle").textContent=PAGE_NAMES[page]||"ESTARA";
+
+    if(page==="dashboard"){
+      document.getElementById("dashboardPage").classList.remove("hidden");
+      document.getElementById("placeholderPage").classList.add("hidden");
+      document.getElementById("pageSubtitle").textContent="Buildings, occupancy, rent and arrears overview";
+    }else{
+      document.getElementById("dashboardPage").classList.add("hidden");
+      document.getElementById("placeholderPage").classList.remove("hidden");
+      document.getElementById("placeholderTitle").textContent=PAGE_NAMES[page];
+      document.getElementById("pageSubtitle").textContent="ESTARA Property Management System";
+    }
+
+    if(window.innerWidth<=950){
+      document.getElementById("sidebar").classList.remove("open");
+    }
+  }
+
+  document.querySelectorAll(".nav-item").forEach(item=>{
+    item.addEventListener("click",()=>openPage(item.dataset.page));
+  });
+
+  function setCurrentDate(){
+    const date=new Date();
+    const formatted=new Intl.DateTimeFormat("en-GB",{weekday:"long",day:"2-digit",month:"long",year:"numeric"}).format(date);
+    document.getElementById("currentDate").textContent=formatted+" · Here's what's happening across your property portfolio today.";
+  }
+
+  function quickAction(){
+    alert(
+      "Quick Action — Demo\\n\\n"+
+      "• Add Building\\n"+
+      "• Add Unit\\n"+
+      "• Add Tenant\\n"+
+      "• Create Contract\\n"+
+      "• Record Collection\\n"+
+      "• Add Property Expense\\n"+
+      "• View Arrears"
+    );
+  }
+
+  function startTour(){
+    alert(
+      "ESTARA Demo Tour\\n\\n"+
+      "1. Property Dashboard\\n"+
+      "2. Buildings & Building 360°\\n"+
+      "3. Units\\n"+
+      "4. Tenants & Tenant 360°\\n"+
+      "5. Contracts\\n"+
+      "6. Monthly Dues & Collections\\n"+
+      "7. Arrears\\n"+
+      "8. Expenses & Reports\\n\\n"+
+      "Release 1.0 activates the executive property dashboard."
+    );
+  }
+
+  setCurrentDate();
+</script>
+
+</body>
+</html>
