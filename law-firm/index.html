@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LEXORA Law Firm | APEX ORAIBI Demo</title>
+  <title>LEXORA Law Firm | APEX ORAIBI Demo — Bilingual</title>
 
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
@@ -1060,7 +1060,40 @@
       .clients-toolbar input,.clients-toolbar select{width:100%}
       .client-hero-left{flex-direction:column}
     }
-  </style>
+  
+    /* RELEASE 1.11 — BILINGUAL AR / EN */
+    .lang-switcher{
+      display:inline-flex;align-items:center;gap:3px;padding:3px;border:1px solid var(--border);
+      border-radius:7px;background:#fff;flex:0 0 auto
+    }
+    .lang-btn{
+      border:0;background:transparent;color:var(--muted);height:30px;padding:0 10px;border-radius:5px;
+      font-size:10px;font-weight:800;cursor:pointer
+    }
+    .lang-btn.active{background:var(--navy);color:#fff;box-shadow:0 1px 2px rgba(11,29,43,.14)}
+    html[dir="rtl"] body{direction:rtl;text-align:right;font-family:Tahoma,Arial,Helvetica,sans-serif}
+    html[dir="rtl"] .app{grid-template-columns:1fr 245px}
+    html[dir="rtl"] .sidebar{right:0;left:auto}
+    html[dir="rtl"] .main{grid-column:1}
+    html[dir="rtl"] .nav-item{text-align:right}
+    html[dir="rtl"] th,html[dir="rtl"] td{text-align:right}
+    html[dir="rtl"] .permission-table td,html[dir="rtl"] .permission-table th{text-align:center}
+    html[dir="rtl"] .permission-table td:first-child,html[dir="rtl"] .permission-table th:first-child{text-align:right}
+    html[dir="rtl"] .agenda{padding-left:0;padding-right:20px}
+    html[dir="rtl"] .agenda::before{left:auto;right:5px}
+    html[dir="rtl"] .agenda-item{padding-left:0;padding-right:12px}
+    html[dir="rtl"] .agenda-item::before{left:auto;right:-19px}
+    html[dir="rtl"] .totals-box{margin-left:0;margin-right:auto}
+    html[dir="rtl"] .legend-dot{margin-right:0;margin-left:5px}
+    html[dir="rtl"] input,html[dir="rtl"] select,html[dir="rtl"] textarea{direction:rtl;text-align:right}
+    @media(max-width:950px){
+      html[dir="rtl"] .app{display:block}
+      html[dir="rtl"] .sidebar{transform:translateX(100%)}
+      html[dir="rtl"] .sidebar.open{transform:translateX(0)}
+      html[dir="rtl"] .main{grid-column:auto}
+    }
+
+</style>
 </head>
 
 <body>
@@ -1207,7 +1240,10 @@
 
       <div class="top-actions">
         <input class="search" id="globalSearch" placeholder="Search client, case or invoice...">
-        <button class="top-btn">EN</button>
+        <div class="lang-switcher" aria-label="Language">
+          <button id="langEnBtn" class="lang-btn active" type="button" onclick="setLexoraLanguage('en')">EN</button>
+          <button id="langArBtn" class="lang-btn" type="button" onclick="setLexoraLanguage('ar')">العربية</button>
+        </div>
         <button class="top-btn">♢</button>
         <div class="profile">
           <div class="avatar">AO</div>
@@ -5997,6 +6033,160 @@
   renderTreasuryModule();
   renderUsers();
   renderAuditLog();
+</script>
+
+
+<script>
+/* =========================================================
+   LEXORA Release 1.11 — Arabic / English Interface
+   ========================================================= */
+const LEXORA_AR = {
+  "Executive Dashboard":"لوحة التحكم التنفيذية",
+  "Legal and financial performance overview":"نظرة عامة على الأداء القانوني والمالي",
+  "Dashboard":"لوحة التحكم","Clients":"العملاء","Cases":"القضايا",
+  "Tasks & Hearings":"المهام والجلسات","Proposals":"عروض الأتعاب","Invoices":"الفواتير",
+  "Collections":"التحصيلات","Expenses":"المصروفات","Banking & Treasury":"البنوك والخزينة",
+  "Reports & Analytics":"التقارير والتحليلات","Settings":"الإعدادات",
+  "Users & Permissions":"المستخدمون والصلاحيات","Audit Log":"سجل التدقيق",
+  "WORKSPACE":"مساحة العمل","FINANCIAL":"المالية","MANAGEMENT":"الإدارة",
+  "LEGAL MANAGEMENT SYSTEM":"نظام الإدارة القانونية","WELCOME TO LEXORA":"مرحبًا بك في LEXORA",
+  "Sign in":"تسجيل الدخول","Sign In":"تسجيل الدخول","Explore Demo":"استعراض النسخة التجريبية",
+  "Email Address":"البريد الإلكتروني","Password":"كلمة المرور",
+  "Demo access is for portfolio presentation purposes.":"الدخول التجريبي مخصص لأغراض عرض المحفظة.",
+  "Good morning,":"صباح الخير،","Welcome to LEXORA Law Firm.":"مرحبًا بك في LEXORA للمحاماة.",
+  "Start Demo Tour":"بدء الجولة التجريبية","New Action":"إجراء جديد",
+  "Active Cases":"القضايا النشطة","Active Clients":"العملاء النشطون",
+  "Total Invoiced":"إجمالي المفوتر","Collected":"المحصل","Outstanding":"المستحق","Expenses":"المصروفات",
+  "Revenue vs Expenses":"الإيرادات مقابل المصروفات","Last 6 months financial performance":"الأداء المالي لآخر 6 أشهر",
+  "Revenue":"الإيرادات","Collection Performance":"أداء التحصيل","Current receivables performance":"أداء الذمم المدينة الحالية",
+  "COLLECTED":"المحصل","Total Due":"إجمالي المستحق","Upcoming Hearings":"الجلسات القادمة",
+  "Next scheduled court hearings":"الجلسات القضائية المجدولة القادمة","Case Overview":"نظرة عامة على القضايا",
+  "Current case distribution":"توزيع القضايا الحالي","New":"جديد","In Progress":"قيد المتابعة",
+  "Judgment":"حكم","Execution":"تنفيذ","Closed":"مغلق",
+  "Recent Financial Transactions":"أحدث الحركات المالية","Latest financial movements":"أحدث الحركات المالية",
+  "Payment Received":"تم استلام دفعة","Office Rent":"إيجار المكتب","Invoice Created":"تم إنشاء فاتورة",
+  "Professional Fees":"أتعاب مهنية","Recent Activities":"أحدث الأنشطة","Latest legal and system updates":"أحدث التحديثات القانونية والنظامية",
+  "Case updated":"تم تحديث القضية","New client added":"تمت إضافة عميل جديد","Hearing scheduled":"تمت جدولة جلسة",
+  "Proposal approved":"تم اعتماد عرض الأتعاب","Management Insights":"مؤشرات الإدارة",
+  "Highlights generated from current demo data":"أبرز المؤشرات المستخرجة من البيانات التجريبية الحالية",
+  "Clients Module":"قسم العملاء","Manage client profiles, legal matters and financial balances.":"إدارة ملفات العملاء والقضايا والأرصدة المالية.",
+  "Export Excel":"تصدير Excel","+ Add Client":"+ إضافة عميل","Total Clients":"إجمالي العملاء",
+  "Companies":"الشركات","Individuals":"الأفراد","Search client name, CPR or CR...":"ابحث باسم العميل أو CPR أو CR...",
+  "All Types":"جميع الأنواع","Company":"شركة","Individual":"فرد","All Statuses":"جميع الحالات",
+  "Active":"نشط","Inactive":"غير نشط","Client ID":"رقم العميل","Client Name":"اسم العميل","Type":"النوع",
+  "CR / CPR":"السجل / الرقم الشخصي","Mobile":"الهاتف","Active Cases":"القضايا النشطة","Status":"الحالة","Action":"الإجراء",
+  "Click any client name to open Client 360°":"اضغط على اسم العميل لفتح عرض العميل 360°",
+  "Back to Clients":"العودة إلى العملاء","Corporate Client":"عميل شركة","Client 360°":"العميل 360°",
+  "Add Note":"إضافة ملاحظة","Add Case":"إضافة قضية","Create Invoice":"إنشاء فاتورة",
+  "Total Invoiced":"إجمالي المفوتر","Client Information":"بيانات العميل","Core profile and contact details":"بيانات الملف والتواصل الأساسية",
+  "Contact Person":"جهة الاتصال","Email":"البريد الإلكتروني","Address":"العنوان","Recent Activity":"النشاط الأخير",
+  "Latest client related actions":"أحدث الإجراءات المتعلقة بالعميل","Documents":"المستندات","Activity":"النشاط",
+  "Case No.":"رقم القضية","Court":"المحكمة","Lawyer":"المحامي","Next Hearing":"الجلسة القادمة",
+  "Invoice":"الفاتورة","Date":"التاريخ","Total":"الإجمالي","Paid":"مدفوع","Balance":"الرصيد",
+  "Receipt":"الإيصال","Method":"الطريقة","Reference":"المرجع","Amount":"المبلغ",
+  "Manage legal matters, court progress, hearings and case financials.":"إدارة القضايا وسير المحاكم والجلسات والجوانب المالية.",
+  "New Case":"قضية جديدة","Total Cases":"إجمالي القضايا","Upcoming Hearings":"الجلسات القادمة",
+  "Claim Value":"قيمة المطالبة","Search case no., client or opponent...":"ابحث برقم القضية أو العميل أو الخصم...",
+  "All Lawyers":"جميع المحامين","Opponent":"الخصم","Claim":"المطالبة","Health":"الحالة العامة",
+  "On Track":"على المسار","Attention":"يحتاج متابعة","Critical":"حرج","Back to Cases":"العودة إلى القضايا",
+  "Overview":"نظرة عامة","Tasks":"المهام","Hearings":"الجلسات","Financials":"البيانات المالية",
+  "Calendar":"التقويم","My Day":"يومي","Upcoming":"قادم","Completed":"مكتمل","Adjourned":"مؤجل",
+  "Cancelled":"ملغي","Pending":"معلق","Overdue":"متأخر","High":"عالية","Medium":"متوسطة","Low":"منخفضة",
+  "Professional Fee Proposals":"عروض الأتعاب المهنية","Add Proposal":"إضافة عرض أتعاب","Proposal":"عرض الأتعاب",
+  "Draft":"مسودة","Sent":"مرسل","Approved":"معتمد","Rejected":"مرفوض","Invoiced":"مفوتر",
+  "Scope of Work":"نطاق العمل","Payment Plan":"خطة السداد","Subtotal":"المجموع الفرعي",
+  "VAT":"ضريبة القيمة المضافة","Net Total":"الصافي الإجمالي","Tax Mode":"الوضع الضريبي",
+  "Inclusive":"شامل","Exclusive":"غير شامل","Add Invoice":"إضافة فاتورة","Unpaid":"غير مدفوع","Partial":"جزئي",
+  "Add Collection":"إضافة تحصيل","Allocated":"مخصص","Unallocated":"غير مخصص",
+  "Add Expense":"إضافة مصروف","Office":"مكتب","Case Expense":"مصروف قضية","Recoverable":"قابل للاسترداد",
+  "Bank Accounts":"الحسابات البنكية","Transactions":"الحركات","Transfers":"التحويلات",
+  "Client Funds":"أموال العملاء","Cash Flow":"التدفق النقدي","Cash on Hand":"النقد بالصندوق",
+  "Cheque":"شيك","Bank Transfer":"تحويل بنكي","Cash":"نقدًا","BenefitPay":"بنفت بي",
+  "Reports":"التقارير","Report Preview":"معاينة التقرير","Executive Summary":"الملخص التنفيذي",
+  "VAT Report":"تقرير ضريبة القيمة المضافة","Cash Flow & Treasury":"التدفق النقدي والخزينة",
+  "Firm Performance":"أداء المكتب","Company Profile":"بيانات الشركة","Branding":"الهوية البصرية",
+  "Financial Settings":"الإعدادات المالية","Currency":"العملة","VAT Rate":"نسبة ضريبة القيمة المضافة",
+  "Default Tax Mode":"الوضع الضريبي الافتراضي","Primary Color":"اللون الأساسي","Accent Color":"اللون المميز",
+  "Document Footer":"تذييل المستند","Logo File":"ملف الشعار","Save Settings":"حفظ الإعدادات",
+  "Reset Demo Data":"إعادة ضبط البيانات التجريبية","Role":"الدور","Department":"القسم","Last Login":"آخر دخول",
+  "Administrator":"مدير النظام","Partner":"شريك","Accountant":"محاسب","Reception":"الاستقبال",
+  "Permission Matrix":"مصفوفة الصلاحيات","Module":"القسم","Admin":"المشرف","Full":"كامل","View":"عرض","Limited":"محدود",
+  "Create":"إنشاء","Update":"تحديث","Reverse":"عكس","Login":"تسجيل دخول",
+  "Date & Time":"التاريخ والوقت","User":"المستخدم","Description":"الوصف",
+  "Designed & Developed by":"تصميم وتطوير","DEMO ENVIRONMENT":"بيئة تجريبية",
+  "Search client, case or invoice...":"ابحث عن عميل أو قضية أو فاتورة..."
+};
+
+const LEXORA_ORIGINAL_TEXT = new WeakMap();
+const LEXORA_ORIGINAL_ATTR = new WeakMap();
+let LEXORA_LANG = "en";
+let LEXORA_OBSERVER = null;
+let LEXORA_APPLYING = false;
+
+function lexoraTranslateString(value){
+  if(LEXORA_LANG!=="ar") return value;
+  let out=value;
+  Object.keys(LEXORA_AR).sort((a,b)=>b.length-a.length).forEach(k=>{
+    if(out.includes(k)) out=out.split(k).join(LEXORA_AR[k]);
+  });
+  return out;
+}
+
+function applyLexoraLanguage(){
+  if(LEXORA_APPLYING) return;
+  LEXORA_APPLYING=true;
+  if(LEXORA_OBSERVER) LEXORA_OBSERVER.disconnect();
+
+  document.documentElement.lang=LEXORA_LANG==="ar"?"ar":"en";
+  document.documentElement.dir=LEXORA_LANG==="ar"?"rtl":"ltr";
+
+  const en=document.getElementById("langEnBtn");
+  const ar=document.getElementById("langArBtn");
+  if(en) en.classList.toggle("active",LEXORA_LANG==="en");
+  if(ar) ar.classList.toggle("active",LEXORA_LANG==="ar");
+
+  document.querySelectorAll("body *").forEach(el=>{
+    if(el.closest(".lang-switcher")) return;
+    if(["SCRIPT","STYLE","INPUT","TEXTAREA"].includes(el.tagName)) return;
+
+    Array.from(el.childNodes).forEach(node=>{
+      if(node.nodeType!==Node.TEXT_NODE || !node.nodeValue.trim()) return;
+      if(!LEXORA_ORIGINAL_TEXT.has(node)) LEXORA_ORIGINAL_TEXT.set(node,node.nodeValue);
+      const original=LEXORA_ORIGINAL_TEXT.get(node);
+      node.nodeValue=LEXORA_LANG==="ar"?lexoraTranslateString(original):original;
+    });
+  });
+
+  document.querySelectorAll("input[placeholder],textarea[placeholder]").forEach(el=>{
+    if(!LEXORA_ORIGINAL_ATTR.has(el)) LEXORA_ORIGINAL_ATTR.set(el,el.placeholder);
+    const original=LEXORA_ORIGINAL_ATTR.get(el);
+    el.placeholder=LEXORA_LANG==="ar"?lexoraTranslateString(original):original;
+  });
+
+  LEXORA_APPLYING=false;
+  if(LEXORA_OBSERVER){
+    LEXORA_OBSERVER.observe(document.body,{childList:true,subtree:true});
+  }
+}
+
+function setLexoraLanguage(lang){
+  LEXORA_LANG=lang==="ar"?"ar":"en";
+  try{localStorage.setItem("lexoraLanguage",LEXORA_LANG)}catch(e){}
+  applyLexoraLanguage();
+}
+
+function initLexoraLanguage(){
+  let saved="en";
+  try{saved=localStorage.getItem("lexoraLanguage")||"en"}catch(e){}
+  LEXORA_LANG=saved==="ar"?"ar":"en";
+  applyLexoraLanguage();
+  LEXORA_OBSERVER=new MutationObserver(()=>{
+    if(!LEXORA_APPLYING) requestAnimationFrame(applyLexoraLanguage);
+  });
+  LEXORA_OBSERVER.observe(document.body,{childList:true,subtree:true});
+}
+
+window.addEventListener("load",initLexoraLanguage);
 </script>
 
 </body>
