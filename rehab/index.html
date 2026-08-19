@@ -1,1 +1,581 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VITALIS Rehabilitation Center | APEX ORAIBI Demo</title>
+<style>
+:root{
+  --sidebar:#0d2130;
+  --navy:#102b3b;
+  --teal:#2c8f87;
+  --teal-soft:#eaf6f4;
+  --mint:#dff3ee;
+  --gold:#caa45c;
+  --bg:#f5f7f8;
+  --white:#ffffff;
+  --text:#11212c;
+  --muted:#74828d;
+  --border:#dfe6ea;
+  --success:#2f8f62;
+  --warning:#b9842e;
+  --danger:#b84a4a;
+  --shadow:0 8px 30px rgba(16,43,59,.06);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%}
+body{
+  font-family:Inter,Segoe UI,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  font-size:13px;
+}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.app{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
 
+/* SIDEBAR */
+.sidebar{
+  background:linear-gradient(180deg,#0b1d2b 0%,#102737 100%);
+  color:#fff;
+  padding:18px 14px;
+  display:flex;
+  flex-direction:column;
+  position:sticky;
+  top:0;
+  height:100vh;
+}
+.brand{
+  display:flex;align-items:center;gap:11px;
+  padding:4px 8px 18px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.brand-mark{
+  width:38px;height:38px;border:1px solid var(--teal);
+  display:grid;place-items:center;color:#9de1d9;font-weight:800;
+  border-radius:5px;
+}
+.brand strong{display:block;font-size:13px;letter-spacing:1.6px}
+.brand span{display:block;font-size:8px;letter-spacing:1.3px;color:#9ab6c6;margin-top:2px}
+.nav-section{margin-top:22px}
+.nav-label{
+  font-size:8px;letter-spacing:1.6px;color:#6f91a4;
+  padding:0 10px 8px;font-weight:700;
+}
+.nav-item{
+  display:flex;align-items:center;gap:10px;
+  color:#dce8ef;text-decoration:none;
+  padding:10px 10px;border-radius:6px;margin-bottom:4px;
+  font-size:11px;transition:.18s;
+}
+.nav-item:hover{background:rgba(255,255,255,.06)}
+.nav-item.active{background:rgba(44,143,135,.18);color:#73d2c8}
+.nav-icon{width:16px;text-align:center;color:#7ccac1}
+.sidebar-footer{
+  margin-top:auto;border-top:1px solid rgba(255,255,255,.08);
+  padding:14px 8px 0;color:#8aa8b8;font-size:8px;line-height:1.7;
+}
+.sidebar-footer strong{color:#70cec3;letter-spacing:1px}
+
+/* MAIN */
+.main{min-width:0}
+.topbar{
+  height:68px;background:#fff;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;position:sticky;top:0;z-index:50;
+}
+.page-heading h1{font-size:18px;color:var(--navy)}
+.page-heading p{font-size:9px;color:var(--muted);margin-top:3px}
+.top-actions{display:flex;align-items:center;gap:8px}
+.search{
+  width:245px;height:38px;border:1px solid var(--border);
+  border-radius:6px;padding:0 12px;outline:none;background:#fff;
+  font-size:10px;
+}
+.top-btn{
+  height:38px;min-width:38px;border:1px solid var(--border);
+  border-radius:6px;background:#fff;color:var(--navy);
+  font-size:10px;font-weight:700;padding:0 10px;
+}
+.lang-switch{
+  display:flex;border:1px solid var(--teal);border-radius:6px;overflow:hidden;height:38px;
+}
+.lang-switch button{
+  border:0;background:#fff;color:var(--navy);min-width:48px;padding:0 10px;font-size:10px;font-weight:800;
+}
+.lang-switch button.active{background:var(--teal);color:#fff}
+.profile{display:flex;align-items:center;gap:9px;border:1px solid var(--border);border-radius:7px;padding:5px 8px}
+.avatar{
+  width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;
+  font-size:9px;font-weight:800
+}
+.profile strong{display:block;font-size:9px}
+.profile span{display:block;color:var(--muted);font-size:8px;margin-top:1px}
+
+/* CONTENT */
+.content{padding:24px}
+.hero-row{
+  display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:18px
+}
+.hero-row h2{font-size:24px;color:var(--navy)}
+.hero-row h2 span{color:var(--teal)}
+.hero-row p{margin-top:6px;color:var(--muted);font-size:10px}
+.hero-actions{display:flex;gap:8px}
+.action-btn{
+  min-height:38px;border-radius:6px;border:1px solid var(--border);
+  padding:0 13px;font-size:10px;font-weight:700;background:#fff;color:var(--navy)
+}
+.action-btn.primary{background:var(--navy);color:#fff;border-color:var(--navy)}
+.action-btn.teal{background:var(--teal);color:#fff;border-color:var(--teal)}
+
+/* KPI */
+.kpi-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:16px}
+.kpi-card{
+  background:#fff;border:1px solid var(--border);border-radius:8px;padding:16px;min-height:102px
+}
+.kpi-label{display:block;font-size:9px;color:var(--muted)}
+.kpi-value{display:block;margin-top:10px;font-size:20px;color:var(--navy);font-weight:800}
+.kpi-note{margin-top:7px;font-size:8px;color:var(--muted)}
+.positive{color:var(--success);font-weight:700}
+.warning{color:var(--warning);font-weight:700}
+.danger{color:var(--danger);font-weight:700}
+
+/* CARDS */
+.dashboard-grid{display:grid;grid-template-columns:1.55fr .85fr;gap:16px;margin-bottom:16px}
+.dashboard-grid.equal{grid-template-columns:1fr 1fr}
+.card{
+  background:#fff;border:1px solid var(--border);border-radius:8px;padding:16px;box-shadow:var(--shadow)
+}
+.card-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:14px}
+.card-head h3{font-size:13px;color:var(--navy)}
+.card-head p{font-size:8px;color:var(--muted);margin-top:4px}
+.card-link{border:0;background:transparent;color:var(--teal);font-size:9px;font-weight:700}
+
+/* WEEK FLOW */
+.week-row{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+.day{
+  border:1px solid var(--border);border-radius:7px;padding:10px;background:#fafcfc;min-height:96px
+}
+.day.today{border-color:#8fd0c9;background:#eef9f7}
+.day strong{font-size:9px;color:var(--navy)}
+.day span{display:block;font-size:8px;color:var(--muted);margin-top:2px}
+.day b{
+  display:block;margin-top:12px;font-size:18px;color:var(--navy)
+}
+.day small{display:block;margin-top:3px;font-size:8px;color:var(--teal)}
+
+/* LISTS */
+.list{display:flex;flex-direction:column}
+.list-row{
+  display:flex;justify-content:space-between;gap:12px;align-items:center;
+  padding:11px 0;border-bottom:1px solid #edf1f3
+}
+.list-row:last-child{border-bottom:0}
+.list-left{display:flex;gap:10px;align-items:center}
+.list-icon{
+  width:34px;height:34px;border-radius:8px;background:var(--teal-soft);color:var(--teal);
+  display:grid;place-items:center;font-weight:800;font-size:10px
+}
+.list-row strong{display:block;font-size:9px;color:var(--navy)}
+.list-row span{display:block;font-size:8px;color:var(--muted);margin-top:3px}
+.badge{
+  display:inline-flex;padding:5px 8px;border-radius:20px;font-size:8px;font-weight:700
+}
+.badge.confirmed{background:#e9f6ef;color:#337f59}
+.badge.waiting{background:#fbf3e4;color:#9c7025}
+.badge.in-session{background:#e7f4f2;color:#207b73}
+.badge.cancelled{background:#fbeaea;color:#a74646}
+
+/* SESSION PROGRESS */
+.progress-row{display:grid;grid-template-columns:1fr 90px 50px;gap:10px;align-items:center;padding:10px 0}
+.progress-row strong{font-size:9px;color:var(--navy)}
+.progress-track{height:7px;border-radius:10px;background:#e9edef;overflow:hidden}
+.progress-fill{height:100%;background:var(--teal);border-radius:10px}
+.progress-row span{font-size:9px;color:var(--muted);text-align:right}
+
+/* TABLE */
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse}
+th{
+  text-align:left;font-size:8px;color:var(--muted);font-weight:700;
+  padding:10px;border-bottom:1px solid var(--border);white-space:nowrap
+}
+td{
+  padding:11px 10px;border-bottom:1px solid #edf1f3;font-size:9px;white-space:nowrap
+}
+td strong{color:var(--navy)}
+
+/* DONUT */
+.donut-wrap{display:grid;place-items:center;padding:8px}
+.donut{
+  width:150px;height:150px;border-radius:50%;
+  background:conic-gradient(var(--teal) 0 74%,#dfe5e8 74% 100%);
+  display:grid;place-items:center;position:relative
+}
+.donut::after{content:"";position:absolute;width:105px;height:105px;border-radius:50%;background:#fff}
+.donut-center{position:relative;z-index:1;text-align:center}
+.donut-center strong{display:block;font-size:24px;color:var(--navy)}
+.donut-center span{display:block;font-size:8px;color:var(--muted);margin-top:2px}
+
+/* PLACEHOLDER */
+.placeholder{
+  min-height:65vh;background:#fff;border:1px solid var(--border);border-radius:8px;
+  display:grid;place-items:center;text-align:center;padding:30px
+}
+.placeholder h2{font-size:22px;color:var(--navy)}
+.placeholder p{margin-top:7px;color:var(--muted);font-size:10px}
+.hidden{display:none!important}
+.footer{
+  display:flex;justify-content:space-between;gap:15px;padding:16px 24px;
+  border-top:1px solid var(--border);font-size:8px;color:var(--muted);background:#fff
+}
+
+/* RTL */
+html[dir="rtl"] body{direction:rtl;text-align:right;font-family:Tahoma,Arial,sans-serif}
+html[dir="rtl"] .app{grid-template-columns:1fr 230px}
+html[dir="rtl"] .sidebar{grid-column:2}
+html[dir="rtl"] .main{grid-column:1;grid-row:1}
+html[dir="rtl"] .nav-item{text-align:right}
+html[dir="rtl"] th,html[dir="rtl"] td{text-align:right}
+html[dir="rtl"] .progress-row span{text-align:left}
+html[dir="rtl"] input{text-align:right;direction:rtl}
+
+@media(max-width:1200px){
+  .kpi-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:950px){
+  .app{display:block}
+  .sidebar{display:none}
+  .dashboard-grid,.dashboard-grid.equal{grid-template-columns:1fr}
+  .topbar{padding:0 14px}
+  .content{padding:16px}
+  .search{display:none}
+  .week-row{grid-template-columns:repeat(4,1fr)}
+}
+@media(max-width:650px){
+  .kpi-grid{grid-template-columns:1fr 1fr}
+  .hero-row{align-items:flex-start;flex-direction:column}
+  .hero-actions{width:100%}
+  .hero-actions button{flex:1}
+  .profile{display:none}
+  .week-row{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">V</div>
+      <div>
+        <strong>VITALIS</strong>
+        <span>REHABILITATION CENTER</span>
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label" data-i18n="WORKSPACE">WORKSPACE</div>
+      <a class="nav-item active" href="#" data-page="dashboard" onclick="openPage('dashboard');return false;"><span class="nav-icon">⌂</span><span data-i18n="Dashboard">Dashboard</span></a>
+      <a class="nav-item" href="#" data-page="patients" onclick="openPage('patients');return false;"><span class="nav-icon">♙</span><span data-i18n="Patients">Patients</span></a>
+      <a class="nav-item" href="#" data-page="appointments" onclick="openPage('appointments');return false;"><span class="nav-icon">▦</span><span data-i18n="Appointments">Appointments</span></a>
+      <a class="nav-item" href="#" data-page="treatment" onclick="openPage('treatment');return false;"><span class="nav-icon">✚</span><span data-i18n="Treatment Plans">Treatment Plans</span></a>
+      <a class="nav-item" href="#" data-page="sessions" onclick="openPage('sessions');return false;"><span class="nav-icon">◉</span><span data-i18n="Therapy Sessions">Therapy Sessions</span></a>
+      <a class="nav-item" href="#" data-page="therapists" onclick="openPage('therapists');return false;"><span class="nav-icon">♧</span><span data-i18n="Therapists">Therapists</span></a>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label" data-i18n="FINANCIAL">FINANCIAL</div>
+      <a class="nav-item" href="#" data-page="billing" onclick="openPage('billing');return false;"><span class="nav-icon">▤</span><span data-i18n="Billing">Billing</span></a>
+      <a class="nav-item" href="#" data-page="collections" onclick="openPage('collections');return false;"><span class="nav-icon">✓</span><span data-i18n="Collections">Collections</span></a>
+      <a class="nav-item" href="#" data-page="expenses" onclick="openPage('expenses');return false;"><span class="nav-icon">↗</span><span data-i18n="Expenses">Expenses</span></a>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label" data-i18n="MANAGEMENT">MANAGEMENT</div>
+      <a class="nav-item" href="#" data-page="reports" onclick="openPage('reports');return false;"><span class="nav-icon">◩</span><span data-i18n="Reports & Analytics">Reports & Analytics</span></a>
+      <a class="nav-item" href="#" data-page="users" onclick="openPage('users');return false;"><span class="nav-icon">♙</span><span data-i18n="Users & Permissions">Users & Permissions</span></a>
+      <a class="nav-item" href="#" data-page="settings" onclick="openPage('settings');return false;"><span class="nav-icon">⚙</span><span data-i18n="Settings">Settings</span></a>
+      <a class="nav-item" href="#" data-page="audit" onclick="openPage('audit');return false;"><span class="nav-icon">⊙</span><span data-i18n="Audit Log">Audit Log</span></a>
+    </div>
+
+    <div class="sidebar-footer">
+      <div>● <span data-i18n="DEMO ENVIRONMENT">DEMO ENVIRONMENT</span></div>
+      <div style="margin-top:8px" data-i18n="Designed & Developed by">Designed & Developed by</div>
+      <strong>APEX ORAIBI</strong>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="page-heading">
+        <h1 id="pageTitle" data-i18n="Dashboard">Dashboard</h1>
+        <p id="pageSubtitle" data-i18n="Clinical, therapy and financial performance overview">Clinical, therapy and financial performance overview</p>
+      </div>
+
+      <div class="top-actions">
+        <input class="search" data-i18n-placeholder="Search patient, appointment or invoice..." placeholder="Search patient, appointment or invoice...">
+
+        <div class="lang-switch" aria-label="Language">
+          <button id="langEn" class="active" onclick="setLanguage('en')">EN</button>
+          <button id="langAr" onclick="setLanguage('ar')">عربي</button>
+        </div>
+
+        <button class="top-btn">◇</button>
+
+        <div class="profile">
+          <div class="avatar">AO</div>
+          <div><strong>Ahmed Oraibi</strong><span data-i18n="Administrator">Administrator</span></div>
+        </div>
+      </div>
+    </header>
+
+    <section id="dashboardPage">
+      <div class="content">
+        <div class="hero-row">
+          <div>
+            <h2><span data-i18n="Good morning,">Good morning,</span> <span>Ahmed</span></h2>
+            <p id="currentDate">Thursday, 20 August 2026 · Here's what's happening across the center today.</p>
+          </div>
+          <div class="hero-actions">
+            <button class="action-btn" onclick="startDemoTour()">▶ <span data-i18n="Start Demo Tour">Start Demo Tour</span></button>
+            <button class="action-btn primary">+ <span data-i18n="New Action">New Action</span></button>
+          </div>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi-card"><span class="kpi-label" data-i18n="Appointments Today">Appointments Today</span><strong class="kpi-value">28</strong><div class="kpi-note"><span class="positive">↑ 4</span> <span data-i18n="vs yesterday">vs yesterday</span></div></div>
+          <div class="kpi-card"><span class="kpi-label" data-i18n="Active Patients">Active Patients</span><strong class="kpi-value">214</strong><div class="kpi-note"><span class="positive">+12</span> <span data-i18n="this month">this month</span></div></div>
+          <div class="kpi-card"><span class="kpi-label" data-i18n="Sessions Today">Sessions Today</span><strong class="kpi-value">34</strong><div class="kpi-note">29 <span data-i18n="completed / confirmed">completed / confirmed</span></div></div>
+          <div class="kpi-card"><span class="kpi-label" data-i18n="Monthly Billing">Monthly Billing</span><strong class="kpi-value">BHD 18,640</strong><div class="kpi-note"><span class="positive">↑ 8.6%</span> <span data-i18n="vs last month">vs last month</span></div></div>
+          <div class="kpi-card"><span class="kpi-label" data-i18n="Collected">Collected</span><strong class="kpi-value">BHD 15,920</strong><div class="kpi-note"><span class="positive">85.4%</span> <span data-i18n="collection rate">collection rate</span></div></div>
+          <div class="kpi-card"><span class="kpi-label" data-i18n="Outstanding">Outstanding</span><strong class="kpi-value">BHD 2,720</strong><div class="kpi-note"><span class="warning">BHD 940</span> <span data-i18n="overdue">overdue</span></div></div>
+        </div>
+
+        <div class="dashboard-grid">
+          <section class="card">
+            <div class="card-head">
+              <div><h3 data-i18n="Appointments This Week">Appointments This Week</h3><p data-i18n="Scheduled patient activity">Scheduled patient activity</p></div>
+              <button class="card-link" data-i18n="View Calendar">View Calendar</button>
+            </div>
+
+            <div class="week-row">
+              <div class="day"><strong data-i18n="Mon">Mon</strong><span>17 Aug</span><b>24</b><small>3 <span data-i18n="new patients">new patients</span></small></div>
+              <div class="day"><strong data-i18n="Tue">Tue</strong><span>18 Aug</span><b>31</b><small>5 <span data-i18n="new patients">new patients</span></small></div>
+              <div class="day"><strong data-i18n="Wed">Wed</strong><span>19 Aug</span><b>29</b><small>2 <span data-i18n="new patients">new patients</span></small></div>
+              <div class="day today"><strong data-i18n="Thu">Thu</strong><span>20 Aug</span><b>28</b><small data-i18n="Today">Today</small></div>
+              <div class="day"><strong data-i18n="Fri">Fri</strong><span>21 Aug</span><b>22</b><small>4 <span data-i18n="new patients">new patients</span></small></div>
+              <div class="day"><strong data-i18n="Sat">Sat</strong><span>22 Aug</span><b>14</b><small data-i18n="Reduced hours">Reduced hours</small></div>
+              <div class="day"><strong data-i18n="Sun">Sun</strong><span>23 Aug</span><b>0</b><small data-i18n="Closed">Closed</small></div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-head">
+              <div><h3 data-i18n="Session Completion">Session Completion</h3><p data-i18n="Today's therapy progress">Today's therapy progress</p></div>
+            </div>
+            <div class="donut-wrap">
+              <div class="donut">
+                <div class="donut-center"><strong>74%</strong><span data-i18n="COMPLETED">COMPLETED</span></div>
+              </div>
+            </div>
+            <div class="list-row"><span data-i18n="Scheduled Sessions">Scheduled Sessions</span><strong>34</strong></div>
+            <div class="list-row"><span data-i18n="Completed">Completed</span><strong>25</strong></div>
+            <div class="list-row"><span data-i18n="Remaining">Remaining</span><strong>9</strong></div>
+          </section>
+        </div>
+
+        <div class="dashboard-grid">
+          <section class="card">
+            <div class="card-head">
+              <div><h3 data-i18n="Today's Appointments">Today's Appointments</h3><p data-i18n="Next scheduled patient visits">Next scheduled patient visits</p></div>
+              <button class="card-link" data-i18n="View All">View All</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th data-i18n="Time">Time</th><th data-i18n="Patient">Patient</th><th data-i18n="Service">Service</th><th data-i18n="Therapist">Therapist</th><th data-i18n="Room">Room</th><th data-i18n="Status">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>09:00</td><td><strong>Fatima Ali</strong></td><td>Physiotherapy</td><td>Dr. Sara Ahmed</td><td>PT-02</td><td><span class="badge confirmed" data-i18n="Confirmed">Confirmed</span></td></tr>
+                  <tr><td>09:30</td><td><strong>Ahmed Salman</strong></td><td>Occupational Therapy</td><td>Maryam Hasan</td><td>OT-01</td><td><span class="badge in-session" data-i18n="In Session">In Session</span></td></tr>
+                  <tr><td>10:00</td><td><strong>Noor Hussain</strong></td><td>Speech Therapy</td><td>Layla Mohammed</td><td>ST-03</td><td><span class="badge confirmed" data-i18n="Confirmed">Confirmed</span></td></tr>
+                  <tr><td>10:30</td><td><strong>Yousef Khalid</strong></td><td>Physiotherapy</td><td>Dr. Sara Ahmed</td><td>PT-01</td><td><span class="badge waiting" data-i18n="Waiting">Waiting</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-head">
+              <div><h3 data-i18n="Therapist Utilization">Therapist Utilization</h3><p data-i18n="Today's booked capacity">Today's booked capacity</p></div>
+            </div>
+            <div class="progress-row"><strong>Dr. Sara Ahmed</strong><div class="progress-track"><div class="progress-fill" style="width:92%"></div></div><span>92%</span></div>
+            <div class="progress-row"><strong>Maryam Hasan</strong><div class="progress-track"><div class="progress-fill" style="width:84%"></div></div><span>84%</span></div>
+            <div class="progress-row"><strong>Layla Mohammed</strong><div class="progress-track"><div class="progress-fill" style="width:78%"></div></div><span>78%</span></div>
+            <div class="progress-row"><strong>Hassan Ali</strong><div class="progress-track"><div class="progress-fill" style="width:69%"></div></div><span>69%</span></div>
+            <div class="progress-row"><strong>Reem Yusuf</strong><div class="progress-track"><div class="progress-fill" style="width:63%"></div></div><span>63%</span></div>
+          </section>
+        </div>
+
+        <div class="dashboard-grid equal">
+          <section class="card">
+            <div class="card-head">
+              <div><h3 data-i18n="Treatment Plan Alerts">Treatment Plan Alerts</h3><p data-i18n="Clinical items requiring attention">Clinical items requiring attention</p></div>
+            </div>
+            <div class="list">
+              <div class="list-row"><div class="list-left"><div class="list-icon">!</div><div><strong>PTP-260184 · Fatima Ali</strong><span data-i18n="Plan review due today">Plan review due today</span></div></div><span class="badge waiting" data-i18n="Review">Review</span></div>
+              <div class="list-row"><div class="list-left"><div class="list-icon">!</div><div><strong>PTP-260172 · Ahmed Salman</strong><span data-i18n="2 sessions remaining">2 sessions remaining</span></div></div><span class="badge confirmed" data-i18n="Active">Active</span></div>
+              <div class="list-row"><div class="list-left"><div class="list-icon">!</div><div><strong>PTP-260155 · Noor Hussain</strong><span data-i18n="Outcome assessment pending">Outcome assessment pending</span></div></div><span class="badge waiting" data-i18n="Pending">Pending</span></div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-head">
+              <div><h3 data-i18n="Recent Financial Activity">Recent Financial Activity</h3><p data-i18n="Latest billing and collection movements">Latest billing and collection movements</p></div>
+            </div>
+            <div class="list">
+              <div class="list-row"><div class="list-left"><div class="list-icon">↙</div><div><strong data-i18n="Payment Received">Payment Received</strong><span>RC-260821 · Fatima Ali</span></div></div><strong>BHD 85.000</strong></div>
+              <div class="list-row"><div class="list-left"><div class="list-icon">▤</div><div><strong data-i18n="Invoice Created">Invoice Created</strong><span>INV-260811 · Ahmed Salman</span></div></div><strong>BHD 120.000</strong></div>
+              <div class="list-row"><div class="list-left"><div class="list-icon">↗</div><div><strong data-i18n="Expense Recorded">Expense Recorded</strong><span data-i18n="Medical supplies">Medical supplies</span></div></div><strong>BHD 42.500</strong></div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <span>VITALIS — Rehabilitation Center Management System</span>
+        <span><span data-i18n="Designed & Developed by">Designed & Developed by</span> <strong style="color:#2c8f87">APEX ORAIBI</strong></span>
+      </footer>
+    </section>
+
+    <section id="placeholderPage" class="hidden">
+      <div class="content">
+        <div class="placeholder">
+          <div>
+            <h2 id="placeholderTitle">Module</h2>
+            <p id="placeholderText">This module will be activated in the next release.</p>
+            <button class="action-btn teal" style="margin-top:18px" onclick="openPage('dashboard')" data-i18n="Back to Dashboard">Back to Dashboard</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+const I18N = {
+  ar:{
+    "WORKSPACE":"مساحة العمل","FINANCIAL":"المالية","MANAGEMENT":"الإدارة",
+    "Dashboard":"لوحة التحكم","Patients":"المرضى","Appointments":"المواعيد","Treatment Plans":"خطط العلاج",
+    "Therapy Sessions":"الجلسات العلاجية","Therapists":"المعالجون","Billing":"الفوترة","Collections":"التحصيلات",
+    "Expenses":"المصروفات","Reports & Analytics":"التقارير والتحليلات","Users & Permissions":"المستخدمون والصلاحيات",
+    "Settings":"الإعدادات","Audit Log":"سجل التدقيق","DEMO ENVIRONMENT":"بيئة تجريبية",
+    "Designed & Developed by":"تصميم وتطوير","Administrator":"مدير النظام",
+    "Clinical, therapy and financial performance overview":"نظرة عامة على الأداء السريري والعلاجي والمالي",
+    "Good morning,":"صباح الخير،","Start Demo Tour":"بدء الجولة التجريبية","New Action":"إجراء جديد",
+    "Appointments Today":"مواعيد اليوم","Active Patients":"المرضى النشطون","Sessions Today":"جلسات اليوم",
+    "Monthly Billing":"الفوترة الشهرية","Collected":"المحصل","Outstanding":"المستحق","vs yesterday":"مقارنة بالأمس",
+    "this month":"هذا الشهر","completed / confirmed":"مكتملة / مؤكدة","vs last month":"مقارنة بالشهر السابق",
+    "collection rate":"نسبة التحصيل","overdue":"متأخر","Appointments This Week":"مواعيد هذا الأسبوع",
+    "Scheduled patient activity":"نشاط المرضى المجدول","View Calendar":"عرض التقويم","Mon":"الإثنين","Tue":"الثلاثاء",
+    "Wed":"الأربعاء","Thu":"الخميس","Fri":"الجمعة","Sat":"السبت","Sun":"الأحد","Today":"اليوم",
+    "new patients":"مرضى جدد","Reduced hours":"ساعات مخفضة","Closed":"مغلق","Session Completion":"إكمال الجلسات",
+    "Today's therapy progress":"تقدم الجلسات العلاجية اليوم","COMPLETED":"مكتمل","Scheduled Sessions":"الجلسات المجدولة",
+    "Completed":"مكتمل","Remaining":"المتبقي","Today's Appointments":"مواعيد اليوم","Next scheduled patient visits":"زيارات المرضى القادمة",
+    "View All":"عرض الكل","Time":"الوقت","Patient":"المريض","Service":"الخدمة","Therapist":"المعالج","Room":"الغرفة",
+    "Status":"الحالة","Confirmed":"مؤكد","In Session":"داخل الجلسة","Waiting":"بالانتظار","Therapist Utilization":"استخدام المعالجين",
+    "Today's booked capacity":"السعة المحجوزة اليوم","Treatment Plan Alerts":"تنبيهات خطط العلاج",
+    "Clinical items requiring attention":"بنود سريرية تتطلب متابعة","Plan review due today":"مراجعة الخطة مستحقة اليوم",
+    "Review":"مراجعة","2 sessions remaining":"متبقي جلستان","Active":"نشط","Outcome assessment pending":"تقييم النتيجة معلق",
+    "Pending":"معلق","Recent Financial Activity":"أحدث الأنشطة المالية","Latest billing and collection movements":"أحدث حركات الفوترة والتحصيل",
+    "Payment Received":"تم استلام دفعة","Invoice Created":"تم إنشاء فاتورة","Expense Recorded":"تم تسجيل مصروف",
+    "Medical supplies":"مستلزمات طبية","Back to Dashboard":"العودة إلى لوحة التحكم",
+    "Search patient, appointment or invoice...":"ابحث عن مريض أو موعد أو فاتورة..."
+  }
+};
+
+const PAGE_NAMES = {
+  dashboard:"Dashboard",
+  patients:"Patients",
+  appointments:"Appointments",
+  treatment:"Treatment Plans",
+  sessions:"Therapy Sessions",
+  therapists:"Therapists",
+  billing:"Billing",
+  collections:"Collections",
+  expenses:"Expenses",
+  reports:"Reports & Analytics",
+  users:"Users & Permissions",
+  settings:"Settings",
+  audit:"Audit Log"
+};
+
+let currentLang = localStorage.getItem("vitalisLang") || "en";
+
+function t(key){
+  return currentLang==="ar" ? (I18N.ar[key] || key) : key;
+}
+
+function applyLanguage(){
+  document.documentElement.lang = currentLang==="ar" ? "ar" : "en";
+  document.documentElement.dir = currentLang==="ar" ? "rtl" : "ltr";
+  document.getElementById("langEn").classList.toggle("active",currentLang==="en");
+  document.getElementById("langAr").classList.toggle("active",currentLang==="ar");
+
+  document.querySelectorAll("[data-i18n]").forEach(el=>{
+    const key=el.getAttribute("data-i18n");
+    el.textContent=t(key);
+  });
+
+  document.querySelectorAll("[data-i18n-placeholder]").forEach(el=>{
+    const key=el.getAttribute("data-i18n-placeholder");
+    el.placeholder=t(key);
+  });
+
+  const active = document.querySelector(".nav-item.active");
+  if(active){
+    const page=active.dataset.page;
+    document.getElementById("pageTitle").textContent=t(PAGE_NAMES[page]||"Dashboard");
+  }
+}
+
+function setLanguage(lang){
+  currentLang=lang;
+  localStorage.setItem("vitalisLang",lang);
+  applyLanguage();
+}
+
+function openPage(page){
+  document.getElementById("dashboardPage").classList.toggle("hidden",page!=="dashboard");
+  document.getElementById("placeholderPage").classList.toggle("hidden",page==="dashboard");
+
+  document.querySelectorAll(".nav-item").forEach(el=>{
+    el.classList.toggle("active",el.dataset.page===page);
+  });
+
+  document.getElementById("pageTitle").textContent=t(PAGE_NAMES[page]||"Dashboard");
+
+  if(page==="dashboard"){
+    document.getElementById("pageSubtitle").textContent=t("Clinical, therapy and financial performance overview");
+  }else{
+    document.getElementById("pageSubtitle").textContent=currentLang==="ar" ? "سيتم تفعيل هذا القسم في الإصدار التالي" : "This module will be activated in the next release";
+    document.getElementById("placeholderTitle").textContent=t(PAGE_NAMES[page]||"Module");
+    document.getElementById("placeholderText").textContent=currentLang==="ar" ? "سيتم تفعيل هذا القسم في الإصدار التالي." : "This module will be activated in the next release.";
+  }
+
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function startDemoTour(){
+  alert(currentLang==="ar"
+    ? "VITALIS Release 1.0 — لوحة التحكم مفعلة، وسيتم تطوير كل قسم بالتتابع."
+    : "VITALIS Release 1.0 — Dashboard is active. Each module will be developed in sequence.");
+}
+
+applyLanguage();
+</script>
+</body>
+</html>
