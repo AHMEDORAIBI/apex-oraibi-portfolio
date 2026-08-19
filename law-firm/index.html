@@ -1,0 +1,1968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>LEXORA Law Firm | APEX ORAIBI Demo</title>
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    :root{
+      --navy:#071525;
+      --navy-2:#0d2238;
+      --gold:#c9a45c;
+      --gold-light:#e1c27d;
+      --white:#ffffff;
+      --bg:#f4f6f8;
+      --text:#172230;
+      --muted:#7a8491;
+      --border:#e4e8ec;
+      --success:#2f8f61;
+      --warning:#c58a2c;
+      --danger:#b84b4b;
+    }
+
+    body{
+      font-family:Arial,Helvetica,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      min-height:100vh;
+    }
+
+    button,
+    input{
+      font-family:inherit;
+    }
+
+    .hidden{
+      display:none !important;
+    }
+
+    /* LOGIN */
+
+    .login-screen{
+      min-height:100vh;
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      background:var(--white);
+    }
+
+    .login-left{
+      background:
+        radial-gradient(circle at 75% 30%,rgba(201,164,92,.14),transparent 28%),
+        linear-gradient(135deg,#06111d 0%,#0a2035 70%,#081725 100%);
+      color:white;
+      padding:70px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+
+    .login-brand{
+      display:flex;
+      align-items:center;
+      gap:16px;
+    }
+
+    .login-mark{
+      width:54px;
+      height:54px;
+      border:1px solid var(--gold);
+      color:var(--gold);
+      display:grid;
+      place-items:center;
+      font-weight:700;
+      font-size:20px;
+    }
+
+    .login-brand strong{
+      display:block;
+      letter-spacing:2px;
+      font-size:20px;
+    }
+
+    .login-brand span{
+      display:block;
+      margin-top:4px;
+      color:#b7c1cc;
+      font-size:10px;
+      letter-spacing:2px;
+    }
+
+    .login-copy{
+      max-width:610px;
+    }
+
+    .eyebrow{
+      color:var(--gold);
+      font-size:11px;
+      font-weight:700;
+      letter-spacing:3px;
+    }
+
+    .login-copy h1{
+      margin-top:22px;
+      font-size:58px;
+      line-height:1.05;
+      font-weight:600;
+    }
+
+    .login-copy p{
+      margin-top:25px;
+      color:#b7c1cc;
+      font-size:16px;
+      line-height:1.8;
+    }
+
+    .login-footer{
+      display:flex;
+      justify-content:space-between;
+      color:#82909e;
+      font-size:10px;
+      letter-spacing:1.5px;
+    }
+
+    .login-right{
+      display:grid;
+      place-items:center;
+      padding:40px;
+    }
+
+    .login-card{
+      width:100%;
+      max-width:420px;
+    }
+
+    .login-card h2{
+      font-size:30px;
+      color:var(--navy);
+      margin-top:14px;
+    }
+
+    .login-card > p{
+      margin-top:10px;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .form-group{
+      margin-top:24px;
+    }
+
+    .form-group label{
+      display:block;
+      margin-bottom:8px;
+      font-size:12px;
+      font-weight:700;
+    }
+
+    .form-group input{
+      width:100%;
+      height:48px;
+      border:1px solid var(--border);
+      border-radius:6px;
+      padding:0 14px;
+      outline:none;
+      font-size:14px;
+    }
+
+    .form-group input:focus{
+      border-color:var(--gold);
+    }
+
+    .login-btn,
+    .demo-btn{
+      width:100%;
+      height:48px;
+      margin-top:20px;
+      border-radius:6px;
+      cursor:pointer;
+      font-weight:700;
+      border:none;
+    }
+
+    .login-btn{
+      background:var(--navy);
+      color:white;
+    }
+
+    .demo-btn{
+      background:white;
+      color:var(--navy);
+      border:1px solid var(--border);
+      margin-top:12px;
+    }
+
+    .demo-btn:hover{
+      border-color:var(--gold);
+      color:#8f6b27;
+    }
+
+    .login-note{
+      text-align:center;
+      margin-top:18px;
+      font-size:11px;
+      color:#9aa2aa;
+    }
+
+    /* APP */
+
+    .app{
+      min-height:100vh;
+      display:grid;
+      grid-template-columns:245px 1fr;
+    }
+
+    .sidebar{
+      background:var(--navy);
+      color:white;
+      min-height:100vh;
+      position:fixed;
+      left:0;
+      top:0;
+      width:245px;
+      padding:26px 18px;
+      display:flex;
+      flex-direction:column;
+      z-index:50;
+    }
+
+    .sidebar-brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:0 10px 24px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+
+    .sidebar-logo{
+      width:40px;
+      height:40px;
+      border:1px solid var(--gold);
+      display:grid;
+      place-items:center;
+      color:var(--gold);
+      font-weight:700;
+    }
+
+    .sidebar-brand strong{
+      display:block;
+      letter-spacing:1.5px;
+      font-size:14px;
+    }
+
+    .sidebar-brand span{
+      display:block;
+      color:#8fa0af;
+      margin-top:3px;
+      font-size:9px;
+      letter-spacing:1.5px;
+    }
+
+    .nav-title{
+      margin:24px 10px 10px;
+      color:#667889;
+      font-size:9px;
+      letter-spacing:1.6px;
+      font-weight:700;
+    }
+
+    .nav-item{
+      width:100%;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:11px 12px;
+      margin-bottom:4px;
+      border:0;
+      background:transparent;
+      color:#b8c2cb;
+      border-radius:6px;
+      cursor:pointer;
+      text-align:left;
+      font-size:13px;
+    }
+
+    .nav-item:hover{
+      background:rgba(255,255,255,.05);
+      color:white;
+    }
+
+    .nav-item.active{
+      background:rgba(201,164,92,.13);
+      color:var(--gold-light);
+    }
+
+    .nav-icon{
+      width:18px;
+      text-align:center;
+      font-size:15px;
+    }
+
+    .sidebar-bottom{
+      margin-top:auto;
+      border-top:1px solid rgba(255,255,255,.08);
+      padding:18px 10px 0;
+    }
+
+    .demo-tag{
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      color:#b9c3cc;
+      font-size:9px;
+      letter-spacing:1.2px;
+    }
+
+    .demo-dot{
+      width:7px;
+      height:7px;
+      background:#44b776;
+      border-radius:50%;
+    }
+
+    .apex{
+      margin-top:12px;
+      color:#667889;
+      font-size:9px;
+      line-height:1.5;
+    }
+
+    .apex strong{
+      display:block;
+      color:var(--gold);
+      margin-top:2px;
+      letter-spacing:1px;
+    }
+
+    .main{
+      grid-column:2;
+      min-width:0;
+    }
+
+    .topbar{
+      height:78px;
+      background:white;
+      border-bottom:1px solid var(--border);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 30px;
+      position:sticky;
+      top:0;
+      z-index:30;
+    }
+
+    .topbar h1{
+      font-size:20px;
+      color:var(--navy);
+    }
+
+    .topbar p{
+      margin-top:4px;
+      color:var(--muted);
+      font-size:11px;
+    }
+
+    .top-actions{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .search{
+      width:260px;
+      height:38px;
+      border:1px solid var(--border);
+      border-radius:6px;
+      padding:0 12px;
+      outline:none;
+    }
+
+    .top-btn{
+      height:38px;
+      min-width:38px;
+      border:1px solid var(--border);
+      background:white;
+      border-radius:6px;
+      cursor:pointer;
+      color:var(--navy);
+    }
+
+    .profile{
+      display:flex;
+      align-items:center;
+      gap:9px;
+      padding:4px 10px 4px 5px;
+      border:1px solid var(--border);
+      border-radius:7px;
+    }
+
+    .avatar{
+      width:30px;
+      height:30px;
+      border-radius:50%;
+      background:var(--navy);
+      color:white;
+      display:grid;
+      place-items:center;
+      font-size:10px;
+      font-weight:700;
+    }
+
+    .profile strong{
+      display:block;
+      font-size:11px;
+    }
+
+    .profile span{
+      display:block;
+      margin-top:2px;
+      color:var(--muted);
+      font-size:9px;
+    }
+
+    .content{
+      padding:30px;
+    }
+
+    .hero-row{
+      display:flex;
+      justify-content:space-between;
+      gap:20px;
+      align-items:flex-start;
+      margin-bottom:25px;
+    }
+
+    .hero-row h2{
+      font-size:26px;
+      color:var(--navy);
+    }
+
+    .hero-row h2 span{
+      color:#9a742d;
+    }
+
+    .hero-row p{
+      margin-top:7px;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .hero-actions{
+      display:flex;
+      gap:10px;
+    }
+
+    .action-btn{
+      min-height:40px;
+      padding:0 16px;
+      border-radius:6px;
+      cursor:pointer;
+      font-weight:700;
+      font-size:12px;
+    }
+
+    .action-secondary{
+      background:white;
+      color:var(--navy);
+      border:1px solid var(--border);
+    }
+
+    .action-primary{
+      background:var(--navy);
+      color:white;
+      border:1px solid var(--navy);
+    }
+
+    /* KPI */
+
+    .kpi-grid{
+      display:grid;
+      grid-template-columns:repeat(6,1fr);
+      gap:15px;
+    }
+
+    .kpi-card{
+      background:white;
+      border:1px solid var(--border);
+      border-radius:8px;
+      padding:18px;
+    }
+
+    .kpi-label{
+      font-size:11px;
+      color:var(--muted);
+    }
+
+    .kpi-value{
+      display:block;
+      margin-top:13px;
+      font-size:23px;
+      color:var(--navy);
+    }
+
+    .kpi-value.money{
+      font-size:17px;
+    }
+
+    .kpi-note{
+      margin-top:11px;
+      font-size:9px;
+      color:var(--muted);
+    }
+
+    .positive{
+      color:var(--success);
+      font-weight:700;
+    }
+
+    .warning{
+      color:var(--warning);
+      font-weight:700;
+    }
+
+    /* GRID */
+
+    .dashboard-grid{
+      display:grid;
+      grid-template-columns:2fr 1fr;
+      gap:16px;
+      margin-top:16px;
+    }
+
+    .dashboard-grid.equal{
+      grid-template-columns:1fr 1fr;
+    }
+
+    .card{
+      background:white;
+      border:1px solid var(--border);
+      border-radius:8px;
+      padding:20px;
+      min-width:0;
+    }
+
+    .card-head{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:flex-start;
+      margin-bottom:18px;
+    }
+
+    .card-head h3{
+      font-size:14px;
+      color:var(--navy);
+    }
+
+    .card-head p{
+      margin-top:4px;
+      color:var(--muted);
+      font-size:10px;
+    }
+
+    /* CHART */
+
+    .chart{
+      height:230px;
+      display:flex;
+      align-items:flex-end;
+      gap:24px;
+      border-bottom:1px solid var(--border);
+      padding:0 10px 12px;
+    }
+
+    .chart-group{
+      flex:1;
+      display:flex;
+      justify-content:center;
+      align-items:flex-end;
+      gap:5px;
+      height:100%;
+      position:relative;
+    }
+
+    .bar{
+      width:18px;
+      border-radius:3px 3px 0 0;
+    }
+
+    .revenue{
+      background:var(--navy);
+    }
+
+    .expense{
+      background:var(--gold);
+    }
+
+    .month{
+      position:absolute;
+      bottom:-27px;
+      font-size:9px;
+      color:var(--muted);
+    }
+
+    .chart-legend{
+      margin-top:34px;
+      display:flex;
+      gap:18px;
+      font-size:10px;
+      color:var(--muted);
+    }
+
+    .legend-dot{
+      width:8px;
+      height:8px;
+      display:inline-block;
+      margin-right:5px;
+      border-radius:50%;
+    }
+
+    .circle-meter{
+      width:150px;
+      height:150px;
+      margin:10px auto 18px;
+      border-radius:50%;
+      background:conic-gradient(var(--gold) 0 78.6%,#e9edf0 78.6%);
+      display:grid;
+      place-items:center;
+    }
+
+    .circle-inner{
+      width:112px;
+      height:112px;
+      border-radius:50%;
+      background:white;
+      display:grid;
+      place-items:center;
+      text-align:center;
+    }
+
+    .circle-inner strong{
+      display:block;
+      font-size:24px;
+      color:var(--navy);
+    }
+
+    .circle-inner span{
+      font-size:9px;
+      color:var(--muted);
+    }
+
+    .collection-summary{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      border-top:1px solid var(--border);
+      padding-top:15px;
+      gap:10px;
+    }
+
+    .collection-summary span{
+      display:block;
+      font-size:9px;
+      color:var(--muted);
+    }
+
+    .collection-summary strong{
+      display:block;
+      margin-top:4px;
+      font-size:11px;
+    }
+
+    /* TABLE */
+
+    .table-wrap{
+      overflow:auto;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:10px;
+    }
+
+    th{
+      text-align:left;
+      color:var(--muted);
+      font-weight:700;
+      padding:10px;
+      border-bottom:1px solid var(--border);
+      white-space:nowrap;
+    }
+
+    td{
+      padding:12px 10px;
+      border-bottom:1px solid #f0f2f4;
+      white-space:nowrap;
+    }
+
+    .status{
+      display:inline-flex;
+      padding:5px 8px;
+      border-radius:20px;
+      background:#edf5f0;
+      color:#347b57;
+      font-size:9px;
+      font-weight:700;
+    }
+
+    .case-bars{
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+    }
+
+    .case-bar-line{
+      display:grid;
+      grid-template-columns:95px 1fr 25px;
+      gap:10px;
+      align-items:center;
+      font-size:10px;
+    }
+
+    .progress{
+      height:7px;
+      border-radius:20px;
+      background:#eceff2;
+      overflow:hidden;
+    }
+
+    .progress span{
+      display:block;
+      height:100%;
+      background:var(--navy);
+      border-radius:20px;
+    }
+
+    /* TRANSACTIONS */
+
+    .list{
+      display:flex;
+      flex-direction:column;
+    }
+
+    .list-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:15px;
+      padding:13px 0;
+      border-bottom:1px solid #f0f2f4;
+    }
+
+    .list-left{
+      display:flex;
+      align-items:center;
+      gap:11px;
+      min-width:0;
+    }
+
+    .list-icon{
+      width:34px;
+      height:34px;
+      flex:0 0 34px;
+      border-radius:6px;
+      background:#f3f5f7;
+      display:grid;
+      place-items:center;
+      font-size:13px;
+    }
+
+    .list-row strong{
+      display:block;
+      font-size:11px;
+    }
+
+    .list-row span{
+      display:block;
+      margin-top:3px;
+      font-size:9px;
+      color:var(--muted);
+    }
+
+    .amount-in{
+      color:var(--success);
+      font-size:11px !important;
+      font-weight:700;
+    }
+
+    .amount-out{
+      color:var(--danger);
+      font-size:11px !important;
+      font-weight:700;
+    }
+
+    /* INSIGHTS */
+
+    .insights{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:12px;
+    }
+
+    .insight{
+      border:1px solid var(--border);
+      border-radius:7px;
+      padding:16px;
+      background:#fafbfc;
+    }
+
+    .insight strong{
+      display:block;
+      color:var(--navy);
+      font-size:11px;
+    }
+
+    .insight p{
+      margin-top:7px;
+      color:var(--muted);
+      font-size:10px;
+      line-height:1.6;
+    }
+
+    .footer{
+      display:flex;
+      justify-content:space-between;
+      gap:20px;
+      color:#929aa3;
+      font-size:9px;
+      padding:22px 30px 30px;
+    }
+
+    .mobile-menu{
+      display:none;
+    }
+
+    /* PLACEHOLDER */
+
+    .placeholder{
+      min-height:500px;
+      display:grid;
+      place-items:center;
+      text-align:center;
+    }
+
+    .placeholder-box{
+      max-width:520px;
+      padding:45px;
+      background:white;
+      border:1px solid var(--border);
+      border-radius:10px;
+    }
+
+    .placeholder-box span{
+      font-size:9px;
+      color:var(--gold);
+      letter-spacing:2px;
+      font-weight:700;
+    }
+
+    .placeholder-box h2{
+      margin-top:13px;
+      color:var(--navy);
+      font-size:25px;
+    }
+
+    .placeholder-box p{
+      margin-top:12px;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.7;
+    }
+
+    /* RESPONSIVE */
+
+    @media(max-width:1250px){
+      .kpi-grid{
+        grid-template-columns:repeat(3,1fr);
+      }
+    }
+
+    @media(max-width:950px){
+
+      .login-screen{
+        grid-template-columns:1fr;
+      }
+
+      .login-left{
+        display:none;
+      }
+
+      .app{
+        display:block;
+      }
+
+      .sidebar{
+        transform:translateX(-100%);
+        transition:.25s;
+      }
+
+      .sidebar.open{
+        transform:translateX(0);
+      }
+
+      .main{
+        grid-column:auto;
+      }
+
+      .mobile-menu{
+        display:inline-grid;
+        place-items:center;
+      }
+
+      .search{
+        display:none;
+      }
+
+      .dashboard-grid,
+      .dashboard-grid.equal{
+        grid-template-columns:1fr;
+      }
+
+      .insights{
+        grid-template-columns:1fr 1fr;
+      }
+    }
+
+    @media(max-width:650px){
+
+      .topbar{
+        padding:0 16px;
+      }
+
+      .topbar p,
+      .profile div{
+        display:none;
+      }
+
+      .content{
+        padding:18px;
+      }
+
+      .hero-row{
+        flex-direction:column;
+      }
+
+      .hero-actions{
+        width:100%;
+      }
+
+      .hero-actions button{
+        flex:1;
+      }
+
+      .kpi-grid{
+        grid-template-columns:1fr 1fr;
+      }
+
+      .kpi-value.money{
+        font-size:14px;
+      }
+
+      .collection-summary{
+        grid-template-columns:1fr;
+      }
+
+      .insights{
+        grid-template-columns:1fr;
+      }
+
+      .footer{
+        flex-direction:column;
+        padding-left:18px;
+        padding-right:18px;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+
+<section id="loginScreen" class="login-screen">
+
+  <div class="login-left">
+
+    <div class="login-brand">
+      <div class="login-mark">L</div>
+
+      <div>
+        <strong>LEXORA</strong>
+        <span>LAW FIRM</span>
+      </div>
+    </div>
+
+    <div class="login-copy">
+
+      <span class="eyebrow">LEGAL MANAGEMENT SYSTEM</span>
+
+      <h1>
+        Legal operations.
+        Financial clarity.
+        One workspace.
+      </h1>
+
+      <p>
+        Manage clients, cases, hearings, professional fees,
+        invoices, collections, expenses and management reporting
+        from one integrated legal management platform.
+      </p>
+
+    </div>
+
+    <div class="login-footer">
+      <span>DEMO ENVIRONMENT</span>
+      <span>DESIGNED BY APEX ORAIBI</span>
+    </div>
+
+  </div>
+
+  <div class="login-right">
+
+    <div class="login-card">
+
+      <span class="eyebrow">WELCOME TO LEXORA</span>
+
+      <h2>Sign in</h2>
+
+      <p>
+        Access the legal management demo workspace.
+      </p>
+
+      <div class="form-group">
+        <label>Email Address</label>
+        <input id="email" value="demo@lexora.local">
+      </div>
+
+      <div class="form-group">
+        <label>Password</label>
+        <input id="password" type="password" value="demo123">
+      </div>
+
+      <button class="login-btn" onclick="enterDemo()">
+        Sign In
+      </button>
+
+      <button class="demo-btn" onclick="enterDemo()">
+        Explore Demo
+      </button>
+
+      <div class="login-note">
+        Demo access is for portfolio presentation purposes.
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- APPLICATION -->
+
+<section id="application" class="app hidden">
+
+  <aside id="sidebar" class="sidebar">
+
+    <div class="sidebar-brand">
+
+      <div class="sidebar-logo">L</div>
+
+      <div>
+        <strong>LEXORA</strong>
+        <span>LAW FIRM</span>
+      </div>
+
+    </div>
+
+    <div class="nav-title">WORKSPACE</div>
+
+    <button class="nav-item active" data-page="dashboard">
+      <span class="nav-icon">⌂</span>
+      Dashboard
+    </button>
+
+    <button class="nav-item" data-page="clients">
+      <span class="nav-icon">♙</span>
+      Clients
+    </button>
+
+    <button class="nav-item" data-page="cases">
+      <span class="nav-icon">⚖</span>
+      Cases
+    </button>
+
+    <button class="nav-item" data-page="hearings">
+      <span class="nav-icon">◫</span>
+      Tasks & Hearings
+    </button>
+
+    <div class="nav-title">FINANCIAL</div>
+
+    <button class="nav-item" data-page="proposals">
+      <span class="nav-icon">▤</span>
+      Proposals
+    </button>
+
+    <button class="nav-item" data-page="invoices">
+      <span class="nav-icon">▧</span>
+      Invoices
+    </button>
+
+    <button class="nav-item" data-page="collections">
+      <span class="nav-icon">↙</span>
+      Collections
+    </button>
+
+    <button class="nav-item" data-page="expenses">
+      <span class="nav-icon">↗</span>
+      Expenses
+    </button>
+
+    <button class="nav-item" data-page="banking">
+      <span class="nav-icon">▣</span>
+      Banking & Treasury
+    </button>
+
+    <div class="nav-title">MANAGEMENT</div>
+
+    <button class="nav-item" data-page="reports">
+      <span class="nav-icon">◩</span>
+      Reports & Analytics
+    </button>
+
+    <button class="nav-item" data-page="settings">
+      <span class="nav-icon">⚙</span>
+      Settings
+    </button>
+
+    <button class="nav-item" data-page="users">
+      <span class="nav-icon">♧</span>
+      Users & Permissions
+    </button>
+
+    <button class="nav-item" data-page="audit">
+      <span class="nav-icon">◎</span>
+      Audit Log
+    </button>
+
+    <div class="sidebar-bottom">
+
+      <div class="demo-tag">
+        <span class="demo-dot"></span>
+        DEMO ENVIRONMENT
+      </div>
+
+      <div class="apex">
+        Designed & Developed by
+        <strong>APEX ORAIBI</strong>
+      </div>
+
+    </div>
+
+  </aside>
+
+
+  <main class="main">
+
+    <header class="topbar">
+
+      <div style="display:flex;align-items:center;gap:12px;">
+
+        <button
+          class="top-btn mobile-menu"
+          onclick="toggleSidebar()"
+        >
+          ☰
+        </button>
+
+        <div>
+          <h1 id="pageTitle">Executive Dashboard</h1>
+          <p id="pageSubtitle">
+            Legal and financial performance overview
+          </p>
+        </div>
+
+      </div>
+
+      <div class="top-actions">
+
+        <input
+          class="search"
+          placeholder="Search client, case or invoice..."
+        >
+
+        <button class="top-btn">
+          EN
+        </button>
+
+        <button class="top-btn">
+          ♢
+        </button>
+
+        <div class="profile">
+
+          <div class="avatar">AO</div>
+
+          <div>
+            <strong>Ahmed Oraibi</strong>
+            <span>Administrator</span>
+          </div>
+
+        </div>
+
+      </div>
+
+    </header>
+
+
+    <!-- DASHBOARD -->
+
+    <div id="dashboardPage">
+
+      <div class="content">
+
+        <div class="hero-row">
+
+          <div>
+            <h2>
+              Good morning,
+              <span>Ahmed</span>
+            </h2>
+
+            <p id="currentDate">
+              Welcome to LEXORA Law Firm.
+            </p>
+          </div>
+
+          <div class="hero-actions">
+
+            <button
+              class="action-btn action-secondary"
+              onclick="startTour()"
+            >
+              ▶ Start Demo Tour
+            </button>
+
+            <button
+              class="action-btn action-primary"
+            >
+              + New Action
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <div class="kpi-grid">
+
+          <div class="kpi-card">
+            <span class="kpi-label">Active Cases</span>
+            <strong class="kpi-value">24</strong>
+            <div class="kpi-note">
+              <span class="positive">↑ 9.1%</span>
+              vs last month
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <span class="kpi-label">Active Clients</span>
+            <strong class="kpi-value">18</strong>
+            <div class="kpi-note">
+              <span class="positive">+3</span>
+              new this month
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <span class="kpi-label">Total Invoiced</span>
+            <strong class="kpi-value money">
+              BHD 12,450.000
+            </strong>
+            <div class="kpi-note">
+              <span class="positive">↑ 12.4%</span>
+              vs last month
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <span class="kpi-label">Collected</span>
+            <strong class="kpi-value money">
+              BHD 9,780.000
+            </strong>
+            <div class="kpi-note">
+              <span class="positive">78.6%</span>
+              collection rate
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <span class="kpi-label">Outstanding</span>
+            <strong class="kpi-value money">
+              BHD 2,670.000
+            </strong>
+            <div class="kpi-note">
+              <span class="warning">BHD 1,100</span>
+              overdue
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <span class="kpi-label">Expenses</span>
+            <strong class="kpi-value money">
+              BHD 1,340.000
+            </strong>
+            <div class="kpi-note">
+              BHD 420 this month
+            </div>
+          </div>
+
+        </div>
+
+
+        <div class="dashboard-grid">
+
+          <section class="card">
+
+            <div class="card-head">
+              <div>
+                <h3>Revenue vs Expenses</h3>
+                <p>Last 6 months financial performance</p>
+              </div>
+            </div>
+
+            <div class="chart">
+
+              <div class="chart-group">
+                <div class="bar revenue" style="height:52%"></div>
+                <div class="bar expense" style="height:20%"></div>
+                <span class="month">Mar</span>
+              </div>
+
+              <div class="chart-group">
+                <div class="bar revenue" style="height:64%"></div>
+                <div class="bar expense" style="height:28%"></div>
+                <span class="month">Apr</span>
+              </div>
+
+              <div class="chart-group">
+                <div class="bar revenue" style="height:70%"></div>
+                <div class="bar expense" style="height:25%"></div>
+                <span class="month">May</span>
+              </div>
+
+              <div class="chart-group">
+                <div class="bar revenue" style="height:66%"></div>
+                <div class="bar expense" style="height:31%"></div>
+                <span class="month">Jun</span>
+              </div>
+
+              <div class="chart-group">
+                <div class="bar revenue" style="height:82%"></div>
+                <div class="bar expense" style="height:27%"></div>
+                <span class="month">Jul</span>
+              </div>
+
+              <div class="chart-group">
+                <div class="bar revenue" style="height:94%"></div>
+                <div class="bar expense" style="height:34%"></div>
+                <span class="month">Aug</span>
+              </div>
+
+            </div>
+
+            <div class="chart-legend">
+              <span>
+                <i
+                  class="legend-dot"
+                  style="background:#071525"
+                ></i>
+                Revenue
+              </span>
+
+              <span>
+                <i
+                  class="legend-dot"
+                  style="background:#c9a45c"
+                ></i>
+                Expenses
+              </span>
+            </div>
+
+          </section>
+
+
+          <section class="card">
+
+            <div class="card-head">
+              <div>
+                <h3>Collection Performance</h3>
+                <p>Current receivables performance</p>
+              </div>
+            </div>
+
+            <div class="circle-meter">
+
+              <div class="circle-inner">
+                <div>
+                  <strong>78.6%</strong>
+                  <span>COLLECTED</span>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="collection-summary">
+
+              <div>
+                <span>Total Due</span>
+                <strong>BHD 12,450</strong>
+              </div>
+
+              <div>
+                <span>Collected</span>
+                <strong>BHD 9,780</strong>
+              </div>
+
+              <div>
+                <span>Outstanding</span>
+                <strong>BHD 2,670</strong>
+              </div>
+
+            </div>
+
+          </section>
+
+        </div>
+
+
+        <div class="dashboard-grid">
+
+          <section class="card">
+
+            <div class="card-head">
+              <div>
+                <h3>Upcoming Hearings</h3>
+                <p>Next scheduled court hearings</p>
+              </div>
+            </div>
+
+            <div class="table-wrap">
+
+              <table>
+
+                <thead>
+                  <tr>
+                    <th>Case No.</th>
+                    <th>Client</th>
+                    <th>Court</th>
+                    <th>Lawyer</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+
+                  <tr>
+                    <td>2026/1842</td>
+                    <td>Gulf Trading W.L.L</td>
+                    <td>High Civil Court</td>
+                    <td>Ali Hasan</td>
+                    <td>20 Aug</td>
+                    <td>
+                      <span class="status">Upcoming</span>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>2026/2190</td>
+                    <td>Ahmed Hassan</td>
+                    <td>Labour Court</td>
+                    <td>Sara Ahmed</td>
+                    <td>23 Aug</td>
+                    <td>
+                      <span class="status">Upcoming</span>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>2026/2351</td>
+                    <td>Apex Contracting</td>
+                    <td>Execution Court</td>
+                    <td>Khalid Ali</td>
+                    <td>26 Aug</td>
+                    <td>
+                      <span class="status">Upcoming</span>
+                    </td>
+                  </tr>
+
+                </tbody>
+
+              </table>
+
+            </div>
+
+          </section>
+
+
+          <section class="card">
+
+            <div class="card-head">
+              <div>
+                <h3>Case Overview</h3>
+                <p>Current case distribution</p>
+              </div>
+            </div>
+
+            <div class="case-bars">
+
+              <div class="case-bar-line">
+                <span>New</span>
+                <div class="progress">
+                  <span style="width:42%"></span>
+                </div>
+                <strong>5</strong>
+              </div>
+
+              <div class="case-bar-line">
+                <span>In Progress</span>
+                <div class="progress">
+                  <span style="width:90%"></span>
+                </div>
+                <strong>11</strong>
+              </div>
+
+              <div class="case-bar-line">
+                <span>Judgment</span>
+                <div class="progress">
+                  <span style="width:27%"></span>
+                </div>
+                <strong>3</strong>
+              </div>
+
+              <div class="case-bar-line">
+                <span>Execution</span>
+                <div class="progress">
+                  <span style="width:27%"></span>
+                </div>
+                <strong>3</strong>
+              </div>
+
+              <div class="case-bar-line">
+                <span>Closed</span>
+                <div class="progress">
+                  <span style="width:18%"></span>
+                </div>
+                <strong>2</strong>
+              </div>
+
+            </div>
+
+          </section>
+
+        </div>
+
+
+        <div class="dashboard-grid equal">
+
+          <section class="card">
+
+            <div class="card-head">
+              <div>
+                <h3>Recent Financial Transactions</h3>
+                <p>Latest financial movements</p>
+              </div>
+            </div>
+
+            <div class="list">
+
+              <div class="list-row">
+                <div class="list-left">
+                  <div class="list-icon">↙</div>
+                  <div>
+                    <strong>Payment Received</strong>
+                    <span>RC-2026-036 · Gulf Trading</span>
+                  </div>
+                </div>
+                <span class="amount-in">
+                  + BHD 500.000
+                </span>
+              </div>
+
+              <div class="list-row">
+                <div class="list-left">
+                  <div class="list-icon">↗</div>
+                  <div>
+                    <strong>Office Rent</strong>
+                    <span>EXP-2026-031 · Bank Transfer</span>
+                  </div>
+                </div>
+                <span class="amount-out">
+                  - BHD 350.000
+                </span>
+              </div>
+
+              <div class="list-row">
+                <div class="list-left">
+                  <div class="list-icon">▧</div>
+                  <div>
+                    <strong>Invoice Created</strong>
+                    <span>INV-2026-043 · Apex Contracting</span>
+                  </div>
+                </div>
+                <span>
+                  BHD 3,300.000
+                </span>
+              </div>
+
+              <div class="list-row">
+                <div class="list-left">
+                  <div class="list-icon">↙</div>
+                  <div>
+                    <strong>Professional Fees</strong>
+                    <span>RC-2026-031 · Bank Transfer</span>
+                  </div>
+                </div>
+                <span class="amount-in">
+                  + BHD 1,000.000
+                </span>
+              </div>
+
+            </div>
+
+          </section>
+
+
+          <section class="card">
+
+            <div class="card-head">
+              <div>
+                <h3>Recent Activities</h3>
+                <p>Latest legal and system updates</p>
+              </div>
+            </div>
+
+            <div class="list">
+
+              <div class="list-row">
+                <div class="list-left">
+                  <div class="list-icon">⚖</div>
+                  <div>
+                    <strong>Case updated</strong>
+                    <span>Case 2026/1842 · 15 min ago</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="list-row">
+                <div class="list-left">
+                  <div class="list-icon">♙</div>
+                  <div>
+                    <strong>New client added</strong>
+                    <span>Al Noor Trading · 38 min ago</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="list-row">
+                <div class="list-left">
+                  <div class="list-icon">◫</div>
+                  <div>
+                    <strong>Hearing scheduled</strong>
+                    <span>Case 2026/2351 · 1 hour ago</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="list-row">
+                <div class="list-left">
+                  <div class="list-icon">▤</div>
+                  <div>
+                    <strong>Proposal approved</strong>
+                    <span>PR-2026-018 · 2 hours ago</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </section>
+
+        </div>
+
+
+        <section class="card" style="margin-top:16px;">
+
+          <div class="card-head">
+            <div>
+              <h3>Management Insights</h3>
+              <p>Highlights generated from current demo data</p>
+            </div>
+          </div>
+
+          <div class="insights">
+
+            <div class="insight">
+              <strong>Collection improved</strong>
+              <p>
+                Collection performance is 8.4% higher than
+                the previous month.
+              </p>
+            </div>
+
+            <div class="insight">
+              <strong>Outstanding receivables</strong>
+              <p>
+                BHD 1,100 remains overdue and requires
+                collection follow-up.
+              </p>
+            </div>
+
+            <div class="insight">
+              <strong>Commercial matters</strong>
+              <p>
+                Commercial cases currently represent 42%
+                of professional fee revenue.
+              </p>
+            </div>
+
+            <div class="insight">
+              <strong>Legal workload</strong>
+              <p>
+                Three legal tasks require immediate
+                attention before upcoming hearings.
+              </p>
+            </div>
+
+          </div>
+
+        </section>
+
+      </div>
+
+      <footer class="footer">
+
+        <span>
+          © 2026 LEXORA Law Firm — Demo Environment
+        </span>
+
+        <span>
+          Designed & Developed by
+          <strong style="color:#a78035">
+            APEX ORAIBI
+          </strong>
+        </span>
+
+      </footer>
+
+    </div>
+
+
+    <!-- PLACEHOLDER -->
+
+    <div id="placeholderPage" class="hidden">
+
+      <div class="content placeholder">
+
+        <div class="placeholder-box">
+
+          <span>NEXT DEVELOPMENT RELEASE</span>
+
+          <h2 id="placeholderTitle">
+            Module
+          </h2>
+
+          <p>
+            This module is already included in the system
+            structure and will be activated in the next
+            development release.
+          </p>
+
+          <button
+            class="action-btn action-primary"
+            style="margin-top:22px"
+            onclick="openPage('dashboard')"
+          >
+            Back to Dashboard
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+</section>
+
+
+<script>
+
+  const PAGE_NAMES = {
+    dashboard: "Executive Dashboard",
+    clients: "Clients",
+    cases: "Cases",
+    hearings: "Tasks & Hearings",
+    proposals: "Professional Fee Proposals",
+    invoices: "Invoices",
+    collections: "Collections",
+    expenses: "Expenses",
+    banking: "Banking & Treasury",
+    reports: "Reports & Analytics",
+    settings: "Settings",
+    users: "Users & Permissions",
+    audit: "Audit Log"
+  };
+
+
+  function enterDemo(){
+
+    document
+      .getElementById("loginScreen")
+      .classList
+      .add("hidden");
+
+    document
+      .getElementById("application")
+      .classList
+      .remove("hidden");
+
+    openPage("dashboard");
+  }
+
+
+  function toggleSidebar(){
+
+    document
+      .getElementById("sidebar")
+      .classList
+      .toggle("open");
+  }
+
+
+  function openPage(page){
+
+    document
+      .querySelectorAll(".nav-item")
+      .forEach(item => {
+
+        item.classList.toggle(
+          "active",
+          item.dataset.page === page
+        );
+
+      });
+
+    document.getElementById("pageTitle").textContent =
+      PAGE_NAMES[page] || "LEXORA";
+
+    if(page === "dashboard"){
+
+      document
+        .getElementById("dashboardPage")
+        .classList
+        .remove("hidden");
+
+      document
+        .getElementById("placeholderPage")
+        .classList
+        .add("hidden");
+
+      document.getElementById("pageSubtitle").textContent =
+        "Legal and financial performance overview";
+
+    }else{
+
+      document
+        .getElementById("dashboardPage")
+        .classList
+        .add("hidden");
+
+      document
+        .getElementById("placeholderPage")
+        .classList
+        .remove("hidden");
+
+      document
+        .getElementById("placeholderTitle")
+        .textContent = PAGE_NAMES[page];
+
+      document.getElementById("pageSubtitle").textContent =
+        "LEXORA Law Firm Management System";
+    }
+
+    if(window.innerWidth <= 950){
+
+      document
+        .getElementById("sidebar")
+        .classList
+        .remove("open");
+    }
+  }
+
+
+  document
+    .querySelectorAll(".nav-item")
+    .forEach(item => {
+
+      item.addEventListener("click", () => {
+        openPage(item.dataset.page);
+      });
+
+    });
+
+
+  function setCurrentDate(){
+
+    const date = new Date();
+
+    const formatted =
+      new Intl.DateTimeFormat(
+        "en-GB",
+        {
+          weekday:"long",
+          day:"2-digit",
+          month:"long",
+          year:"numeric"
+        }
+      ).format(date);
+
+    document.getElementById("currentDate").textContent =
+      formatted +
+      " · Here's what's happening across the firm today.";
+  }
+
+
+  function startTour(){
+
+    alert(
+      "LEXORA Demo Tour\n\n" +
+      "1. Executive Dashboard\n" +
+      "2. Client 360°\n" +
+      "3. Case 360°\n" +
+      "4. Professional Fee Proposal\n" +
+      "5. Invoice & Collection\n" +
+      "6. Management Reports\n\n" +
+      "The interactive guided tour will be activated as the modules are completed."
+    );
+  }
+
+
+  setCurrentDate();
+
+</script>
+
+</body>
+</html>
