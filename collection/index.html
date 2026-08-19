@@ -571,6 +571,70 @@
       .collections-mini-grid{grid-template-columns:1fr}
     }
 
+
+    /* SETTLEMENTS */
+    .settlement-kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-bottom:16px}
+    .settlement-toolbar{display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+    .settlement-toolbar-left{display:flex;gap:10px;flex-wrap:wrap}
+    .settlement-toolbar input,.settlement-toolbar select{
+      height:40px;border:1px solid var(--border);border-radius:6px;background:white;padding:0 12px;font-size:11px;outline:none
+    }
+    .settlement-toolbar input{width:280px}
+    .settlement-link{border:0;background:transparent;color:var(--navy);font-weight:700;cursor:pointer;padding:0}
+    .settlement-link:hover{color:var(--teal)}
+
+    .settlement-status{display:inline-flex;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700}
+    .settlement-status.draft{background:#f3f4f6;color:#6f7780}
+    .settlement-status.pending{background:#fbf4e5;color:#9a6d1f}
+    .settlement-status.approved{background:#edf5f0;color:#347b57}
+    .settlement-status.rejected{background:#fbeaea;color:#a74646}
+    .settlement-status.completed{background:#eef2f7;color:#36506d}
+
+    .settlement-hero{
+      display:flex;justify-content:space-between;gap:20px;align-items:flex-start;background:white;border:1px solid var(--border);
+      border-radius:8px;padding:22px;margin-bottom:16px
+    }
+    .settlement-hero-left{display:flex;gap:16px;align-items:flex-start}
+    .settlement-avatar{
+      width:58px;height:58px;border-radius:10px;background:var(--navy);color:var(--teal2);display:grid;place-items:center;
+      font-size:18px;font-weight:700
+    }
+    .settlement-hero h2{font-size:23px;color:var(--navy)}
+    .settlement-hero p{margin-top:6px;color:var(--muted);font-size:11px}
+    .settlement-tags{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
+    .settlement-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .settlement-summary-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-bottom:16px}
+
+    .settlement-layout{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .discount-box{padding:16px;border:1px solid var(--border);border-radius:8px;background:var(--soft)}
+    .discount-box span{display:block;font-size:9px;color:var(--muted)}
+    .discount-box strong{display:block;margin-top:7px;font-size:17px;color:var(--navy)}
+    .approval-step{
+      display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:center;padding:12px;border:1px solid var(--border);
+      border-radius:7px;background:white;margin-top:10px
+    }
+    .approval-step-num{
+      width:30px;height:30px;border-radius:50%;background:var(--navy);color:var(--teal2);display:grid;place-items:center;font-size:10px;font-weight:700
+    }
+    .approval-step strong{font-size:10px;color:var(--navy)}
+    .approval-step span{display:block;margin-top:3px;font-size:9px;color:var(--muted)}
+    .approval-step b{font-size:9px;color:var(--success)}
+
+    @media(max-width:1250px){
+      .settlement-kpi-grid,.settlement-summary-grid{grid-template-columns:repeat(3,1fr)}
+    }
+    @media(max-width:950px){.settlement-layout{grid-template-columns:1fr}}
+    @media(max-width:650px){
+      .settlement-kpi-grid,.settlement-summary-grid{grid-template-columns:1fr 1fr}
+      .settlement-toolbar{align-items:stretch}
+      .settlement-toolbar-left{width:100%}
+      .settlement-toolbar input,.settlement-toolbar select{width:100%}
+      .settlement-hero{flex-direction:column}
+      .settlement-hero-left{flex-direction:column}
+      .settlement-actions{width:100%}
+      .settlement-actions button{flex:1}
+    }
+
     .placeholder{min-height:500px;display:grid;place-items:center;text-align:center}
     .placeholder-box{max-width:520px;padding:45px;background:white;border:1px solid var(--border);border-radius:10px}
     .placeholder-box span{font-size:9px;color:var(--teal);letter-spacing:2px;font-weight:700}
@@ -1870,6 +1934,160 @@
     </div>
 
 
+
+    <!-- SETTLEMENTS -->
+    <div id="settlementsPage" class="hidden">
+      <div class="content">
+        <div class="hero-row">
+          <div>
+            <h2>Settlements</h2>
+            <p>Manage negotiated settlement offers, client approvals and settlement completion.</p>
+          </div>
+          <div class="hero-actions">
+            <button class="action-btn action-secondary">Export Excel</button>
+            <button class="action-btn action-primary" onclick="showAddSettlementDemo()">+ New Settlement</button>
+          </div>
+        </div>
+
+        <div class="settlement-kpi-grid">
+          <div class="kpi-card"><span class="kpi-label">Open Settlements</span><strong class="kpi-value">14</strong><div class="kpi-note">Under negotiation or approval</div></div>
+          <div class="kpi-card"><span class="kpi-label">Proposed Value</span><strong class="kpi-value money">BHD 56,400.000</strong><div class="kpi-note">Current proposals</div></div>
+          <div class="kpi-card"><span class="kpi-label">Approved</span><strong class="kpi-value">8</strong><div class="kpi-note"><span class="positive">57.1%</span> approval rate</div></div>
+          <div class="kpi-card"><span class="kpi-label">Completed</span><strong class="kpi-value">21</strong><div class="kpi-note">Current year</div></div>
+          <div class="kpi-card"><span class="kpi-label">Recovered via Settlement</span><strong class="kpi-value money">BHD 84,900.000</strong><div class="kpi-note">Year-to-date recovery</div></div>
+        </div>
+
+        <section class="card">
+          <div class="settlement-toolbar">
+            <div class="settlement-toolbar-left">
+              <input id="settlementSearch" type="search" placeholder="Search settlement, debtor, client or case..." oninput="renderSettlements()">
+              <select id="settlementStatusFilter" onchange="renderSettlements()">
+                <option value="">All Statuses</option>
+                <option value="Draft">Draft</option>
+                <option value="Pending">Pending</option>
+                <option value="Approved">Approved</option>
+                <option value="Rejected">Rejected</option>
+                <option value="Completed">Completed</option>
+              </select>
+            </div>
+            <span style="font-size:10px;color:var(--muted)">Open any settlement to view Settlement 360°</span>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Settlement</th><th>Case</th><th>Debtor</th><th>Client</th><th>Outstanding</th>
+                  <th>Proposed</th><th>Discount</th><th>Status</th><th>Approval</th><th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="settlementsTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <div class="dashboard-grid equal">
+          <section class="card">
+            <div class="card-head"><div><h3>Settlement Performance</h3><p>Current settlement conversion indicators</p></div></div>
+            <div class="collections-mini-grid">
+              <div class="mini-card"><span>Proposal to Approval</span><strong>57.1%</strong></div>
+              <div class="mini-card"><span>Approval to Completion</span><strong>87.5%</strong></div>
+              <div class="mini-card"><span>Average Discount</span><strong>18.6%</strong></div>
+              <div class="mini-card"><span>Average Days</span><strong>12</strong></div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-head"><div><h3>Client Approval Queue</h3><p>Settlements awaiting creditor decision</p></div></div>
+            <div class="list">
+              <div class="list-row"><div class="list-left"><div class="list-icon">≋</div><div><strong>Ahmed Trading</strong><span>Gulf Finance · COL-260184</span></div></div><strong>BHD 15,000</strong></div>
+              <div class="list-row"><div class="list-left"><div class="list-icon">≋</div><div><strong>Hassan Ali</strong><span>Apex Credit · COL-260211</span></div></div><strong>BHD 4,200</strong></div>
+              <div class="list-row"><div class="list-left"><div class="list-icon">≋</div><div><strong>Modern Workshop</strong><span>Bahrain Leasing · COL-260203</span></div></div><strong>BHD 22,000</strong></div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <span>RECOVA — Settlements</span>
+        <span>Designed & Developed by <strong style="color:#1aa6a6">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
+    <!-- SETTLEMENT 360 -->
+    <div id="settlement360Page" class="hidden">
+      <div class="content">
+        <div style="margin-bottom:14px;">
+          <button class="action-btn action-secondary" onclick="openPage('settlements')">← Back to Settlements</button>
+        </div>
+
+        <section class="settlement-hero">
+          <div class="settlement-hero-left">
+            <div class="settlement-avatar">S</div>
+            <div>
+              <h2 id="settlement360Title"></h2>
+              <p id="settlement360Meta"></p>
+              <div class="settlement-tags">
+                <span id="settlement360Status" class="settlement-status pending"></span>
+                <span id="settlement360Approval" class="client-type"></span>
+                <span class="client-type">Settlement 360°</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="settlement-actions">
+            <button class="action-btn action-secondary" onclick="openSettlementCase()">View Case</button>
+            <button class="action-btn action-secondary" onclick="openSettlementDebtor()">View Debtor</button>
+            <button class="action-btn action-secondary" onclick="settlementRejectDemo()">Reject</button>
+            <button class="action-btn action-primary" onclick="settlementApproveDemo()">Approve</button>
+          </div>
+        </section>
+
+        <div class="settlement-summary-grid">
+          <div class="kpi-card"><span class="kpi-label">Outstanding Balance</span><strong id="sOutstanding" class="kpi-value money"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Settlement Amount</span><strong id="sProposed" class="kpi-value money"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Discount Amount</span><strong id="sDiscountAmt" class="kpi-value money"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Discount %</span><strong id="sDiscountPct" class="kpi-value"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Valid Until</span><strong id="sValidUntil" class="kpi-value" style="font-size:15px"></strong></div>
+        </div>
+
+        <div class="settlement-layout">
+          <section class="card">
+            <div class="card-head"><div><h3>Settlement Information</h3><p>Negotiated commercial terms</p></div></div>
+            <div class="info-grid">
+              <div class="info-item"><span>Settlement Reference</span><strong id="sInfoNo"></strong></div>
+              <div class="info-item"><span>Collection Case</span><strong id="sInfoCase"></strong></div>
+              <div class="info-item"><span>Debtor</span><strong id="sInfoDebtor"></strong></div>
+              <div class="info-item"><span>Client</span><strong id="sInfoClient"></strong></div>
+              <div class="info-item"><span>Prepared By</span><strong id="sPreparedBy"></strong></div>
+              <div class="info-item"><span>Prepared Date</span><strong id="sPreparedDate"></strong></div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-head"><div><h3>Approval Workflow</h3><p>Internal and client approval sequence</p></div></div>
+            <div id="settlementApprovalSteps"></div>
+          </section>
+        </div>
+
+        <section class="card" style="margin-top:16px;">
+          <div class="card-head"><div><h3>Payment Terms</h3><p>Settlement payment schedule</p></div></div>
+          <div id="settlementPaymentPlan"></div>
+        </section>
+
+        <section class="card" style="margin-top:16px;">
+          <div class="card-head"><div><h3>Settlement Timeline</h3><p>Proposal, approval and payment activity</p></div></div>
+          <div id="settlementTimeline" class="timeline"></div>
+        </section>
+      </div>
+
+      <footer class="footer">
+        <span>RECOVA — Settlement 360°</span>
+        <span>Designed & Developed by <strong style="color:#1aa6a6">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
+
     <div id="placeholderPage" class="hidden">
       <div class="content placeholder">
         <div class="placeholder-box">
@@ -3000,6 +3218,176 @@
   }
 
 
+
+  const SETTLEMENTS = [
+    {
+      no:"SET-260041",caseNo:"COL-260184",debtorId:"DBT-001",debtor:"Ahmed Trading",client:"Gulf Finance B.S.C.",
+      outstanding:18500,proposed:15000,discount:3500,discountPct:18.9,status:"Pending",approval:"Client Approval Pending",
+      preparedBy:"Sara Ahmed",preparedDate:"19 Aug 2026",validUntil:"25 Aug 2026",
+      steps:[["01","Collector Review","Completed"],["02","Internal Approval","Completed"],["03","Client Approval","Pending"]],
+      paymentPlan:[["Upon Approval","BHD 5,000.000"],["Within 30 Days","BHD 5,000.000"],["Within 60 Days","BHD 5,000.000"]],
+      timeline:[["19 Aug 2026","Settlement created","BHD 15,000.000 proposed."],["19 Aug 2026","Internal approval completed","Sent to client for approval."]]
+    },
+    {
+      no:"SET-260042",caseNo:"COL-260211",debtorId:"DBT-004",debtor:"Hassan Ali",client:"Apex Credit Solutions",
+      outstanding:4800,proposed:4200,discount:600,discountPct:12.5,status:"Pending",approval:"Client Approval Pending",
+      preparedBy:"Fatima Abbas",preparedDate:"18 Aug 2026",validUntil:"23 Aug 2026",
+      steps:[["01","Collector Review","Completed"],["02","Internal Approval","Completed"],["03","Client Approval","Pending"]],
+      paymentPlan:[["Upon Approval","BHD 2,100.000"],["Within 30 Days","BHD 2,100.000"]],
+      timeline:[["18 Aug 2026","Settlement proposed","Offer prepared after broken PTP."],["18 Aug 2026","Client approval requested","Pending response."]]
+    },
+    {
+      no:"SET-260043",caseNo:"COL-260203",debtorId:"DBT-003",debtor:"Modern Workshop",client:"Bahrain Leasing Co.",
+      outstanding:22300,proposed:22000,discount:300,discountPct:1.3,status:"Approved",approval:"Approved by Client",
+      preparedBy:"Khalid Ali",preparedDate:"18 Aug 2026",validUntil:"28 Aug 2026",
+      steps:[["01","Collector Review","Completed"],["02","Internal Approval","Completed"],["03","Client Approval","Completed"]],
+      paymentPlan:[["Upon Approval","BHD 7,000.000"],["30 Sep 2026","BHD 7,500.000"],["31 Oct 2026","BHD 7,500.000"]],
+      timeline:[["18 Aug 2026","Settlement created","Proposal prepared."],["19 Aug 2026","Client approved","Settlement approved by creditor."]]
+    },
+    {
+      no:"SET-260035",caseNo:"COL-260170",debtorId:"DBT-005",debtor:"Al Manar Stores",client:"Gulf Finance B.S.C.",
+      outstanding:7800,proposed:6000,discount:1800,discountPct:23.1,status:"Completed",approval:"Completed",
+      preparedBy:"Khalid Ali",preparedDate:"05 Jul 2026",validUntil:"15 Jul 2026",
+      steps:[["01","Collector Review","Completed"],["02","Internal Approval","Completed"],["03","Client Approval","Completed"],["04","Settlement Payment","Completed"]],
+      paymentPlan:[["10 Jul 2026","BHD 3,000.000"],["15 Jul 2026","BHD 3,000.000"]],
+      timeline:[["05 Jul 2026","Settlement created","BHD 6,000.000 settlement proposed."],["06 Jul 2026","Client approved","Settlement approved."],["15 Jul 2026","Settlement completed","Full settlement amount received."]]
+    }
+  ];
+
+  let currentSettlement = SETTLEMENTS[0];
+
+  function settlementStatusClass(status){
+    return String(status).toLowerCase();
+  }
+
+  function renderSettlements(){
+    const search=(document.getElementById("settlementSearch")?.value||"").trim().toLowerCase();
+    const status=document.getElementById("settlementStatusFilter")?.value||"";
+
+    const rows=SETTLEMENTS.filter(s=>{
+      const a=!search || [s.no,s.caseNo,s.debtor,s.client].join(" ").toLowerCase().includes(search);
+      const b=!status || s.status===status;
+      return a&&b;
+    }).map(s=>`
+      <tr>
+        <td><button class="settlement-link" onclick="openSettlement360('${s.no}')">${s.no}</button></td>
+        <td><button class="case-link" onclick="openCase360('${s.caseNo}')">${s.caseNo}</button></td>
+        <td>${s.debtor}</td>
+        <td>${s.client}</td>
+        <td>${formatMoney(s.outstanding)}</td>
+        <td>${formatMoney(s.proposed)}</td>
+        <td>${s.discountPct.toFixed(1)}%</td>
+        <td><span class="settlement-status ${settlementStatusClass(s.status)}">${s.status}</span></td>
+        <td>${s.approval}</td>
+        <td><button class="table-action" onclick="openSettlement360('${s.no}')">View 360°</button></td>
+      </tr>
+    `).join("");
+
+    document.getElementById("settlementsTableBody").innerHTML=rows || `<tr><td colspan="10" style="text-align:center;padding:28px;color:#7a8491">No settlements found.</td></tr>`;
+  }
+
+  function openSettlement360(no){
+    currentSettlement=SETTLEMENTS.find(s=>s.no===no)||SETTLEMENTS[0];
+
+    ["dashboardPage","clientsPage","client360Page","debtorsPage","debtor360Page","casesPage","case360Page","followupsPage","ptpPage","ptp360Page","collectionsPage","receipt360Page","settlementsPage","placeholderPage"].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el) el.classList.add("hidden");
+    });
+
+    document.getElementById("settlement360Page").classList.remove("hidden");
+    document.getElementById("pageTitle").textContent="Settlement 360°";
+    document.getElementById("pageSubtitle").textContent=currentSettlement.no+" · "+currentSettlement.debtor;
+
+    document.querySelectorAll(".nav-item").forEach(item=>{
+      item.classList.toggle("active",item.dataset.page==="settlements");
+    });
+
+    populateSettlement360();
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+
+  function populateSettlement360(){
+    const s=currentSettlement;
+
+    document.getElementById("settlement360Title").textContent=s.no;
+    document.getElementById("settlement360Meta").textContent=s.debtor+" · "+s.client;
+    document.getElementById("settlement360Status").textContent=s.status;
+    document.getElementById("settlement360Status").className="settlement-status "+settlementStatusClass(s.status);
+    document.getElementById("settlement360Approval").textContent=s.approval;
+
+    document.getElementById("sOutstanding").textContent=formatMoney(s.outstanding);
+    document.getElementById("sProposed").textContent=formatMoney(s.proposed);
+    document.getElementById("sDiscountAmt").textContent=formatMoney(s.discount);
+    document.getElementById("sDiscountPct").textContent=s.discountPct.toFixed(1)+"%";
+    document.getElementById("sValidUntil").textContent=s.validUntil;
+
+    document.getElementById("sInfoNo").textContent=s.no;
+    document.getElementById("sInfoCase").textContent=s.caseNo;
+    document.getElementById("sInfoDebtor").textContent=s.debtor;
+    document.getElementById("sInfoClient").textContent=s.client;
+    document.getElementById("sPreparedBy").textContent=s.preparedBy;
+    document.getElementById("sPreparedDate").textContent=s.preparedDate;
+
+    document.getElementById("settlementApprovalSteps").innerHTML=s.steps.map(step=>`
+      <div class="approval-step">
+        <div class="approval-step-num">${step[0]}</div>
+        <div><strong>${step[1]}</strong><span>Settlement approval workflow</span></div>
+        <b>${step[2]}</b>
+      </div>
+    `).join("");
+
+    document.getElementById("settlementPaymentPlan").innerHTML=s.paymentPlan.map((p,i)=>`
+      <div class="approval-step">
+        <div class="approval-step-num">${String(i+1).padStart(2,"0")}</div>
+        <div><strong>${p[0]}</strong><span>Settlement installment</span></div>
+        <b>${p[1]}</b>
+      </div>
+    `).join("");
+
+    document.getElementById("settlementTimeline").innerHTML=s.timeline.map(t=>`
+      <div class="timeline-item"><div class="timeline-dot"></div><div><strong>${t[0]} — ${t[1]}</strong><p>${t[2]}</p></div></div>
+    `).join("");
+  }
+
+  function openSettlementCase(){
+    if(currentSettlement?.caseNo) openCase360(currentSettlement.caseNo);
+  }
+
+  function openSettlementDebtor(){
+    if(currentSettlement?.debtorId) openDebtor360(currentSettlement.debtorId);
+  }
+
+  function showAddSettlementDemo(){
+    alert(
+      "New Settlement — Demo\\n\\n"+
+      "Prepared fields:\\n"+
+      "• Collection Case\\n"+
+      "• Debtor\\n"+
+      "• Outstanding Balance\\n"+
+      "• Proposed Settlement Amount\\n"+
+      "• Discount %\\n"+
+      "• Payment Terms\\n"+
+      "• Valid Until\\n"+
+      "• Internal Approval\\n"+
+      "• Client Approval"
+    );
+  }
+
+  function settlementApproveDemo(){
+    alert(
+      "Approve Settlement — Demo\\n\\n"+
+      "Approval can update the case stage, create settlement payment schedule and notify the assigned collector."
+    );
+  }
+
+  function settlementRejectDemo(){
+    alert(
+      "Reject Settlement — Demo\\n\\n"+
+      "The settlement remains in the case history and the case returns to active collection or negotiation."
+    );
+  }
+
+
   const PAGE_NAMES = {
     dashboard:"Collection Dashboard",
     clients:"Clients",
@@ -3035,7 +3423,7 @@
 
     document.getElementById("pageTitle").textContent=PAGE_NAMES[page]||"RECOVA";
 
-    ["dashboardPage","clientsPage","client360Page","debtorsPage","debtor360Page","casesPage","case360Page","followupsPage","ptpPage","ptp360Page","collectionsPage","receipt360Page","placeholderPage"].forEach(id=>{
+    ["dashboardPage","clientsPage","client360Page","debtorsPage","debtor360Page","casesPage","case360Page","followupsPage","ptpPage","ptp360Page","collectionsPage","receipt360Page","settlementsPage","settlement360Page","placeholderPage"].forEach(id=>{
       const el=document.getElementById(id);
       if(el) el.classList.add("hidden");
     });
@@ -3067,6 +3455,10 @@
       document.getElementById("collectionsPage").classList.remove("hidden");
       document.getElementById("pageSubtitle").textContent="Debtor payments, receipts and case allocation";
       renderCollectionsModule();
+    }else if(page==="settlements"){
+      document.getElementById("settlementsPage").classList.remove("hidden");
+      document.getElementById("pageSubtitle").textContent="Settlement proposals, approvals and completion";
+      renderSettlements();
     }else{
       document.getElementById("placeholderPage").classList.remove("hidden");
       document.getElementById("placeholderTitle").textContent=PAGE_NAMES[page];
@@ -3111,7 +3503,7 @@
       "5. Follow-ups & PTP\\n"+
       "6. Collections & Settlements\\n"+
       "7. Commission & Reports\\n\\n"+
-      "Release 1.6 activates Dashboard, Clients, Debtors, Collection Cases, Follow-ups, Promises to Pay and Collections with Receipt 360° and case allocation."
+      "Release 1.7 activates Dashboard, Clients, Debtors, Collection Cases, Follow-ups, Promises to Pay, Collections and Settlements with Settlement 360° and client approval workflow."
     );
   }
 
@@ -3122,6 +3514,7 @@
   renderFollowups();
   renderPtps();
   renderCollectionsModule();
+  renderSettlements();
 </script>
 
 </body>
