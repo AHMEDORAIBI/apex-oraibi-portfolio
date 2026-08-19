@@ -228,6 +228,57 @@
     @media(max-width:950px){.building-overview-grid,.info-grid{grid-template-columns:1fr}}
     @media(max-width:650px){.building-kpi-grid,.building-summary-grid{grid-template-columns:1fr 1fr}.building-toolbar{align-items:stretch}.building-toolbar-left{width:100%}.building-toolbar input,.building-toolbar select{width:100%}.building-card-grid{grid-template-columns:1fr}.building-hero{flex-direction:column}.building-hero-left{flex-direction:column}.building-actions{width:100%}.building-actions button{flex:1}}
 
+
+    /* UNITS */
+    .unit-kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-bottom:16px}
+    .unit-toolbar{display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+    .unit-toolbar-left{display:flex;gap:10px;flex-wrap:wrap}
+    .unit-toolbar input,.unit-toolbar select{
+      height:40px;border:1px solid var(--border);border-radius:6px;background:white;padding:0 12px;font-size:11px;outline:none
+    }
+    .unit-toolbar input{width:280px}
+    .unit-link{border:0;background:transparent;color:var(--navy);font-weight:700;cursor:pointer;padding:0}
+    .unit-link:hover{color:var(--emerald)}
+    .unit-type{display:inline-flex;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700;background:#eef2f7;color:#36506d}
+
+    .unit-hero{
+      display:flex;justify-content:space-between;gap:20px;align-items:flex-start;background:white;border:1px solid var(--border);
+      border-radius:8px;padding:22px;margin-bottom:16px
+    }
+    .unit-hero-left{display:flex;gap:16px;align-items:flex-start}
+    .unit-avatar{
+      width:64px;height:64px;border-radius:10px;background:var(--navy);color:var(--emerald2);display:grid;place-items:center;
+      font-size:20px;font-weight:700
+    }
+    .unit-hero h2{font-size:23px;color:var(--navy)}
+    .unit-hero p{margin-top:6px;color:var(--muted);font-size:11px}
+    .unit-tags{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
+    .unit-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .unit-summary-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-bottom:16px}
+    .unit-layout{display:grid;grid-template-columns:1.05fr .95fr;gap:16px}
+    .rent-box{padding:16px;border:1px solid var(--border);border-radius:8px;background:var(--soft)}
+    .rent-box span{display:block;font-size:9px;color:var(--muted)}
+    .rent-box strong{display:block;margin-top:7px;font-size:17px;color:var(--navy)}
+    .rent-progress{height:9px;background:#e9edf0;border-radius:20px;overflow:hidden;margin-top:10px}
+    .rent-progress span{display:block;height:100%;background:var(--emerald);border-radius:20px}
+
+    @media(max-width:1250px){
+      .unit-kpi-grid,.unit-summary-grid{grid-template-columns:repeat(3,1fr)}
+    }
+    @media(max-width:950px){
+      .unit-layout{grid-template-columns:1fr}
+    }
+    @media(max-width:650px){
+      .unit-kpi-grid,.unit-summary-grid{grid-template-columns:1fr 1fr}
+      .unit-toolbar{align-items:stretch}
+      .unit-toolbar-left{width:100%}
+      .unit-toolbar input,.unit-toolbar select{width:100%}
+      .unit-hero{flex-direction:column}
+      .unit-hero-left{flex-direction:column}
+      .unit-actions{width:100%}
+      .unit-actions button{flex:1}
+    }
+
     .placeholder{min-height:500px;display:grid;place-items:center;text-align:center}
     .placeholder-box{max-width:520px;padding:45px;background:white;border:1px solid var(--border);border-radius:10px}
     .placeholder-box span{font-size:9px;color:var(--emerald);letter-spacing:2px;font-weight:700}
@@ -657,6 +708,196 @@
       <footer class="footer"><span>ESTARA — Building 360°</span><span>Designed & Developed by <strong style="color:#1f8a70">APEX ORAIBI</strong></span></footer>
     </div>
 
+
+    <!-- UNITS -->
+    <div id="unitsPage" class="hidden">
+      <div class="content">
+        <div class="hero-row">
+          <div>
+            <h2>Units</h2>
+            <p>Manage all property units, occupancy, tenant assignment and monthly rent position.</p>
+          </div>
+          <div class="hero-actions">
+            <button class="action-btn action-secondary">Export Excel</button>
+            <button class="action-btn action-primary" onclick="showAddUnitDemo()">+ Add Unit</button>
+          </div>
+        </div>
+
+        <div class="unit-kpi-grid">
+          <div class="kpi-card"><span class="kpi-label">Total Units</span><strong class="kpi-value">186</strong><div class="kpi-note">Across all buildings</div></div>
+          <div class="kpi-card"><span class="kpi-label">Occupied</span><strong class="kpi-value">171</strong><div class="kpi-note"><span class="positive">91.9%</span> occupied</div></div>
+          <div class="kpi-card"><span class="kpi-label">Vacant</span><strong class="kpi-value">15</strong><div class="kpi-note">Available / maintenance</div></div>
+          <div class="kpi-card"><span class="kpi-label">Monthly Rent</span><strong class="kpi-value money">BHD 42,850.000</strong><div class="kpi-note">Current month</div></div>
+          <div class="kpi-card"><span class="kpi-label">Units in Arrears</span><strong class="kpi-value">31</strong><div class="kpi-note"><span class="danger">Require follow-up</span></div></div>
+        </div>
+
+        <section class="card">
+          <div class="unit-toolbar">
+            <div class="unit-toolbar-left">
+              <input id="unitSearch" type="search" placeholder="Search unit, building or tenant..." oninput="renderUnits()">
+              <select id="unitBuildingFilter" onchange="renderUnits()">
+                <option value="">All Buildings</option>
+                <option value="BLD-001">Seef Residence</option>
+                <option value="BLD-002">Riffa Plaza</option>
+                <option value="BLD-003">Juffair Heights</option>
+                <option value="BLD-004">Adliya Court</option>
+                <option value="BLD-005">Muharraq View</option>
+              </select>
+              <select id="unitStatusFilter" onchange="renderUnits()">
+                <option value="">All Statuses</option>
+                <option value="Occupied">Occupied</option>
+                <option value="Vacant">Vacant</option>
+                <option value="Maintenance">Maintenance</option>
+              </select>
+            </div>
+            <span style="font-size:10px;color:var(--muted)">Open any unit to view Unit 360°</span>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Unit</th><th>Building</th><th>Type</th><th>Floor</th><th>Monthly Rent</th>
+                  <th>Tenant</th><th>Contract</th><th>Status</th><th>Rent Status</th><th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="unitsTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <footer class="footer">
+        <span>ESTARA — Units</span>
+        <span>Designed & Developed by <strong style="color:#1f8a70">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
+    <!-- UNIT 360 -->
+    <div id="unit360Page" class="hidden">
+      <div class="content">
+        <div style="margin-bottom:14px;">
+          <button class="action-btn action-secondary" onclick="openPage('units')">← Back to Units</button>
+        </div>
+
+        <section class="unit-hero">
+          <div class="unit-hero-left">
+            <div id="unit360Avatar" class="unit-avatar">605</div>
+            <div>
+              <h2 id="unit360Title"></h2>
+              <p id="unit360Meta"></p>
+              <div class="unit-tags">
+                <span id="unit360Status" class="unit-status vacant"></span>
+                <span id="unit360Type" class="unit-type"></span>
+                <span class="building-type" style="background:#eaf8f3;color:#1f8a70">Unit 360°</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="unit-actions">
+            <button class="action-btn action-secondary" onclick="openUnitBuilding()">View Building</button>
+            <button class="action-btn action-secondary" onclick="assignTenantDemo()">Assign Tenant</button>
+            <button class="action-btn action-secondary" onclick="createContractDemo()">Create Contract</button>
+            <button class="action-btn action-primary" onclick="recordRentDemo()">Record Collection</button>
+          </div>
+        </section>
+
+        <div class="unit-summary-grid">
+          <div class="kpi-card"><span class="kpi-label">Monthly Rent</span><strong id="uRent" class="kpi-value money"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Tenant</span><strong id="uTenantKpi" class="kpi-value" style="font-size:15px"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Contract</span><strong id="uContractKpi" class="kpi-value" style="font-size:15px"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Rent Status</span><strong id="uRentStatusKpi" class="kpi-value" style="font-size:15px"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Arrears</span><strong id="uArrears" class="kpi-value money"></strong></div>
+        </div>
+
+        <section class="card">
+          <div class="tabs">
+            <button class="tab-btn active" onclick="openUnitTab('overview',this)">Overview</button>
+            <button class="tab-btn" onclick="openUnitTab('tenant',this)">Tenant</button>
+            <button class="tab-btn" onclick="openUnitTab('contract',this)">Contract</button>
+            <button class="tab-btn" onclick="openUnitTab('dues',this)">Monthly Dues</button>
+            <button class="tab-btn" onclick="openUnitTab('collections',this)">Collections</button>
+            <button class="tab-btn" onclick="openUnitTab('activity',this)">Activity</button>
+          </div>
+
+          <div id="unit-tab-overview" class="tab-panel active">
+            <div class="unit-layout">
+              <div>
+                <div class="card-head"><div><h3>Unit Information</h3><p>Property and rent details</p></div></div>
+                <div class="info-grid">
+                  <div class="info-item"><span>Unit Number</span><strong id="uNumber"></strong></div>
+                  <div class="info-item"><span>Building</span><strong id="uBuilding"></strong></div>
+                  <div class="info-item"><span>Unit Type</span><strong id="uTypeInfo"></strong></div>
+                  <div class="info-item"><span>Floor</span><strong id="uFloor"></strong></div>
+                  <div class="info-item"><span>Area</span><strong id="uArea"></strong></div>
+                  <div class="info-item"><span>Bedrooms</span><strong id="uBedrooms"></strong></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="card-head"><div><h3>Current Rent Position</h3><p>Current month payment status</p></div></div>
+                <div class="rent-box">
+                  <span>Monthly Rent</span>
+                  <strong id="uMonthlyRent"></strong>
+                </div>
+                <div class="rent-box" style="margin-top:12px;">
+                  <span>Collected This Month</span>
+                  <strong id="uCollected"></strong>
+                  <div class="rent-progress"><span id="uRentProgress"></span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="unit-tab-tenant" class="tab-panel">
+            <div class="info-grid">
+              <div class="info-item"><span>Tenant Name</span><strong id="uTenantName"></strong></div>
+              <div class="info-item"><span>Mobile</span><strong id="uTenantMobile"></strong></div>
+              <div class="info-item"><span>Email</span><strong id="uTenantEmail"></strong></div>
+              <div class="info-item"><span>Tenant Status</span><strong id="uTenantStatus"></strong></div>
+            </div>
+          </div>
+
+          <div id="unit-tab-contract" class="tab-panel">
+            <div class="info-grid">
+              <div class="info-item"><span>Contract Number</span><strong id="uContractNo"></strong></div>
+              <div class="info-item"><span>Contract Type</span><strong id="uContractType"></strong></div>
+              <div class="info-item"><span>Start Date</span><strong id="uContractStart"></strong></div>
+              <div class="info-item"><span>End Date</span><strong id="uContractEnd"></strong></div>
+            </div>
+          </div>
+
+          <div id="unit-tab-dues" class="tab-panel">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Month</th><th>Due Date</th><th>Rent Due</th><th>Collected</th><th>Balance</th><th>Status</th></tr></thead>
+                <tbody id="unitDuesBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="unit-tab-collections" class="tab-panel">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Date</th><th>Receipt</th><th>Method</th><th>Reference</th><th>Amount</th></tr></thead>
+                <tbody id="unitCollectionsBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="unit-tab-activity" class="tab-panel">
+            <div id="unitActivityTimeline" class="list"></div>
+          </div>
+        </section>
+      </div>
+
+      <footer class="footer">
+        <span>ESTARA — Unit 360°</span>
+        <span>Designed & Developed by <strong style="color:#1f8a70">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
+
     <div id="placeholderPage" class="hidden">
       <div class="content placeholder">
         <div class="placeholder-box">
@@ -740,6 +981,180 @@
   function showAddBuildingDemo(){ alert("Add Building — Demo\\n\\nBuilding Name, Property Type, Location, Owner / Client, Manager, Year Built, Number of Units, Status and Building Image."); }
   function showAddUnitDemo(){ alert("Add Unit — Demo\\n\\nUnit Number, Unit Type, Floor, Monthly Rent, Status and Notes."); }
 
+
+  const UNITS = [
+    {
+      id:"UNT-001",buildingId:"BLD-001",building:"Seef Residence",number:"101",type:"1 Bedroom",floor:"1st",
+      area:"72 sqm",bedrooms:"1",rent:350,status:"Occupied",rentStatus:"Paid",tenant:"Omar Ali",tenantMobile:"+973 3900 1101",
+      tenantEmail:"omar.ali@demo.local",tenantStatus:"Active",contract:"CTR-260011",contractType:"Fixed Term",
+      contractStart:"01 Jan 2026",contractEnd:"31 Dec 2026",arrears:0,collectedMonth:350,
+      dues:[["Aug 2026","01 Aug 2026",350,350,0,"Paid"],["Jul 2026","01 Jul 2026",350,350,0,"Paid"],["Jun 2026","01 Jun 2026",350,350,0,"Paid"]],
+      collections:[["19 Aug 2026","RC-PR-260411","BenefitPay","BP-1908-01",350]],
+      activity:[["19 Aug 2026","Rent collected","BHD 350.000 collected for August."],["01 Aug 2026","Monthly due generated","August rent due created automatically."]]
+    },
+    {
+      id:"UNT-002",buildingId:"BLD-001",building:"Seef Residence",number:"605",type:"2 Bedroom",floor:"6th",
+      area:"110 sqm",bedrooms:"2",rent:450,status:"Vacant",rentStatus:"—",tenant:"—",tenantMobile:"—",tenantEmail:"—",
+      tenantStatus:"—",contract:"—",contractType:"—",contractStart:"—",contractEnd:"—",arrears:0,collectedMonth:0,
+      dues:[],collections:[],
+      activity:[["15 Aug 2026","Unit marked vacant","Previous tenancy closed and unit made available."],["16 Aug 2026","Leasing status updated","Unit ready for new tenant."]]
+    },
+    {
+      id:"UNT-003",buildingId:"BLD-001",building:"Seef Residence",number:"804",type:"2 Bedroom",floor:"8th",
+      area:"108 sqm",bedrooms:"2",rent:420,status:"Occupied",rentStatus:"Overdue",tenant:"Fatima Ali",tenantMobile:"+973 3666 2201",
+      tenantEmail:"fatima.ali@demo.local",tenantStatus:"Active",contract:"CTR-260033",contractType:"Fixed Term",
+      contractStart:"01 Feb 2026",contractEnd:"31 Jan 2027",arrears:420,collectedMonth:0,
+      dues:[["Aug 2026","01 Aug 2026",420,0,420,"Overdue"],["Jul 2026","01 Jul 2026",420,420,0,"Paid"]],
+      collections:[["18 Jul 2026","RC-PR-260350","Bank Transfer","FT-1807-04",420]],
+      activity:[["10 Aug 2026","Arrears reminder sent","August rent remains unpaid."],["01 Aug 2026","Monthly due generated","BHD 420.000 due for August."]]
+    },
+    {
+      id:"UNT-004",buildingId:"BLD-002",building:"Riffa Plaza",number:"GF-03",type:"Retail",floor:"Ground",
+      area:"95 sqm",bedrooms:"—",rent:650,status:"Occupied",rentStatus:"Partial",tenant:"Al Noor Trading",tenantMobile:"+973 3888 9944",
+      tenantEmail:"accounts@alnoor.demo",tenantStatus:"Active",contract:"CTR-260045",contractType:"Open Ended",
+      contractStart:"01 Mar 2026",contractEnd:"Open Ended",arrears:650,collectedMonth:650,
+      dues:[["Aug 2026","01 Aug 2026",650,650,0,"Paid"],["Jul 2026","01 Jul 2026",650,0,650,"Overdue"]],
+      collections:[["19 Aug 2026","RC-PR-260414","Bank Transfer","FT-1908-03",650]],
+      activity:[["19 Aug 2026","Rent received","August rent collected."],["08 Aug 2026","Arrears follow-up","July balance remains outstanding."]]
+    },
+    {
+      id:"UNT-005",buildingId:"BLD-003",building:"Juffair Heights",number:"1204",type:"2 Bedroom",floor:"12th",
+      area:"115 sqm",bedrooms:"2",rent:450,status:"Occupied",rentStatus:"Overdue",tenant:"Ahmed Salman",tenantMobile:"+973 3555 2200",
+      tenantEmail:"ahmed.salman@demo.local",tenantStatus:"Active",contract:"CTR-260084",contractType:"Fixed Term",
+      contractStart:"01 Mar 2026",contractEnd:"28 Feb 2027",arrears:900,collectedMonth:0,
+      dues:[["Aug 2026","01 Aug 2026",450,0,450,"Overdue"],["Jul 2026","01 Jul 2026",450,0,450,"Overdue"],["Jun 2026","01 Jun 2026",450,450,0,"Paid"]],
+      collections:[["10 Jun 2026","RC-PR-260280","Cash","CASH-1006",450]],
+      activity:[["16 Aug 2026","Second arrears reminder","Two months rent overdue."],["01 Aug 2026","Monthly due generated","August rent due added."]]
+    }
+  ];
+
+  let currentUnit = UNITS[0];
+
+  function renderUnits(){
+    const search=(document.getElementById("unitSearch")?.value||"").trim().toLowerCase();
+    const building=document.getElementById("unitBuildingFilter")?.value||"";
+    const status=document.getElementById("unitStatusFilter")?.value||"";
+
+    const rows=UNITS.filter(u=>{
+      const a=!search || [u.number,u.building,u.tenant,u.id].join(" ").toLowerCase().includes(search);
+      const b=!building || u.buildingId===building;
+      const c=!status || u.status===status;
+      return a&&b&&c;
+    }).map(u=>`
+      <tr>
+        <td><button class="unit-link" onclick="openUnit360('${u.id}')">${u.number}</button></td>
+        <td>${u.building}</td>
+        <td><span class="unit-type">${u.type}</span></td>
+        <td>${u.floor}</td>
+        <td>${formatMoney(u.rent)}</td>
+        <td>${u.tenant}</td>
+        <td>${u.contract}</td>
+        <td><span class="unit-status ${u.status.toLowerCase()}">${u.status}</span></td>
+        <td>${u.rentStatus==="—"?"—":`<span class="rent-status ${u.rentStatus.toLowerCase()}">${u.rentStatus}</span>`}</td>
+        <td><button class="action-btn action-secondary" style="min-height:30px;padding:0 10px;font-size:9px" onclick="openUnit360('${u.id}')">View 360°</button></td>
+      </tr>
+    `).join("");
+
+    document.getElementById("unitsTableBody").innerHTML=rows || `<tr><td colspan="10" style="text-align:center;padding:28px;color:#7f8b93">No units found.</td></tr>`;
+  }
+
+  function openUnit360(id){
+    currentUnit=UNITS.find(u=>u.id===id)||UNITS[0];
+
+    ["dashboardPage","buildingsPage","building360Page","unitsPage","placeholderPage"].forEach(x=>{
+      const el=document.getElementById(x);
+      if(el) el.classList.add("hidden");
+    });
+
+    document.getElementById("unit360Page").classList.remove("hidden");
+    document.getElementById("pageTitle").textContent="Unit 360°";
+    document.getElementById("pageSubtitle").textContent=currentUnit.building+" · Unit "+currentUnit.number;
+
+    document.querySelectorAll(".nav-item").forEach(item=>{
+      item.classList.toggle("active",item.dataset.page==="units");
+    });
+
+    populateUnit360();
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+
+  function populateUnit360(){
+    const u=currentUnit;
+    const pct=u.rent>0 ? Math.min(100,(u.collectedMonth/u.rent)*100) : 0;
+
+    document.getElementById("unit360Avatar").textContent=u.number;
+    document.getElementById("unit360Title").textContent=u.building+" — Unit "+u.number;
+    document.getElementById("unit360Meta").textContent=u.type+" · "+u.floor+" Floor";
+
+    document.getElementById("unit360Status").textContent=u.status;
+    document.getElementById("unit360Status").className="unit-status "+u.status.toLowerCase();
+    document.getElementById("unit360Type").textContent=u.type;
+
+    document.getElementById("uRent").textContent=formatMoney(u.rent);
+    document.getElementById("uTenantKpi").textContent=u.tenant;
+    document.getElementById("uContractKpi").textContent=u.contract;
+    document.getElementById("uRentStatusKpi").textContent=u.rentStatus;
+    document.getElementById("uArrears").textContent=formatMoney(u.arrears);
+
+    document.getElementById("uNumber").textContent=u.number;
+    document.getElementById("uBuilding").textContent=u.building;
+    document.getElementById("uTypeInfo").textContent=u.type;
+    document.getElementById("uFloor").textContent=u.floor;
+    document.getElementById("uArea").textContent=u.area;
+    document.getElementById("uBedrooms").textContent=u.bedrooms;
+    document.getElementById("uMonthlyRent").textContent=formatMoney(u.rent);
+    document.getElementById("uCollected").textContent=formatMoney(u.collectedMonth);
+    document.getElementById("uRentProgress").style.width=pct+"%";
+
+    document.getElementById("uTenantName").textContent=u.tenant;
+    document.getElementById("uTenantMobile").textContent=u.tenantMobile;
+    document.getElementById("uTenantEmail").textContent=u.tenantEmail;
+    document.getElementById("uTenantStatus").textContent=u.tenantStatus;
+
+    document.getElementById("uContractNo").textContent=u.contract;
+    document.getElementById("uContractType").textContent=u.contractType;
+    document.getElementById("uContractStart").textContent=u.contractStart;
+    document.getElementById("uContractEnd").textContent=u.contractEnd;
+
+    document.getElementById("unitDuesBody").innerHTML=u.dues.map(d=>`
+      <tr><td>${d[0]}</td><td>${d[1]}</td><td>${formatMoney(d[2])}</td><td>${formatMoney(d[3])}</td><td>${formatMoney(d[4])}</td><td><span class="rent-status ${String(d[5]).toLowerCase()}">${d[5]}</span></td></tr>
+    `).join("") || `<tr><td colspan="6" style="text-align:center;padding:24px;color:#7f8b93">No monthly dues for this unit.</td></tr>`;
+
+    document.getElementById("unitCollectionsBody").innerHTML=u.collections.map(c=>`
+      <tr><td>${c[0]}</td><td>${c[1]}</td><td>${c[2]}</td><td>${c[3]}</td><td>${formatMoney(c[4])}</td></tr>
+    `).join("") || `<tr><td colspan="5" style="text-align:center;padding:24px;color:#7f8b93">No collections for this unit.</td></tr>`;
+
+    document.getElementById("unitActivityTimeline").innerHTML=u.activity.map(a=>`
+      <div class="list-row"><div class="list-left"><div class="list-icon">•</div><div><strong>${a[1]}</strong><span>${a[0]} · ${a[2]}</span></div></div></div>
+    `).join("");
+
+    openUnitTab("overview",document.querySelector("#unit360Page .tab-btn"));
+  }
+
+  function openUnitTab(tab,button){
+    document.querySelectorAll('[id^="unit-tab-"]').forEach(x=>x.classList.remove("active"));
+    document.querySelectorAll("#unit360Page .tab-btn").forEach(x=>x.classList.remove("active"));
+    document.getElementById("unit-tab-"+tab).classList.add("active");
+    if(button) button.classList.add("active");
+  }
+
+  function openUnitBuilding(){
+    if(currentUnit?.buildingId) openBuilding360(currentUnit.buildingId);
+  }
+
+  function assignTenantDemo(){
+    alert("Assign Tenant — Demo\\n\\nSelect an existing tenant or create a new tenant and assign them to this vacant unit.");
+  }
+
+  function createContractDemo(){
+    alert("Create Contract — Demo\\n\\nPrepared fields: Contract Type, Start Date, End Date, Monthly Rent, Deposit, Due Day and Notes.");
+  }
+
+  function recordRentDemo(){
+    alert("Record Collection — Demo\\n\\nThe payment will be linked to the tenant, contract, unit and the oldest unpaid monthly due.");
+  }
+
+
   const PAGE_NAMES = {
     dashboard:"Property Dashboard",
     buildings:"Buildings",
@@ -774,7 +1189,7 @@
 
     document.getElementById("pageTitle").textContent=PAGE_NAMES[page]||"ESTARA";
 
-    ["dashboardPage","buildingsPage","building360Page","placeholderPage"].forEach(id=>document.getElementById(id)?.classList.add("hidden"));
+    ["dashboardPage","buildingsPage","building360Page","unitsPage","unit360Page","placeholderPage"].forEach(id=>document.getElementById(id)?.classList.add("hidden"));
     if(page==="dashboard"){
       document.getElementById("dashboardPage").classList.remove("hidden");
       document.getElementById("pageSubtitle").textContent="Buildings, occupancy, rent and arrears overview";
@@ -782,6 +1197,10 @@
       document.getElementById("buildingsPage").classList.remove("hidden");
       document.getElementById("pageSubtitle").textContent="Buildings, occupancy, rent performance and units";
       renderBuildings();
+    }else if(page==="units"){
+      document.getElementById("unitsPage").classList.remove("hidden");
+      document.getElementById("pageSubtitle").textContent="Property units, occupancy, tenant and rent position";
+      renderUnits();
     }else{
       document.getElementById("placeholderPage").classList.remove("hidden");
       document.getElementById("placeholderTitle").textContent=PAGE_NAMES[page];
@@ -827,12 +1246,13 @@
       "6. Monthly Dues & Collections\\n"+
       "7. Arrears\\n"+
       "8. Expenses & Reports\\n\\n"+
-      "Release 1.1 activates the Property Dashboard plus Buildings, Building 360° and unit-level visibility."
+      "Release 1.2 activates Property Dashboard, Buildings, Building 360°, Units and Unit 360° with tenant, contract, dues and collection visibility."
     );
   }
 
   setCurrentDate();
   renderBuildings();
+  renderUnits();
 </script>
 
 </body>
