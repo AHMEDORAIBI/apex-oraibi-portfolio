@@ -908,6 +908,114 @@
       .report-insight-grid{grid-template-columns:1fr}
     }
 
+
+    /* SETTINGS / USERS / AUDIT */
+    .settings-grid{
+      display:grid;grid-template-columns:1fr 1fr;gap:16px
+    }
+
+    .settings-section{
+      background:white;border:1px solid var(--border);border-radius:8px;padding:20px
+    }
+
+    .settings-section h3{
+      font-size:14px;color:var(--navy)
+    }
+
+    .settings-section p{
+      margin-top:5px;font-size:10px;color:var(--muted);line-height:1.5
+    }
+
+    .settings-form-grid{
+      display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px
+    }
+
+    .setting-field label{
+      display:block;font-size:9px;font-weight:700;color:var(--muted);margin-bottom:6px
+    }
+
+    .setting-field input,.setting-field select{
+      width:100%;height:40px;border:1px solid var(--border);border-radius:6px;background:white;padding:0 11px;font-size:11px;outline:none
+    }
+
+    .branding-preview{
+      margin-top:16px;padding:18px;border:1px solid var(--border);border-radius:8px;background:var(--soft)
+    }
+
+    .branding-preview strong{display:block;font-size:15px;color:var(--navy)}
+    .branding-preview span{display:block;margin-top:4px;font-size:9px;color:var(--muted)}
+
+    .template-list{
+      display:flex;flex-direction:column;gap:10px;margin-top:14px
+    }
+
+    .template-item{
+      display:flex;justify-content:space-between;gap:12px;align-items:center;padding:12px;border:1px solid var(--border);border-radius:7px
+    }
+
+    .template-item strong{font-size:10px;color:var(--navy)}
+    .template-item span{display:block;margin-top:3px;font-size:9px;color:var(--muted)}
+
+    .users-kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:16px}
+
+    .role-badge{
+      display:inline-flex;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700
+    }
+    .role-badge.admin{background:#f0eafa;color:#6a4b91}
+    .role-badge.partner{background:#f7f1e7;color:#8f6b27}
+    .role-badge.lawyer{background:#eef2f7;color:#36506d}
+    .role-badge.accountant{background:#edf5f0;color:#347b57}
+    .role-badge.reception{background:#f3f4f6;color:#6f7780}
+
+    .permission-table td,.permission-table th{text-align:center}
+    .permission-table td:first-child,.permission-table th:first-child{text-align:left}
+    .perm-yes{color:var(--success);font-weight:700}
+    .perm-limited{color:var(--warning);font-weight:700}
+    .perm-no{color:#b5bcc4}
+
+    .audit-kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:16px}
+
+    .audit-toolbar{
+      display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px
+    }
+
+    .audit-toolbar-left{display:flex;gap:10px;flex-wrap:wrap}
+
+    .audit-toolbar input,.audit-toolbar select{
+      height:40px;border:1px solid var(--border);border-radius:6px;background:white;padding:0 12px;font-size:11px;outline:none
+    }
+
+    .audit-toolbar input{width:280px}
+
+    .audit-action{
+      display:inline-flex;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700;background:#eef2f7;color:#36506d
+    }
+
+    .audit-action.create{background:#edf5f0;color:#347b57}
+    .audit-action.update{background:#fbf4e5;color:#9a6d1f}
+    .audit-action.reverse{background:#fbeaea;color:#a74646}
+    .audit-action.login{background:#f0eafa;color:#6a4b91}
+
+    .settings-actions{
+      display:flex;gap:8px;justify-content:flex-end;margin-top:16px
+    }
+
+    @media(max-width:1250px){
+      .users-kpi-grid,.audit-kpi-grid{grid-template-columns:repeat(2,1fr)}
+    }
+
+    @media(max-width:950px){
+      .settings-grid{grid-template-columns:1fr}
+      .settings-form-grid{grid-template-columns:1fr}
+    }
+
+    @media(max-width:650px){
+      .users-kpi-grid,.audit-kpi-grid{grid-template-columns:1fr 1fr}
+      .audit-toolbar{align-items:stretch}
+      .audit-toolbar-left{width:100%}
+      .audit-toolbar input,.audit-toolbar select{width:100%}
+    }
+
     /* PLACEHOLDER */
     .placeholder{min-height:500px;display:grid;place-items:center;text-align:center}
     .placeholder-box{max-width:520px;padding:45px;background:white;border:1px solid var(--border);border-radius:10px}
@@ -3059,6 +3167,239 @@
     </div>
 
 
+
+    <!-- SETTINGS -->
+    <div id="settingsPage" class="hidden">
+      <div class="content">
+
+        <div class="hero-row">
+          <div>
+            <h2>Settings</h2>
+            <p>Configure company profile, branding, financial settings and document templates.</p>
+          </div>
+          <div class="hero-actions">
+            <button class="action-btn action-secondary" onclick="resetDemoData()">Reset Demo Data</button>
+            <button class="action-btn action-primary" onclick="saveSettingsDemo()">Save Settings</button>
+          </div>
+        </div>
+
+        <div class="settings-grid">
+
+          <section class="settings-section">
+            <h3>Company Profile</h3>
+            <p>Core company information used across documents and reports.</p>
+
+            <div class="settings-form-grid">
+              <div class="setting-field"><label>Company Name</label><input value="LEXORA Law Firm"></div>
+              <div class="setting-field"><label>Arabic Name</label><input value="مكتب ليكسورا للمحاماة"></div>
+              <div class="setting-field"><label>Commercial Registration</label><input value="123456-1"></div>
+              <div class="setting-field"><label>VAT Number</label><input value="200123456700003"></div>
+              <div class="setting-field"><label>Email</label><input value="info@lexora.demo"></div>
+              <div class="setting-field"><label>Telephone</label><input value="+973 1700 0000"></div>
+            </div>
+          </section>
+
+          <section class="settings-section">
+            <h3>Branding</h3>
+            <p>Customize logo, primary colors and document identity.</p>
+
+            <div class="branding-preview">
+              <strong>LEXORA LAW FIRM</strong>
+              <span>Legal Management System · Navy / Gold Brand</span>
+            </div>
+
+            <div class="settings-form-grid">
+              <div class="setting-field"><label>Primary Color</label><input value="#071525"></div>
+              <div class="setting-field"><label>Accent Color</label><input value="#C9A45C"></div>
+              <div class="setting-field"><label>Document Footer</label><input value="LEXORA Law Firm · Bahrain"></div>
+              <div class="setting-field"><label>Logo File</label><input value="lexora-logo.svg"></div>
+            </div>
+          </section>
+
+          <section class="settings-section">
+            <h3>Financial Settings</h3>
+            <p>Currency, VAT, numbering and financial year preferences.</p>
+
+            <div class="settings-form-grid">
+              <div class="setting-field">
+                <label>Currency</label>
+                <select><option>BHD</option></select>
+              </div>
+
+              <div class="setting-field">
+                <label>VAT Rate</label>
+                <select><option>10%</option></select>
+              </div>
+
+              <div class="setting-field">
+                <label>Default Tax Mode</label>
+                <select><option>Exclusive</option><option>Inclusive</option></select>
+              </div>
+
+              <div class="setting-field">
+                <label>Financial Year</label>
+                <select><option>2026</option></select>
+              </div>
+
+              <div class="setting-field"><label>Invoice Prefix</label><input value="INV"></div>
+              <div class="setting-field"><label>Proposal Prefix</label><input value="PR"></div>
+              <div class="setting-field"><label>Receipt Prefix</label><input value="RC"></div>
+              <div class="setting-field"><label>Expense Prefix</label><input value="EXP"></div>
+            </div>
+          </section>
+
+          <section class="settings-section">
+            <h3>Notifications</h3>
+            <p>Control operational and legal reminders.</p>
+
+            <div class="template-list">
+              <div class="template-item"><div><strong>Upcoming Hearing</strong><span>Notify 1 day before hearing</span></div><span class="pill active">ON</span></div>
+              <div class="template-item"><div><strong>Overdue Task</strong><span>Alert responsible user</span></div><span class="pill active">ON</span></div>
+              <div class="template-item"><div><strong>Overdue Invoice</strong><span>Notify accountant / admin</span></div><span class="pill active">ON</span></div>
+              <div class="template-item"><div><strong>Payment Received</strong><span>Notify finance team</span></div><span class="pill active">ON</span></div>
+            </div>
+          </section>
+
+          <section class="settings-section" style="grid-column:1/-1;">
+            <h3>Document Templates</h3>
+            <p>Templates used for client-facing and management documents.</p>
+
+            <div class="template-list">
+              <div class="template-item"><div><strong>Professional Fee Proposal</strong><span>LEXORA branded proposal template</span></div><button class="table-action">Preview</button></div>
+              <div class="template-item"><div><strong>Tax Invoice</strong><span>VAT 10% tax invoice</span></div><button class="table-action">Preview</button></div>
+              <div class="template-item"><div><strong>Receipt Voucher</strong><span>Client payment receipt</span></div><button class="table-action">Preview</button></div>
+              <div class="template-item"><div><strong>Client Statement</strong><span>Statement of account</span></div><button class="table-action">Preview</button></div>
+              <div class="template-item"><div><strong>Executive Report</strong><span>Management reporting pack</span></div><button class="table-action">Preview</button></div>
+            </div>
+          </section>
+
+        </div>
+      </div>
+
+      <footer class="footer">
+        <span>LEXORA — Settings</span>
+        <span>Designed & Developed by <strong style="color:#a78035">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
+    <!-- USERS & PERMISSIONS -->
+    <div id="usersPage" class="hidden">
+      <div class="content">
+        <div class="hero-row">
+          <div>
+            <h2>Users & Permissions</h2>
+            <p>Manage system users, roles and module access.</p>
+          </div>
+          <div class="hero-actions">
+            <button class="action-btn action-primary" onclick="showAddUserDemo()">+ Add User</button>
+          </div>
+        </div>
+
+        <div class="users-kpi-grid">
+          <div class="kpi-card"><span class="kpi-label">Total Users</span><strong class="kpi-value">5</strong><div class="kpi-note">All demo users</div></div>
+          <div class="kpi-card"><span class="kpi-label">Active Users</span><strong class="kpi-value">5</strong><div class="kpi-note"><span class="positive">100%</span> active</div></div>
+          <div class="kpi-card"><span class="kpi-label">Lawyers</span><strong class="kpi-value">2</strong><div class="kpi-note">Legal team</div></div>
+          <div class="kpi-card"><span class="kpi-label">Finance Users</span><strong class="kpi-value">1</strong><div class="kpi-note">Accounting access</div></div>
+        </div>
+
+        <section class="card">
+          <div class="card-head"><div><h3>System Users</h3><p>Current user accounts and assigned roles</p></div></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>User</th><th>Email</th><th>Role</th><th>Department</th><th>Status</th><th>Last Login</th><th>Action</th></tr></thead>
+              <tbody id="usersTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="card" style="margin-top:16px;">
+          <div class="card-head"><div><h3>Permission Matrix</h3><p>Illustrative access by role</p></div></div>
+          <div class="table-wrap">
+            <table class="permission-table">
+              <thead>
+                <tr><th>Module</th><th>Admin</th><th>Lawyer</th><th>Accountant</th><th>Reception</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Clients</td><td class="perm-yes">Full</td><td class="perm-yes">Full</td><td class="perm-yes">View</td><td class="perm-yes">Full</td></tr>
+                <tr><td>Cases</td><td class="perm-yes">Full</td><td class="perm-yes">Full</td><td class="perm-limited">View</td><td class="perm-limited">Limited</td></tr>
+                <tr><td>Proposals</td><td class="perm-yes">Full</td><td class="perm-limited">View</td><td class="perm-yes">Full</td><td class="perm-no">—</td></tr>
+                <tr><td>Invoices</td><td class="perm-yes">Full</td><td class="perm-no">—</td><td class="perm-yes">Full</td><td class="perm-no">—</td></tr>
+                <tr><td>Collections</td><td class="perm-yes">Full</td><td class="perm-no">—</td><td class="perm-yes">Full</td><td class="perm-no">—</td></tr>
+                <tr><td>Expenses</td><td class="perm-yes">Full</td><td class="perm-no">—</td><td class="perm-yes">Full</td><td class="perm-no">—</td></tr>
+                <tr><td>Banking</td><td class="perm-yes">Full</td><td class="perm-no">—</td><td class="perm-yes">Full</td><td class="perm-no">—</td></tr>
+                <tr><td>Reports</td><td class="perm-yes">Full</td><td class="perm-limited">Limited</td><td class="perm-yes">Full</td><td class="perm-no">—</td></tr>
+                <tr><td>Settings</td><td class="perm-yes">Full</td><td class="perm-no">—</td><td class="perm-no">—</td><td class="perm-no">—</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <footer class="footer">
+        <span>LEXORA — Users & Permissions</span>
+        <span>Designed & Developed by <strong style="color:#a78035">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
+    <!-- AUDIT LOG -->
+    <div id="auditPage" class="hidden">
+      <div class="content">
+        <div class="hero-row">
+          <div>
+            <h2>Audit Log</h2>
+            <p>Track user activity, changes and financial control events across the system.</p>
+          </div>
+          <div class="hero-actions">
+            <button class="action-btn action-secondary">Export Audit</button>
+          </div>
+        </div>
+
+        <div class="audit-kpi-grid">
+          <div class="kpi-card"><span class="kpi-label">Today's Actions</span><strong class="kpi-value">28</strong><div class="kpi-note">System activity</div></div>
+          <div class="kpi-card"><span class="kpi-label">Financial Actions</span><strong class="kpi-value">9</strong><div class="kpi-note">Invoices, receipts, expenses</div></div>
+          <div class="kpi-card"><span class="kpi-label">Case Updates</span><strong class="kpi-value">11</strong><div class="kpi-note">Legal matter activity</div></div>
+          <div class="kpi-card"><span class="kpi-label">Active Users Today</span><strong class="kpi-value">5</strong><div class="kpi-note">All demo users</div></div>
+        </div>
+
+        <section class="card">
+          <div class="audit-toolbar">
+            <div class="audit-toolbar-left">
+              <input id="auditSearch" type="search" placeholder="Search user, module, reference..." oninput="renderAuditLog()">
+              <select id="auditModuleFilter" onchange="renderAuditLog()">
+                <option value="">All Modules</option>
+                <option value="Clients">Clients</option>
+                <option value="Cases">Cases</option>
+                <option value="Invoices">Invoices</option>
+                <option value="Collections">Collections</option>
+                <option value="Expenses">Expenses</option>
+                <option value="Banking">Banking</option>
+              </select>
+              <select id="auditActionFilter" onchange="renderAuditLog()">
+                <option value="">All Actions</option>
+                <option value="Create">Create</option>
+                <option value="Update">Update</option>
+                <option value="Reverse">Reverse</option>
+                <option value="Login">Login</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Date & Time</th><th>User</th><th>Module</th><th>Action</th><th>Reference</th><th>Description</th></tr></thead>
+              <tbody id="auditTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <footer class="footer">
+        <span>LEXORA — Audit Log</span>
+        <span>Designed & Developed by <strong style="color:#a78035">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
+
     <!-- PLACEHOLDER -->
     <div id="placeholderPage" class="hidden">
       <div class="content placeholder">
@@ -3276,6 +3617,26 @@
 
 
 
+
+
+  const USERS = [
+    {name:"Ahmed Oraibi",email:"admin@lexora.demo",role:"Administrator",department:"Management",status:"Active",lastLogin:"19 Aug 2026 · 12:44 PM"},
+    {name:"Ali Hasan",email:"ali.hasan@lexora.demo",role:"Lawyer",department:"Legal",status:"Active",lastLogin:"19 Aug 2026 · 11:58 AM"},
+    {name:"Sara Ahmed",email:"sara.ahmed@lexora.demo",role:"Lawyer",department:"Legal",status:"Active",lastLogin:"19 Aug 2026 · 11:36 AM"},
+    {name:"Fatima Ali",email:"fatima.finance@lexora.demo",role:"Accountant",department:"Finance",status:"Active",lastLogin:"19 Aug 2026 · 12:10 PM"},
+    {name:"Noor Hassan",email:"noor@lexora.demo",role:"Reception",department:"Administration",status:"Active",lastLogin:"19 Aug 2026 · 10:50 AM"}
+  ];
+
+  const AUDIT_LOG = [
+    {date:"19 Aug 2026 · 12:42 PM",user:"Ahmed Oraibi",module:"Invoices",action:"Create",reference:"INV-2026-047",description:"Created new professional fees invoice."},
+    {date:"19 Aug 2026 · 12:31 PM",user:"Fatima Ali",module:"Collections",action:"Create",reference:"RC-2026-040",description:"Recorded cheque collection for Apex Contracting W.L.L."},
+    {date:"19 Aug 2026 · 12:18 PM",user:"Ali Hasan",module:"Cases",action:"Update",reference:"2026/1842",description:"Updated hearing preparation and case notes."},
+    {date:"19 Aug 2026 · 12:05 PM",user:"Ahmed Oraibi",module:"Expenses",action:"Reverse",reference:"EXP-2026-030",description:"Reversed duplicate office expense entry."},
+    {date:"19 Aug 2026 · 11:58 AM",user:"Ali Hasan",module:"Cases",action:"Login",reference:"USER",description:"User signed in to LEXORA."},
+    {date:"19 Aug 2026 · 11:36 AM",user:"Sara Ahmed",module:"Cases",action:"Update",reference:"2026/2190",description:"Updated labour case task status."},
+    {date:"19 Aug 2026 · 11:20 AM",user:"Fatima Ali",module:"Banking",action:"Update",reference:"TRF-2026-007",description:"Posted internal bank transfer."},
+    {date:"19 Aug 2026 · 10:55 AM",user:"Noor Hassan",module:"Clients",action:"Create",reference:"CL-007",description:"Created new client profile."}
+  ];
 
   const TREASURY_ACCOUNTS = [
     {name:"BBK Operating Account",type:"Bank Account",balance:10850,detail:"Primary operating account"},
@@ -3979,7 +4340,7 @@
   }
 
   function hideAllPages(){
-    ["dashboardPage","clientsPage","client360Page","casesPage","case360Page","hearingsPage","proposalsPage","proposal360Page","invoicesPage","invoice360Page","collectionsPage","receipt360Page","expensesPage","expense360Page","bankingPage","reportsPage","reportPreviewPage","placeholderPage"].forEach(id=>{
+    ["dashboardPage","clientsPage","client360Page","casesPage","case360Page","hearingsPage","proposalsPage","proposal360Page","invoicesPage","invoice360Page","collectionsPage","receipt360Page","expensesPage","expense360Page","bankingPage","reportsPage","reportPreviewPage","settingsPage","usersPage","auditPage","placeholderPage"].forEach(id=>{
       document.getElementById(id).classList.add("hidden");
     });
   }
@@ -4033,6 +4394,17 @@
     }else if(page==="reports"){
       document.getElementById("reportsPage").classList.remove("hidden");
       document.getElementById("pageSubtitle").textContent="Financial, legal and operational intelligence";
+    }else if(page==="settings"){
+      document.getElementById("settingsPage").classList.remove("hidden");
+      document.getElementById("pageSubtitle").textContent="Company profile, branding, financial configuration and templates";
+    }else if(page==="users"){
+      document.getElementById("usersPage").classList.remove("hidden");
+      document.getElementById("pageSubtitle").textContent="System users, roles and access permissions";
+      renderUsers();
+    }else if(page==="audit"){
+      document.getElementById("auditPage").classList.remove("hidden");
+      document.getElementById("pageSubtitle").textContent="System activity and audit trail";
+      renderAuditLog();
     }else{
       document.getElementById("placeholderPage").classList.remove("hidden");
       document.getElementById("placeholderTitle").textContent=PAGE_NAMES[page];
@@ -4331,6 +4703,102 @@
 
 
 
+
+
+  function roleClass(role){
+    if(role==="Administrator") return "admin";
+    if(role==="Managing Partner") return "partner";
+    if(role==="Lawyer") return "lawyer";
+    if(role==="Accountant") return "accountant";
+    return "reception";
+  }
+
+  function renderUsers(){
+    document.getElementById("usersTableBody").innerHTML=USERS.map(u=>`
+      <tr>
+        <td>${u.name}</td>
+        <td>${u.email}</td>
+        <td><span class="role-badge ${roleClass(u.role)}">${u.role}</span></td>
+        <td>${u.department}</td>
+        <td><span class="pill active">${u.status}</span></td>
+        <td>${u.lastLogin}</td>
+        <td><button class="table-action" onclick="userDemo('${u.name.replaceAll("'","\\'")}')">View</button></td>
+      </tr>
+    `).join("");
+  }
+
+  function auditActionClass(action){
+    return String(action).toLowerCase();
+  }
+
+  function renderAuditLog(){
+    const search=(document.getElementById("auditSearch")?.value||"").trim().toLowerCase();
+    const module=document.getElementById("auditModuleFilter")?.value||"";
+    const action=document.getElementById("auditActionFilter")?.value||"";
+
+    const rows=AUDIT_LOG.filter(a=>{
+      const matchesSearch=!search || [a.user,a.module,a.reference,a.description].join(" ").toLowerCase().includes(search);
+      const matchesModule=!module || a.module===module;
+      const matchesAction=!action || a.action===action;
+      return matchesSearch && matchesModule && matchesAction;
+    }).map(a=>`
+      <tr>
+        <td>${a.date}</td>
+        <td>${a.user}</td>
+        <td>${a.module}</td>
+        <td><span class="audit-action ${auditActionClass(a.action)}">${a.action}</span></td>
+        <td>${a.reference}</td>
+        <td>${a.description}</td>
+      </tr>
+    `).join("");
+
+    document.getElementById("auditTableBody").innerHTML=rows || `
+      <tr><td colspan="6" style="text-align:center;padding:28px;color:#7a8491;">No audit entries match the selected filters.</td></tr>
+    `;
+  }
+
+  function saveSettingsDemo(){
+    alert(
+      "Settings Saved — Demo\\n\\n"+
+      "Company profile, branding and financial preferences are represented in this portfolio demo.\\n\\n"+
+      "In a production system these settings would be stored securely and applied to documents and reports."
+    );
+  }
+
+  function resetDemoData(){
+    alert(
+      "Reset Demo Data\\n\\n"+
+      "This portfolio version uses fixed demonstration data.\\n"+
+      "The Reset Demo feature is reserved for a database-connected version."
+    );
+  }
+
+  function showAddUserDemo(){
+    alert(
+      "Add User — Demo\\n\\n"+
+      "Prepared fields:\\n"+
+      "• Name\\n"+
+      "• Email\\n"+
+      "• Role\\n"+
+      "• Department\\n"+
+      "• Status\\n"+
+      "• Module Permissions"
+    );
+  }
+
+  function userDemo(name){
+    const u=USERS.find(x=>x.name===name);
+    if(!u) return;
+
+    alert(
+      "User Profile — Demo\\n\\n"+
+      "Name: "+u.name+"\\n"+
+      "Role: "+u.role+"\\n"+
+      "Department: "+u.department+"\\n"+
+      "Status: "+u.status+"\\n"+
+      "Last Login: "+u.lastLogin
+    );
+  }
 
   const REPORTS = {
     executive:{title:"Executive Summary",subtitle:"Management overview of legal and financial performance"},
@@ -5514,7 +5982,7 @@
       "5. Professional Fee Proposal\n"+
       "6. Invoice & Collection\n"+
       "7. Management Reports\n\n"+
-      "Dashboard, Clients, Cases, Tasks & Hearings, Proposals, Invoices, Collections, Expenses, Banking & Treasury and Reports & Analytics are active through Release 1.9. Reports include financial, legal, VAT, receivables, client statement, case financial, cash flow and management previews."
+      "LEXORA core demo is now complete through Release 1.10: Dashboard, Clients, Cases, Tasks & Hearings, Proposals, Invoices, Collections, Expenses, Banking & Treasury, Reports, Settings, Users & Permissions and Audit Log."
     );
   }
 
@@ -5527,6 +5995,8 @@
   renderCollections();
   renderExpenses();
   renderTreasuryModule();
+  renderUsers();
+  renderAuditLog();
 </script>
 
 </body>
