@@ -334,6 +334,33 @@
       .tenant-actions button{flex:1}
     }
 
+
+    /* CONTRACTS */
+    .contract-kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-bottom:16px}
+    .contract-toolbar{display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+    .contract-toolbar-left{display:flex;gap:10px;flex-wrap:wrap}
+    .contract-toolbar input,.contract-toolbar select{height:40px;border:1px solid var(--border);border-radius:6px;background:white;padding:0 12px;font-size:11px;outline:none}
+    .contract-toolbar input{width:280px}
+    .contract-link{border:0;background:transparent;color:var(--navy);font-weight:700;cursor:pointer;padding:0}
+    .contract-link:hover{color:var(--emerald)}
+    .contract-type,.contract-status{display:inline-flex;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700}
+    .contract-type{background:#eef2f7;color:#36506d}
+    .contract-status.active{background:#edf5f0;color:#347b57}
+    .contract-status.expiring{background:#fbf4e5;color:#9a6d1f}
+    .contract-status.expired{background:#fbeaea;color:#a74646}
+    .contract-hero{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;background:white;border:1px solid var(--border);border-radius:8px;padding:22px;margin-bottom:16px}
+    .contract-hero-left{display:flex;gap:16px;align-items:flex-start}
+    .contract-avatar{width:64px;height:64px;border-radius:10px;background:var(--navy);color:var(--emerald2);display:grid;place-items:center;font-size:16px;font-weight:700}
+    .contract-hero h2{font-size:23px;color:var(--navy)}.contract-hero p{margin-top:6px;color:var(--muted);font-size:11px}
+    .contract-tags,.contract-actions{display:flex;gap:7px;flex-wrap:wrap}.contract-tags{margin-top:10px}
+    .contract-summary-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-bottom:16px}
+    .contract-layout{display:grid;grid-template-columns:1.05fr .95fr;gap:16px}
+    .alert-card{padding:16px;border:1px solid var(--border);border-radius:8px;background:var(--soft);margin-bottom:12px}
+    .alert-card strong{display:block;font-size:13px;color:var(--navy)}.alert-card span{display:block;margin-top:5px;font-size:9px;color:var(--muted)}
+    @media(max-width:1250px){.contract-kpi-grid,.contract-summary-grid{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:950px){.contract-layout{grid-template-columns:1fr}}
+    @media(max-width:650px){.contract-kpi-grid,.contract-summary-grid{grid-template-columns:1fr 1fr}.contract-toolbar-left{width:100%}.contract-toolbar input,.contract-toolbar select{width:100%}.contract-hero{flex-direction:column}.contract-hero-left{flex-direction:column}.contract-actions{width:100%}.contract-actions button{flex:1}}
+
     .placeholder{min-height:500px;display:grid;place-items:center;text-align:center}
     .placeholder-box{max-width:520px;padding:45px;background:white;border:1px solid var(--border);border-radius:10px}
     .placeholder-box span{font-size:9px;color:var(--emerald);letter-spacing:2px;font-weight:700}
@@ -1134,6 +1161,82 @@
     </div>
 
 
+
+    <!-- CONTRACTS -->
+    <div id="contractsPage" class="hidden">
+      <div class="content">
+        <div class="hero-row">
+          <div><h2>Contracts</h2><p>Manage fixed-term and open-ended tenancy contracts, renewals and expiry alerts.</p></div>
+          <div class="hero-actions"><button class="action-btn action-secondary">Export Excel</button><button class="action-btn action-primary" onclick="createContractDemo()">+ Add Contract</button></div>
+        </div>
+        <div class="contract-kpi-grid">
+          <div class="kpi-card"><span class="kpi-label">Active Contracts</span><strong class="kpi-value">168</strong><div class="kpi-note">Current tenancy agreements</div></div>
+          <div class="kpi-card"><span class="kpi-label">Fixed Term</span><strong class="kpi-value">165</strong><div class="kpi-note">Defined expiry date</div></div>
+          <div class="kpi-card"><span class="kpi-label">Open Ended</span><strong class="kpi-value">3</strong><div class="kpi-note">No fixed end date</div></div>
+          <div class="kpi-card"><span class="kpi-label">Expiring ≤ 60 Days</span><strong class="kpi-value">11</strong><div class="kpi-note"><span class="warning">Renewal follow-up</span></div></div>
+          <div class="kpi-card"><span class="kpi-label">Contract Rent Value</span><strong class="kpi-value money">BHD 42,850.000</strong><div class="kpi-note">Monthly portfolio value</div></div>
+        </div>
+        <section class="card">
+          <div class="contract-toolbar">
+            <div class="contract-toolbar-left">
+              <input id="contractSearch" type="search" placeholder="Search contract, tenant, building or unit..." oninput="renderContracts()">
+              <select id="contractTypeFilter" onchange="renderContracts()"><option value="">All Types</option><option value="Fixed Term">Fixed Term</option><option value="Open Ended">Open Ended</option></select>
+              <select id="contractStatusFilter" onchange="renderContracts()"><option value="">All Statuses</option><option value="Active">Active</option><option value="Expiring">Expiring</option><option value="Expired">Expired</option></select>
+            </div>
+            <span style="font-size:10px;color:var(--muted)">Open any contract to view Contract 360°</span>
+          </div>
+          <div class="table-wrap"><table><thead><tr><th>Contract</th><th>Tenant</th><th>Building</th><th>Unit</th><th>Type</th><th>Start</th><th>End</th><th>Monthly Rent</th><th>Status</th><th>Action</th></tr></thead><tbody id="contractsTableBody"></tbody></table></div>
+        </section>
+      </div>
+      <footer class="footer"><span>ESTARA — Contracts</span><span>Designed & Developed by <strong style="color:#1f8a70">APEX ORAIBI</strong></span></footer>
+    </div>
+
+    <!-- CONTRACT 360 -->
+    <div id="contract360Page" class="hidden">
+      <div class="content">
+        <div style="margin-bottom:14px"><button class="action-btn action-secondary" onclick="openPage('contracts')">← Back to Contracts</button></div>
+        <section class="contract-hero">
+          <div class="contract-hero-left">
+            <div id="contract360Avatar" class="contract-avatar">CTR</div>
+            <div><h2 id="contract360Title"></h2><p id="contract360Meta"></p><div class="contract-tags"><span id="contract360Status" class="contract-status active"></span><span id="contract360Type" class="contract-type"></span><span class="building-type" style="background:#eaf8f3;color:#1f8a70">Contract 360°</span></div></div>
+          </div>
+          <div class="contract-actions"><button class="action-btn action-secondary" onclick="openContractTenant()">View Tenant</button><button class="action-btn action-secondary" onclick="openContractUnit()">View Unit</button><button class="action-btn action-secondary" onclick="renewContractDemo()">Renew Contract</button><button class="action-btn action-primary" onclick="recordRentDemo()">Record Collection</button></div>
+        </section>
+        <div class="contract-summary-grid">
+          <div class="kpi-card"><span class="kpi-label">Monthly Rent</span><strong id="cRent" class="kpi-value money"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Deposit</span><strong id="cDeposit" class="kpi-value money"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Outstanding</span><strong id="cOutstanding" class="kpi-value money"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Due Day</span><strong id="cDueDay" class="kpi-value"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Days to Expiry</span><strong id="cDays" class="kpi-value"></strong></div>
+        </div>
+        <section class="card">
+          <div class="tabs">
+            <button class="tab-btn active" onclick="openContractTab('overview',this)">Overview</button>
+            <button class="tab-btn" onclick="openContractTab('rent',this)">Rent Schedule</button>
+            <button class="tab-btn" onclick="openContractTab('collections',this)">Collections</button>
+            <button class="tab-btn" onclick="openContractTab('renewal',this)">Renewal</button>
+            <button class="tab-btn" onclick="openContractTab('activity',this)">Activity</button>
+          </div>
+          <div id="contract-tab-overview" class="tab-panel active">
+            <div class="contract-layout">
+              <div><div class="card-head"><div><h3>Contract Information</h3><p>Tenancy agreement details</p></div></div><div class="info-grid">
+                <div class="info-item"><span>Contract Number</span><strong id="cNo"></strong></div><div class="info-item"><span>Tenant</span><strong id="cTenant"></strong></div>
+                <div class="info-item"><span>Building</span><strong id="cBuilding"></strong></div><div class="info-item"><span>Unit</span><strong id="cUnit"></strong></div>
+                <div class="info-item"><span>Start Date</span><strong id="cStart"></strong></div><div class="info-item"><span>End Date</span><strong id="cEnd"></strong></div>
+                <div class="info-item"><span>Contract Type</span><strong id="cTypeInfo"></strong></div><div class="info-item"><span>Payment Terms</span><strong id="cTerms"></strong></div>
+              </div></div>
+              <div><div class="card-head"><div><h3>Contract Alerts</h3><p>Renewal and financial follow-up</p></div></div><div id="contractAlerts"></div></div>
+            </div>
+          </div>
+          <div id="contract-tab-rent" class="tab-panel"><div class="table-wrap"><table><thead><tr><th>Month</th><th>Due Date</th><th>Rent</th><th>Collected</th><th>Balance</th><th>Status</th></tr></thead><tbody id="contractRentBody"></tbody></table></div></div>
+          <div id="contract-tab-collections" class="tab-panel"><div class="table-wrap"><table><thead><tr><th>Date</th><th>Receipt</th><th>Method</th><th>Reference</th><th>Amount</th></tr></thead><tbody id="contractCollectionsBody"></tbody></table></div></div>
+          <div id="contract-tab-renewal" class="tab-panel"><div class="info-grid"><div class="info-item"><span>Renewal Eligibility</span><strong id="cRenewalEligible"></strong></div><div class="info-item"><span>Proposed New Rent</span><strong id="cProposedRent"></strong></div><div class="info-item"><span>Notice Period</span><strong id="cNotice"></strong></div><div class="info-item"><span>Renewal Status</span><strong id="cRenewalStatus"></strong></div></div></div>
+          <div id="contract-tab-activity" class="tab-panel"><div id="contractActivityTimeline" class="list"></div></div>
+        </section>
+      </div>
+      <footer class="footer"><span>ESTARA — Contract 360°</span><span>Designed & Developed by <strong style="color:#1f8a70">APEX ORAIBI</strong></span></footer>
+    </div>
+
     <div id="placeholderPage" class="hidden">
       <div class="content placeholder">
         <div class="placeholder-box">
@@ -1583,6 +1686,69 @@
   }
 
 
+
+  const CONTRACTS = [
+    {id:"CTR-260011",tenantId:"TNT-001",tenant:"Omar Ali",unitId:"UNT-001",building:"Seef Residence",unit:"101",type:"Fixed Term",start:"01 Jan 2026",end:"31 Dec 2026",rent:350,deposit:350,outstanding:0,dueDay:"1st",days:134,status:"Active",terms:"Monthly · Due on 1st",renewalEligible:"Yes",proposedRent:365,notice:"60 Days",renewalStatus:"Not Started",
+      rentSchedule:[["Aug 2026","01 Aug 2026",350,350,0,"Paid"],["Jul 2026","01 Jul 2026",350,350,0,"Paid"]],collections:[["19 Aug 2026","RC-PR-260411","BenefitPay","BP-1908-01",350]],activity:[["19 Aug 2026","Rent received","August rent paid in full."],["01 Jan 2026","Contract activated","Fixed-term contract commenced."]]},
+    {id:"CTR-260033",tenantId:"TNT-002",tenant:"Fatima Ali",unitId:"UNT-003",building:"Seef Residence",unit:"804",type:"Fixed Term",start:"01 Feb 2026",end:"31 Jan 2027",rent:420,deposit:420,outstanding:420,dueDay:"1st",days:165,status:"Active",terms:"Monthly · Due on 1st",renewalEligible:"Yes",proposedRent:430,notice:"60 Days",renewalStatus:"Not Started",
+      rentSchedule:[["Aug 2026","01 Aug 2026",420,0,420,"Overdue"],["Jul 2026","01 Jul 2026",420,420,0,"Paid"]],collections:[["18 Jul 2026","RC-PR-260350","Bank Transfer","FT-1807-04",420]],activity:[["10 Aug 2026","Payment reminder","August rent overdue."],["01 Feb 2026","Contract activated","Tenancy commenced."]]},
+    {id:"CTR-260045",tenantId:"TNT-003",tenant:"Al Noor Trading",unitId:"UNT-004",building:"Riffa Plaza",unit:"GF-03",type:"Open Ended",start:"01 Mar 2026",end:"Open Ended",rent:650,deposit:650,outstanding:650,dueDay:"1st",days:null,status:"Active",terms:"Monthly · Open Ended",renewalEligible:"Not Required",proposedRent:650,notice:"90 Days",renewalStatus:"Open Ended",
+      rentSchedule:[["Aug 2026","01 Aug 2026",650,650,0,"Paid"],["Jul 2026","01 Jul 2026",650,0,650,"Overdue"]],collections:[["19 Aug 2026","RC-PR-260414","Bank Transfer","FT-1908-03",650]],activity:[["19 Aug 2026","Rent received","August rent received."],["01 Mar 2026","Open-ended contract activated","Contract continues until notice."]]},
+    {id:"CTR-260084",tenantId:"TNT-004",tenant:"Ahmed Salman",unitId:"UNT-005",building:"Juffair Heights",unit:"1204",type:"Fixed Term",start:"01 Mar 2026",end:"30 Sep 2026",rent:450,deposit:450,outstanding:900,dueDay:"1st",days:42,status:"Expiring",terms:"Monthly · Due on 1st",renewalEligible:"Yes",proposedRent:475,notice:"30 Days",renewalStatus:"Follow-up Required",
+      rentSchedule:[["Aug 2026","01 Aug 2026",450,0,450,"Overdue"],["Jul 2026","01 Jul 2026",450,0,450,"Overdue"]],collections:[["10 Jun 2026","RC-PR-260280","Cash","CASH-1006",450]],activity:[["16 Aug 2026","Renewal alert","Contract expires within 60 days."],["16 Aug 2026","Arrears alert","Two months outstanding."]]},
+    {id:"CTR-260101",tenantId:"TNT-005",tenant:"Legal Point W.L.L",unitId:null,building:"Adliya Court",unit:"OFF-01",type:"Fixed Term",start:"01 Jan 2026",end:"15 Sep 2026",rent:420,deposit:420,outstanding:0,dueDay:"1st",days:27,status:"Expiring",terms:"Monthly · Due on 1st",renewalEligible:"Yes",proposedRent:440,notice:"30 Days",renewalStatus:"Tenant Contacted",
+      rentSchedule:[["Aug 2026","01 Aug 2026",420,420,0,"Paid"]],collections:[["15 Aug 2026","RC-PR-260390","Bank Transfer","FT-1508-01",420]],activity:[["17 Aug 2026","Renewal discussion","Tenant contacted regarding renewal."],["15 Aug 2026","Rent received","August rent paid."]]}
+  ];
+  let currentContract=CONTRACTS[0];
+
+  function renderContracts(){
+    const search=(document.getElementById("contractSearch")?.value||"").toLowerCase();
+    const type=document.getElementById("contractTypeFilter")?.value||"";
+    const status=document.getElementById("contractStatusFilter")?.value||"";
+    const rows=CONTRACTS.filter(c=>(!search||[c.id,c.tenant,c.building,c.unit].join(" ").toLowerCase().includes(search))&&(!type||c.type===type)&&(!status||c.status===status)).map(c=>`
+      <tr><td><button class="contract-link" onclick="openContract360('${c.id}')">${c.id}</button></td><td>${c.tenant}</td><td>${c.building}</td><td>${c.unit}</td><td><span class="contract-type">${c.type}</span></td><td>${c.start}</td><td>${c.end}</td><td>${formatMoney(c.rent)}</td><td><span class="contract-status ${c.status.toLowerCase()}">${c.status}</span></td><td><button class="action-btn action-secondary" style="min-height:30px;padding:0 10px;font-size:9px" onclick="openContract360('${c.id}')">View 360°</button></td></tr>`).join("");
+    document.getElementById("contractsTableBody").innerHTML=rows||`<tr><td colspan="10" style="text-align:center;padding:28px;color:#7f8b93">No contracts found.</td></tr>`;
+  }
+
+  function openContract360(id){
+    currentContract=CONTRACTS.find(c=>c.id===id)||CONTRACTS[0];
+    ["dashboardPage","buildingsPage","building360Page","unitsPage","unit360Page","tenantsPage","tenant360Page","contractsPage","placeholderPage"].forEach(x=>document.getElementById(x)?.classList.add("hidden"));
+    document.getElementById("contract360Page").classList.remove("hidden");
+    document.getElementById("pageTitle").textContent="Contract 360°";
+    document.getElementById("pageSubtitle").textContent=currentContract.id+" · "+currentContract.tenant+" · "+currentContract.building;
+    document.querySelectorAll(".nav-item").forEach(item=>item.classList.toggle("active",item.dataset.page==="contracts"));
+    populateContract360(); window.scrollTo({top:0,behavior:"smooth"});
+  }
+
+  function populateContract360(){
+    const c=currentContract;
+    document.getElementById("contract360Avatar").textContent="CTR";
+    document.getElementById("contract360Title").textContent=c.id;
+    document.getElementById("contract360Meta").textContent=c.tenant+" · "+c.building+" · Unit "+c.unit;
+    document.getElementById("contract360Status").textContent=c.status; document.getElementById("contract360Status").className="contract-status "+c.status.toLowerCase();
+    document.getElementById("contract360Type").textContent=c.type;
+    document.getElementById("cRent").textContent=formatMoney(c.rent); document.getElementById("cDeposit").textContent=formatMoney(c.deposit); document.getElementById("cOutstanding").textContent=formatMoney(c.outstanding); document.getElementById("cDueDay").textContent=c.dueDay; document.getElementById("cDays").textContent=c.days===null?"Open Ended":c.days;
+    document.getElementById("cNo").textContent=c.id; document.getElementById("cTenant").textContent=c.tenant; document.getElementById("cBuilding").textContent=c.building; document.getElementById("cUnit").textContent=c.unit; document.getElementById("cStart").textContent=c.start; document.getElementById("cEnd").textContent=c.end; document.getElementById("cTypeInfo").textContent=c.type; document.getElementById("cTerms").textContent=c.terms;
+    let alerts=[];
+    if(c.type==="Open Ended") alerts.push(`<div class="alert-card"><strong>Open-Ended Contract</strong><span>No fixed expiry date. Contract remains active until valid notice is issued.</span></div>`);
+    if(c.days!==null&&c.days<=60) alerts.push(`<div class="alert-card"><strong>Renewal Alert</strong><span>${c.days} days remaining until contract expiry.</span></div>`);
+    if(c.outstanding>0) alerts.push(`<div class="alert-card"><strong>Outstanding Rent</strong><span>${formatMoney(c.outstanding)} requires collection follow-up.</span></div>`);
+    if(!alerts.length) alerts.push(`<div class="alert-card"><strong>No Critical Alerts</strong><span>Contract is active with no immediate renewal or arrears action.</span></div>`);
+    document.getElementById("contractAlerts").innerHTML=alerts.join("");
+    document.getElementById("contractRentBody").innerHTML=c.rentSchedule.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${formatMoney(r[2])}</td><td>${formatMoney(r[3])}</td><td>${formatMoney(r[4])}</td><td><span class="rent-status ${String(r[5]).toLowerCase()}">${r[5]}</span></td></tr>`).join("");
+    document.getElementById("contractCollectionsBody").innerHTML=c.collections.map(x=>`<tr><td>${x[0]}</td><td>${x[1]}</td><td>${x[2]}</td><td>${x[3]}</td><td>${formatMoney(x[4])}</td></tr>`).join("")||`<tr><td colspan="5" style="text-align:center;padding:24px;color:#7f8b93">No collections recorded.</td></tr>`;
+    document.getElementById("cRenewalEligible").textContent=c.renewalEligible; document.getElementById("cProposedRent").textContent=formatMoney(c.proposedRent); document.getElementById("cNotice").textContent=c.notice; document.getElementById("cRenewalStatus").textContent=c.renewalStatus;
+    document.getElementById("contractActivityTimeline").innerHTML=c.activity.map(a=>`<div class="list-row"><div class="list-left"><div class="list-icon">•</div><div><strong>${a[1]}</strong><span>${a[0]} · ${a[2]}</span></div></div></div>`).join("");
+    openContractTab("overview",document.querySelector("#contract360Page .tab-btn"));
+  }
+
+  function openContractTab(tab,button){
+    document.querySelectorAll('[id^="contract-tab-"]').forEach(x=>x.classList.remove("active")); document.querySelectorAll("#contract360Page .tab-btn").forEach(x=>x.classList.remove("active")); document.getElementById("contract-tab-"+tab).classList.add("active"); if(button)button.classList.add("active");
+  }
+  function openContractTenant(){if(currentContract?.tenantId)openTenant360(currentContract.tenantId);}
+  function openContractUnit(){if(currentContract?.unitId)openUnit360(currentContract.unitId);else alert("Unit 360° demo record is not linked for this contract.");}
+  function renewContractDemo(){alert("Renew Contract — Demo\\n\\nReview current rent, proposed rent, renewal dates, notice period and tenant approval before creating the renewed contract.");}
+
   const PAGE_NAMES = {
     dashboard:"Property Dashboard",
     buildings:"Buildings",
@@ -1617,7 +1783,7 @@
 
     document.getElementById("pageTitle").textContent=PAGE_NAMES[page]||"ESTARA";
 
-    ["dashboardPage","buildingsPage","building360Page","unitsPage","unit360Page","tenantsPage","tenant360Page","placeholderPage"].forEach(id=>document.getElementById(id)?.classList.add("hidden"));
+    ["dashboardPage","buildingsPage","building360Page","unitsPage","unit360Page","tenantsPage","tenant360Page","contractsPage","contract360Page","placeholderPage"].forEach(id=>document.getElementById(id)?.classList.add("hidden"));
     if(page==="dashboard"){
       document.getElementById("dashboardPage").classList.remove("hidden");
       document.getElementById("pageSubtitle").textContent="Buildings, occupancy, rent and arrears overview";
@@ -1633,6 +1799,10 @@
       document.getElementById("tenantsPage").classList.remove("hidden");
       document.getElementById("pageSubtitle").textContent="Tenant profiles, units, contracts, balances and collections";
       renderTenants();
+    }else if(page==="contracts"){
+      document.getElementById("contractsPage").classList.remove("hidden");
+      document.getElementById("pageSubtitle").textContent="Tenancy contracts, renewals, expiry alerts and rent schedules";
+      renderContracts();
     }else{
       document.getElementById("placeholderPage").classList.remove("hidden");
       document.getElementById("placeholderTitle").textContent=PAGE_NAMES[page];
@@ -1678,7 +1848,7 @@
       "6. Monthly Dues & Collections\\n"+
       "7. Arrears\\n"+
       "8. Expenses & Reports\\n\\n"+
-      "Release 1.3 activates Property Dashboard, Buildings, Units and Tenants with Building 360°, Unit 360° and Tenant 360° views."
+      "Release 1.4 activates Contracts and Contract 360° with fixed-term, open-ended, renewal alerts and rent schedules."
     );
   }
 
@@ -1686,6 +1856,7 @@
   renderBuildings();
   renderUnits();
   renderTenants();
+  renderContracts();
 </script>
 
 </body>
