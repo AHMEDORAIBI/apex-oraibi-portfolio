@@ -279,6 +279,61 @@
       .unit-actions button{flex:1}
     }
 
+
+    /* TENANTS */
+    .tenant-kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-bottom:16px}
+    .tenant-toolbar{display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+    .tenant-toolbar-left{display:flex;gap:10px;flex-wrap:wrap}
+    .tenant-toolbar input,.tenant-toolbar select{
+      height:40px;border:1px solid var(--border);border-radius:6px;background:white;padding:0 12px;font-size:11px;outline:none
+    }
+    .tenant-toolbar input{width:280px}
+    .tenant-link{border:0;background:transparent;color:var(--navy);font-weight:700;cursor:pointer;padding:0}
+    .tenant-link:hover{color:var(--emerald)}
+    .tenant-kind{display:inline-flex;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700;background:#eef2f7;color:#36506d}
+    .tenant-status{display:inline-flex;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700}
+    .tenant-status.active{background:#edf5f0;color:#347b57}
+    .tenant-status.notice{background:#fbf4e5;color:#9a6d1f}
+    .tenant-status.inactive{background:#eef2f7;color:#6f7780}
+
+    .tenant-hero{
+      display:flex;justify-content:space-between;gap:20px;align-items:flex-start;background:white;border:1px solid var(--border);
+      border-radius:8px;padding:22px;margin-bottom:16px
+    }
+    .tenant-hero-left{display:flex;gap:16px;align-items:flex-start}
+    .tenant-avatar{
+      width:64px;height:64px;border-radius:10px;background:var(--navy);color:var(--emerald2);display:grid;place-items:center;
+      font-size:20px;font-weight:700
+    }
+    .tenant-hero h2{font-size:23px;color:var(--navy)}
+    .tenant-hero p{margin-top:6px;color:var(--muted);font-size:11px}
+    .tenant-tags{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
+    .tenant-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .tenant-summary-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-bottom:16px}
+    .tenant-layout{display:grid;grid-template-columns:1.05fr .95fr;gap:16px}
+    .tenant-balance-box{padding:16px;border:1px solid var(--border);border-radius:8px;background:var(--soft)}
+    .tenant-balance-box span{display:block;font-size:9px;color:var(--muted)}
+    .tenant-balance-box strong{display:block;margin-top:7px;font-size:17px;color:var(--navy)}
+    .contact-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+
+    @media(max-width:1250px){
+      .tenant-kpi-grid,.tenant-summary-grid{grid-template-columns:repeat(3,1fr)}
+    }
+    @media(max-width:950px){
+      .tenant-layout{grid-template-columns:1fr}
+      .contact-grid{grid-template-columns:1fr}
+    }
+    @media(max-width:650px){
+      .tenant-kpi-grid,.tenant-summary-grid{grid-template-columns:1fr 1fr}
+      .tenant-toolbar{align-items:stretch}
+      .tenant-toolbar-left{width:100%}
+      .tenant-toolbar input,.tenant-toolbar select{width:100%}
+      .tenant-hero{flex-direction:column}
+      .tenant-hero-left{flex-direction:column}
+      .tenant-actions{width:100%}
+      .tenant-actions button{flex:1}
+    }
+
     .placeholder{min-height:500px;display:grid;place-items:center;text-align:center}
     .placeholder-box{max-width:520px;padding:45px;background:white;border:1px solid var(--border);border-radius:10px}
     .placeholder-box span{font-size:9px;color:var(--emerald);letter-spacing:2px;font-weight:700}
@@ -898,6 +953,187 @@
     </div>
 
 
+
+    <!-- TENANTS -->
+    <div id="tenantsPage" class="hidden">
+      <div class="content">
+        <div class="hero-row">
+          <div>
+            <h2>Tenants</h2>
+            <p>Manage tenant profiles, occupied units, contracts, rent balances and collection history.</p>
+          </div>
+          <div class="hero-actions">
+            <button class="action-btn action-secondary">Export Excel</button>
+            <button class="action-btn action-primary" onclick="showAddTenantDemo()">+ Add Tenant</button>
+          </div>
+        </div>
+
+        <div class="tenant-kpi-grid">
+          <div class="kpi-card"><span class="kpi-label">Active Tenants</span><strong class="kpi-value">171</strong><div class="kpi-note">Residential & commercial</div></div>
+          <div class="kpi-card"><span class="kpi-label">Current Contracts</span><strong class="kpi-value">168</strong><div class="kpi-note">3 open-ended contracts</div></div>
+          <div class="kpi-card"><span class="kpi-label">Tenants in Arrears</span><strong class="kpi-value">24</strong><div class="kpi-note"><span class="danger">Require follow-up</span></div></div>
+          <div class="kpi-card"><span class="kpi-label">Monthly Rent Value</span><strong class="kpi-value money">BHD 42,850.000</strong><div class="kpi-note">Current tenant portfolio</div></div>
+          <div class="kpi-card"><span class="kpi-label">Collections This Month</span><strong class="kpi-value money">BHD 39,250.000</strong><div class="kpi-note"><span class="positive">91.6%</span> collected</div></div>
+        </div>
+
+        <section class="card">
+          <div class="tenant-toolbar">
+            <div class="tenant-toolbar-left">
+              <input id="tenantSearch" type="search" placeholder="Search tenant, CPR/CR, unit or building..." oninput="renderTenants()">
+              <select id="tenantTypeFilter" onchange="renderTenants()">
+                <option value="">All Tenant Types</option>
+                <option value="Individual">Individual</option>
+                <option value="Company">Company</option>
+              </select>
+              <select id="tenantStatusFilter" onchange="renderTenants()">
+                <option value="">All Statuses</option>
+                <option value="Active">Active</option>
+                <option value="Notice">Notice</option>
+                <option value="Inactive">Inactive</option>
+              </select>
+            </div>
+            <span style="font-size:10px;color:var(--muted)">Open any tenant to view Tenant 360°</span>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Tenant ID</th><th>Tenant Name</th><th>Type</th><th>Building</th><th>Unit</th>
+                  <th>Monthly Rent</th><th>Outstanding</th><th>Contract</th><th>Status</th><th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="tenantsTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <footer class="footer">
+        <span>ESTARA — Tenants</span>
+        <span>Designed & Developed by <strong style="color:#1f8a70">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
+    <!-- TENANT 360 -->
+    <div id="tenant360Page" class="hidden">
+      <div class="content">
+        <div style="margin-bottom:14px;">
+          <button class="action-btn action-secondary" onclick="openPage('tenants')">← Back to Tenants</button>
+        </div>
+
+        <section class="tenant-hero">
+          <div class="tenant-hero-left">
+            <div id="tenant360Avatar" class="tenant-avatar">OA</div>
+            <div>
+              <h2 id="tenant360Name"></h2>
+              <p id="tenant360Meta"></p>
+              <div class="tenant-tags">
+                <span id="tenant360Status" class="tenant-status active"></span>
+                <span id="tenant360Kind" class="tenant-kind"></span>
+                <span class="building-type" style="background:#eaf8f3;color:#1f8a70">Tenant 360°</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="tenant-actions">
+            <button class="action-btn action-secondary" onclick="openTenantUnit()">View Unit</button>
+            <button class="action-btn action-secondary" onclick="openTenantBuilding()">View Building</button>
+            <button class="action-btn action-secondary" onclick="createContractDemo()">+ New Contract</button>
+            <button class="action-btn action-primary" onclick="recordRentDemo()">Record Collection</button>
+          </div>
+        </section>
+
+        <div class="tenant-summary-grid">
+          <div class="kpi-card"><span class="kpi-label">Monthly Rent</span><strong id="tMonthlyRent" class="kpi-value money"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Outstanding</span><strong id="tOutstanding" class="kpi-value money"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Collected YTD</span><strong id="tCollectedYtd" class="kpi-value money"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Current Contract</span><strong id="tContractKpi" class="kpi-value" style="font-size:15px"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Unit</span><strong id="tUnitKpi" class="kpi-value" style="font-size:15px"></strong></div>
+        </div>
+
+        <section class="card">
+          <div class="tabs">
+            <button class="tab-btn active" onclick="openTenantTab('overview',this)">Overview</button>
+            <button class="tab-btn" onclick="openTenantTab('units',this)">Units</button>
+            <button class="tab-btn" onclick="openTenantTab('contracts',this)">Contracts</button>
+            <button class="tab-btn" onclick="openTenantTab('dues',this)">Rent Dues</button>
+            <button class="tab-btn" onclick="openTenantTab('collections',this)">Collections</button>
+            <button class="tab-btn" onclick="openTenantTab('activity',this)">Activity</button>
+          </div>
+
+          <div id="tenant-tab-overview" class="tab-panel active">
+            <div class="tenant-layout">
+              <div>
+                <div class="card-head"><div><h3>Tenant Information</h3><p>Identity and contact information</p></div></div>
+                <div class="contact-grid">
+                  <div class="info-item"><span>Tenant ID</span><strong id="tId"></strong></div>
+                  <div class="info-item"><span>CPR / CR</span><strong id="tCr"></strong></div>
+                  <div class="info-item"><span>Mobile</span><strong id="tMobile"></strong></div>
+                  <div class="info-item"><span>Email</span><strong id="tEmail"></strong></div>
+                  <div class="info-item"><span>Nationality / Sector</span><strong id="tNationality"></strong></div>
+                  <div class="info-item"><span>Emergency / Contact Person</span><strong id="tContactPerson"></strong></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="card-head"><div><h3>Current Occupancy</h3><p>Property and rent position</p></div></div>
+                <div class="tenant-balance-box"><span>Building</span><strong id="tBuilding"></strong></div>
+                <div class="tenant-balance-box" style="margin-top:12px;"><span>Unit</span><strong id="tUnit"></strong></div>
+                <div class="tenant-balance-box" style="margin-top:12px;"><span>Current Balance</span><strong id="tBalance"></strong></div>
+              </div>
+            </div>
+          </div>
+
+          <div id="tenant-tab-units" class="tab-panel">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Building</th><th>Unit</th><th>Type</th><th>Monthly Rent</th><th>Occupancy Start</th><th>Status</th></tr></thead>
+                <tbody id="tenantUnitsBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="tenant-tab-contracts" class="tab-panel">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Contract</th><th>Type</th><th>Start Date</th><th>End Date</th><th>Monthly Rent</th><th>Status</th></tr></thead>
+                <tbody id="tenantContractsBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="tenant-tab-dues" class="tab-panel">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Month</th><th>Due Date</th><th>Rent Due</th><th>Collected</th><th>Balance</th><th>Status</th></tr></thead>
+                <tbody id="tenantDuesBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="tenant-tab-collections" class="tab-panel">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Date</th><th>Receipt</th><th>Building</th><th>Unit</th><th>Method</th><th>Amount</th></tr></thead>
+                <tbody id="tenantCollectionsBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="tenant-tab-activity" class="tab-panel">
+            <div id="tenantActivityTimeline" class="list"></div>
+          </div>
+        </section>
+      </div>
+
+      <footer class="footer">
+        <span>ESTARA — Tenant 360°</span>
+        <span>Designed & Developed by <strong style="color:#1f8a70">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
+
     <div id="placeholderPage" class="hidden">
       <div class="content placeholder">
         <div class="placeholder-box">
@@ -1155,6 +1391,198 @@
   }
 
 
+
+  const TENANTS = [
+    {
+      id:"TNT-001",name:"Omar Ali",kind:"Individual",cr:"CPR-900112334",mobile:"+973 3900 1101",email:"omar.ali@demo.local",
+      nationality:"Bahraini",contactPerson:"Ahmed Ali · +973 3999 1001",status:"Active",buildingId:"BLD-001",building:"Seef Residence",
+      unitId:"UNT-001",unit:"101",unitType:"1 Bedroom",monthlyRent:350,outstanding:0,collectedYtd:2800,contract:"CTR-260011",
+      occupancyStart:"01 Jan 2026",
+      units:[["Seef Residence","101","1 Bedroom",350,"01 Jan 2026","Occupied"]],
+      contracts:[["CTR-260011","Fixed Term","01 Jan 2026","31 Dec 2026",350,"Active"]],
+      dues:[["Aug 2026","01 Aug 2026",350,350,0,"Paid"],["Jul 2026","01 Jul 2026",350,350,0,"Paid"],["Jun 2026","01 Jun 2026",350,350,0,"Paid"]],
+      collections:[["19 Aug 2026","RC-PR-260411","Seef Residence","101","BenefitPay",350],["18 Jul 2026","RC-PR-260355","Seef Residence","101","Bank Transfer",350]],
+      activity:[["19 Aug 2026","Rent collected","August rent received in full."],["01 Aug 2026","Monthly due created","BHD 350.000 due generated automatically."]]
+    },
+    {
+      id:"TNT-002",name:"Fatima Ali",kind:"Individual",cr:"CPR-910223445",mobile:"+973 3666 2201",email:"fatima.ali@demo.local",
+      nationality:"Bahraini",contactPerson:"Huda Ali · +973 3555 2100",status:"Active",buildingId:"BLD-001",building:"Seef Residence",
+      unitId:"UNT-003",unit:"804",unitType:"2 Bedroom",monthlyRent:420,outstanding:420,collectedYtd:2520,contract:"CTR-260033",
+      occupancyStart:"01 Feb 2026",
+      units:[["Seef Residence","804","2 Bedroom",420,"01 Feb 2026","Occupied"]],
+      contracts:[["CTR-260033","Fixed Term","01 Feb 2026","31 Jan 2027",420,"Active"]],
+      dues:[["Aug 2026","01 Aug 2026",420,0,420,"Overdue"],["Jul 2026","01 Jul 2026",420,420,0,"Paid"]],
+      collections:[["18 Jul 2026","RC-PR-260350","Seef Residence","804","Bank Transfer",420]],
+      activity:[["10 Aug 2026","Arrears reminder sent","August rent remains unpaid."],["01 Aug 2026","Monthly due created","August rent due generated."]]
+    },
+    {
+      id:"TNT-003",name:"Al Noor Trading",kind:"Company",cr:"CR-441205-1",mobile:"+973 3888 9944",email:"accounts@alnoor.demo",
+      nationality:"Retail / Trading",contactPerson:"Ali Hassan · +973 3777 2211",status:"Active",buildingId:"BLD-002",building:"Riffa Plaza",
+      unitId:"UNT-004",unit:"GF-03",unitType:"Retail",monthlyRent:650,outstanding:650,collectedYtd:3250,contract:"CTR-260045",
+      occupancyStart:"01 Mar 2026",
+      units:[["Riffa Plaza","GF-03","Retail",650,"01 Mar 2026","Occupied"]],
+      contracts:[["CTR-260045","Open Ended","01 Mar 2026","Open Ended",650,"Active"]],
+      dues:[["Aug 2026","01 Aug 2026",650,650,0,"Paid"],["Jul 2026","01 Jul 2026",650,0,650,"Overdue"]],
+      collections:[["19 Aug 2026","RC-PR-260414","Riffa Plaza","GF-03","Bank Transfer",650]],
+      activity:[["19 Aug 2026","August rent received","BHD 650.000 collected."],["08 Aug 2026","Arrears follow-up","July balance remains outstanding."]]
+    },
+    {
+      id:"TNT-004",name:"Ahmed Salman",kind:"Individual",cr:"CPR-880445566",mobile:"+973 3555 2200",email:"ahmed.salman@demo.local",
+      nationality:"Bahraini",contactPerson:"Salman Ahmed · +973 3444 1990",status:"Notice",buildingId:"BLD-003",building:"Juffair Heights",
+      unitId:"UNT-005",unit:"1204",unitType:"2 Bedroom",monthlyRent:450,outstanding:900,collectedYtd:1800,contract:"CTR-260084",
+      occupancyStart:"01 Mar 2026",
+      units:[["Juffair Heights","1204","2 Bedroom",450,"01 Mar 2026","Occupied"]],
+      contracts:[["CTR-260084","Fixed Term","01 Mar 2026","28 Feb 2027",450,"Active"]],
+      dues:[["Aug 2026","01 Aug 2026",450,0,450,"Overdue"],["Jul 2026","01 Jul 2026",450,0,450,"Overdue"],["Jun 2026","01 Jun 2026",450,450,0,"Paid"]],
+      collections:[["10 Jun 2026","RC-PR-260280","Juffair Heights","1204","Cash",450]],
+      activity:[["16 Aug 2026","Second rent notice","Two months remain unpaid."],["12 Aug 2026","Tenant called","Tenant requested additional time for payment."]]
+    },
+    {
+      id:"TNT-005",name:"Legal Point W.L.L",kind:"Company",cr:"CR-991122-2",mobile:"+973 3222 1000",email:"finance@legalpoint.demo",
+      nationality:"Professional Services",contactPerson:"Mariam Jassim · +973 3900 1144",status:"Active",buildingId:"BLD-004",building:"Adliya Court",
+      unitId:null,unit:"OFF-01",unitType:"Office",monthlyRent:420,outstanding:0,collectedYtd:3360,contract:"CTR-260101",
+      occupancyStart:"01 Jan 2026",
+      units:[["Adliya Court","OFF-01","Office",420,"01 Jan 2026","Occupied"]],
+      contracts:[["CTR-260101","Fixed Term","01 Jan 2026","31 Dec 2026",420,"Active"]],
+      dues:[["Aug 2026","01 Aug 2026",420,420,0,"Paid"]],
+      collections:[["15 Aug 2026","RC-PR-260390","Adliya Court","OFF-01","Bank Transfer",420]],
+      activity:[["15 Aug 2026","Rent received","August rent collected in full."]]
+    }
+  ];
+
+  let currentTenant = TENANTS[0];
+
+  function renderTenants(){
+    const search=(document.getElementById("tenantSearch")?.value||"").trim().toLowerCase();
+    const type=document.getElementById("tenantTypeFilter")?.value||"";
+    const status=document.getElementById("tenantStatusFilter")?.value||"";
+
+    const rows=TENANTS.filter(t=>{
+      const a=!search || [t.id,t.name,t.cr,t.building,t.unit].join(" ").toLowerCase().includes(search);
+      const b=!type || t.kind===type;
+      const c=!status || t.status===status;
+      return a&&b&&c;
+    }).map(t=>`
+      <tr>
+        <td>${t.id}</td>
+        <td><button class="tenant-link" onclick="openTenant360('${t.id}')">${t.name}</button></td>
+        <td><span class="tenant-kind">${t.kind}</span></td>
+        <td>${t.building}</td>
+        <td>${t.unit}</td>
+        <td>${formatMoney(t.monthlyRent)}</td>
+        <td>${formatMoney(t.outstanding)}</td>
+        <td>${t.contract}</td>
+        <td><span class="tenant-status ${t.status.toLowerCase()}">${t.status}</span></td>
+        <td><button class="action-btn action-secondary" style="min-height:30px;padding:0 10px;font-size:9px" onclick="openTenant360('${t.id}')">View 360°</button></td>
+      </tr>
+    `).join("");
+
+    document.getElementById("tenantsTableBody").innerHTML=rows || `<tr><td colspan="10" style="text-align:center;padding:28px;color:#7f8b93">No tenants found.</td></tr>`;
+  }
+
+  function openTenant360(id){
+    currentTenant=TENANTS.find(t=>t.id===id)||TENANTS[0];
+
+    ["dashboardPage","buildingsPage","building360Page","unitsPage","unit360Page","tenantsPage","placeholderPage"].forEach(x=>{
+      const el=document.getElementById(x);
+      if(el) el.classList.add("hidden");
+    });
+
+    document.getElementById("tenant360Page").classList.remove("hidden");
+    document.getElementById("pageTitle").textContent="Tenant 360°";
+    document.getElementById("pageSubtitle").textContent=currentTenant.name+" · "+currentTenant.building+" · "+currentTenant.unit;
+
+    document.querySelectorAll(".nav-item").forEach(item=>{
+      item.classList.toggle("active",item.dataset.page==="tenants");
+    });
+
+    populateTenant360();
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+
+  function populateTenant360(){
+    const t=currentTenant;
+
+    document.getElementById("tenant360Avatar").textContent=initials(t.name);
+    document.getElementById("tenant360Name").textContent=t.name;
+    document.getElementById("tenant360Meta").textContent=t.kind+" · "+t.building+" · Unit "+t.unit;
+
+    document.getElementById("tenant360Status").textContent=t.status;
+    document.getElementById("tenant360Status").className="tenant-status "+t.status.toLowerCase();
+    document.getElementById("tenant360Kind").textContent=t.kind;
+
+    document.getElementById("tMonthlyRent").textContent=formatMoney(t.monthlyRent);
+    document.getElementById("tOutstanding").textContent=formatMoney(t.outstanding);
+    document.getElementById("tCollectedYtd").textContent=formatMoney(t.collectedYtd);
+    document.getElementById("tContractKpi").textContent=t.contract;
+    document.getElementById("tUnitKpi").textContent=t.unit;
+
+    document.getElementById("tId").textContent=t.id;
+    document.getElementById("tCr").textContent=t.cr;
+    document.getElementById("tMobile").textContent=t.mobile;
+    document.getElementById("tEmail").textContent=t.email;
+    document.getElementById("tNationality").textContent=t.nationality;
+    document.getElementById("tContactPerson").textContent=t.contactPerson;
+
+    document.getElementById("tBuilding").textContent=t.building;
+    document.getElementById("tUnit").textContent=t.unit+" · "+t.unitType;
+    document.getElementById("tBalance").textContent=formatMoney(t.outstanding);
+
+    document.getElementById("tenantUnitsBody").innerHTML=t.units.map(u=>`
+      <tr><td>${u[0]}</td><td>${u[1]}</td><td>${u[2]}</td><td>${formatMoney(u[3])}</td><td>${u[4]}</td><td><span class="unit-status ${String(u[5]).toLowerCase()}">${u[5]}</span></td></tr>
+    `).join("");
+
+    document.getElementById("tenantContractsBody").innerHTML=t.contracts.map(c=>`
+      <tr><td>${c[0]}</td><td>${c[1]}</td><td>${c[2]}</td><td>${c[3]}</td><td>${formatMoney(c[4])}</td><td><span class="tenant-status active">${c[5]}</span></td></tr>
+    `).join("");
+
+    document.getElementById("tenantDuesBody").innerHTML=t.dues.map(d=>`
+      <tr><td>${d[0]}</td><td>${d[1]}</td><td>${formatMoney(d[2])}</td><td>${formatMoney(d[3])}</td><td>${formatMoney(d[4])}</td><td><span class="rent-status ${String(d[5]).toLowerCase()}">${d[5]}</span></td></tr>
+    `).join("");
+
+    document.getElementById("tenantCollectionsBody").innerHTML=t.collections.map(c=>`
+      <tr><td>${c[0]}</td><td>${c[1]}</td><td>${c[2]}</td><td>${c[3]}</td><td>${c[4]}</td><td>${formatMoney(c[5])}</td></tr>
+    `).join("") || `<tr><td colspan="6" style="text-align:center;padding:24px;color:#7f8b93">No collections recorded.</td></tr>`;
+
+    document.getElementById("tenantActivityTimeline").innerHTML=t.activity.map(a=>`
+      <div class="list-row"><div class="list-left"><div class="list-icon">•</div><div><strong>${a[1]}</strong><span>${a[0]} · ${a[2]}</span></div></div></div>
+    `).join("");
+
+    openTenantTab("overview",document.querySelector("#tenant360Page .tab-btn"));
+  }
+
+  function openTenantTab(tab,button){
+    document.querySelectorAll('[id^="tenant-tab-"]').forEach(x=>x.classList.remove("active"));
+    document.querySelectorAll("#tenant360Page .tab-btn").forEach(x=>x.classList.remove("active"));
+    document.getElementById("tenant-tab-"+tab).classList.add("active");
+    if(button) button.classList.add("active");
+  }
+
+  function openTenantUnit(){
+    if(currentTenant?.unitId) openUnit360(currentTenant.unitId);
+    else alert("Unit 360° demo record is not linked for this tenant.");
+  }
+
+  function openTenantBuilding(){
+    if(currentTenant?.buildingId) openBuilding360(currentTenant.buildingId);
+  }
+
+  function showAddTenantDemo(){
+    alert(
+      "Add Tenant — Demo\\n\\n"+
+      "Prepared fields:\\n"+
+      "• Tenant Type\\n"+
+      "• Tenant Name\\n"+
+      "• CPR / CR\\n"+
+      "• Mobile / Email\\n"+
+      "• Nationality / Sector\\n"+
+      "• Contact Person\\n"+
+      "• Building / Unit Assignment\\n"+
+      "• Status"
+    );
+  }
+
+
   const PAGE_NAMES = {
     dashboard:"Property Dashboard",
     buildings:"Buildings",
@@ -1189,7 +1617,7 @@
 
     document.getElementById("pageTitle").textContent=PAGE_NAMES[page]||"ESTARA";
 
-    ["dashboardPage","buildingsPage","building360Page","unitsPage","unit360Page","placeholderPage"].forEach(id=>document.getElementById(id)?.classList.add("hidden"));
+    ["dashboardPage","buildingsPage","building360Page","unitsPage","unit360Page","tenantsPage","tenant360Page","placeholderPage"].forEach(id=>document.getElementById(id)?.classList.add("hidden"));
     if(page==="dashboard"){
       document.getElementById("dashboardPage").classList.remove("hidden");
       document.getElementById("pageSubtitle").textContent="Buildings, occupancy, rent and arrears overview";
@@ -1201,6 +1629,10 @@
       document.getElementById("unitsPage").classList.remove("hidden");
       document.getElementById("pageSubtitle").textContent="Property units, occupancy, tenant and rent position";
       renderUnits();
+    }else if(page==="tenants"){
+      document.getElementById("tenantsPage").classList.remove("hidden");
+      document.getElementById("pageSubtitle").textContent="Tenant profiles, units, contracts, balances and collections";
+      renderTenants();
     }else{
       document.getElementById("placeholderPage").classList.remove("hidden");
       document.getElementById("placeholderTitle").textContent=PAGE_NAMES[page];
@@ -1246,13 +1678,14 @@
       "6. Monthly Dues & Collections\\n"+
       "7. Arrears\\n"+
       "8. Expenses & Reports\\n\\n"+
-      "Release 1.2 activates Property Dashboard, Buildings, Building 360°, Units and Unit 360° with tenant, contract, dues and collection visibility."
+      "Release 1.3 activates Property Dashboard, Buildings, Units and Tenants with Building 360°, Unit 360° and Tenant 360° views."
     );
   }
 
   setCurrentDate();
   renderBuildings();
   renderUnits();
+  renderTenants();
 </script>
 
 </body>
