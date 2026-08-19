@@ -578,6 +578,70 @@
       .proposal-analytics{grid-template-columns:1fr}
     }
 
+
+    /* INVOICES */
+    .invoice-kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-bottom:16px}
+    .invoice-toolbar{display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+    .invoice-toolbar-left{display:flex;gap:10px;flex-wrap:wrap}
+    .invoice-toolbar input,.invoice-toolbar select{
+      height:40px;border:1px solid var(--border);border-radius:6px;background:white;padding:0 12px;font-size:11px;outline:none
+    }
+    .invoice-toolbar input{width:280px}
+    .invoice-link{border:0;background:transparent;color:var(--navy);font-weight:700;cursor:pointer;padding:0}
+    .invoice-link:hover{color:#9a742d}
+
+    .invoice-status{display:inline-flex;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700}
+    .invoice-status.paid{background:#edf5f0;color:#347b57}
+    .invoice-status.partial{background:#fbf4e5;color:#9a6d1f}
+    .invoice-status.unpaid{background:#eef2f7;color:#36506d}
+    .invoice-status.overdue{background:#fbeaea;color:#a74646}
+
+    .invoice-hero{
+      display:flex;justify-content:space-between;gap:20px;align-items:flex-start;background:white;border:1px solid var(--border);
+      border-radius:8px;padding:22px;margin-bottom:16px
+    }
+    .invoice-hero-left{display:flex;gap:16px;align-items:flex-start}
+    .invoice-icon{
+      width:58px;height:58px;border-radius:10px;background:var(--navy);color:var(--gold-light);
+      display:grid;place-items:center;font-size:22px;font-weight:700
+    }
+    .invoice-hero h2{font-size:23px;color:var(--navy)}
+    .invoice-hero p{margin-top:6px;color:var(--muted);font-size:11px}
+    .invoice-tags{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
+    .invoice-actions{display:flex;gap:8px;flex-wrap:wrap}
+
+    .invoice-summary-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-bottom:16px}
+    .invoice-layout{display:grid;grid-template-columns:1.15fr .85fr;gap:16px}
+    .aging-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .aging-box{padding:16px;border:1px solid var(--border);border-radius:7px;background:var(--soft)}
+    .aging-box span{display:block;font-size:9px;color:var(--muted)}
+    .aging-box strong{display:block;margin-top:8px;font-size:15px;color:var(--navy)}
+    .payment-progress{height:10px;background:#edf0f2;border-radius:20px;overflow:hidden;margin-top:12px}
+    .payment-progress span{display:block;height:100%;background:var(--gold);border-radius:20px}
+    .invoice-note{
+      padding:14px;border:1px solid var(--border);background:var(--soft);border-radius:7px;font-size:10px;color:#596571;line-height:1.65
+    }
+
+    @media(max-width:1250px){
+      .invoice-kpi-grid{grid-template-columns:repeat(3,1fr)}
+      .invoice-summary-grid{grid-template-columns:repeat(3,1fr)}
+    }
+    @media(max-width:950px){
+      .invoice-layout{grid-template-columns:1fr}
+      .aging-grid{grid-template-columns:1fr 1fr}
+    }
+    @media(max-width:650px){
+      .invoice-kpi-grid,.invoice-summary-grid{grid-template-columns:1fr 1fr}
+      .invoice-toolbar{align-items:stretch}
+      .invoice-toolbar-left{width:100%}
+      .invoice-toolbar input,.invoice-toolbar select{width:100%}
+      .invoice-hero{flex-direction:column}
+      .invoice-hero-left{flex-direction:column}
+      .invoice-actions{width:100%}
+      .invoice-actions button{flex:1}
+      .aging-grid{grid-template-columns:1fr}
+    }
+
     /* PLACEHOLDER */
     .placeholder{min-height:500px;display:grid;place-items:center;text-align:center}
     .placeholder-box{max-width:520px;padding:45px;background:white;border:1px solid var(--border);border-radius:10px}
@@ -1917,6 +1981,192 @@
       </footer>
     </div>
 
+
+    <!-- INVOICES -->
+    <div id="invoicesPage" class="hidden">
+      <div class="content">
+        <div class="hero-row">
+          <div>
+            <h2>Invoices</h2>
+            <p>Track professional fee invoices, collections, balances and overdue receivables.</p>
+          </div>
+          <div class="hero-actions">
+            <button class="action-btn action-secondary">Export Excel</button>
+            <button class="action-btn action-primary" onclick="showAddInvoiceDemo()">+ New Invoice</button>
+          </div>
+        </div>
+
+        <div class="invoice-kpi-grid">
+          <div class="kpi-card"><span class="kpi-label">Total Invoiced</span><strong class="kpi-value money">BHD 12,450.000</strong><div class="kpi-note">Current demo invoices</div></div>
+          <div class="kpi-card"><span class="kpi-label">Collected</span><strong class="kpi-value money">BHD 9,780.000</strong><div class="kpi-note"><span class="positive">78.6%</span> collection rate</div></div>
+          <div class="kpi-card"><span class="kpi-label">Outstanding</span><strong class="kpi-value money">BHD 2,670.000</strong><div class="kpi-note">Open receivables</div></div>
+          <div class="kpi-card"><span class="kpi-label">Overdue</span><strong class="kpi-value money">BHD 1,100.000</strong><div class="kpi-note"><span class="warning">Requires follow-up</span></div></div>
+          <div class="kpi-card"><span class="kpi-label">Paid Invoices</span><strong class="kpi-value">7</strong><div class="kpi-note">Fully settled</div></div>
+        </div>
+
+        <section class="card">
+          <div class="invoice-toolbar">
+            <div class="invoice-toolbar-left">
+              <input id="invoiceSearch" type="search" placeholder="Search invoice, client or case..." oninput="renderInvoices()">
+              <select id="invoiceStatusFilter" onchange="renderInvoices()">
+                <option value="">All Statuses</option>
+                <option value="Paid">Paid</option>
+                <option value="Partial">Partial</option>
+                <option value="Unpaid">Unpaid</option>
+                <option value="Overdue">Overdue</option>
+              </select>
+              <select id="invoiceTaxFilter" onchange="renderInvoices()">
+                <option value="">All Tax Modes</option>
+                <option value="Exclusive">Exclusive</option>
+                <option value="Inclusive">Inclusive</option>
+              </select>
+            </div>
+            <span class="muted" style="font-size:10px;">Open an invoice to view payment history and balance</span>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Invoice</th><th>Client</th><th>Case</th><th>Date</th><th>Due Date</th>
+                  <th>Total</th><th>Paid</th><th>Balance</th><th>Status</th><th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="invoicesTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="card" style="margin-top:16px;">
+          <div class="card-head">
+            <div><h3>Receivables Aging</h3><p>Outstanding balances by aging period</p></div>
+          </div>
+          <div class="aging-grid">
+            <div class="aging-box"><span>Current</span><strong>BHD 1,020.000</strong></div>
+            <div class="aging-box"><span>1–30 Days</span><strong>BHD 550.000</strong></div>
+            <div class="aging-box"><span>31–60 Days</span><strong>BHD 700.000</strong></div>
+            <div class="aging-box"><span>61+ Days</span><strong>BHD 400.000</strong></div>
+          </div>
+        </section>
+      </div>
+
+      <footer class="footer">
+        <span>LEXORA — Invoices</span>
+        <span>Designed & Developed by <strong style="color:#a78035">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
+    <!-- INVOICE 360 -->
+    <div id="invoice360Page" class="hidden">
+      <div class="content">
+        <div style="margin-bottom:14px;">
+          <button class="action-btn action-secondary" onclick="openPage('invoices')">← Back to Invoices</button>
+        </div>
+
+        <section class="invoice-hero">
+          <div class="invoice-hero-left">
+            <div class="invoice-icon">▧</div>
+            <div>
+              <h2 id="invoice360Title">INV-2026-041</h2>
+              <p id="invoice360Meta">Gulf Trading W.L.L · Case 2026/1842</p>
+              <div class="invoice-tags">
+                <span id="invoice360Status" class="invoice-status partial">Partial</span>
+                <span id="invoice360Tax" class="pill company">Exclusive VAT</span>
+                <span id="invoice360Source" class="pill individual">PR-2026-018</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="invoice-actions">
+            <button class="action-btn action-secondary" onclick="openInvoiceClient()">View Client</button>
+            <button class="action-btn action-secondary" onclick="openInvoiceCase()">View Case</button>
+            <button class="action-btn action-secondary">Print / PDF</button>
+            <button id="recordPaymentBtn" class="action-btn action-gold" onclick="recordPaymentDemo()">+ Record Payment</button>
+          </div>
+        </section>
+
+        <div class="invoice-summary-grid">
+          <div class="summary-card"><span>Invoice Total</span><strong id="invoiceTotal"></strong></div>
+          <div class="summary-card"><span>Paid</span><strong id="invoicePaid"></strong></div>
+          <div class="summary-card"><span>Balance</span><strong id="invoiceBalance"></strong></div>
+          <div class="summary-card"><span>Invoice Date</span><strong id="invoiceDate"></strong></div>
+          <div class="summary-card"><span>Due Date</span><strong id="invoiceDueDate"></strong></div>
+        </div>
+
+        <div class="invoice-layout">
+          <section class="card">
+            <div class="card-head">
+              <div><h3>Invoice Details</h3><p>Professional services and VAT calculation</p></div>
+            </div>
+
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Description</th><th>Qty</th><th>Rate</th><th>Amount</th></tr></thead>
+                <tbody id="invoiceItemsBody"></tbody>
+              </table>
+            </div>
+
+            <div class="totals-box">
+              <div class="total-line"><span>Net Fees</span><strong id="invoiceNetBox"></strong></div>
+              <div class="total-line"><span>VAT 10%</span><strong id="invoiceVatBox"></strong></div>
+              <div class="total-line grand"><span>Total</span><strong id="invoiceTotalBox"></strong></div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-head">
+              <div><h3>Payment Position</h3><p>Collection status for this invoice</p></div>
+            </div>
+
+            <div class="info-grid" style="grid-template-columns:1fr;">
+              <div class="info-item"><span>Client</span><strong id="invoiceInfoClient"></strong></div>
+              <div class="info-item"><span>Case</span><strong id="invoiceInfoCase"></strong></div>
+              <div class="info-item"><span>Source Proposal</span><strong id="invoiceInfoProposal"></strong></div>
+              <div class="info-item"><span>Tax Mode</span><strong id="invoiceInfoTax"></strong></div>
+            </div>
+
+            <div style="margin-top:16px;">
+              <div class="total-line"><span>Collection Progress</span><strong id="invoiceCollectionPercent"></strong></div>
+              <div class="payment-progress"><span id="invoiceProgressBar" style="width:0%"></span></div>
+            </div>
+          </section>
+        </div>
+
+        <div class="dashboard-grid equal">
+          <section class="card">
+            <div class="card-head">
+              <div><h3>Payment History</h3><p>Receipts allocated to this invoice</p></div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Receipt</th><th>Date</th><th>Method</th><th>Reference</th><th>Amount</th></tr></thead>
+                <tbody id="invoicePaymentsBody"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-head">
+              <div><h3>Invoice Timeline</h3><p>Commercial activity and collection follow-up</p></div>
+            </div>
+            <div id="invoiceTimeline" class="timeline"></div>
+          </section>
+        </div>
+
+        <section class="card" style="margin-top:16px;">
+          <div class="card-head">
+            <div><h3>Internal Note</h3><p>Collection and billing remarks</p></div>
+          </div>
+          <div id="invoiceNote" class="invoice-note"></div>
+        </section>
+      </div>
+
+      <footer class="footer">
+        <span>LEXORA — Invoice 360°</span>
+        <span>Designed & Developed by <strong style="color:#a78035">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
     <!-- PLACEHOLDER -->
     <div id="placeholderPage" class="hidden">
       <div class="content placeholder">
@@ -2130,6 +2380,64 @@
 
 
 
+
+
+  const INVOICES = [
+    {
+      no:"INV-2026-041",clientId:"CL-001",client:"Gulf Trading W.L.L",caseNo:"2026/1842",proposal:"PR-2026-018",
+      date:"10 Aug 2026",dueDate:"31 Aug 2026",taxMode:"Exclusive",status:"Partial",
+      items:[["Legal Representation",1,1500,1500],["Legal Consultation & Case Review",1,500,500]],
+      net:2000,vat:200,total:2200,paid:1500,balance:700,
+      payments:[["RC-2026-031","12 Aug 2026","Bank Transfer","FT26081201",1000],["RC-2026-036","17 Aug 2026","BenefitPay","BP26081714",500]],
+      timeline:[["17 Aug 2026","Payment received","BHD 500.000 allocated to the invoice."],["12 Aug 2026","Payment received","BHD 1,000.000 received by bank transfer."],["10 Aug 2026","Invoice created","Generated from approved proposal PR-2026-018."]],
+      note:"BHD 700.000 remains outstanding. Follow up with the client before the due date."
+    },
+    {
+      no:"INV-2026-042",clientId:"CL-002",client:"Ahmed Hassan",caseNo:"2026/2190",proposal:"PR-2026-019",
+      date:"12 Aug 2026",dueDate:"20 Aug 2026",taxMode:"Exclusive",status:"Paid",
+      items:[["Labour Case Representation",1,1500,1500]],
+      net:1500,vat:150,total:1650,paid:1650,balance:0,
+      payments:[["RC-2026-034","13 Aug 2026","BenefitPay","BP26081302",1650]],
+      timeline:[["13 Aug 2026","Invoice fully paid","Full amount received via BenefitPay."],["12 Aug 2026","Invoice created","Generated from PR-2026-019."]],
+      note:"Invoice fully settled. No collection action required."
+    },
+    {
+      no:"INV-2026-043",clientId:"CL-003",client:"Apex Contracting W.L.L",caseNo:"2026/2351",proposal:"PR-2026-020",
+      date:"15 Aug 2026",dueDate:"18 Aug 2026",taxMode:"Exclusive",status:"Overdue",
+      items:[["Execution Proceedings",1,3000,3000]],
+      net:3000,vat:300,total:3300,paid:0,balance:3300,
+      payments:[],
+      timeline:[["19 Aug 2026","Collection follow-up required","Invoice passed due date without payment."],["15 Aug 2026","Invoice created","Generated from PR-2026-020."]],
+      note:"Invoice is overdue. Client collection follow-up should be prioritized."
+    },
+    {
+      no:"INV-2026-044",clientId:"CL-005",client:"Fatima Ali",caseNo:"2026/2104",proposal:"PR-2026-021",
+      date:"16 Aug 2026",dueDate:"30 Aug 2026",taxMode:"Inclusive",status:"Partial",
+      items:[["Civil Claim Representation",1,750,750]],
+      net:681.818,vat:68.182,total:750,paid:500,balance:250,
+      payments:[["RC-2026-037","17 Aug 2026","BenefitPay","BP26081722",500]],
+      timeline:[["17 Aug 2026","Partial payment received","BHD 500.000 allocated."],["16 Aug 2026","Invoice created","Inclusive VAT invoice created."]],
+      note:"Remaining BHD 250.000 is not yet overdue."
+    },
+    {
+      no:"INV-2026-046",clientId:"CL-004",client:"Al Noor Trading",caseNo:"2026/2410",proposal:"PR-2026-022",
+      date:"17 Aug 2026",dueDate:"01 Sep 2026",taxMode:"Exclusive",status:"Partial",
+      items:[["Commercial Debt Recovery",1,1000,1000]],
+      net:1000,vat:100,total:1100,paid:800,balance:300,
+      payments:[["RC-2026-039","18 Aug 2026","Cash","CASH-1808",800]],
+      timeline:[["18 Aug 2026","Cash payment received","BHD 800.000 allocated."],["17 Aug 2026","Invoice created","Commercial debt recovery fees."]],
+      note:"BHD 300.000 remains outstanding."
+    },
+    {
+      no:"INV-2025-098",clientId:"CL-006",client:"Bahrain Logistics W.L.L",caseNo:"2025/3012",proposal:"PR-2025-091",
+      date:"20 Dec 2025",dueDate:"31 Dec 2025",taxMode:"Exclusive",status:"Paid",
+      items:[["Commercial Dispute Advisory",1,818.182,818.182]],
+      net:818.182,vat:81.818,total:900,paid:900,balance:0,
+      payments:[["RC-2025-110","28 Dec 2025","Bank Transfer","FT25122804",900]],
+      timeline:[["28 Dec 2025","Invoice fully settled","BHD 900.000 received."],["20 Dec 2025","Invoice created","Professional fees invoice issued."]],
+      note:"Closed and fully settled invoice."
+    }
+  ];
 
   const PROPOSALS = [
     {
@@ -2657,7 +2965,7 @@
   }
 
   function hideAllPages(){
-    ["dashboardPage","clientsPage","client360Page","casesPage","case360Page","hearingsPage","proposalsPage","proposal360Page","placeholderPage"].forEach(id=>{
+    ["dashboardPage","clientsPage","client360Page","casesPage","case360Page","hearingsPage","proposalsPage","proposal360Page","invoicesPage","invoice360Page","placeholderPage"].forEach(id=>{
       document.getElementById(id).classList.add("hidden");
     });
   }
@@ -2691,6 +2999,10 @@
       document.getElementById("proposalsPage").classList.remove("hidden");
       document.getElementById("pageSubtitle").textContent="Professional fee proposals, approval and conversion workflow";
       renderProposals();
+    }else if(page==="invoices"){
+      document.getElementById("invoicesPage").classList.remove("hidden");
+      document.getElementById("pageSubtitle").textContent="Invoices, receivables, payment history and overdue balances";
+      renderInvoices();
     }else{
       document.getElementById("placeholderPage").classList.remove("hidden");
       document.getElementById("placeholderTitle").textContent=PAGE_NAMES[page];
@@ -2984,6 +3296,166 @@
   }
 
 
+
+
+  let currentInvoice = INVOICES[0];
+
+  function invoiceStatusClass(status){
+    return String(status).toLowerCase();
+  }
+
+  function renderInvoices(){
+    const search=(document.getElementById("invoiceSearch")?.value||"").trim().toLowerCase();
+    const status=document.getElementById("invoiceStatusFilter")?.value||"";
+    const tax=document.getElementById("invoiceTaxFilter")?.value||"";
+
+    const rows=INVOICES.filter(i=>{
+      const matchesSearch=!search || [i.no,i.client,i.caseNo,i.proposal].join(" ").toLowerCase().includes(search);
+      const matchesStatus=!status || i.status===status;
+      const matchesTax=!tax || i.taxMode===tax;
+      return matchesSearch && matchesStatus && matchesTax;
+    }).map(i=>`
+      <tr>
+        <td><button class="invoice-link" onclick="openInvoice360('${i.no}')">${i.no}</button></td>
+        <td>${i.client}</td>
+        <td><button class="case-name-btn" onclick="openCase360('${i.caseNo}')">${i.caseNo}</button></td>
+        <td>${i.date}</td>
+        <td>${i.dueDate}</td>
+        <td>${formatMoney(i.total)}</td>
+        <td>${formatMoney(i.paid)}</td>
+        <td>${formatMoney(i.balance)}</td>
+        <td><span class="invoice-status ${invoiceStatusClass(i.status)}">${i.status}</span></td>
+        <td><button class="table-action" onclick="openInvoice360('${i.no}')">View 360°</button></td>
+      </tr>
+    `).join("");
+
+    document.getElementById("invoicesTableBody").innerHTML=rows || `
+      <tr><td colspan="10" style="text-align:center;padding:28px;color:#7a8491;">No invoices match the selected filters.</td></tr>
+    `;
+  }
+
+  function openInvoice360(invoiceNo){
+    currentInvoice=INVOICES.find(i=>i.no===invoiceNo)||INVOICES[0];
+    hideAllPages();
+
+    document.getElementById("invoice360Page").classList.remove("hidden");
+    document.getElementById("pageTitle").textContent="Invoice 360°";
+    document.getElementById("pageSubtitle").textContent=currentInvoice.no+" · "+currentInvoice.client;
+
+    document.querySelectorAll(".nav-item").forEach(item=>{
+      item.classList.toggle("active",item.dataset.page==="invoices");
+    });
+
+    populateInvoice360();
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+
+  function populateInvoice360(){
+    const i=currentInvoice;
+    const pct=i.total>0 ? Math.min(100,(i.paid/i.total)*100) : 0;
+
+    document.getElementById("invoice360Title").textContent=i.no;
+    document.getElementById("invoice360Meta").textContent=i.client+" · Case "+i.caseNo;
+
+    const statusEl=document.getElementById("invoice360Status");
+    statusEl.textContent=i.status;
+    statusEl.className="invoice-status "+invoiceStatusClass(i.status);
+
+    document.getElementById("invoice360Tax").textContent=i.taxMode+" VAT";
+    document.getElementById("invoice360Source").textContent=i.proposal;
+
+    document.getElementById("invoiceTotal").textContent=formatMoney(i.total);
+    document.getElementById("invoicePaid").textContent=formatMoney(i.paid);
+    document.getElementById("invoiceBalance").textContent=formatMoney(i.balance);
+    document.getElementById("invoiceDate").textContent=i.date;
+    document.getElementById("invoiceDueDate").textContent=i.dueDate;
+
+    document.getElementById("invoiceInfoClient").textContent=i.client;
+    document.getElementById("invoiceInfoCase").textContent=i.caseNo;
+    document.getElementById("invoiceInfoProposal").textContent=i.proposal;
+    document.getElementById("invoiceInfoTax").textContent=i.taxMode+" · VAT 10%";
+
+    document.getElementById("invoiceItemsBody").innerHTML=i.items.map(x=>`
+      <tr><td>${x[0]}</td><td>${x[1]}</td><td>${formatMoney(x[2])}</td><td>${formatMoney(x[3])}</td></tr>
+    `).join("");
+
+    document.getElementById("invoiceNetBox").textContent=formatMoney(i.net);
+    document.getElementById("invoiceVatBox").textContent=formatMoney(i.vat);
+    document.getElementById("invoiceTotalBox").textContent=formatMoney(i.total);
+
+    document.getElementById("invoiceCollectionPercent").textContent=pct.toFixed(1)+"%";
+    document.getElementById("invoiceProgressBar").style.width=pct+"%";
+
+    document.getElementById("invoicePaymentsBody").innerHTML=i.payments.map(p=>`
+      <tr><td>${p[0]}</td><td>${p[1]}</td><td>${p[2]}</td><td>${p[3]}</td><td>${formatMoney(p[4])}</td></tr>
+    `).join("") || `<tr><td colspan="5" style="text-align:center;padding:25px;color:#7a8491;">No payments recorded.</td></tr>`;
+
+    document.getElementById("invoiceTimeline").innerHTML=i.timeline.map(t=>`
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div><strong>${t[0]} — ${t[1]}</strong><p>${t[2]}</p></div>
+      </div>
+    `).join("");
+
+    document.getElementById("invoiceNote").textContent=i.note;
+
+    const btn=document.getElementById("recordPaymentBtn");
+    if(i.balance<=0){
+      btn.disabled=true;
+      btn.textContent="Fully Paid";
+      btn.style.opacity=".55";
+    }else{
+      btn.disabled=false;
+      btn.textContent="+ Record Payment";
+      btn.style.opacity="1";
+    }
+  }
+
+  function openInvoiceClient(){
+    if(!currentInvoice) return;
+    openClient360(currentInvoice.clientId);
+  }
+
+  function openInvoiceCase(){
+    if(!currentInvoice) return;
+    openCase360(currentInvoice.caseNo);
+  }
+
+  function recordPaymentDemo(){
+    const i=currentInvoice;
+    if(!i || i.balance<=0) return;
+
+    alert(
+      "Record Payment — Demo\\n\\n"+
+      "Invoice: "+i.no+"\\n"+
+      "Client: "+i.client+"\\n"+
+      "Outstanding: "+formatMoney(i.balance)+"\\n\\n"+
+      "Prepared payment fields:\\n"+
+      "• Payment Date\\n"+
+      "• Amount\\n"+
+      "• Cash / BenefitPay / Bank Transfer / Cheque\\n"+
+      "• Bank / Cash Account\\n"+
+      "• Reference Number\\n"+
+      "• Notes\\n\\n"+
+      "The next release will activate Collections and allocation to invoices."
+    );
+  }
+
+  function showAddInvoiceDemo(){
+    alert(
+      "New Invoice — Demo\\n\\n"+
+      "Invoices can be created from an approved proposal or directly.\\n\\n"+
+      "Prepared fields:\\n"+
+      "• Client\\n"+
+      "• Case / Matter\\n"+
+      "• Professional Services\\n"+
+      "• Inclusive / Exclusive VAT\\n"+
+      "• VAT 10%\\n"+
+      "• Invoice Date\\n"+
+      "• Due Date\\n"+
+      "• Notes"
+    );
+  }
 
   let currentProposal = PROPOSALS[0];
 
@@ -3424,7 +3896,7 @@
       "5. Professional Fee Proposal\n"+
       "6. Invoice & Collection\n"+
       "7. Management Reports\n\n"+
-      "Dashboard, Clients, Cases, Tasks & Hearings and Professional Fee Proposals are active through Release 1.4. Proposal 360° can also convert approved proposals into an Invoice demo workflow."
+      "Dashboard, Clients, Cases, Tasks & Hearings, Proposals and Invoices are active through Release 1.5. Approved proposals can open their linked Invoice 360° and invoices include payment history, balances and overdue status."
     );
   }
 
@@ -3433,6 +3905,7 @@
   renderCases();
   renderHearingsModule();
   renderProposals();
+  renderInvoices();
 </script>
 
 </body>
