@@ -177,6 +177,79 @@
     .insight strong{display:block;color:var(--navy);font-size:11px}
     .insight p{margin-top:7px;color:var(--muted);font-size:10px;line-height:1.6}
 
+
+    /* CLIENTS */
+    .client-kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-bottom:16px}
+    .client-toolbar{display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+    .client-toolbar-left{display:flex;gap:10px;flex-wrap:wrap}
+    .client-toolbar input,.client-toolbar select{
+      height:40px;border:1px solid var(--border);border-radius:6px;background:white;padding:0 12px;font-size:11px;outline:none
+    }
+    .client-toolbar input{width:280px}
+    .client-link{border:0;background:transparent;color:var(--navy);font-weight:700;cursor:pointer;padding:0}
+    .client-link:hover{color:var(--teal)}
+    .client-status{display:inline-flex;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700}
+    .client-status.active{background:#edf5f0;color:#347b57}
+    .client-status.inactive{background:#f3f4f6;color:#6f7780}
+    .client-type{display:inline-flex;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700;background:#eef2f7;color:#36506d}
+
+    .client-hero{
+      display:flex;justify-content:space-between;gap:20px;align-items:flex-start;background:white;border:1px solid var(--border);
+      border-radius:8px;padding:22px;margin-bottom:16px
+    }
+    .client-hero-left{display:flex;gap:16px;align-items:flex-start}
+    .client-avatar{
+      width:58px;height:58px;border-radius:10px;background:var(--navy);color:var(--teal2);
+      display:grid;place-items:center;font-size:18px;font-weight:700
+    }
+    .client-hero h2{font-size:23px;color:var(--navy)}
+    .client-hero p{margin-top:6px;color:var(--muted);font-size:11px}
+    .client-tags{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
+    .client-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .client-summary-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-bottom:16px}
+
+    .tabs{display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid var(--border);margin-bottom:18px}
+    .tab-btn{
+      border:0;background:transparent;padding:10px 12px;font-size:10px;font-weight:700;color:var(--muted);
+      cursor:pointer;border-bottom:2px solid transparent
+    }
+    .tab-btn.active{color:var(--navy);border-bottom-color:var(--teal)}
+    .tab-panel{display:none}
+    .tab-panel.active{display:block}
+
+    .info-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    .info-item{padding:14px;background:var(--soft);border:1px solid var(--border);border-radius:6px}
+    .info-item span{display:block;font-size:9px;color:var(--muted)}
+    .info-item strong{display:block;margin-top:6px;font-size:11px;color:var(--navy)}
+
+    .portfolio-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .portfolio-card{padding:16px;border:1px solid var(--border);border-radius:8px;background:#fafbfc}
+    .portfolio-card span{display:block;font-size:9px;color:var(--muted)}
+    .portfolio-card strong{display:block;margin-top:8px;font-size:17px;color:var(--navy)}
+
+    .timeline{display:flex;flex-direction:column;gap:14px}
+    .timeline-item{display:grid;grid-template-columns:16px 1fr;gap:12px}
+    .timeline-dot{width:10px;height:10px;border-radius:50%;background:var(--teal);margin-top:3px}
+    .timeline-item strong{font-size:11px;color:var(--navy)}
+    .timeline-item p{margin-top:4px;font-size:10px;color:var(--muted);line-height:1.5}
+
+    @media(max-width:1250px){
+      .client-kpi-grid,.client-summary-grid{grid-template-columns:repeat(3,1fr)}
+      .portfolio-grid{grid-template-columns:repeat(2,1fr)}
+    }
+    @media(max-width:950px){.info-grid{grid-template-columns:1fr}}
+    @media(max-width:650px){
+      .client-kpi-grid,.client-summary-grid{grid-template-columns:1fr 1fr}
+      .client-toolbar{align-items:stretch}
+      .client-toolbar-left{width:100%}
+      .client-toolbar input,.client-toolbar select{width:100%}
+      .client-hero{flex-direction:column}
+      .client-hero-left{flex-direction:column}
+      .client-actions{width:100%}
+      .client-actions button{flex:1}
+      .portfolio-grid{grid-template-columns:1fr}
+    }
+
     .placeholder{min-height:500px;display:grid;place-items:center;text-align:center}
     .placeholder-box{max-width:520px;padding:45px;background:white;border:1px solid var(--border);border-radius:10px}
     .placeholder-box span{font-size:9px;color:var(--teal);letter-spacing:2px;font-weight:700}
@@ -491,6 +564,194 @@
       </footer>
     </div>
 
+
+    <!-- CLIENTS -->
+    <div id="clientsPage" class="hidden">
+      <div class="content">
+
+        <div class="hero-row">
+          <div>
+            <h2>Clients</h2>
+            <p>Manage creditor portfolios, assigned accounts and collection performance by client.</p>
+          </div>
+          <div class="hero-actions">
+            <button class="action-btn action-secondary">Export Excel</button>
+            <button class="action-btn action-primary" onclick="showAddClientDemo()">+ Add Client</button>
+          </div>
+        </div>
+
+        <div class="client-kpi-grid">
+          <div class="kpi-card"><span class="kpi-label">Total Clients</span><strong class="kpi-value">12</strong><div class="kpi-note">10 active portfolios</div></div>
+          <div class="kpi-card"><span class="kpi-label">Assigned Value</span><strong class="kpi-value money">BHD 428,500.000</strong><div class="kpi-note">Total portfolio assigned</div></div>
+          <div class="kpi-card"><span class="kpi-label">Collected</span><strong class="kpi-value money">BHD 277,650.000</strong><div class="kpi-note"><span class="positive">64.8%</span> overall recovery</div></div>
+          <div class="kpi-card"><span class="kpi-label">Active Accounts</span><strong class="kpi-value">146</strong><div class="kpi-note">Across all clients</div></div>
+          <div class="kpi-card"><span class="kpi-label">Settled Accounts</span><strong class="kpi-value">38</strong><div class="kpi-note">Current year</div></div>
+        </div>
+
+        <section class="card">
+          <div class="client-toolbar">
+            <div class="client-toolbar-left">
+              <input id="clientSearch" type="search" placeholder="Search client, CR or contact..." oninput="renderClients()">
+              <select id="clientStatusFilter" onchange="renderClients()">
+                <option value="">All Statuses</option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+              </select>
+              <select id="clientSectorFilter" onchange="renderClients()">
+                <option value="">All Sectors</option>
+                <option value="Finance">Finance</option>
+                <option value="Leasing">Leasing</option>
+                <option value="Services">Services</option>
+                <option value="Trading">Trading</option>
+              </select>
+            </div>
+            <span style="font-size:10px;color:var(--muted)">Open any client to view Portfolio 360°</span>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Client ID</th><th>Client Name</th><th>Sector</th><th>Assigned</th><th>Collected</th>
+                  <th>Outstanding</th><th>Accounts</th><th>Recovery Rate</th><th>Status</th><th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="clientsTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+      </div>
+
+      <footer class="footer">
+        <span>RECOVA — Clients</span>
+        <span>Designed & Developed by <strong style="color:#1aa6a6">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
+    <!-- CLIENT PORTFOLIO 360 -->
+    <div id="client360Page" class="hidden">
+      <div class="content">
+
+        <div style="margin-bottom:14px;">
+          <button class="action-btn action-secondary" onclick="openPage('clients')">← Back to Clients</button>
+        </div>
+
+        <section class="client-hero">
+          <div class="client-hero-left">
+            <div id="client360Avatar" class="client-avatar">GF</div>
+            <div>
+              <h2 id="client360Name">Gulf Finance B.S.C.</h2>
+              <p id="client360Meta">Finance Sector · Bahrain</p>
+              <div class="client-tags">
+                <span id="client360Status" class="client-status active">Active</span>
+                <span id="client360Sector" class="client-type">Finance</span>
+                <span class="client-type" style="background:#eaf8f7;color:#158a8a">Portfolio 360°</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="client-actions">
+            <button class="action-btn action-secondary">+ Add Portfolio</button>
+            <button class="action-btn action-secondary">+ Add Contact</button>
+            <button class="action-btn action-primary">Generate Client Report</button>
+          </div>
+        </section>
+
+        <div class="client-summary-grid">
+          <div class="kpi-card"><span class="kpi-label">Assigned Portfolio</span><strong id="cAssigned" class="kpi-value money"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Collected</span><strong id="cCollected" class="kpi-value money"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Outstanding</span><strong id="cOutstanding" class="kpi-value money"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Recovery Rate</span><strong id="cRate" class="kpi-value"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Active Accounts</span><strong id="cAccounts" class="kpi-value"></strong></div>
+        </div>
+
+        <section class="card">
+          <div class="tabs">
+            <button class="tab-btn active" onclick="openClientTab('overview',this)">Overview</button>
+            <button class="tab-btn" onclick="openClientTab('portfolios',this)">Portfolios</button>
+            <button class="tab-btn" onclick="openClientTab('debtors',this)">Debtors</button>
+            <button class="tab-btn" onclick="openClientTab('collections',this)">Collections</button>
+            <button class="tab-btn" onclick="openClientTab('fees',this)">Commission & Fees</button>
+            <button class="tab-btn" onclick="openClientTab('activity',this)">Activity</button>
+          </div>
+
+          <div id="client-tab-overview" class="tab-panel active">
+            <div class="dashboard-grid equal" style="margin-top:0;">
+              <div>
+                <div class="card-head"><div><h3>Client Information</h3><p>Creditor profile and contact information</p></div></div>
+                <div class="info-grid">
+                  <div class="info-item"><span>Client ID</span><strong id="cId"></strong></div>
+                  <div class="info-item"><span>CR Number</span><strong id="cCr"></strong></div>
+                  <div class="info-item"><span>Contact Person</span><strong id="cContact"></strong></div>
+                  <div class="info-item"><span>Mobile</span><strong id="cMobile"></strong></div>
+                  <div class="info-item"><span>Email</span><strong id="cEmail"></strong></div>
+                  <div class="info-item"><span>Commission Rate</span><strong id="cCommission"></strong></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="card-head"><div><h3>Portfolio Health</h3><p>Key performance indicators</p></div></div>
+                <div class="portfolio-grid">
+                  <div class="portfolio-card"><span>Active Cases</span><strong id="cActiveCases"></strong></div>
+                  <div class="portfolio-card"><span>PTP Active</span><strong id="cPtp"></strong></div>
+                  <div class="portfolio-card"><span>Broken PTP</span><strong id="cBroken"></strong></div>
+                  <div class="portfolio-card"><span>Settled Accounts</span><strong id="cSettled"></strong></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="client-tab-portfolios" class="tab-panel">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Portfolio</th><th>Received Date</th><th>Accounts</th><th>Assigned</th><th>Collected</th><th>Outstanding</th><th>Status</th></tr></thead>
+                <tbody id="clientPortfoliosBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="client-tab-debtors" class="tab-panel">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Debtor</th><th>Case</th><th>Original Balance</th><th>Collected</th><th>Outstanding</th><th>Collector</th><th>Status</th></tr></thead>
+                <tbody id="clientDebtorsBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="client-tab-collections" class="tab-panel">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Date</th><th>Receipt</th><th>Debtor</th><th>Case</th><th>Method</th><th>Amount</th></tr></thead>
+                <tbody id="clientCollectionsBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="client-tab-fees" class="tab-panel">
+            <div class="portfolio-grid">
+              <div class="portfolio-card"><span>Collected Amount</span><strong id="feeCollected"></strong></div>
+              <div class="portfolio-card"><span>Commission Rate</span><strong id="feeRate"></strong></div>
+              <div class="portfolio-card"><span>Commission Earned</span><strong id="feeEarned"></strong></div>
+              <div class="portfolio-card"><span>Net Due to Client</span><strong id="feeNet"></strong></div>
+            </div>
+          </div>
+
+          <div id="client-tab-activity" class="tab-panel">
+            <div id="clientActivityTimeline" class="timeline"></div>
+          </div>
+
+        </section>
+      </div>
+
+      <footer class="footer">
+        <span>RECOVA — Client Portfolio 360°</span>
+        <span>Designed & Developed by <strong style="color:#1aa6a6">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
+
     <div id="placeholderPage" class="hidden">
       <div class="content placeholder">
         <div class="placeholder-box">
@@ -506,6 +767,208 @@
 </section>
 
 <script>
+
+  const CLIENTS = [
+    {
+      id:"CLI-001",name:"Gulf Finance B.S.C.",sector:"Finance",cr:"100233-1",status:"Active",
+      contact:"Mohammed Jassim",mobile:"+973 3900 1111",email:"collections@gulffinance.demo",
+      assigned:118500,collected:84200,outstanding:34300,accounts:38,recovery:71.1,commission:12,
+      activeCases:34,ptp:7,broken:2,settled:9,
+      portfolios:[
+        ["PF-2026-011","05 Jan 2026",18,58500,40200,18300,"Active"],
+        ["PF-2026-019","20 Mar 2026",20,60000,44000,16000,"Active"]
+      ],
+      debtors:[
+        ["Ahmed Trading","COL-260184",25000,6500,18500,"Sara Ahmed","Escalate"],
+        ["Al Manar Stores","COL-260170",18000,12000,6000,"Khalid Ali","PTP"],
+        ["Hassan Services","COL-260166",12500,10000,2500,"Mohammed Hasan","Active"]
+      ],
+      collections:[
+        ["19 Aug 2026","RC-260421","Ahmed Trading","COL-260184","Bank Transfer",2500],
+        ["18 Aug 2026","RC-260417","Al Manar Stores","COL-260170","BenefitPay",1800],
+        ["15 Aug 2026","RC-260405","Hassan Services","COL-260166","Cash",750]
+      ],
+      activity:[
+        ["19 Aug 2026","Payment received","Ahmed Trading paid BHD 2,500.000."],
+        ["18 Aug 2026","Promise to pay created","Al Manar Stores committed BHD 1,800.000."],
+        ["17 Aug 2026","Portfolio review","Recovery performance reviewed with client."]
+      ]
+    },
+    {
+      id:"CLI-002",name:"Bahrain Leasing Co.",sector:"Leasing",cr:"118844-2",status:"Active",
+      contact:"Fatima Salman",mobile:"+973 3666 2200",email:"recovery@bahrainleasing.demo",
+      assigned:96500,collected:59100,outstanding:37400,accounts:31,recovery:61.2,commission:10,
+      activeCases:28,ptp:5,broken:1,settled:7,
+      portfolios:[["PF-2026-014","10 Feb 2026",31,96500,59100,37400,"Active"]],
+      debtors:[["Modern Workshop","COL-260203",31000,8700,22300,"Khalid Ali","Active"],["Al Waha Garage","COL-260198",22000,16000,6000,"Sara Ahmed","PTP"]],
+      collections:[["18 Aug 2026","RC-260418","Modern Workshop","COL-260203","Bank Transfer",3000]],
+      activity:[["18 Aug 2026","Field visit completed","Modern Workshop follow-up completed."],["16 Aug 2026","Collection posted","BHD 3,000.000 allocated."]]
+    },
+    {
+      id:"CLI-003",name:"Prime Services W.L.L",sector:"Services",cr:"144522-1",status:"Active",
+      contact:"Ali Nasser",mobile:"+973 3777 8811",email:"finance@primeservices.demo",
+      assigned:74200,collected:52100,outstanding:22100,accounts:24,recovery:70.2,commission:15,
+      activeCases:22,ptp:4,broken:1,settled:8,
+      portfolios:[["PF-2026-017","01 Mar 2026",24,74200,52100,22100,"Active"]],
+      debtors:[["Al Noor Market","COL-260191",14500,4750,9750,"Sara Ahmed","PTP"]],
+      collections:[["19 Aug 2026","RC-260422","Al Noor Market","COL-260191","BenefitPay",750]],
+      activity:[["19 Aug 2026","PTP follow-up","Debtor contacted regarding promised payment."],["19 Aug 2026","Payment received","BHD 750.000 received."]]
+    },
+    {
+      id:"CLI-004",name:"Apex Credit Solutions",sector:"Finance",cr:"155420-3",status:"Active",
+      contact:"Noor Ahmed",mobile:"+973 3999 4422",email:"accounts@apexcredit.demo",
+      assigned:68900,collected:42100,outstanding:26800,accounts:29,recovery:61.1,commission:12.5,
+      activeCases:25,ptp:6,broken:2,settled:6,
+      portfolios:[["PF-2026-021","12 Apr 2026",29,68900,42100,26800,"Active"]],
+      debtors:[["Hassan Ali","COL-260211",9000,4200,4800,"Fatima Abbas","Negotiation"]],
+      collections:[["16 Aug 2026","RC-260409","Hassan Ali","COL-260211","Cash",1200]],
+      activity:[["18 Aug 2026","Settlement proposed","Settlement option presented to debtor."],["16 Aug 2026","Collection posted","BHD 1,200.000 received."]]
+    },
+    {
+      id:"CLI-005",name:"Bahrain Trading Group",sector:"Trading",cr:"177100-1",status:"Inactive",
+      contact:"Hamad Ali",mobile:"+973 3444 7000",email:"credit@btg.demo",
+      assigned:70400,collected:40150,outstanding:30250,accounts:24,recovery:57.0,commission:10,
+      activeCases:0,ptp:0,broken:0,settled:8,
+      portfolios:[["PF-2025-033","15 Sep 2025",24,70400,40150,30250,"Closed"]],
+      debtors:[],collections:[],
+      activity:[["05 Jan 2026","Client marked inactive","No new portfolios currently assigned."]]
+    }
+  ];
+
+  let currentClient = CLIENTS[0];
+
+  function formatMoney(v){
+    return "BHD "+Number(v||0).toLocaleString("en-US",{minimumFractionDigits:3,maximumFractionDigits:3});
+  }
+
+  function initials(name){
+    return name.split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]).join("").toUpperCase();
+  }
+
+  function renderClients(){
+    const search=(document.getElementById("clientSearch")?.value||"").trim().toLowerCase();
+    const status=document.getElementById("clientStatusFilter")?.value||"";
+    const sector=document.getElementById("clientSectorFilter")?.value||"";
+
+    const rows=CLIENTS.filter(c=>{
+      const a=!search || [c.id,c.name,c.cr,c.contact].join(" ").toLowerCase().includes(search);
+      const b=!status || c.status===status;
+      const d=!sector || c.sector===sector;
+      return a&&b&&d;
+    }).map(c=>`
+      <tr>
+        <td>${c.id}</td>
+        <td><button class="client-link" onclick="openClient360('${c.id}')">${c.name}</button></td>
+        <td><span class="client-type">${c.sector}</span></td>
+        <td>${formatMoney(c.assigned)}</td>
+        <td>${formatMoney(c.collected)}</td>
+        <td>${formatMoney(c.outstanding)}</td>
+        <td>${c.accounts}</td>
+        <td>${c.recovery.toFixed(1)}%</td>
+        <td><span class="client-status ${c.status.toLowerCase()}">${c.status}</span></td>
+        <td><button class="table-action" onclick="openClient360('${c.id}')">View 360°</button></td>
+      </tr>
+    `).join("");
+
+    document.getElementById("clientsTableBody").innerHTML=rows || `<tr><td colspan="10" style="text-align:center;padding:28px;color:#7a8491">No clients found.</td></tr>`;
+  }
+
+  function openClient360(id){
+    currentClient=CLIENTS.find(c=>c.id===id)||CLIENTS[0];
+
+    document.getElementById("dashboardPage").classList.add("hidden");
+    document.getElementById("clientsPage").classList.add("hidden");
+    document.getElementById("placeholderPage").classList.add("hidden");
+    document.getElementById("client360Page").classList.remove("hidden");
+
+    document.getElementById("pageTitle").textContent="Client Portfolio 360°";
+    document.getElementById("pageSubtitle").textContent=currentClient.name;
+
+    populateClient360();
+
+    document.querySelectorAll(".nav-item").forEach(item=>{
+      item.classList.toggle("active",item.dataset.page==="clients");
+    });
+
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+
+  function populateClient360(){
+    const c=currentClient;
+
+    document.getElementById("client360Avatar").textContent=initials(c.name);
+    document.getElementById("client360Name").textContent=c.name;
+    document.getElementById("client360Meta").textContent=c.sector+" Sector · Bahrain";
+    document.getElementById("client360Status").textContent=c.status;
+    document.getElementById("client360Status").className="client-status "+c.status.toLowerCase();
+    document.getElementById("client360Sector").textContent=c.sector;
+
+    document.getElementById("cAssigned").textContent=formatMoney(c.assigned);
+    document.getElementById("cCollected").textContent=formatMoney(c.collected);
+    document.getElementById("cOutstanding").textContent=formatMoney(c.outstanding);
+    document.getElementById("cRate").textContent=c.recovery.toFixed(1)+"%";
+    document.getElementById("cAccounts").textContent=c.accounts;
+
+    document.getElementById("cId").textContent=c.id;
+    document.getElementById("cCr").textContent=c.cr;
+    document.getElementById("cContact").textContent=c.contact;
+    document.getElementById("cMobile").textContent=c.mobile;
+    document.getElementById("cEmail").textContent=c.email;
+    document.getElementById("cCommission").textContent=c.commission+"%";
+
+    document.getElementById("cActiveCases").textContent=c.activeCases;
+    document.getElementById("cPtp").textContent=c.ptp;
+    document.getElementById("cBroken").textContent=c.broken;
+    document.getElementById("cSettled").textContent=c.settled;
+
+    document.getElementById("clientPortfoliosBody").innerHTML=c.portfolios.map(p=>`
+      <tr><td>${p[0]}</td><td>${p[1]}</td><td>${p[2]}</td><td>${formatMoney(p[3])}</td><td>${formatMoney(p[4])}</td><td>${formatMoney(p[5])}</td><td><span class="status active">${p[6]}</span></td></tr>
+    `).join("");
+
+    document.getElementById("clientDebtorsBody").innerHTML=c.debtors.map(d=>`
+      <tr><td>${d[0]}</td><td>${d[1]}</td><td>${formatMoney(d[2])}</td><td>${formatMoney(d[3])}</td><td>${formatMoney(d[4])}</td><td>${d[5]}</td><td><span class="status ptp">${d[6]}</span></td></tr>
+    `).join("") || `<tr><td colspan="7" style="text-align:center;padding:25px;color:#7a8491">No active debtor accounts.</td></tr>`;
+
+    document.getElementById("clientCollectionsBody").innerHTML=c.collections.map(x=>`
+      <tr><td>${x[0]}</td><td>${x[1]}</td><td>${x[2]}</td><td>${x[3]}</td><td>${x[4]}</td><td>${formatMoney(x[5])}</td></tr>
+    `).join("") || `<tr><td colspan="6" style="text-align:center;padding:25px;color:#7a8491">No recent collections.</td></tr>`;
+
+    const earned=c.collected*(c.commission/100);
+    document.getElementById("feeCollected").textContent=formatMoney(c.collected);
+    document.getElementById("feeRate").textContent=c.commission+"%";
+    document.getElementById("feeEarned").textContent=formatMoney(earned);
+    document.getElementById("feeNet").textContent=formatMoney(c.collected-earned);
+
+    document.getElementById("clientActivityTimeline").innerHTML=c.activity.map(a=>`
+      <div class="timeline-item"><div class="timeline-dot"></div><div><strong>${a[0]} — ${a[1]}</strong><p>${a[2]}</p></div></div>
+    `).join("");
+
+    openClientTab("overview",document.querySelector(".tab-btn"));
+  }
+
+  function openClientTab(tab,button){
+    document.querySelectorAll('[id^="client-tab-"]').forEach(x=>x.classList.remove("active"));
+    document.querySelectorAll(".tab-btn").forEach(x=>x.classList.remove("active"));
+    document.getElementById("client-tab-"+tab).classList.add("active");
+    if(button) button.classList.add("active");
+  }
+
+  function showAddClientDemo(){
+    alert(
+      "Add Client — Demo\\n\\n"+
+      "Prepared fields:\\n"+
+      "• Client Name\\n"+
+      "• Sector\\n"+
+      "• CR Number\\n"+
+      "• Contact Person\\n"+
+      "• Mobile / Email\\n"+
+      "• Commission Rate\\n"+
+      "• Portfolio Terms\\n"+
+      "• Status"
+    );
+  }
+
+
   const PAGE_NAMES = {
     dashboard:"Collection Dashboard",
     clients:"Clients",
@@ -541,12 +1004,19 @@
 
     document.getElementById("pageTitle").textContent=PAGE_NAMES[page]||"RECOVA";
 
+    document.getElementById("dashboardPage").classList.add("hidden");
+    document.getElementById("clientsPage").classList.add("hidden");
+    document.getElementById("client360Page").classList.add("hidden");
+    document.getElementById("placeholderPage").classList.add("hidden");
+
     if(page==="dashboard"){
       document.getElementById("dashboardPage").classList.remove("hidden");
-      document.getElementById("placeholderPage").classList.add("hidden");
       document.getElementById("pageSubtitle").textContent="Portfolio, recovery and collector performance overview";
+    }else if(page==="clients"){
+      document.getElementById("clientsPage").classList.remove("hidden");
+      document.getElementById("pageSubtitle").textContent="Creditor portfolios and client recovery performance";
+      renderClients();
     }else{
-      document.getElementById("dashboardPage").classList.add("hidden");
       document.getElementById("placeholderPage").classList.remove("hidden");
       document.getElementById("placeholderTitle").textContent=PAGE_NAMES[page];
       document.getElementById("pageSubtitle").textContent="RECOVA Collection Management System";
@@ -590,11 +1060,12 @@
       "5. Follow-ups & PTP\\n"+
       "6. Collections & Settlements\\n"+
       "7. Commission & Reports\\n\\n"+
-      "Release 1.0 activates the executive collection dashboard."
+      "Release 1.1 activates the executive dashboard plus Clients and Client Portfolio 360°."
     );
   }
 
   setCurrentDate();
+  renderClients();
 </script>
 
 </body>
