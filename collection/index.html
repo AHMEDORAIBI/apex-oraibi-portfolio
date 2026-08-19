@@ -507,6 +507,70 @@
       .ptp-actions button{flex:1}
     }
 
+
+    /* COLLECTIONS */
+    .collections-kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-bottom:16px}
+    .collections-toolbar{display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+    .collections-toolbar-left{display:flex;gap:10px;flex-wrap:wrap}
+    .collections-toolbar input,.collections-toolbar select{
+      height:40px;border:1px solid var(--border);border-radius:6px;background:white;padding:0 12px;font-size:11px;outline:none
+    }
+    .collections-toolbar input{width:280px}
+    .receipt-link{border:0;background:transparent;color:var(--navy);font-weight:700;cursor:pointer;padding:0}
+    .receipt-link:hover{color:var(--teal)}
+
+    .payment-method{display:inline-flex;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700;background:#eef2f7;color:#36506d}
+    .allocation-status{display:inline-flex;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700}
+    .allocation-status.allocated{background:#edf5f0;color:#347b57}
+    .allocation-status.partial{background:#fbf4e5;color:#9a6d1f}
+    .allocation-status.unallocated{background:#fbeaea;color:#a74646}
+
+    .receipt-hero{
+      display:flex;justify-content:space-between;gap:20px;align-items:flex-start;background:white;border:1px solid var(--border);
+      border-radius:8px;padding:22px;margin-bottom:16px
+    }
+    .receipt-hero-left{display:flex;gap:16px;align-items:flex-start}
+    .receipt-avatar{
+      width:58px;height:58px;border-radius:10px;background:var(--navy);color:var(--teal2);display:grid;place-items:center;
+      font-size:18px;font-weight:700
+    }
+    .receipt-hero h2{font-size:23px;color:var(--navy)}
+    .receipt-hero p{margin-top:6px;color:var(--muted);font-size:11px}
+    .receipt-tags{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
+    .receipt-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .receipt-summary-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-bottom:16px}
+
+    .allocation-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .allocation-box{padding:16px;border:1px solid var(--border);border-radius:8px;background:var(--soft)}
+    .allocation-box span{display:block;font-size:9px;color:var(--muted)}
+    .allocation-box strong{display:block;margin-top:7px;font-size:16px;color:var(--navy)}
+    .allocation-progress{height:10px;background:#e9edf0;border-radius:20px;overflow:hidden;margin-top:12px}
+    .allocation-progress span{display:block;height:100%;background:var(--teal);border-radius:20px}
+
+    .collections-mini-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .mini-card{padding:15px;border:1px solid var(--border);border-radius:8px;background:#fafbfc}
+    .mini-card span{display:block;font-size:9px;color:var(--muted)}
+    .mini-card strong{display:block;margin-top:6px;font-size:15px;color:var(--navy)}
+
+    @media(max-width:1250px){
+      .collections-kpi-grid,.receipt-summary-grid{grid-template-columns:repeat(3,1fr)}
+    }
+    @media(max-width:950px){
+      .allocation-grid{grid-template-columns:1fr}
+      .collections-mini-grid{grid-template-columns:1fr 1fr}
+    }
+    @media(max-width:650px){
+      .collections-kpi-grid,.receipt-summary-grid{grid-template-columns:1fr 1fr}
+      .collections-toolbar{align-items:stretch}
+      .collections-toolbar-left{width:100%}
+      .collections-toolbar input,.collections-toolbar select{width:100%}
+      .receipt-hero{flex-direction:column}
+      .receipt-hero-left{flex-direction:column}
+      .receipt-actions{width:100%}
+      .receipt-actions button{flex:1}
+      .collections-mini-grid{grid-template-columns:1fr}
+    }
+
     .placeholder{min-height:500px;display:grid;place-items:center;text-align:center}
     .placeholder-box{max-width:520px;padding:45px;background:white;border:1px solid var(--border);border-radius:10px}
     .placeholder-box span{font-size:9px;color:var(--teal);letter-spacing:2px;font-weight:700}
@@ -1633,6 +1697,179 @@
     </div>
 
 
+
+    <!-- COLLECTIONS -->
+    <div id="collectionsPage" class="hidden">
+      <div class="content">
+
+        <div class="hero-row">
+          <div>
+            <h2>Collections</h2>
+            <p>Record debtor payments, issue receipts and allocate collections to collection cases.</p>
+          </div>
+          <div class="hero-actions">
+            <button class="action-btn action-secondary">Export Excel</button>
+            <button class="action-btn action-primary" onclick="showAddCollectionDemo()">+ Record Collection</button>
+          </div>
+        </div>
+
+        <div class="collections-kpi-grid">
+          <div class="kpi-card"><span class="kpi-label">Collected Today</span><strong class="kpi-value money">BHD 4,250.000</strong><div class="kpi-note">5 receipts</div></div>
+          <div class="kpi-card"><span class="kpi-label">This Month</span><strong class="kpi-value money">BHD 38,600.000</strong><div class="kpi-note">August 2026</div></div>
+          <div class="kpi-card"><span class="kpi-label">Allocated</span><strong class="kpi-value money">BHD 37,900.000</strong><div class="kpi-note"><span class="positive">98.2%</span> allocated</div></div>
+          <div class="kpi-card"><span class="kpi-label">Unallocated</span><strong class="kpi-value money">BHD 700.000</strong><div class="kpi-note"><span class="warning">Pending review</span></div></div>
+          <div class="kpi-card"><span class="kpi-label">Receipts</span><strong class="kpi-value">54</strong><div class="kpi-note">Current month</div></div>
+        </div>
+
+        <section class="card">
+          <div class="collections-toolbar">
+            <div class="collections-toolbar-left">
+              <input id="collectionSearch" type="search" placeholder="Search receipt, debtor, case or reference..." oninput="renderCollectionsModule()">
+              <select id="collectionMethodFilter" onchange="renderCollectionsModule()">
+                <option value="">All Payment Methods</option>
+                <option value="Cash">Cash</option>
+                <option value="BenefitPay">BenefitPay</option>
+                <option value="Bank Transfer">Bank Transfer</option>
+                <option value="Cheque">Cheque</option>
+              </select>
+              <select id="collectionStatusFilter" onchange="renderCollectionsModule()">
+                <option value="">All Allocation Statuses</option>
+                <option value="Allocated">Allocated</option>
+                <option value="Partial">Partial</option>
+                <option value="Unallocated">Unallocated</option>
+              </select>
+            </div>
+            <span style="font-size:10px;color:var(--muted)">Open any receipt to view Receipt 360°</span>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Receipt</th><th>Date</th><th>Debtor</th><th>Case</th><th>Client</th><th>Method</th>
+                  <th>Amount</th><th>Allocated</th><th>Unallocated</th><th>Status</th><th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="collectionsTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <div class="dashboard-grid equal">
+          <section class="card">
+            <div class="card-head"><div><h3>Payment Method Mix</h3><p>Current month collection channels</p></div></div>
+            <div class="collections-mini-grid">
+              <div class="mini-card"><span>Bank Transfer</span><strong>BHD 18,300</strong></div>
+              <div class="mini-card"><span>BenefitPay</span><strong>BHD 11,900</strong></div>
+              <div class="mini-card"><span>Cash</span><strong>BHD 5,200</strong></div>
+              <div class="mini-card"><span>Cheque</span><strong>BHD 3,200</strong></div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-head"><div><h3>Allocation Control</h3><p>Collection allocation performance</p></div></div>
+            <div class="allocation-box">
+              <span>Allocated Percentage</span>
+              <strong>98.2%</strong>
+              <div class="allocation-progress"><span style="width:98.2%"></span></div>
+            </div>
+          </section>
+        </div>
+
+      </div>
+
+      <footer class="footer">
+        <span>RECOVA — Collections</span>
+        <span>Designed & Developed by <strong style="color:#1aa6a6">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
+    <!-- RECEIPT 360 -->
+    <div id="receipt360Page" class="hidden">
+      <div class="content">
+
+        <div style="margin-bottom:14px;">
+          <button class="action-btn action-secondary" onclick="openPage('collections')">← Back to Collections</button>
+        </div>
+
+        <section class="receipt-hero">
+          <div class="receipt-hero-left">
+            <div class="receipt-avatar">R</div>
+            <div>
+              <h2 id="receipt360Title"></h2>
+              <p id="receipt360Meta"></p>
+              <div class="receipt-tags">
+                <span id="receipt360Status" class="allocation-status allocated"></span>
+                <span id="receipt360Method" class="payment-method"></span>
+                <span class="client-type">Receipt 360°</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="receipt-actions">
+            <button class="action-btn action-secondary" onclick="openReceiptCase()">View Case</button>
+            <button class="action-btn action-secondary" onclick="openReceiptDebtor()">View Debtor</button>
+            <button class="action-btn action-secondary">Print Receipt</button>
+            <button class="action-btn action-primary" onclick="allocateCollectionDemo()">Allocate Payment</button>
+          </div>
+        </section>
+
+        <div class="receipt-summary-grid">
+          <div class="kpi-card"><span class="kpi-label">Receipt Amount</span><strong id="rAmount" class="kpi-value money"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Allocated</span><strong id="rAllocated" class="kpi-value money"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Unallocated</span><strong id="rUnallocated" class="kpi-value money"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Receipt Date</span><strong id="rDate" class="kpi-value" style="font-size:15px"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Reference</span><strong id="rReference" class="kpi-value" style="font-size:15px"></strong></div>
+        </div>
+
+        <div class="allocation-grid">
+          <section class="card">
+            <div class="card-head"><div><h3>Receipt Information</h3><p>Payment and source details</p></div></div>
+            <div class="info-grid">
+              <div class="info-item"><span>Debtor</span><strong id="rDebtor"></strong></div>
+              <div class="info-item"><span>Client</span><strong id="rClient"></strong></div>
+              <div class="info-item"><span>Collection Case</span><strong id="rCase"></strong></div>
+              <div class="info-item"><span>Payment Method</span><strong id="rMethod"></strong></div>
+              <div class="info-item"><span>Bank / Cash Account</span><strong id="rAccount"></strong></div>
+              <div class="info-item"><span>Received By</span><strong id="rReceivedBy"></strong></div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-head"><div><h3>Allocation Position</h3><p>How this payment has been applied</p></div></div>
+            <div class="allocation-box">
+              <span>Allocation Progress</span>
+              <strong id="rAllocationPct"></strong>
+              <div class="allocation-progress"><span id="rAllocationBar"></span></div>
+            </div>
+            <div class="collector-note" style="margin-top:16px;" id="rNote"></div>
+          </section>
+        </div>
+
+        <section class="card" style="margin-top:16px;">
+          <div class="card-head"><div><h3>Case Allocation</h3><p>Collection applied to outstanding debt file</p></div></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Case</th><th>Debtor</th><th>Outstanding Before</th><th>Allocated Amount</th><th>Outstanding After</th><th>Action</th></tr></thead>
+              <tbody id="receiptAllocationBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="card" style="margin-top:16px;">
+          <div class="card-head"><div><h3>Receipt Timeline</h3><p>Payment and allocation activity</p></div></div>
+          <div id="receiptTimeline" class="timeline"></div>
+        </section>
+
+      </div>
+
+      <footer class="footer">
+        <span>RECOVA — Receipt 360°</span>
+        <span>Designed & Developed by <strong style="color:#1aa6a6">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
+
     <div id="placeholderPage" class="hidden">
       <div class="content placeholder">
         <div class="placeholder-box">
@@ -2581,6 +2818,188 @@
   }
 
 
+
+  const COLLECTIONS = [
+    {
+      no:"RC-260421",date:"19 Aug 2026",debtorId:"DBT-001",debtor:"Ahmed Trading",caseNo:"COL-260184",client:"Gulf Finance B.S.C.",
+      method:"Bank Transfer",account:"BBK Collection Account",reference:"FT-260819-11",amount:2500,allocated:2500,unallocated:0,status:"Allocated",
+      receivedBy:"Sara Ahmed",note:"Fully allocated to collection case COL-260184.",
+      allocations:[["COL-260184","Ahmed Trading",21000,2500,18500]],
+      timeline:[["19 Aug 2026","Receipt created","BHD 2,500.000 received by bank transfer."],["19 Aug 2026","Payment allocated","Full amount allocated to COL-260184."]]
+    },
+    {
+      no:"RC-260422",date:"19 Aug 2026",debtorId:"DBT-002",debtor:"Al Noor Market",caseNo:"COL-260191",client:"Prime Services W.L.L",
+      method:"BenefitPay",account:"BenefitPay / BBK",reference:"BP-260819-14",amount:750,allocated:750,unallocated:0,status:"Allocated",
+      receivedBy:"Sara Ahmed",note:"Payment allocated against current outstanding balance.",
+      allocations:[["COL-260191","Al Noor Market",10500,750,9750]],
+      timeline:[["19 Aug 2026","Receipt created","BenefitPay collection recorded."],["19 Aug 2026","Allocated","Applied to COL-260191."]]
+    },
+    {
+      no:"RC-260418",date:"18 Aug 2026",debtorId:"DBT-003",debtor:"Modern Workshop",caseNo:"COL-260203",client:"Bahrain Leasing Co.",
+      method:"Bank Transfer",account:"NBB Collection Account",reference:"FT-260818-08",amount:3000,allocated:3000,unallocated:0,status:"Allocated",
+      receivedBy:"Khalid Ali",note:"Allocated to principal collection case.",
+      allocations:[["COL-260203","Modern Workshop",25300,3000,22300]],
+      timeline:[["18 Aug 2026","Receipt created","BHD 3,000.000 received."],["18 Aug 2026","Allocated","Full amount applied to case."]]
+    },
+    {
+      no:"RC-260409",date:"16 Aug 2026",debtorId:"DBT-004",debtor:"Hassan Ali",caseNo:"COL-260211",client:"Apex Credit Solutions",
+      method:"Cash",account:"Cash on Hand",reference:"CASH-1608",amount:1200,allocated:1200,unallocated:0,status:"Allocated",
+      receivedBy:"Fatima Abbas",note:"Cash collection fully allocated.",
+      allocations:[["COL-260211","Hassan Ali",6000,1200,4800]],
+      timeline:[["16 Aug 2026","Cash received","BHD 1,200.000 recorded."],["16 Aug 2026","Allocated","Payment applied to COL-260211."]]
+    },
+    {
+      no:"RC-260430",date:"19 Aug 2026",debtorId:"DBT-005",debtor:"Al Manar Stores",caseNo:"COL-260170",client:"Gulf Finance B.S.C.",
+      method:"Cheque",account:"Undeposited Cheques",reference:"CHQ-77120",amount:2500,allocated:1800,unallocated:700,status:"Partial",
+      receivedBy:"Khalid Ali",note:"BHD 1,800.000 allocated to scheduled installment; BHD 700.000 remains unallocated pending client instructions.",
+      allocations:[["COL-260170","Al Manar Stores",7800,1800,6000]],
+      timeline:[["19 Aug 2026","Cheque received","BHD 2,500.000 recorded."],["19 Aug 2026","Partial allocation","BHD 1,800.000 allocated; BHD 700.000 pending."]]
+    }
+  ];
+
+  let currentReceipt = COLLECTIONS[0];
+
+  function collectionStatusClass(status){
+    return String(status).toLowerCase();
+  }
+
+  function renderCollectionsModule(){
+    const search=(document.getElementById("collectionSearch")?.value||"").trim().toLowerCase();
+    const method=document.getElementById("collectionMethodFilter")?.value||"";
+    const status=document.getElementById("collectionStatusFilter")?.value||"";
+
+    const rows=COLLECTIONS.filter(r=>{
+      const a=!search || [r.no,r.debtor,r.caseNo,r.client,r.reference].join(" ").toLowerCase().includes(search);
+      const b=!method || r.method===method;
+      const c=!status || r.status===status;
+      return a&&b&&c;
+    }).map(r=>`
+      <tr>
+        <td><button class="receipt-link" onclick="openReceipt360('${r.no}')">${r.no}</button></td>
+        <td>${r.date}</td>
+        <td>${r.debtor}</td>
+        <td><button class="case-link" onclick="openCase360('${r.caseNo}')">${r.caseNo}</button></td>
+        <td>${r.client}</td>
+        <td><span class="payment-method">${r.method}</span></td>
+        <td>${formatMoney(r.amount)}</td>
+        <td>${formatMoney(r.allocated)}</td>
+        <td>${formatMoney(r.unallocated)}</td>
+        <td><span class="allocation-status ${collectionStatusClass(r.status)}">${r.status}</span></td>
+        <td><button class="table-action" onclick="openReceipt360('${r.no}')">View 360°</button></td>
+      </tr>
+    `).join("");
+
+    document.getElementById("collectionsTableBody").innerHTML=rows || `<tr><td colspan="11" style="text-align:center;padding:28px;color:#7a8491">No collections found.</td></tr>`;
+  }
+
+  function openReceipt360(no){
+    currentReceipt=COLLECTIONS.find(r=>r.no===no)||COLLECTIONS[0];
+
+    ["dashboardPage","clientsPage","client360Page","debtorsPage","debtor360Page","casesPage","case360Page","followupsPage","ptpPage","ptp360Page","collectionsPage","placeholderPage"].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el) el.classList.add("hidden");
+    });
+
+    document.getElementById("receipt360Page").classList.remove("hidden");
+    document.getElementById("pageTitle").textContent="Receipt 360°";
+    document.getElementById("pageSubtitle").textContent=currentReceipt.no+" · "+currentReceipt.debtor;
+
+    document.querySelectorAll(".nav-item").forEach(item=>{
+      item.classList.toggle("active",item.dataset.page==="collections");
+    });
+
+    populateReceipt360();
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+
+  function populateReceipt360(){
+    const r=currentReceipt;
+    const pct=r.amount>0 ? (r.allocated/r.amount)*100 : 0;
+
+    document.getElementById("receipt360Title").textContent=r.no;
+    document.getElementById("receipt360Meta").textContent=r.debtor+" · "+r.client;
+    document.getElementById("receipt360Status").textContent=r.status;
+    document.getElementById("receipt360Status").className="allocation-status "+collectionStatusClass(r.status);
+    document.getElementById("receipt360Method").textContent=r.method;
+
+    document.getElementById("rAmount").textContent=formatMoney(r.amount);
+    document.getElementById("rAllocated").textContent=formatMoney(r.allocated);
+    document.getElementById("rUnallocated").textContent=formatMoney(r.unallocated);
+    document.getElementById("rDate").textContent=r.date;
+    document.getElementById("rReference").textContent=r.reference;
+
+    document.getElementById("rDebtor").textContent=r.debtor;
+    document.getElementById("rClient").textContent=r.client;
+    document.getElementById("rCase").textContent=r.caseNo;
+    document.getElementById("rMethod").textContent=r.method;
+    document.getElementById("rAccount").textContent=r.account;
+    document.getElementById("rReceivedBy").textContent=r.receivedBy;
+
+    document.getElementById("rAllocationPct").textContent=pct.toFixed(1)+"%";
+    document.getElementById("rAllocationBar").style.width=pct+"%";
+    document.getElementById("rNote").textContent=r.note;
+
+    document.getElementById("receiptAllocationBody").innerHTML=r.allocations.map(a=>`
+      <tr>
+        <td><button class="case-link" onclick="openCase360('${a[0]}')">${a[0]}</button></td>
+        <td>${a[1]}</td>
+        <td>${formatMoney(a[2])}</td>
+        <td>${formatMoney(a[3])}</td>
+        <td>${formatMoney(a[4])}</td>
+        <td><button class="table-action" onclick="openCase360('${a[0]}')">View Case</button></td>
+      </tr>
+    `).join("") || `<tr><td colspan="6" style="text-align:center;padding:25px;color:#7a8491">No allocation recorded.</td></tr>`;
+
+    document.getElementById("receiptTimeline").innerHTML=r.timeline.map(t=>`
+      <div class="timeline-item"><div class="timeline-dot"></div><div><strong>${t[0]} — ${t[1]}</strong><p>${t[2]}</p></div></div>
+    `).join("");
+  }
+
+  function openReceiptCase(){
+    if(currentReceipt?.caseNo) openCase360(currentReceipt.caseNo);
+  }
+
+  function openReceiptDebtor(){
+    if(currentReceipt?.debtorId) openDebtor360(currentReceipt.debtorId);
+  }
+
+  function allocateCollectionDemo(){
+    const r=currentReceipt;
+    if(!r) return;
+
+    if(r.unallocated<=0){
+      alert("This receipt is fully allocated.");
+      return;
+    }
+
+    alert(
+      "Allocate Collection — Demo\\n\\n"+
+      "Receipt: "+r.no+"\\n"+
+      "Debtor: "+r.debtor+"\\n"+
+      "Unallocated Amount: "+formatMoney(r.unallocated)+"\\n\\n"+
+      "The allocation screen can distribute this amount to one or more open collection cases for the debtor."
+    );
+  }
+
+  function showAddCollectionDemo(){
+    alert(
+      "Record Collection — Demo\\n\\n"+
+      "Prepared fields:\\n"+
+      "• Debtor\\n"+
+      "• Collection Case\\n"+
+      "• Client\\n"+
+      "• Payment Date\\n"+
+      "• Amount\\n"+
+      "• Cash / BenefitPay / Bank Transfer / Cheque\\n"+
+      "• Bank / Cash Account\\n"+
+      "• Reference / Cheque Number\\n"+
+      "• Notes\\n"+
+      "• Allocation Amount\\n\\n"+
+      "A receipt number is generated automatically."
+    );
+  }
+
+
   const PAGE_NAMES = {
     dashboard:"Collection Dashboard",
     clients:"Clients",
@@ -2616,7 +3035,7 @@
 
     document.getElementById("pageTitle").textContent=PAGE_NAMES[page]||"RECOVA";
 
-    ["dashboardPage","clientsPage","client360Page","debtorsPage","debtor360Page","casesPage","case360Page","followupsPage","ptpPage","ptp360Page","placeholderPage"].forEach(id=>{
+    ["dashboardPage","clientsPage","client360Page","debtorsPage","debtor360Page","casesPage","case360Page","followupsPage","ptpPage","ptp360Page","collectionsPage","receipt360Page","placeholderPage"].forEach(id=>{
       const el=document.getElementById(id);
       if(el) el.classList.add("hidden");
     });
@@ -2644,6 +3063,10 @@
       document.getElementById("ptpPage").classList.remove("hidden");
       document.getElementById("pageSubtitle").textContent="Debtor commitments, due dates and broken promises";
       renderPtps();
+    }else if(page==="collections"){
+      document.getElementById("collectionsPage").classList.remove("hidden");
+      document.getElementById("pageSubtitle").textContent="Debtor payments, receipts and case allocation";
+      renderCollectionsModule();
     }else{
       document.getElementById("placeholderPage").classList.remove("hidden");
       document.getElementById("placeholderTitle").textContent=PAGE_NAMES[page];
@@ -2688,7 +3111,7 @@
       "5. Follow-ups & PTP\\n"+
       "6. Collections & Settlements\\n"+
       "7. Commission & Reports\\n\\n"+
-      "Release 1.5 activates Dashboard, Clients, Debtors, Collection Cases, Follow-ups and Promises to Pay with calendar and PTP 360°."
+      "Release 1.6 activates Dashboard, Clients, Debtors, Collection Cases, Follow-ups, Promises to Pay and Collections with Receipt 360° and case allocation."
     );
   }
 
@@ -2698,6 +3121,7 @@
   renderCases();
   renderFollowups();
   renderPtps();
+  renderCollectionsModule();
 </script>
 
 </body>
