@@ -224,6 +224,81 @@
     .timeline-item strong{font-size:11px;color:var(--navy)}
     .timeline-item p{margin-top:4px;font-size:10px;color:var(--muted);line-height:1.5}
 
+
+    /* CASES */
+    .cases-toolbar{
+      display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:16px
+    }
+    .cases-toolbar-left{display:flex;gap:10px;flex-wrap:wrap}
+    .cases-toolbar input,.cases-toolbar select{
+      height:40px;border:1px solid var(--border);border-radius:6px;background:white;padding:0 12px;font-size:11px;outline:none
+    }
+    .cases-toolbar input{width:280px}
+    .case-kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-bottom:16px}
+    .case-name-btn{border:0;background:transparent;color:var(--navy);font-weight:700;cursor:pointer;padding:0}
+    .case-name-btn:hover{color:#9a742d}
+
+    .health{
+      display:inline-flex;align-items:center;gap:6px;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700
+    }
+    .health.ontrack{background:#edf5f0;color:#347b57}
+    .health.attention{background:#fbf4e5;color:#9a6d1f}
+    .health.critical{background:#fbeaea;color:#a74646}
+
+    .case-status{
+      display:inline-flex;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700
+    }
+    .case-status.new{background:#eef2f7;color:#36506d}
+    .case-status.progress{background:#edf5f0;color:#347b57}
+    .case-status.judgment{background:#f7f1e7;color:#8f6b27}
+    .case-status.execution{background:#f0eafa;color:#6a4b91}
+    .case-status.closed{background:#f3f4f6;color:#6f7780}
+
+    .case-hero{
+      display:flex;justify-content:space-between;gap:20px;align-items:flex-start;background:white;border:1px solid var(--border);
+      border-radius:8px;padding:22px;margin-bottom:16px
+    }
+    .case-hero-left{display:flex;gap:16px;align-items:flex-start}
+    .case-icon{
+      width:58px;height:58px;border-radius:10px;background:var(--navy);color:var(--gold-light);display:grid;place-items:center;font-size:22px;font-weight:700
+    }
+    .case-hero h2{font-size:23px;color:var(--navy)}
+    .case-hero p{margin-top:6px;color:var(--muted);font-size:11px}
+    .case-tags{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
+    .case-actions{display:flex;gap:8px;flex-wrap:wrap}
+
+    .case-summary-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-bottom:16px}
+    .case-section-title{font-size:13px;color:var(--navy);margin-bottom:12px}
+    .case-overview-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}
+    .financial-flow{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+    .flow-box{padding:14px;border:1px solid var(--border);border-radius:7px;background:var(--soft)}
+    .flow-box span{display:block;font-size:9px;color:var(--muted)}
+    .flow-box strong{display:block;margin-top:7px;font-size:12px;color:var(--navy)}
+    .task-priority{display:inline-flex;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700}
+    .task-priority.high{background:#fbeaea;color:#a74646}
+    .task-priority.medium{background:#fbf4e5;color:#9a6d1f}
+    .task-priority.low{background:#eef2f7;color:#36506d}
+
+    @media(max-width:1250px){
+      .case-kpi-grid{grid-template-columns:repeat(3,1fr)}
+      .case-summary-grid{grid-template-columns:repeat(3,1fr)}
+    }
+    @media(max-width:950px){
+      .case-overview-grid{grid-template-columns:1fr}
+      .financial-flow{grid-template-columns:1fr 1fr}
+    }
+    @media(max-width:650px){
+      .cases-toolbar{align-items:stretch}
+      .cases-toolbar-left{width:100%}
+      .cases-toolbar input,.cases-toolbar select{width:100%}
+      .case-kpi-grid,.case-summary-grid{grid-template-columns:1fr 1fr}
+      .case-hero{flex-direction:column}
+      .case-hero-left{flex-direction:column}
+      .case-actions{width:100%}
+      .case-actions button{flex:1}
+      .financial-flow{grid-template-columns:1fr}
+    }
+
     /* PLACEHOLDER */
     .placeholder{min-height:500px;display:grid;place-items:center;text-align:center}
     .placeholder-box{max-width:520px;padding:45px;background:white;border:1px solid var(--border);border-radius:10px}
@@ -890,6 +965,256 @@
       </footer>
     </div>
 
+
+    <!-- CASES -->
+    <div id="casesPage" class="hidden">
+      <div class="content">
+
+        <div class="hero-row">
+          <div>
+            <h2>Cases</h2>
+            <p>Manage legal matters, court progress, hearings and case financials.</p>
+          </div>
+
+          <div class="hero-actions">
+            <button class="action-btn action-secondary">Export Excel</button>
+            <button class="action-btn action-primary" onclick="showAddCaseDemo()">+ New Case</button>
+          </div>
+        </div>
+
+        <div class="case-kpi-grid">
+          <div class="kpi-card">
+            <span class="kpi-label">Total Cases</span>
+            <strong class="kpi-value">30</strong>
+            <div class="kpi-note">24 currently active</div>
+          </div>
+
+          <div class="kpi-card">
+            <span class="kpi-label">In Progress</span>
+            <strong class="kpi-value">11</strong>
+            <div class="kpi-note">Main active workload</div>
+          </div>
+
+          <div class="kpi-card">
+            <span class="kpi-label">Upcoming Hearings</span>
+            <strong class="kpi-value">8</strong>
+            <div class="kpi-note">Next 30 days</div>
+          </div>
+
+          <div class="kpi-card">
+            <span class="kpi-label">Execution</span>
+            <strong class="kpi-value">3</strong>
+            <div class="kpi-note">Execution stage</div>
+          </div>
+
+          <div class="kpi-card">
+            <span class="kpi-label">Claim Value</span>
+            <strong class="kpi-value money">BHD 148,750.000</strong>
+            <div class="kpi-note">Across active demo cases</div>
+          </div>
+        </div>
+
+        <section class="card">
+          <div class="cases-toolbar">
+            <div class="cases-toolbar-left">
+              <input id="caseSearch" type="search" placeholder="Search case no., client or opponent..." oninput="renderCases()">
+
+              <select id="caseStatusFilter" onchange="renderCases()">
+                <option value="">All Statuses</option>
+                <option value="New">New</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Judgment">Judgment</option>
+                <option value="Execution">Execution</option>
+                <option value="Closed">Closed</option>
+              </select>
+
+              <select id="caseLawyerFilter" onchange="renderCases()">
+                <option value="">All Lawyers</option>
+                <option value="Ali Hasan">Ali Hasan</option>
+                <option value="Sara Ahmed">Sara Ahmed</option>
+                <option value="Khalid Ali">Khalid Ali</option>
+              </select>
+            </div>
+
+            <span class="muted" style="font-size:10px;">
+              Click the case number to open Case 360°
+            </span>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Case No.</th>
+                  <th>Client</th>
+                  <th>Opponent</th>
+                  <th>Court</th>
+                  <th>Type</th>
+                  <th>Lawyer</th>
+                  <th>Next Hearing</th>
+                  <th>Claim</th>
+                  <th>Health</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="casesTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <footer class="footer">
+        <span>LEXORA — Cases Module</span>
+        <span>Designed & Developed by <strong style="color:#a78035">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
+    <!-- CASE 360 -->
+    <div id="case360Page" class="hidden">
+      <div class="content">
+
+        <div style="margin-bottom:14px;">
+          <button class="action-btn action-secondary" onclick="openPage('cases')">← Back to Cases</button>
+        </div>
+
+        <section class="case-hero">
+          <div class="case-hero-left">
+            <div class="case-icon">⚖</div>
+            <div>
+              <h2 id="case360Title">Case 2026/1842</h2>
+              <p id="case360Parties">Gulf Trading W.L.L vs ABC Trading W.L.L</p>
+              <div class="case-tags">
+                <span id="case360Status" class="case-status progress">In Progress</span>
+                <span id="case360Health" class="health ontrack">● On Track</span>
+                <span id="case360Court" class="pill company">High Civil Court</span>
+                <span id="case360Type" class="pill individual">Commercial</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="case-actions">
+            <button class="action-btn action-secondary" onclick="openClientFromCase()">View Client</button>
+            <button class="action-btn action-secondary">+ Add Hearing</button>
+            <button class="action-btn action-gold">+ New Action</button>
+          </div>
+        </section>
+
+        <div class="case-summary-grid">
+          <div class="summary-card"><span>Claim Amount</span><strong id="caseClaim">BHD 25,000.000</strong></div>
+          <div class="summary-card"><span>Professional Fees</span><strong id="caseFees">BHD 2,200.000</strong></div>
+          <div class="summary-card"><span>Collected</span><strong id="caseCollected">BHD 1,500.000</strong></div>
+          <div class="summary-card"><span>Outstanding Fees</span><strong id="caseOutstanding">BHD 700.000</strong></div>
+          <div class="summary-card"><span>Next Hearing</span><strong id="caseNextHearing">20 Aug 2026</strong></div>
+        </div>
+
+        <section class="card">
+          <div class="tabs">
+            <button class="tab-btn active" data-case-tab="overview" onclick="openCaseTab('overview',this)">Overview</button>
+            <button class="tab-btn" data-case-tab="hearings" onclick="openCaseTab('hearings',this)">Hearings</button>
+            <button class="tab-btn" data-case-tab="tasks" onclick="openCaseTab('tasks',this)">Tasks</button>
+            <button class="tab-btn" data-case-tab="documents" onclick="openCaseTab('documents',this)">Documents</button>
+            <button class="tab-btn" data-case-tab="financials" onclick="openCaseTab('financials',this)">Financials</button>
+            <button class="tab-btn" data-case-tab="timeline" onclick="openCaseTab('timeline',this)">Timeline</button>
+            <button class="tab-btn" data-case-tab="notes" onclick="openCaseTab('notes',this)">Notes</button>
+          </div>
+
+          <div id="case-tab-overview" class="tab-panel active">
+            <div class="case-overview-grid">
+              <div>
+                <h3 class="case-section-title">Case Information</h3>
+
+                <div class="info-grid">
+                  <div class="info-item"><span>Case Number</span><strong id="caseInfoNo"></strong></div>
+                  <div class="info-item"><span>Client</span><strong id="caseInfoClient"></strong></div>
+                  <div class="info-item"><span>Opponent</span><strong id="caseInfoOpponent"></strong></div>
+                  <div class="info-item"><span>Client Role</span><strong id="caseInfoRole"></strong></div>
+                  <div class="info-item"><span>Responsible Lawyer</span><strong id="caseInfoLawyer"></strong></div>
+                  <div class="info-item"><span>Filing Date</span><strong id="caseInfoFiling"></strong></div>
+                </div>
+
+                <div style="margin-top:16px;">
+                  <h3 class="case-section-title">Case Summary</h3>
+                  <div class="info-item">
+                    <span>Subject / Summary</span>
+                    <strong id="caseInfoSummary" style="line-height:1.7;font-weight:500;"></strong>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h3 class="case-section-title">Current Position</h3>
+
+                <div class="info-grid" style="grid-template-columns:1fr;">
+                  <div class="info-item"><span>Current Stage</span><strong id="caseInfoStage"></strong></div>
+                  <div class="info-item"><span>Next Required Action</span><strong id="caseInfoAction"></strong></div>
+                  <div class="info-item"><span>Case Health</span><strong id="caseInfoHealth"></strong></div>
+                  <div class="info-item"><span>Last Update</span><strong id="caseInfoUpdated"></strong></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="case-tab-hearings" class="tab-panel">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Date</th><th>Time</th><th>Court</th><th>Purpose</th><th>Result / Status</th></tr>
+                </thead>
+                <tbody id="caseHearingsBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="case-tab-tasks" class="tab-panel">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Task</th><th>Assigned To</th><th>Due Date</th><th>Priority</th><th>Status</th></tr>
+                </thead>
+                <tbody id="caseTasksBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="case-tab-documents" class="tab-panel">
+            <div class="list" id="caseDocumentsList"></div>
+          </div>
+
+          <div id="case-tab-financials" class="tab-panel">
+            <div class="financial-flow">
+              <div class="flow-box"><span>Proposal</span><strong id="caseFinProposal"></strong></div>
+              <div class="flow-box"><span>Invoice</span><strong id="caseFinInvoice"></strong></div>
+              <div class="flow-box"><span>Collected</span><strong id="caseFinCollected"></strong></div>
+              <div class="flow-box"><span>Outstanding</span><strong id="caseFinOutstanding"></strong></div>
+            </div>
+
+            <div style="margin-top:18px;" class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Date</th><th>Reference</th><th>Description</th><th>Type</th><th>Amount</th></tr>
+                </thead>
+                <tbody id="caseFinancialBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="case-tab-timeline" class="tab-panel">
+            <div class="timeline" id="caseTimeline"></div>
+          </div>
+
+          <div id="case-tab-notes" class="tab-panel">
+            <div id="caseNotesList" class="list"></div>
+          </div>
+        </section>
+      </div>
+
+      <footer class="footer">
+        <span>LEXORA — Case 360°</span>
+        <span>Designed & Developed by <strong style="color:#a78035">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
     <!-- PLACEHOLDER -->
     <div id="placeholderPage" class="hidden">
       <div class="content placeholder">
@@ -1101,7 +1426,274 @@
     }
   ];
 
+
+  const CASES = [
+    {
+      no:"2026/1842",
+      clientId:"CL-001",
+      client:"Gulf Trading W.L.L",
+      opponent:"ABC Trading W.L.L",
+      court:"High Civil Court",
+      type:"Commercial",
+      lawyer:"Ali Hasan",
+      clientRole:"Plaintiff",
+      filingDate:"03 Aug 2026",
+      nextHearing:"20 Aug 2026",
+      claim:25000,
+      fees:2200,
+      collected:1500,
+      outstanding:700,
+      health:"On Track",
+      status:"In Progress",
+      stage:"Pleadings / Reply Memorandum",
+      nextAction:"Submit reply memorandum before the next hearing.",
+      lastUpdate:"19 Aug 2026 · 10:45 AM",
+      summary:"Commercial claim relating to unpaid contractual amounts and associated obligations. The matter is currently progressing before the High Civil Court.",
+      proposal:"PR-2026-018 · BHD 2,200.000",
+      invoice:"INV-2026-041 · BHD 2,200.000",
+      hearings:[
+        ["20 Aug 2026","10:30 AM","High Civil Court","Submission of reply memorandum","Upcoming"],
+        ["15 Aug 2026","09:45 AM","High Civil Court","First procedural hearing","Adjourned to 20 Aug"],
+        ["08 Aug 2026","11:00 AM","High Civil Court","Case registration review","Completed"]
+      ],
+      tasks:[
+        ["Prepare reply memorandum","Ali Hasan","19 Aug 2026","High","In Progress"],
+        ["Review opponent documents","Sara Ahmed","19 Aug 2026","Medium","Completed"],
+        ["Confirm client instructions","Ali Hasan","20 Aug 2026","Medium","Pending"]
+      ],
+      documents:[
+        ["Statement of Claim.pdf","Court Documents","03 Aug 2026"],
+        ["Commercial Agreement.pdf","Client Documents","05 Aug 2026"],
+        ["Reply Memorandum - Draft.docx","Memorandums","18 Aug 2026"],
+        ["Supporting Invoices.zip","Evidence","18 Aug 2026"]
+      ],
+      financials:[
+        ["08 Aug 2026","PR-2026-018","Professional fee proposal","Proposal",2200],
+        ["10 Aug 2026","INV-2026-041","Professional fees invoice","Invoice",2200],
+        ["12 Aug 2026","RC-2026-031","Bank transfer collection","Collection",1000],
+        ["17 Aug 2026","RC-2026-036","BenefitPay collection","Collection",500]
+      ],
+      timeline:[
+        ["19 Aug 2026","Reply memorandum prepared","Draft completed and pending final review."],
+        ["17 Aug 2026","Payment received","BHD 500.000 received via BenefitPay."],
+        ["15 Aug 2026","First hearing held","Matter adjourned to 20 August 2026."],
+        ["10 Aug 2026","Invoice issued","INV-2026-041 created from approved proposal."],
+        ["08 Aug 2026","Proposal approved","PR-2026-018 approved by client."],
+        ["03 Aug 2026","Case created","Matter opened in LEXORA."]
+      ],
+      notes:[
+        ["19 Aug 2026","Ali Hasan","Client confirmed instructions for reply memorandum."],
+        ["16 Aug 2026","Sara Ahmed","Opponent documents reviewed; no missing attachments identified."]
+      ]
+    },
+    {
+      no:"2026/2190",
+      clientId:"CL-002",
+      client:"Ahmed Hassan",
+      opponent:"XYZ Services W.L.L",
+      court:"Labour Court",
+      type:"Labour",
+      lawyer:"Sara Ahmed",
+      clientRole:"Claimant",
+      filingDate:"09 Aug 2026",
+      nextHearing:"23 Aug 2026",
+      claim:6800,
+      fees:1650,
+      collected:1650,
+      outstanding:0,
+      health:"On Track",
+      status:"In Progress",
+      stage:"First Hearing",
+      nextAction:"Attend first hearing and submit employment documents.",
+      lastUpdate:"18 Aug 2026 · 03:10 PM",
+      summary:"Labour claim concerning unpaid employment entitlements and end-of-service benefits.",
+      proposal:"PR-2026-019 · BHD 1,650.000",
+      invoice:"INV-2026-042 · BHD 1,650.000",
+      hearings:[
+        ["23 Aug 2026","09:00 AM","Labour Court","First hearing","Upcoming"]
+      ],
+      tasks:[
+        ["Prepare labour claim bundle","Sara Ahmed","22 Aug 2026","High","In Progress"],
+        ["Verify salary documents","Legal Assistant","20 Aug 2026","Medium","Pending"]
+      ],
+      documents:[
+        ["Employment Contract.pdf","Client Documents","10 Aug 2026"],
+        ["Salary Records.pdf","Evidence","12 Aug 2026"]
+      ],
+      financials:[
+        ["10 Aug 2026","PR-2026-019","Professional fee proposal","Proposal",1650],
+        ["12 Aug 2026","INV-2026-042","Professional fees invoice","Invoice",1650],
+        ["13 Aug 2026","RC-2026-034","BenefitPay collection","Collection",1650]
+      ],
+      timeline:[
+        ["18 Aug 2026","Hearing preparation updated","Documents checklist reviewed."],
+        ["13 Aug 2026","Invoice settled","Full professional fees collected."],
+        ["09 Aug 2026","Case created","Labour claim opened."]
+      ],
+      notes:[
+        ["18 Aug 2026","Sara Ahmed","Original employment contract to be brought to hearing."]
+      ]
+    },
+    {
+      no:"2026/2351",
+      clientId:"CL-003",
+      client:"Apex Contracting W.L.L",
+      opponent:"DEF Industrial W.L.L",
+      court:"Execution Court",
+      type:"Execution",
+      lawyer:"Khalid Ali",
+      clientRole:"Execution Applicant",
+      filingDate:"12 Aug 2026",
+      nextHearing:"26 Aug 2026",
+      claim:42000,
+      fees:3300,
+      collected:0,
+      outstanding:3300,
+      health:"Attention Required",
+      status:"Execution",
+      stage:"Execution Application",
+      nextAction:"Follow up on service and attach updated debtor address.",
+      lastUpdate:"18 Aug 2026 · 01:20 PM",
+      summary:"Execution proceedings following a final commercial judgment. Current focus is on service, debtor tracing and enforcement measures.",
+      proposal:"PR-2026-020 · BHD 3,300.000",
+      invoice:"INV-2026-043 · BHD 3,300.000",
+      hearings:[
+        ["26 Aug 2026","10:00 AM","Execution Court","Execution follow-up","Upcoming"]
+      ],
+      tasks:[
+        ["Confirm debtor address","Khalid Ali","20 Aug 2026","High","Pending"],
+        ["Prepare execution attachments","Legal Assistant","22 Aug 2026","Medium","Pending"]
+      ],
+      documents:[
+        ["Final Judgment.pdf","Judgments","12 Aug 2026"],
+        ["Execution Application.pdf","Court Documents","13 Aug 2026"]
+      ],
+      financials:[
+        ["12 Aug 2026","PR-2026-020","Professional fee proposal","Proposal",3300],
+        ["15 Aug 2026","INV-2026-043","Professional fees invoice","Invoice",3300]
+      ],
+      timeline:[
+        ["18 Aug 2026","Follow-up required","Updated debtor address requested."],
+        ["15 Aug 2026","Invoice issued","Professional fees invoice remains unpaid."],
+        ["12 Aug 2026","Execution matter created","Final judgment uploaded."]
+      ],
+      notes:[
+        ["18 Aug 2026","Khalid Ali","Client requested expedited enforcement follow-up."]
+      ]
+    },
+    {
+      no:"2026/2410",
+      clientId:"CL-004",
+      client:"Al Noor Trading",
+      opponent:"Modern Supplies W.L.L",
+      court:"Minor Civil Court",
+      type:"Commercial",
+      lawyer:"Ali Hasan",
+      clientRole:"Plaintiff",
+      filingDate:"17 Aug 2026",
+      nextHearing:"02 Sep 2026",
+      claim:7800,
+      fees:1100,
+      collected:800,
+      outstanding:300,
+      health:"On Track",
+      status:"New",
+      stage:"New Matter / Filing",
+      nextAction:"Complete statement of claim and supporting schedule.",
+      lastUpdate:"19 Aug 2026 · 09:15 AM",
+      summary:"Commercial debt recovery matter relating to unpaid supply invoices.",
+      proposal:"PR-2026-022 · BHD 1,100.000",
+      invoice:"INV-2026-046 · BHD 1,100.000",
+      hearings:[["02 Sep 2026","09:30 AM","Minor Civil Court","First hearing","Upcoming"]],
+      tasks:[["Finalize claim schedule","Ali Hasan","24 Aug 2026","Medium","In Progress"]],
+      documents:[["Supply Invoices.pdf","Evidence","17 Aug 2026"]],
+      financials:[
+        ["17 Aug 2026","INV-2026-046","Professional fees invoice","Invoice",1100],
+        ["18 Aug 2026","RC-2026-039","Cash collection","Collection",800]
+      ],
+      timeline:[
+        ["19 Aug 2026","Claim schedule started","Invoice reconciliation in progress."],
+        ["17 Aug 2026","Case created","New commercial debt matter opened."]
+      ],
+      notes:[["19 Aug 2026","Ali Hasan","Three invoice copies require clearer scans."]]
+    },
+    {
+      no:"2026/2104",
+      clientId:"CL-005",
+      client:"Fatima Ali",
+      opponent:"Hassan Property Management",
+      court:"Minor Civil Court",
+      type:"Civil",
+      lawyer:"Sara Ahmed",
+      clientRole:"Plaintiff",
+      filingDate:"14 Aug 2026",
+      nextHearing:"05 Sep 2026",
+      claim:3200,
+      fees:750,
+      collected:500,
+      outstanding:250,
+      health:"Attention Required",
+      status:"In Progress",
+      stage:"Evidence Preparation",
+      nextAction:"Obtain original tenancy receipts from client.",
+      lastUpdate:"18 Aug 2026 · 11:30 AM",
+      summary:"Civil claim involving recovery of amounts under a residential tenancy arrangement.",
+      proposal:"PR-2026-021 · BHD 750.000",
+      invoice:"INV-2026-044 · BHD 750.000",
+      hearings:[["05 Sep 2026","10:15 AM","Minor Civil Court","Evidence hearing","Upcoming"]],
+      tasks:[["Collect original receipts","Sara Ahmed","22 Aug 2026","High","Pending"]],
+      documents:[["Tenancy Agreement.pdf","Client Documents","14 Aug 2026"]],
+      financials:[
+        ["16 Aug 2026","INV-2026-044","Professional fees invoice","Invoice",750],
+        ["17 Aug 2026","RC-2026-037","BenefitPay collection","Collection",500]
+      ],
+      timeline:[
+        ["18 Aug 2026","Additional documents requested","Client asked to provide original receipts."],
+        ["14 Aug 2026","Case created","Civil matter opened."]
+      ],
+      notes:[["18 Aug 2026","Sara Ahmed","Awaiting two original receipts from client."]]
+    },
+    {
+      no:"2025/3012",
+      clientId:"CL-006",
+      client:"Bahrain Logistics W.L.L",
+      opponent:"Eastern Freight Co.",
+      court:"High Civil Court",
+      type:"Commercial",
+      lawyer:"Khalid Ali",
+      clientRole:"Defendant",
+      filingDate:"15 Dec 2025",
+      nextHearing:"—",
+      claim:12500,
+      fees:900,
+      collected:900,
+      outstanding:0,
+      health:"On Track",
+      status:"Closed",
+      stage:"Closed",
+      nextAction:"No action required.",
+      lastUpdate:"05 Jan 2026 · 02:30 PM",
+      summary:"Commercial freight dispute concluded and file archived after settlement.",
+      proposal:"PR-2025-091 · BHD 900.000",
+      invoice:"INV-2025-098 · BHD 900.000",
+      hearings:[["22 Dec 2025","10:00 AM","High Civil Court","Settlement confirmation","Completed"]],
+      tasks:[["Archive final file","Khalid Ali","05 Jan 2026","Low","Completed"]],
+      documents:[["Settlement Agreement.pdf","Agreements","28 Dec 2025"]],
+      financials:[
+        ["20 Dec 2025","INV-2025-098","Professional fees invoice","Invoice",900],
+        ["28 Dec 2025","RC-2025-110","Bank transfer collection","Collection",900]
+      ],
+      timeline:[
+        ["05 Jan 2026","Case closed","File archived after completion."],
+        ["28 Dec 2025","Fees settled","Invoice paid in full."],
+        ["15 Dec 2025","Case created","Commercial matter opened."]
+      ],
+      notes:[["05 Jan 2026","Khalid Ali","Closed file retained for archive."]]
+    }
+  ];
+
   let currentClient = CLIENTS[0];
+  let currentCase = CASES[0];
 
   function formatMoney(value){
     return "BHD " + Number(value || 0).toLocaleString("en-US",{minimumFractionDigits:3,maximumFractionDigits:3});
@@ -1122,7 +1714,7 @@
   }
 
   function hideAllPages(){
-    ["dashboardPage","clientsPage","client360Page","placeholderPage"].forEach(id=>{
+    ["dashboardPage","clientsPage","client360Page","casesPage","case360Page","placeholderPage"].forEach(id=>{
       document.getElementById(id).classList.add("hidden");
     });
   }
@@ -1143,6 +1735,10 @@
       document.getElementById("clientsPage").classList.remove("hidden");
       document.getElementById("pageSubtitle").textContent="Client profiles, legal matters and balances";
       renderClients();
+    }else if(page==="cases"){
+      document.getElementById("casesPage").classList.remove("hidden");
+      document.getElementById("pageSubtitle").textContent="Legal matters, hearings, case health and financial position";
+      renderCases();
     }else{
       document.getElementById("placeholderPage").classList.remove("hidden");
       document.getElementById("placeholderTitle").textContent=PAGE_NAMES[page];
@@ -1236,7 +1832,8 @@
 
     document.getElementById("clientCasesBody").innerHTML=c.cases.map(x=>`
       <tr>
-        <td>${x[0]}</td><td>${x[1]}</td><td>${x[2]}</td><td>${x[3]}</td><td>${x[4]}</td>
+        <td><button class="case-name-btn" onclick="openCase360('${x[0]}')">${x[0]}</button></td>
+        <td>${x[1]}</td><td>${x[2]}</td><td>${x[3]}</td><td>${x[4]}</td>
         <td><span class="pill active">${x[5]}</span></td>
       </tr>
     `).join("") || `<tr><td colspan="6" style="text-align:center;padding:25px;color:#7a8491;">No cases found.</td></tr>`;
@@ -1274,6 +1871,181 @@
     if(button) button.classList.add("active");
   }
 
+
+  function caseStatusClass(status){
+    if(status==="New") return "new";
+    if(status==="In Progress") return "progress";
+    if(status==="Judgment") return "judgment";
+    if(status==="Execution") return "execution";
+    return "closed";
+  }
+
+  function caseHealthClass(health){
+    if(health==="On Track") return "ontrack";
+    if(health==="Attention Required") return "attention";
+    return "critical";
+  }
+
+  function renderCases(){
+    const search=(document.getElementById("caseSearch")?.value||"").trim().toLowerCase();
+    const status=document.getElementById("caseStatusFilter")?.value||"";
+    const lawyer=document.getElementById("caseLawyerFilter")?.value||"";
+
+    const rows=CASES.filter(c=>{
+      const matchesSearch=!search || [c.no,c.client,c.opponent,c.court,c.type].join(" ").toLowerCase().includes(search);
+      const matchesStatus=!status || c.status===status;
+      const matchesLawyer=!lawyer || c.lawyer===lawyer;
+      return matchesSearch && matchesStatus && matchesLawyer;
+    }).map(c=>`
+      <tr>
+        <td><button class="case-name-btn" onclick="openCase360('${c.no}')">${c.no}</button></td>
+        <td>${c.client}</td>
+        <td>${c.opponent}</td>
+        <td>${c.court}</td>
+        <td>${c.type}</td>
+        <td>${c.lawyer}</td>
+        <td>${c.nextHearing}</td>
+        <td>${formatMoney(c.claim)}</td>
+        <td><span class="health ${caseHealthClass(c.health)}">● ${c.health}</span></td>
+        <td><span class="case-status ${caseStatusClass(c.status)}">${c.status}</span></td>
+        <td><button class="table-action" onclick="openCase360('${c.no}')">View 360°</button></td>
+      </tr>
+    `).join("");
+
+    document.getElementById("casesTableBody").innerHTML = rows || `
+      <tr><td colspan="11" style="text-align:center;padding:28px;color:#7a8491;">No cases match the selected filters.</td></tr>
+    `;
+  }
+
+  function openCase360(caseNo){
+    currentCase=CASES.find(c=>c.no===caseNo)||CASES[0];
+    hideAllPages();
+    document.getElementById("case360Page").classList.remove("hidden");
+    document.getElementById("pageTitle").textContent="Case 360°";
+    document.getElementById("pageSubtitle").textContent="Case "+currentCase.no+" · "+currentCase.client;
+    populateCase360();
+
+    document.querySelectorAll(".nav-item").forEach(item=>{
+      item.classList.toggle("active",item.dataset.page==="cases");
+    });
+
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+
+  function populateCase360(){
+    const c=currentCase;
+
+    document.getElementById("case360Title").textContent="Case "+c.no;
+    document.getElementById("case360Parties").textContent=c.client+" vs "+c.opponent;
+
+    const statusEl=document.getElementById("case360Status");
+    statusEl.textContent=c.status;
+    statusEl.className="case-status "+caseStatusClass(c.status);
+
+    const healthEl=document.getElementById("case360Health");
+    healthEl.textContent="● "+c.health;
+    healthEl.className="health "+caseHealthClass(c.health);
+
+    document.getElementById("case360Court").textContent=c.court;
+    document.getElementById("case360Type").textContent=c.type;
+
+    document.getElementById("caseClaim").textContent=formatMoney(c.claim);
+    document.getElementById("caseFees").textContent=formatMoney(c.fees);
+    document.getElementById("caseCollected").textContent=formatMoney(c.collected);
+    document.getElementById("caseOutstanding").textContent=formatMoney(c.outstanding);
+    document.getElementById("caseNextHearing").textContent=c.nextHearing;
+
+    document.getElementById("caseInfoNo").textContent=c.no;
+    document.getElementById("caseInfoClient").textContent=c.client;
+    document.getElementById("caseInfoOpponent").textContent=c.opponent;
+    document.getElementById("caseInfoRole").textContent=c.clientRole;
+    document.getElementById("caseInfoLawyer").textContent=c.lawyer;
+    document.getElementById("caseInfoFiling").textContent=c.filingDate;
+    document.getElementById("caseInfoSummary").textContent=c.summary;
+    document.getElementById("caseInfoStage").textContent=c.stage;
+    document.getElementById("caseInfoAction").textContent=c.nextAction;
+    document.getElementById("caseInfoHealth").textContent=c.health;
+    document.getElementById("caseInfoUpdated").textContent=c.lastUpdate;
+
+    document.getElementById("caseHearingsBody").innerHTML=c.hearings.map(h=>`
+      <tr><td>${h[0]}</td><td>${h[1]}</td><td>${h[2]}</td><td>${h[3]}</td><td><span class="pill active">${h[4]}</span></td></tr>
+    `).join("") || `<tr><td colspan="5" style="text-align:center;padding:25px;color:#7a8491;">No hearings recorded.</td></tr>`;
+
+    document.getElementById("caseTasksBody").innerHTML=c.tasks.map(t=>`
+      <tr>
+        <td>${t[0]}</td><td>${t[1]}</td><td>${t[2]}</td>
+        <td><span class="task-priority ${t[3].toLowerCase()}">${t[3]}</span></td>
+        <td><span class="pill ${t[4]==='Completed'?'active':'company'}">${t[4]}</span></td>
+      </tr>
+    `).join("") || `<tr><td colspan="5" style="text-align:center;padding:25px;color:#7a8491;">No tasks recorded.</td></tr>`;
+
+    document.getElementById("caseDocumentsList").innerHTML=c.documents.map(d=>`
+      <div class="list-row">
+        <div class="list-left">
+          <div class="list-icon">▤</div>
+          <div><strong>${d[0]}</strong><span>${d[1]} · ${d[2]}</span></div>
+        </div>
+        <button class="table-action">View</button>
+      </div>
+    `).join("") || `<p class="muted">No documents uploaded.</p>`;
+
+    document.getElementById("caseFinProposal").textContent=c.proposal;
+    document.getElementById("caseFinInvoice").textContent=c.invoice;
+    document.getElementById("caseFinCollected").textContent=formatMoney(c.collected);
+    document.getElementById("caseFinOutstanding").textContent=formatMoney(c.outstanding);
+
+    document.getElementById("caseFinancialBody").innerHTML=c.financials.map(f=>`
+      <tr>
+        <td>${f[0]}</td><td>${f[1]}</td><td>${f[2]}</td><td>${f[3]}</td><td>${formatMoney(f[4])}</td>
+      </tr>
+    `).join("") || `<tr><td colspan="5" style="text-align:center;padding:25px;color:#7a8491;">No financial activity.</td></tr>`;
+
+    document.getElementById("caseTimeline").innerHTML=c.timeline.map(x=>`
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div><strong>${x[0]} — ${x[1]}</strong><p>${x[2]}</p></div>
+      </div>
+    `).join("");
+
+    document.getElementById("caseNotesList").innerHTML=c.notes.map(n=>`
+      <div class="list-row">
+        <div class="list-left">
+          <div class="list-icon">✎</div>
+          <div><strong>${n[1]}</strong><span>${n[0]}</span><p style="margin-top:6px;font-size:10px;color:#5f6873;line-height:1.5;">${n[2]}</p></div>
+        </div>
+      </div>
+    `).join("") || `<p class="muted">No notes recorded.</p>`;
+
+    openCaseTab("overview",document.querySelector('.tab-btn[data-case-tab="overview"]'));
+  }
+
+  function openCaseTab(tab,button){
+    document.querySelectorAll('[id^="case-tab-"]').forEach(p=>p.classList.remove("active"));
+    document.querySelectorAll(".tab-btn[data-case-tab]").forEach(b=>b.classList.remove("active"));
+    document.getElementById("case-tab-"+tab).classList.add("active");
+    if(button) button.classList.add("active");
+  }
+
+  function openClientFromCase(){
+    if(!currentCase) return;
+    openClient360(currentCase.clientId);
+  }
+
+  function showAddCaseDemo(){
+    alert(
+      "New Case — Demo\\n\\n"+
+      "The full case creation form is prepared for the next functional release.\\n\\n"+
+      "Core fields:\\n"+
+      "• Case Number / Year\\n"+
+      "• Client & Opponent\\n"+
+      "• Court & Case Type\\n"+
+      "• Responsible Lawyer\\n"+
+      "• Claim Amount\\n"+
+      "• Filing Date\\n"+
+      "• Status & Next Hearing"
+    );
+  }
+
   function showAddClientDemo(){
     alert(
       "Add Client — Demo\n\n"+
@@ -1302,12 +2074,13 @@
       "5. Professional Fee Proposal\n"+
       "6. Invoice & Collection\n"+
       "7. Management Reports\n\n"+
-      "Clients + Client 360° are now active in Release 1.1."
+      "Clients, Client 360°, Cases and Case 360° are now active in Release 1.2."
     );
   }
 
   setCurrentDate();
   renderClients();
+  renderCases();
 </script>
 
 </body>
