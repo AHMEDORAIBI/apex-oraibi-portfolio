@@ -416,6 +416,64 @@
       .due-actions button{flex:1}
     }
 
+
+    /* COLLECTIONS */
+    .collection-kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-bottom:16px}
+    .collection-toolbar{display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+    .collection-toolbar-left{display:flex;gap:10px;flex-wrap:wrap}
+    .collection-toolbar input,.collection-toolbar select{
+      height:40px;border:1px solid var(--border);border-radius:6px;background:white;padding:0 12px;font-size:11px;outline:none
+    }
+    .collection-toolbar input{width:280px}
+    .receipt-link{border:0;background:transparent;color:var(--navy);font-weight:700;cursor:pointer;padding:0}
+    .receipt-link:hover{color:var(--emerald)}
+    .payment-method{display:inline-flex;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700;background:#eef2f7;color:#36506d}
+    .allocation-status{display:inline-flex;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700}
+    .allocation-status.allocated{background:#edf5f0;color:#347b57}
+    .allocation-status.partial{background:#fbf4e5;color:#9a6d1f}
+    .allocation-status.unallocated{background:#fbeaea;color:#a74646}
+
+    .receipt-hero{
+      display:flex;justify-content:space-between;gap:20px;align-items:flex-start;background:white;border:1px solid var(--border);
+      border-radius:8px;padding:22px;margin-bottom:16px
+    }
+    .receipt-hero-left{display:flex;gap:16px;align-items:flex-start}
+    .receipt-avatar{
+      width:64px;height:64px;border-radius:10px;background:var(--navy);color:var(--emerald2);display:grid;place-items:center;
+      font-size:18px;font-weight:700
+    }
+    .receipt-hero h2{font-size:23px;color:var(--navy)}
+    .receipt-hero p{margin-top:6px;color:var(--muted);font-size:11px}
+    .receipt-tags{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
+    .receipt-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .receipt-summary-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-bottom:16px}
+    .receipt-layout{display:grid;grid-template-columns:1.05fr .95fr;gap:16px}
+    .allocation-rule-box{padding:16px;border:1px solid var(--border);border-radius:8px;background:var(--soft)}
+    .allocation-rule-box strong{display:block;font-size:13px;color:var(--navy)}
+    .allocation-rule-box span{display:block;margin-top:5px;font-size:9px;color:var(--muted)}
+    .allocation-step{display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:center;padding:12px;border:1px solid var(--border);border-radius:7px;background:white;margin-top:10px}
+    .allocation-step-num{width:30px;height:30px;border-radius:50%;background:var(--navy);color:var(--emerald2);display:grid;place-items:center;font-size:10px;font-weight:700}
+    .allocation-step strong{font-size:10px;color:var(--navy)}
+    .allocation-step span{display:block;margin-top:3px;font-size:9px;color:var(--muted)}
+    .allocation-step b{font-size:9px;color:var(--success)}
+
+    @media(max-width:1250px){
+      .collection-kpi-grid,.receipt-summary-grid{grid-template-columns:repeat(3,1fr)}
+    }
+    @media(max-width:950px){
+      .receipt-layout{grid-template-columns:1fr}
+    }
+    @media(max-width:650px){
+      .collection-kpi-grid,.receipt-summary-grid{grid-template-columns:1fr 1fr}
+      .collection-toolbar{align-items:stretch}
+      .collection-toolbar-left{width:100%}
+      .collection-toolbar input,.collection-toolbar select{width:100%}
+      .receipt-hero{flex-direction:column}
+      .receipt-hero-left{flex-direction:column}
+      .receipt-actions{width:100%}
+      .receipt-actions button{flex:1}
+    }
+
     .placeholder{min-height:500px;display:grid;place-items:center;text-align:center}
     .placeholder-box{max-width:520px;padding:45px;background:white;border:1px solid var(--border);border-radius:10px}
     .placeholder-box span{font-size:9px;color:var(--emerald);letter-spacing:2px;font-weight:700}
@@ -1480,6 +1538,177 @@
     </div>
 
 
+
+    <!-- COLLECTIONS -->
+    <div id="collectionsPage" class="hidden">
+      <div class="content">
+        <div class="hero-row">
+          <div>
+            <h2>Collections</h2>
+            <p>Record tenant payments and automatically allocate them to the oldest unpaid rent dues.</p>
+          </div>
+          <div class="hero-actions">
+            <button class="action-btn action-secondary">Export Excel</button>
+            <button class="action-btn action-primary" onclick="showAddPropertyCollectionDemo()">+ Record Collection</button>
+          </div>
+        </div>
+
+        <div class="collection-kpi-grid">
+          <div class="kpi-card"><span class="kpi-label">Collected Today</span><strong class="kpi-value money">BHD 2,860.000</strong><div class="kpi-note">7 receipts</div></div>
+          <div class="kpi-card"><span class="kpi-label">Collected This Month</span><strong class="kpi-value money">BHD 39,250.000</strong><div class="kpi-note">August 2026</div></div>
+          <div class="kpi-card"><span class="kpi-label">Allocated</span><strong class="kpi-value money">BHD 38,980.000</strong><div class="kpi-note"><span class="positive">99.3%</span> allocated</div></div>
+          <div class="kpi-card"><span class="kpi-label">Unallocated</span><strong class="kpi-value money">BHD 270.000</strong><div class="kpi-note"><span class="warning">Pending allocation</span></div></div>
+          <div class="kpi-card"><span class="kpi-label">Receipts</span><strong class="kpi-value">164</strong><div class="kpi-note">Current month</div></div>
+        </div>
+
+        <section class="card">
+          <div class="collection-toolbar">
+            <div class="collection-toolbar-left">
+              <input id="propertyCollectionSearch" type="search" placeholder="Search receipt, tenant, unit or reference..." oninput="renderPropertyCollections()">
+              <select id="propertyCollectionMethodFilter" onchange="renderPropertyCollections()">
+                <option value="">All Payment Methods</option>
+                <option value="Cash">Cash</option>
+                <option value="BenefitPay">BenefitPay</option>
+                <option value="Bank Transfer">Bank Transfer</option>
+                <option value="Cheque">Cheque</option>
+              </select>
+              <select id="propertyCollectionStatusFilter" onchange="renderPropertyCollections()">
+                <option value="">All Allocation Statuses</option>
+                <option value="Allocated">Allocated</option>
+                <option value="Partial">Partial</option>
+                <option value="Unallocated">Unallocated</option>
+              </select>
+            </div>
+            <span style="font-size:10px;color:var(--muted)">Open a receipt to view Receipt 360°</span>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Receipt</th><th>Date</th><th>Tenant</th><th>Building</th><th>Unit</th><th>Method</th>
+                  <th>Amount</th><th>Allocated</th><th>Unallocated</th><th>Status</th><th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="propertyCollectionsBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <div class="dashboard-grid equal">
+          <section class="card">
+            <div class="card-head"><div><h3>Automatic Allocation Rule</h3><p>How ESTARA applies tenant payments</p></div></div>
+            <div class="allocation-rule-box">
+              <strong>Oldest Unpaid → Current Month → Future Months</strong>
+              <span>The system prioritizes the oldest outstanding rent balance before applying excess amounts to newer dues.</span>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-head"><div><h3>Payment Method Mix</h3><p>Current month collection channels</p></div></div>
+            <div class="insights" style="grid-template-columns:1fr 1fr;">
+              <div class="insight"><strong>BHD 15,900</strong><p>Bank Transfer</p></div>
+              <div class="insight"><strong>BHD 11,650</strong><p>BenefitPay</p></div>
+              <div class="insight"><strong>BHD 6,800</strong><p>Cash</p></div>
+              <div class="insight"><strong>BHD 4,900</strong><p>Cheque</p></div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <span>ESTARA — Collections</span>
+        <span>Designed & Developed by <strong style="color:#1f8a70">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
+    <!-- RECEIPT 360 -->
+    <div id="propertyReceipt360Page" class="hidden">
+      <div class="content">
+        <div style="margin-bottom:14px;">
+          <button class="action-btn action-secondary" onclick="openPage('collections')">← Back to Collections</button>
+        </div>
+
+        <section class="receipt-hero">
+          <div class="receipt-hero-left">
+            <div class="receipt-avatar">R</div>
+            <div>
+              <h2 id="propertyReceiptTitle"></h2>
+              <p id="propertyReceiptMeta"></p>
+              <div class="receipt-tags">
+                <span id="propertyReceiptStatus" class="allocation-status allocated"></span>
+                <span id="propertyReceiptMethod" class="payment-method"></span>
+                <span class="building-type" style="background:#eaf8f3;color:#1f8a70">Receipt 360°</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="receipt-actions">
+            <button class="action-btn action-secondary" onclick="openReceiptTenant()">View Tenant</button>
+            <button class="action-btn action-secondary" onclick="openReceiptUnit()">View Unit</button>
+            <button class="action-btn action-secondary">Print Receipt</button>
+            <button class="action-btn action-primary" onclick="allocatePropertyCollectionDemo()">Allocate Payment</button>
+          </div>
+        </section>
+
+        <div class="receipt-summary-grid">
+          <div class="kpi-card"><span class="kpi-label">Receipt Amount</span><strong id="prAmount" class="kpi-value money"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Allocated</span><strong id="prAllocated" class="kpi-value money"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Unallocated</span><strong id="prUnallocated" class="kpi-value money"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Receipt Date</span><strong id="prDate" class="kpi-value" style="font-size:15px"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Reference</span><strong id="prReference" class="kpi-value" style="font-size:15px"></strong></div>
+        </div>
+
+        <section class="card">
+          <div class="tabs">
+            <button class="tab-btn active" onclick="openPropertyReceiptTab('overview',this)">Overview</button>
+            <button class="tab-btn" onclick="openPropertyReceiptTab('allocations',this)">Due Allocations</button>
+            <button class="tab-btn" onclick="openPropertyReceiptTab('activity',this)">Activity</button>
+          </div>
+
+          <div id="property-receipt-tab-overview" class="tab-panel active">
+            <div class="receipt-layout">
+              <div>
+                <div class="card-head"><div><h3>Receipt Information</h3><p>Tenant payment details</p></div></div>
+                <div class="info-grid">
+                  <div class="info-item"><span>Tenant</span><strong id="prTenant"></strong></div>
+                  <div class="info-item"><span>Building</span><strong id="prBuilding"></strong></div>
+                  <div class="info-item"><span>Unit</span><strong id="prUnit"></strong></div>
+                  <div class="info-item"><span>Payment Method</span><strong id="prMethod"></strong></div>
+                  <div class="info-item"><span>Account</span><strong id="prAccount"></strong></div>
+                  <div class="info-item"><span>Received By</span><strong id="prReceivedBy"></strong></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="card-head"><div><h3>Allocation Summary</h3><p>How this payment was applied</p></div></div>
+                <div id="propertyReceiptAllocationSteps"></div>
+              </div>
+            </div>
+          </div>
+
+          <div id="property-receipt-tab-allocations" class="tab-panel">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Due</th><th>Month</th><th>Balance Before</th><th>Allocated Amount</th><th>Balance After</th><th>Status After</th></tr></thead>
+                <tbody id="propertyReceiptAllocationsBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="property-receipt-tab-activity" class="tab-panel">
+            <div id="propertyReceiptActivity" class="list"></div>
+          </div>
+        </section>
+      </div>
+
+      <footer class="footer">
+        <span>ESTARA — Receipt 360°</span>
+        <span>Designed & Developed by <strong style="color:#1f8a70">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
+
     <div id="placeholderPage" class="hidden">
       <div class="content placeholder">
         <div class="placeholder-box">
@@ -2147,6 +2376,192 @@
   }
 
 
+
+  const PROPERTY_COLLECTIONS = [
+    {
+      no:"RC-PR-260411",date:"19 Aug 2026",tenantId:"TNT-001",tenant:"Omar Ali",unitId:"UNT-001",building:"Seef Residence",unit:"101",
+      method:"BenefitPay",account:"BenefitPay / BBK",reference:"BP-1908-01",amount:350,allocated:350,unallocated:0,status:"Allocated",receivedBy:"Mariam Hassan",
+      allocations:[["DUE-260801","Aug 2026",350,350,0,"Paid"]],
+      activity:[["19 Aug 2026","Receipt created","BHD 350.000 received by BenefitPay."],["19 Aug 2026","Auto allocation completed","Full amount allocated to August due."]]
+    },
+    {
+      no:"RC-PR-260414",date:"19 Aug 2026",tenantId:"TNT-003",tenant:"Al Noor Trading",unitId:"UNT-004",building:"Riffa Plaza",unit:"GF-03",
+      method:"Bank Transfer",account:"BBK Rent Collection Account",reference:"FT-1908-03",amount:650,allocated:650,unallocated:0,status:"Allocated",receivedBy:"Ali Nasser",
+      allocations:[["DUE-260803","Aug 2026",650,650,0,"Paid"]],
+      activity:[["19 Aug 2026","Receipt created","BHD 650.000 bank transfer recorded."],["19 Aug 2026","Auto allocation completed","Payment allocated to August rent due."]]
+    },
+    {
+      no:"RC-PR-260415",date:"19 Aug 2026",tenantId:"TNT-004",tenant:"Ahmed Salman",unitId:"UNT-005",building:"Juffair Heights",unit:"1204",
+      method:"Cash",account:"Cash on Hand",reference:"CASH-1908-02",amount:600,allocated:600,unallocated:0,status:"Allocated",receivedBy:"Noor Ahmed",
+      allocations:[["DUE-260804","Aug 2026",450,450,0,"Paid"],["DUE-JUL-1204","Jul 2026",450,150,300,"Partial"]],
+      activity:[["19 Aug 2026","Cash receipt created","BHD 600.000 received."],["19 Aug 2026","Oldest due allocation","BHD 450.000 applied to August due and excess BHD 150.000 moved to the next outstanding due."]]
+    },
+    {
+      no:"RC-PR-260416",date:"19 Aug 2026",tenantId:"TNT-002",tenant:"Fatima Ali",unitId:"UNT-003",building:"Seef Residence",unit:"804",
+      method:"Cheque",account:"Undeposited Cheques",reference:"CHQ-88142",amount:500,allocated:420,unallocated:80,status:"Partial",receivedBy:"Mariam Hassan",
+      allocations:[["DUE-260802","Aug 2026",420,420,0,"Paid"]],
+      activity:[["19 Aug 2026","Cheque received","BHD 500.000 cheque recorded."],["19 Aug 2026","Partial allocation","BHD 420.000 allocated; BHD 80.000 remains unallocated."]]
+    },
+    {
+      no:"RC-PR-260417",date:"19 Aug 2026",tenantId:"TNT-003",tenant:"Al Noor Trading",unitId:"UNT-004",building:"Riffa Plaza",unit:"GF-03",
+      method:"Bank Transfer",account:"NBB Rent Collection Account",reference:"FT-1908-07",amount:270,allocated:0,unallocated:270,status:"Unallocated",receivedBy:"Ali Nasser",
+      allocations:[],
+      activity:[["19 Aug 2026","Receipt created","BHD 270.000 received."],["19 Aug 2026","Allocation pending","No allocation finalized yet."]]
+    }
+  ];
+
+  let currentPropertyReceipt = PROPERTY_COLLECTIONS[0];
+
+  function renderPropertyCollections(){
+    const search=(document.getElementById("propertyCollectionSearch")?.value||"").trim().toLowerCase();
+    const method=document.getElementById("propertyCollectionMethodFilter")?.value||"";
+    const status=document.getElementById("propertyCollectionStatusFilter")?.value||"";
+
+    const rows=PROPERTY_COLLECTIONS.filter(r=>{
+      const a=!search || [r.no,r.tenant,r.unit,r.reference,r.building].join(" ").toLowerCase().includes(search);
+      const b=!method || r.method===method;
+      const c=!status || r.status===status;
+      return a&&b&&c;
+    }).map(r=>`
+      <tr>
+        <td><button class="receipt-link" onclick="openPropertyReceipt360('${r.no}')">${r.no}</button></td>
+        <td>${r.date}</td>
+        <td>${r.tenant}</td>
+        <td>${r.building}</td>
+        <td>${r.unit}</td>
+        <td><span class="payment-method">${r.method}</span></td>
+        <td>${formatMoney(r.amount)}</td>
+        <td>${formatMoney(r.allocated)}</td>
+        <td>${formatMoney(r.unallocated)}</td>
+        <td><span class="allocation-status ${r.status.toLowerCase()}">${r.status}</span></td>
+        <td><button class="action-btn action-secondary" style="min-height:30px;padding:0 10px;font-size:9px" onclick="openPropertyReceipt360('${r.no}')">View 360°</button></td>
+      </tr>
+    `).join("");
+
+    document.getElementById("propertyCollectionsBody").innerHTML=rows || `<tr><td colspan="11" style="text-align:center;padding:28px;color:#7f8b93">No collections found.</td></tr>`;
+  }
+
+  function openPropertyReceipt360(no){
+    currentPropertyReceipt=PROPERTY_COLLECTIONS.find(r=>r.no===no)||PROPERTY_COLLECTIONS[0];
+
+    ["dashboardPage","buildingsPage","building360Page","unitsPage","unit360Page","tenantsPage","tenant360Page","contractsPage","contract360Page","duesPage","due360Page","collectionsPage","placeholderPage"].forEach(x=>{
+      const el=document.getElementById(x);
+      if(el) el.classList.add("hidden");
+    });
+
+    document.getElementById("propertyReceipt360Page").classList.remove("hidden");
+    document.getElementById("pageTitle").textContent="Receipt 360°";
+    document.getElementById("pageSubtitle").textContent=currentPropertyReceipt.no+" · "+currentPropertyReceipt.tenant+" · "+currentPropertyReceipt.building;
+
+    document.querySelectorAll(".nav-item").forEach(item=>{
+      item.classList.toggle("active",item.dataset.page==="collections");
+    });
+
+    populatePropertyReceipt360();
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+
+  function populatePropertyReceipt360(){
+    const r=currentPropertyReceipt;
+
+    document.getElementById("propertyReceiptTitle").textContent=r.no;
+    document.getElementById("propertyReceiptMeta").textContent=r.tenant+" · "+r.building+" · Unit "+r.unit;
+    document.getElementById("propertyReceiptStatus").textContent=r.status;
+    document.getElementById("propertyReceiptStatus").className="allocation-status "+r.status.toLowerCase();
+    document.getElementById("propertyReceiptMethod").textContent=r.method;
+
+    document.getElementById("prAmount").textContent=formatMoney(r.amount);
+    document.getElementById("prAllocated").textContent=formatMoney(r.allocated);
+    document.getElementById("prUnallocated").textContent=formatMoney(r.unallocated);
+    document.getElementById("prDate").textContent=r.date;
+    document.getElementById("prReference").textContent=r.reference;
+
+    document.getElementById("prTenant").textContent=r.tenant;
+    document.getElementById("prBuilding").textContent=r.building;
+    document.getElementById("prUnit").textContent=r.unit;
+    document.getElementById("prMethod").textContent=r.method;
+    document.getElementById("prAccount").textContent=r.account;
+    document.getElementById("prReceivedBy").textContent=r.receivedBy;
+
+    const steps=[];
+    if(r.allocations.length){
+      r.allocations.forEach((a,i)=>{
+        steps.push(`
+          <div class="allocation-step">
+            <div class="allocation-step-num">${String(i+1).padStart(2,"0")}</div>
+            <div><strong>${a[1]} · ${a[0]}</strong><span>Payment allocation to monthly due</span></div>
+            <b>${formatMoney(a[3])}</b>
+          </div>
+        `);
+      });
+    }else{
+      steps.push(`<div class="allocation-rule-box"><strong>Allocation Pending</strong><span>This receipt has not yet been allocated to a monthly due.</span></div>`);
+    }
+    document.getElementById("propertyReceiptAllocationSteps").innerHTML=steps.join("");
+
+    document.getElementById("propertyReceiptAllocationsBody").innerHTML=r.allocations.map(a=>`
+      <tr>
+        <td>${a[0]}</td><td>${a[1]}</td><td>${formatMoney(a[2])}</td><td>${formatMoney(a[3])}</td><td>${formatMoney(a[4])}</td>
+        <td><span class="due-status ${String(a[5]).toLowerCase()}">${a[5]}</span></td>
+      </tr>
+    `).join("") || `<tr><td colspan="6" style="text-align:center;padding:24px;color:#7f8b93">No allocations recorded.</td></tr>`;
+
+    document.getElementById("propertyReceiptActivity").innerHTML=r.activity.map(a=>`
+      <div class="list-row"><div class="list-left"><div class="list-icon">•</div><div><strong>${a[1]}</strong><span>${a[0]} · ${a[2]}</span></div></div></div>
+    `).join("");
+
+    openPropertyReceiptTab("overview",document.querySelector("#propertyReceipt360Page .tab-btn"));
+  }
+
+  function openPropertyReceiptTab(tab,button){
+    document.querySelectorAll('[id^="property-receipt-tab-"]').forEach(x=>x.classList.remove("active"));
+    document.querySelectorAll("#propertyReceipt360Page .tab-btn").forEach(x=>x.classList.remove("active"));
+    document.getElementById("property-receipt-tab-"+tab).classList.add("active");
+    if(button) button.classList.add("active");
+  }
+
+  function openReceiptTenant(){
+    if(currentPropertyReceipt?.tenantId) openTenant360(currentPropertyReceipt.tenantId);
+  }
+
+  function openReceiptUnit(){
+    if(currentPropertyReceipt?.unitId) openUnit360(currentPropertyReceipt.unitId);
+  }
+
+  function allocatePropertyCollectionDemo(){
+    const r=currentPropertyReceipt;
+    if(!r) return;
+    if(r.unallocated<=0){
+      alert("This receipt is fully allocated.");
+      return;
+    }
+    alert(
+      "Allocate Payment — Demo\\n\\n"+
+      "Receipt: "+r.no+"\\n"+
+      "Tenant: "+r.tenant+"\\n"+
+      "Unallocated: "+formatMoney(r.unallocated)+"\\n\\n"+
+      "ESTARA will allocate the balance using:\\n"+
+      "Oldest Unpaid → Current Month → Future Months"
+    );
+  }
+
+  function showAddPropertyCollectionDemo(){
+    alert(
+      "Record Collection — Demo\\n\\n"+
+      "Prepared fields:\\n"+
+      "• Tenant\\n"+
+      "• Building / Unit\\n"+
+      "• Payment Date\\n"+
+      "• Amount\\n"+
+      "• Cash / BenefitPay / Bank Transfer / Cheque\\n"+
+      "• Bank / Cash Account\\n"+
+      "• Reference / Cheque Number\\n"+
+      "• Notes\\n\\n"+
+      "After saving, the system automatically allocates the amount to the oldest unpaid rent due."
+    );
+  }
+
+
   const PAGE_NAMES = {
     dashboard:"Property Dashboard",
     buildings:"Buildings",
@@ -2181,7 +2596,7 @@
 
     document.getElementById("pageTitle").textContent=PAGE_NAMES[page]||"ESTARA";
 
-    ["dashboardPage","buildingsPage","building360Page","unitsPage","unit360Page","tenantsPage","tenant360Page","contractsPage","contract360Page","duesPage","due360Page","placeholderPage"].forEach(id=>document.getElementById(id)?.classList.add("hidden"));
+    ["dashboardPage","buildingsPage","building360Page","unitsPage","unit360Page","tenantsPage","tenant360Page","contractsPage","contract360Page","duesPage","due360Page","collectionsPage","propertyReceipt360Page","placeholderPage"].forEach(id=>document.getElementById(id)?.classList.add("hidden"));
     if(page==="dashboard"){
       document.getElementById("dashboardPage").classList.remove("hidden");
       document.getElementById("pageSubtitle").textContent="Buildings, occupancy, rent and arrears overview";
@@ -2205,6 +2620,10 @@
       document.getElementById("duesPage").classList.remove("hidden");
       document.getElementById("pageSubtitle").textContent="Automatically generated monthly rent dues and collection status";
       renderMonthlyDues();
+    }else if(page==="collections"){
+      document.getElementById("collectionsPage").classList.remove("hidden");
+      document.getElementById("pageSubtitle").textContent="Tenant payments, receipts and automatic monthly due allocation";
+      renderPropertyCollections();
     }else{
       document.getElementById("placeholderPage").classList.remove("hidden");
       document.getElementById("placeholderTitle").textContent=PAGE_NAMES[page];
@@ -2250,7 +2669,7 @@
       "6. Monthly Dues & Collections\\n"+
       "7. Arrears\\n"+
       "8. Expenses & Reports\\n\\n"+
-      "Release 1.5 activates Monthly Dues with automatic contract-linked rent generation, Paid / Partial / Unpaid / Upcoming statuses and Due 360°."
+      "Release 1.6 activates Collections with Receipt 360° and automatic payment allocation to the oldest unpaid monthly rent due."
     );
   }
 
@@ -2260,6 +2679,7 @@
   renderTenants();
   renderContracts();
   renderMonthlyDues();
+  renderPropertyCollections();
 </script>
 
 </body>
