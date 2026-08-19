@@ -815,6 +815,102 @@
       .account-grid{grid-template-columns:1fr}
     }
 
+
+    /* REPORTS / USERS / SETTINGS / AUDIT */
+    .reports-kpi-grid,.users-kpi-grid,.audit-kpi-grid{
+      display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-bottom:16px
+    }
+
+    .reports-toolbar,.audit-toolbar{
+      display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px
+    }
+
+    .reports-toolbar-left,.audit-toolbar-left{display:flex;gap:10px;flex-wrap:wrap}
+
+    .reports-toolbar input,.reports-toolbar select,
+    .audit-toolbar input,.audit-toolbar select{
+      height:40px;border:1px solid var(--border);border-radius:6px;background:white;padding:0 12px;font-size:11px;outline:none
+    }
+
+    .reports-toolbar input,.audit-toolbar input{width:280px}
+
+    .report-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+    .report-card{
+      border:1px solid var(--border);border-radius:8px;padding:18px;background:white;cursor:pointer;transition:.2s
+    }
+    .report-card:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(7,21,37,.08);border-color:#abd9d7}
+    .report-card span{font-size:9px;color:var(--teal);font-weight:700;letter-spacing:1.2px}
+    .report-card h3{margin-top:9px;font-size:14px;color:var(--navy)}
+    .report-card p{margin-top:7px;font-size:10px;line-height:1.6;color:var(--muted)}
+
+    .report-preview-shell{
+      background:white;border:1px solid var(--border);border-radius:8px;padding:20px
+    }
+    .report-preview-head{
+      display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap;margin-bottom:18px
+    }
+    .report-preview-head h2{font-size:21px;color:var(--navy)}
+    .report-preview-head p{margin-top:5px;color:var(--muted);font-size:10px}
+    .report-preview-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .report-summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .report-summary-card{padding:16px;border:1px solid var(--border);border-radius:8px;background:var(--soft)}
+    .report-summary-card span{display:block;font-size:9px;color:var(--muted)}
+    .report-summary-card strong{display:block;margin-top:7px;font-size:17px;color:var(--navy)}
+    .report-section{margin-top:18px}
+    .report-section h3{font-size:13px;color:var(--navy);margin-bottom:12px}
+
+    .role-badge{display:inline-flex;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700}
+    .role-badge.admin{background:#f0eafa;color:#6a4b91}
+    .role-badge.manager{background:#f7f1e7;color:#8f6b27}
+    .role-badge.collector{background:#eaf8f7;color:#158a8a}
+    .role-badge.finance{background:#edf5f0;color:#347b57}
+    .role-badge.support{background:#eef2f7;color:#36506d}
+
+    .permission-table td,.permission-table th{text-align:center}
+    .permission-table td:first-child,.permission-table th:first-child{text-align:left}
+    .perm-yes{color:var(--success);font-weight:700}
+    .perm-limited{color:var(--warning);font-weight:700}
+    .perm-no{color:#b5bcc4}
+
+    .settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .settings-section{background:white;border:1px solid var(--border);border-radius:8px;padding:20px}
+    .settings-section h3{font-size:14px;color:var(--navy)}
+    .settings-section p{margin-top:5px;font-size:10px;color:var(--muted);line-height:1.5}
+    .settings-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+    .setting-field label{display:block;font-size:9px;font-weight:700;color:var(--muted);margin-bottom:6px}
+    .setting-field input,.setting-field select{
+      width:100%;height:40px;border:1px solid var(--border);border-radius:6px;background:white;padding:0 11px;font-size:11px;outline:none
+    }
+    .template-list{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+    .template-item{
+      display:flex;justify-content:space-between;gap:12px;align-items:center;padding:12px;border:1px solid var(--border);border-radius:7px
+    }
+    .template-item strong{font-size:10px;color:var(--navy)}
+    .template-item span{display:block;margin-top:3px;font-size:9px;color:var(--muted)}
+
+    .audit-action{display:inline-flex;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700;background:#eef2f7;color:#36506d}
+    .audit-action.create{background:#edf5f0;color:#347b57}
+    .audit-action.update{background:#fbf4e5;color:#9a6d1f}
+    .audit-action.reverse{background:#fbeaea;color:#a74646}
+    .audit-action.login{background:#f0eafa;color:#6a4b91}
+
+    @media(max-width:1250px){
+      .reports-kpi-grid,.users-kpi-grid,.audit-kpi-grid{grid-template-columns:repeat(3,1fr)}
+      .report-grid{grid-template-columns:repeat(2,1fr)}
+      .report-summary-grid{grid-template-columns:repeat(2,1fr)}
+    }
+    @media(max-width:950px){
+      .settings-grid{grid-template-columns:1fr}
+      .settings-form-grid{grid-template-columns:1fr}
+    }
+    @media(max-width:650px){
+      .reports-kpi-grid,.users-kpi-grid,.audit-kpi-grid{grid-template-columns:1fr 1fr}
+      .report-grid{grid-template-columns:1fr}
+      .reports-toolbar,.audit-toolbar{align-items:stretch}
+      .reports-toolbar-left,.audit-toolbar-left{width:100%}
+      .reports-toolbar input,.reports-toolbar select,.audit-toolbar input,.audit-toolbar select{width:100%}
+    }
+
     .placeholder{min-height:500px;display:grid;place-items:center;text-align:center}
     .placeholder-box{max-width:520px;padding:45px;background:white;border:1px solid var(--border);border-radius:10px}
     .placeholder-box span{font-size:9px;color:var(--teal);letter-spacing:2px;font-weight:700}
@@ -2706,6 +2802,254 @@
     </div>
 
 
+
+    <!-- REPORTS -->
+    <div id="reportsPage" class="hidden">
+      <div class="content">
+        <div class="hero-row">
+          <div>
+            <h2>Reports & Analytics</h2>
+            <p>Collection, client, collector and financial intelligence for management.</p>
+          </div>
+          <div class="hero-actions">
+            <button class="action-btn action-secondary" onclick="openReportPreview('executive')">Executive PDF</button>
+            <button class="action-btn action-primary" onclick="openReportPreview('recovery')">Open Key Report</button>
+          </div>
+        </div>
+
+        <div class="reports-kpi-grid">
+          <div class="kpi-card"><span class="kpi-label">Assigned Portfolio</span><strong class="kpi-value money">BHD 428,500.000</strong><div class="kpi-note">Current portfolio</div></div>
+          <div class="kpi-card"><span class="kpi-label">Collected</span><strong class="kpi-value money">BHD 277,650.000</strong><div class="kpi-note"><span class="positive">64.8%</span> recovery</div></div>
+          <div class="kpi-card"><span class="kpi-label">Outstanding</span><strong class="kpi-value money">BHD 150,850.000</strong><div class="kpi-note">Open debtor balances</div></div>
+          <div class="kpi-card"><span class="kpi-label">Commission Earned</span><strong class="kpi-value money">BHD 34,215.000</strong><div class="kpi-note">YTD</div></div>
+          <div class="kpi-card"><span class="kpi-label">Active Cases</span><strong class="kpi-value">146</strong><div class="kpi-note">Across all clients</div></div>
+        </div>
+
+        <section class="card">
+          <div class="reports-toolbar">
+            <div class="reports-toolbar-left">
+              <select><option>This Month</option><option>This Quarter</option><option>This Year</option></select>
+              <select><option>All Clients</option><option>Gulf Finance B.S.C.</option><option>Bahrain Leasing Co.</option></select>
+              <select><option>All Collectors</option><option>Sara Ahmed</option><option>Khalid Ali</option><option>Fatima Abbas</option></select>
+            </div>
+          </div>
+
+          <div class="report-grid">
+            <article class="report-card" onclick="openReportPreview('executive')"><span>EXECUTIVE</span><h3>Executive Summary</h3><p>Portfolio, recovery, PTP, settlements, commission and treasury overview.</p></article>
+            <article class="report-card" onclick="openReportPreview('recovery')"><span>COLLECTION</span><h3>Recovery Performance</h3><p>Assigned versus collected amounts by client and period.</p></article>
+            <article class="report-card" onclick="openReportPreview('collector')"><span>TEAM</span><h3>Collector Performance</h3><p>Collections, PTP success, workload and follow-up productivity.</p></article>
+            <article class="report-card" onclick="openReportPreview('ptp')"><span>PTP</span><h3>Promises to Pay Report</h3><p>Open, due, paid and broken promises with values and trends.</p></article>
+            <article class="report-card" onclick="openReportPreview('settlements')"><span>SETTLEMENTS</span><h3>Settlement Performance</h3><p>Proposal, approval and completion analysis.</p></article>
+            <article class="report-card" onclick="openReportPreview('client')"><span>CLIENT</span><h3>Client Portfolio Report</h3><p>Client-specific assigned, collected, outstanding, commission and net due.</p></article>
+            <article class="report-card" onclick="openReportPreview('commission')"><span>FINANCIAL</span><h3>Commission & Fees Report</h3><p>Gross collection, commission earned and net payable to clients.</p></article>
+            <article class="report-card" onclick="openReportPreview('expenses')"><span>FINANCIAL</span><h3>Expense Analysis</h3><p>Office, field, legal and client-recoverable expenses.</p></article>
+            <article class="report-card" onclick="openReportPreview('treasury')"><span>TREASURY</span><h3>Cash Flow & Client Funds</h3><p>Bank balances, cash, client funds and treasury movements.</p></article>
+          </div>
+        </section>
+      </div>
+
+      <footer class="footer">
+        <span>RECOVA — Reports & Analytics</span>
+        <span>Designed & Developed by <strong style="color:#1aa6a6">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
+    <!-- REPORT PREVIEW -->
+    <div id="reportPreviewPage" class="hidden">
+      <div class="content">
+        <div style="margin-bottom:14px;"><button class="action-btn action-secondary" onclick="openPage('reports')">← Back to Reports</button></div>
+
+        <section class="report-preview-shell">
+          <div class="report-preview-head">
+            <div>
+              <span class="eyebrow">REPORT PREVIEW</span>
+              <h2 id="reportPreviewTitle"></h2>
+              <p id="reportPreviewSubtitle"></p>
+            </div>
+            <div class="report-preview-actions">
+              <button class="action-btn action-secondary" onclick="reportExportDemo('PDF')">PDF</button>
+              <button class="action-btn action-secondary" onclick="reportExportDemo('Excel')">Excel</button>
+              <button class="action-btn action-primary" onclick="reportExportDemo('Print')">Print</button>
+            </div>
+          </div>
+          <div id="reportPreviewContent"></div>
+        </section>
+      </div>
+    </div>
+
+    <!-- USERS -->
+    <div id="usersPage" class="hidden">
+      <div class="content">
+        <div class="hero-row">
+          <div>
+            <h2>Users & Permissions</h2>
+            <p>Manage collection team roles and module access.</p>
+          </div>
+          <div class="hero-actions"><button class="action-btn action-primary" onclick="showAddUserDemo()">+ Add User</button></div>
+        </div>
+
+        <div class="users-kpi-grid">
+          <div class="kpi-card"><span class="kpi-label">Total Users</span><strong class="kpi-value">8</strong><div class="kpi-note">All system users</div></div>
+          <div class="kpi-card"><span class="kpi-label">Collectors</span><strong class="kpi-value">4</strong><div class="kpi-note">Collection team</div></div>
+          <div class="kpi-card"><span class="kpi-label">Finance Users</span><strong class="kpi-value">2</strong><div class="kpi-note">Financial access</div></div>
+          <div class="kpi-card"><span class="kpi-label">Managers</span><strong class="kpi-value">1</strong><div class="kpi-note">Management access</div></div>
+          <div class="kpi-card"><span class="kpi-label">Active Today</span><strong class="kpi-value">7</strong><div class="kpi-note"><span class="positive">87.5%</span> active</div></div>
+        </div>
+
+        <section class="card">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>User</th><th>Email</th><th>Role</th><th>Department</th><th>Status</th><th>Last Login</th><th>Action</th></tr></thead>
+              <tbody id="usersTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="card" style="margin-top:16px;">
+          <div class="card-head"><div><h3>Permission Matrix</h3><p>Illustrative role-based access</p></div></div>
+          <div class="table-wrap">
+            <table class="permission-table">
+              <thead><tr><th>Module</th><th>Admin</th><th>Manager</th><th>Collector</th><th>Finance</th><th>Support</th></tr></thead>
+              <tbody>
+                <tr><td>Clients</td><td class="perm-yes">Full</td><td class="perm-yes">Full</td><td class="perm-limited">View</td><td class="perm-limited">View</td><td class="perm-yes">Full</td></tr>
+                <tr><td>Debtors</td><td class="perm-yes">Full</td><td class="perm-yes">Full</td><td class="perm-yes">Full</td><td class="perm-limited">View</td><td class="perm-limited">Limited</td></tr>
+                <tr><td>Collection Cases</td><td class="perm-yes">Full</td><td class="perm-yes">Full</td><td class="perm-yes">Full</td><td class="perm-limited">View</td><td class="perm-limited">Limited</td></tr>
+                <tr><td>Collections</td><td class="perm-yes">Full</td><td class="perm-yes">Full</td><td class="perm-limited">Create</td><td class="perm-yes">Full</td><td class="perm-no">—</td></tr>
+                <tr><td>Settlements</td><td class="perm-yes">Full</td><td class="perm-yes">Approve</td><td class="perm-limited">Create</td><td class="perm-limited">View</td><td class="perm-no">—</td></tr>
+                <tr><td>Commission</td><td class="perm-yes">Full</td><td class="perm-yes">Approve</td><td class="perm-no">—</td><td class="perm-yes">Full</td><td class="perm-no">—</td></tr>
+                <tr><td>Banking</td><td class="perm-yes">Full</td><td class="perm-limited">View</td><td class="perm-no">—</td><td class="perm-yes">Full</td><td class="perm-no">—</td></tr>
+                <tr><td>Reports</td><td class="perm-yes">Full</td><td class="perm-yes">Full</td><td class="perm-limited">Own</td><td class="perm-yes">Full</td><td class="perm-no">—</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div id="settingsPage" class="hidden">
+      <div class="content">
+        <div class="hero-row">
+          <div>
+            <h2>Settings</h2>
+            <p>Configure company, collection rules, financial settings and document templates.</p>
+          </div>
+          <div class="hero-actions"><button class="action-btn action-primary" onclick="saveSettingsDemo()">Save Settings</button></div>
+        </div>
+
+        <div class="settings-grid">
+          <section class="settings-section">
+            <h3>Company Profile</h3>
+            <p>Core company information used across reports and documents.</p>
+            <div class="settings-form-grid">
+              <div class="setting-field"><label>Company Name</label><input value="RECOVA Collections"></div>
+              <div class="setting-field"><label>Arabic Name</label><input value="ريكوفا للتحصيل"></div>
+              <div class="setting-field"><label>CR Number</label><input value="123456-1"></div>
+              <div class="setting-field"><label>VAT Number</label><input value="200123456700003"></div>
+            </div>
+          </section>
+
+          <section class="settings-section">
+            <h3>Collection Rules</h3>
+            <p>Default business rules for cases and collector workflows.</p>
+            <div class="settings-form-grid">
+              <div class="setting-field"><label>Default Risk Level</label><select><option>Medium</option></select></div>
+              <div class="setting-field"><label>Broken PTP Escalation</label><select><option>After 1 Broken PTP</option></select></div>
+              <div class="setting-field"><label>Default Follow-up Cycle</label><select><option>3 Days</option></select></div>
+              <div class="setting-field"><label>Settlement Approval</label><select><option>Manager + Client</option></select></div>
+            </div>
+          </section>
+
+          <section class="settings-section">
+            <h3>Financial Settings</h3>
+            <p>Currency, VAT and numbering preferences.</p>
+            <div class="settings-form-grid">
+              <div class="setting-field"><label>Currency</label><select><option>BHD</option></select></div>
+              <div class="setting-field"><label>VAT Rate</label><select><option>10%</option></select></div>
+              <div class="setting-field"><label>Receipt Prefix</label><input value="RC"></div>
+              <div class="setting-field"><label>Expense Prefix</label><input value="EXP"></div>
+              <div class="setting-field"><label>Settlement Prefix</label><input value="SET"></div>
+              <div class="setting-field"><label>Fee Prefix</label><input value="FEE"></div>
+            </div>
+          </section>
+
+          <section class="settings-section">
+            <h3>Notifications</h3>
+            <p>Operational alerts for collection team.</p>
+            <div class="template-list">
+              <div class="template-item"><div><strong>PTP Due Reminder</strong><span>Notify collector on due date</span></div><span class="status active">ON</span></div>
+              <div class="template-item"><div><strong>Broken PTP Alert</strong><span>Notify manager immediately</span></div><span class="status active">ON</span></div>
+              <div class="template-item"><div><strong>Overdue Follow-up</strong><span>Daily collector notification</span></div><span class="status active">ON</span></div>
+              <div class="template-item"><div><strong>Client Settlement Ready</strong><span>Notify finance team</span></div><span class="status active">ON</span></div>
+            </div>
+          </section>
+
+          <section class="settings-section" style="grid-column:1/-1;">
+            <h3>Document Templates</h3>
+            <p>Templates used throughout the collection workflow.</p>
+            <div class="template-list">
+              <div class="template-item"><div><strong>Collection Receipt</strong><span>Debtor payment receipt</span></div><button class="table-action">Preview</button></div>
+              <div class="template-item"><div><strong>Settlement Proposal</strong><span>Debtor settlement offer</span></div><button class="table-action">Preview</button></div>
+              <div class="template-item"><div><strong>Client Portfolio Report</strong><span>Assigned and recovered portfolio report</span></div><button class="table-action">Preview</button></div>
+              <div class="template-item"><div><strong>Client Settlement Statement</strong><span>Gross collection, commission and net due</span></div><button class="table-action">Preview</button></div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <!-- AUDIT -->
+    <div id="auditPage" class="hidden">
+      <div class="content">
+        <div class="hero-row">
+          <div>
+            <h2>Audit Log</h2>
+            <p>Track system, collection and financial activity by user.</p>
+          </div>
+          <div class="hero-actions"><button class="action-btn action-secondary">Export Audit</button></div>
+        </div>
+
+        <div class="audit-kpi-grid">
+          <div class="kpi-card"><span class="kpi-label">Today's Actions</span><strong class="kpi-value">64</strong><div class="kpi-note">Across all modules</div></div>
+          <div class="kpi-card"><span class="kpi-label">Collection Actions</span><strong class="kpi-value">31</strong><div class="kpi-note">Follow-ups and payments</div></div>
+          <div class="kpi-card"><span class="kpi-label">Financial Actions</span><strong class="kpi-value">12</strong><div class="kpi-note">Treasury and expenses</div></div>
+          <div class="kpi-card"><span class="kpi-label">Case Updates</span><strong class="kpi-value">16</strong><div class="kpi-note">Debtors and cases</div></div>
+          <div class="kpi-card"><span class="kpi-label">Active Users Today</span><strong class="kpi-value">7</strong><div class="kpi-note">System activity</div></div>
+        </div>
+
+        <section class="card">
+          <div class="audit-toolbar">
+            <div class="audit-toolbar-left">
+              <input id="auditSearch" type="search" placeholder="Search user, module or reference..." oninput="renderAuditLog()">
+              <select id="auditModuleFilter" onchange="renderAuditLog()">
+                <option value="">All Modules</option>
+                <option value="Cases">Cases</option>
+                <option value="Follow-ups">Follow-ups</option>
+                <option value="Collections">Collections</option>
+                <option value="Settlements">Settlements</option>
+                <option value="Banking">Banking</option>
+              </select>
+              <select id="auditActionFilter" onchange="renderAuditLog()">
+                <option value="">All Actions</option>
+                <option value="Create">Create</option>
+                <option value="Update">Update</option>
+                <option value="Reverse">Reverse</option>
+                <option value="Login">Login</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Date & Time</th><th>User</th><th>Module</th><th>Action</th><th>Reference</th><th>Description</th></tr></thead>
+              <tbody id="auditTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </div>
+
+
     <div id="placeholderPage" class="hidden">
       <div class="content placeholder">
         <div class="placeholder-box">
@@ -4498,6 +4842,199 @@
   }
 
 
+
+  const USERS = [
+    {name:"Ahmed Oraibi",email:"admin@recova.demo",role:"Administrator",department:"Management",status:"Active",lastLogin:"19 Aug 2026 · 2:10 PM"},
+    {name:"Sara Ahmed",email:"sara@recova.demo",role:"Collector",department:"Collections",status:"Active",lastLogin:"19 Aug 2026 · 1:58 PM"},
+    {name:"Khalid Ali",email:"khalid@recova.demo",role:"Collector",department:"Collections",status:"Active",lastLogin:"19 Aug 2026 · 1:50 PM"},
+    {name:"Fatima Abbas",email:"fatima@recova.demo",role:"Collector",department:"Collections",status:"Active",lastLogin:"19 Aug 2026 · 1:42 PM"},
+    {name:"Mohammed Hasan",email:"mhasan@recova.demo",role:"Collector",department:"Collections",status:"Active",lastLogin:"19 Aug 2026 · 1:35 PM"},
+    {name:"Noor Finance",email:"finance@recova.demo",role:"Finance",department:"Finance",status:"Active",lastLogin:"19 Aug 2026 · 1:30 PM"},
+    {name:"Mariam Ali",email:"mariam@recova.demo",role:"Manager",department:"Management",status:"Active",lastLogin:"19 Aug 2026 · 1:15 PM"},
+    {name:"Huda Support",email:"support@recova.demo",role:"Support",department:"Administration",status:"Active",lastLogin:"18 Aug 2026 · 4:45 PM"}
+  ];
+
+  const AUDIT_LOG = [
+    {date:"19 Aug 2026 · 2:08 PM",user:"Sara Ahmed",module:"Collections",action:"Create",reference:"RC-260421",description:"Recorded BHD 2,500 collection for Ahmed Trading."},
+    {date:"19 Aug 2026 · 2:01 PM",user:"Ahmed Oraibi",module:"Banking",action:"Update",reference:"TRF-260022",description:"Posted internal collection account transfer."},
+    {date:"19 Aug 2026 · 1:55 PM",user:"Fatima Abbas",module:"Settlements",action:"Create",reference:"SET-260042",description:"Created settlement proposal for Hassan Ali."},
+    {date:"19 Aug 2026 · 1:41 PM",user:"Khalid Ali",module:"Follow-ups",action:"Update",reference:"FU-003",description:"Updated field visit outcome for Modern Workshop."},
+    {date:"19 Aug 2026 · 1:30 PM",user:"Noor Finance",module:"Collections",action:"Reverse",reference:"RC-260419",description:"Reversed duplicate receipt entry."},
+    {date:"19 Aug 2026 · 1:15 PM",user:"Mariam Ali",module:"Cases",action:"Update",reference:"COL-260184",description:"Changed case stage to Escalation."},
+    {date:"19 Aug 2026 · 1:02 PM",user:"Sara Ahmed",module:"Follow-ups",action:"Create",reference:"FU-001",description:"Created debtor follow-up call."},
+    {date:"19 Aug 2026 · 12:55 PM",user:"Ahmed Oraibi",module:"Cases",action:"Login",reference:"USER",description:"Administrator signed in to RECOVA."}
+  ];
+
+  const REPORTS = {
+    executive:{title:"Executive Summary",subtitle:"Portfolio and management overview"},
+    recovery:{title:"Recovery Performance",subtitle:"Assigned versus collected portfolio"},
+    collector:{title:"Collector Performance",subtitle:"Collector productivity and recovery performance"},
+    ptp:{title:"Promises to Pay Report",subtitle:"PTP performance and broken promise monitoring"},
+    settlements:{title:"Settlement Performance",subtitle:"Proposal, approval and completion analysis"},
+    client:{title:"Client Portfolio Report",subtitle:"Client-level recovery and financial position"},
+    commission:{title:"Commission & Fees Report",subtitle:"Gross collections, commission and net client funds"},
+    expenses:{title:"Expense Analysis",subtitle:"Operating and client-recoverable expenses"},
+    treasury:{title:"Cash Flow & Client Funds",subtitle:"Treasury and client funds position"}
+  };
+
+  function roleClass(role){
+    if(role==="Administrator") return "admin";
+    if(role==="Manager") return "manager";
+    if(role==="Collector") return "collector";
+    if(role==="Finance") return "finance";
+    return "support";
+  }
+
+  function renderUsers(){
+    document.getElementById("usersTableBody").innerHTML=USERS.map(u=>`
+      <tr>
+        <td>${u.name}</td><td>${u.email}</td>
+        <td><span class="role-badge ${roleClass(u.role)}">${u.role}</span></td>
+        <td>${u.department}</td><td><span class="status active">${u.status}</span></td>
+        <td>${u.lastLogin}</td><td><button class="table-action" onclick="userDemo('${u.name.replaceAll("'","\\'")}')">View</button></td>
+      </tr>
+    `).join("");
+  }
+
+  function renderAuditLog(){
+    const search=(document.getElementById("auditSearch")?.value||"").trim().toLowerCase();
+    const module=document.getElementById("auditModuleFilter")?.value||"";
+    const action=document.getElementById("auditActionFilter")?.value||"";
+
+    document.getElementById("auditTableBody").innerHTML=AUDIT_LOG.filter(a=>{
+      const x=!search || [a.user,a.module,a.reference,a.description].join(" ").toLowerCase().includes(search);
+      const y=!module || a.module===module;
+      const z=!action || a.action===action;
+      return x&&y&&z;
+    }).map(a=>`
+      <tr>
+        <td>${a.date}</td><td>${a.user}</td><td>${a.module}</td>
+        <td><span class="audit-action ${a.action.toLowerCase()}">${a.action}</span></td>
+        <td>${a.reference}</td><td>${a.description}</td>
+      </tr>
+    `).join("") || `<tr><td colspan="6" style="text-align:center;padding:28px;color:#7a8491">No audit entries found.</td></tr>`;
+  }
+
+  function openReportPreview(type){
+    const r=REPORTS[type]||REPORTS.executive;
+
+    [
+      "dashboardPage","clientsPage","client360Page","debtorsPage","debtor360Page","casesPage","case360Page",
+      "followupsPage","ptpPage","ptp360Page","collectionsPage","receipt360Page","settlementsPage","settlement360Page",
+      "commissionPage","commission360Page","expensesPage","expense360Page","bankingPage","reportsPage","usersPage",
+      "settingsPage","auditPage","placeholderPage"
+    ].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el) el.classList.add("hidden");
+    });
+
+    document.getElementById("reportPreviewPage").classList.remove("hidden");
+    document.getElementById("pageTitle").textContent="Report Preview";
+    document.getElementById("pageSubtitle").textContent=r.title;
+    document.getElementById("reportPreviewTitle").textContent=r.title;
+    document.getElementById("reportPreviewSubtitle").textContent=r.subtitle+" · August 2026";
+
+    document.querySelectorAll(".nav-item").forEach(item=>{
+      item.classList.toggle("active",item.dataset.page==="reports");
+    });
+
+    renderReportContent(type);
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+
+  function renderReportContent(type){
+    let html=`
+      <div class="report-summary-grid">
+        <div class="report-summary-card"><span>Assigned</span><strong>BHD 428,500.000</strong></div>
+        <div class="report-summary-card"><span>Collected</span><strong>BHD 277,650.000</strong></div>
+        <div class="report-summary-card"><span>Outstanding</span><strong>BHD 150,850.000</strong></div>
+        <div class="report-summary-card"><span>Recovery Rate</span><strong>64.8%</strong></div>
+      </div>
+    `;
+
+    if(type==="collector"){
+      html+=`
+        <div class="report-section">
+          <h3>Collector Ranking</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Collector</th><th>Assigned</th><th>Collected</th><th>Recovery</th><th>PTP Success</th></tr></thead>
+            <tbody>
+              <tr><td>Sara Ahmed</td><td>BHD 95,000</td><td>BHD 77,900</td><td>82.0%</td><td>79%</td></tr>
+              <tr><td>Khalid Ali</td><td>BHD 88,000</td><td>BHD 66,880</td><td>76.0%</td><td>74%</td></tr>
+              <tr><td>Mohammed Hasan</td><td>BHD 76,000</td><td>BHD 55,480</td><td>73.0%</td><td>71%</td></tr>
+            </tbody>
+          </table></div>
+        </div>`;
+    }else if(type==="ptp"){
+      html+=`
+        <div class="report-section">
+          <h3>PTP Position</h3>
+          <div class="client-net-grid">
+            <div class="client-net-card"><span>Active PTP</span><strong>27</strong></div>
+            <div class="client-net-card"><span>Due Today</span><strong>9</strong></div>
+            <div class="client-net-card"><span>Paid</span><strong>41</strong></div>
+            <div class="client-net-card"><span>Broken</span><strong>6</strong></div>
+          </div>
+        </div>`;
+    }else if(type==="commission"){
+      html+=`
+        <div class="report-section">
+          <h3>Commission Position</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Client</th><th>Gross Collections</th><th>Rate</th><th>Commission</th><th>Net Due</th></tr></thead>
+            <tbody>
+              <tr><td>Gulf Finance B.S.C.</td><td>BHD 84,200.000</td><td>13%</td><td>BHD 10,946.000</td><td>BHD 73,254.000</td></tr>
+              <tr><td>Bahrain Leasing Co.</td><td>BHD 59,100.000</td><td>10%</td><td>BHD 5,910.000</td><td>BHD 53,190.000</td></tr>
+            </tbody>
+          </table></div>
+        </div>`;
+    }else if(type==="treasury"){
+      html+=`
+        <div class="report-section">
+          <h3>Funds Position</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Account</th><th>Type</th><th>Balance</th></tr></thead>
+            <tbody>
+              <tr><td>BBK Collection Account</td><td>Bank</td><td>BHD 49,320.000</td></tr>
+              <tr><td>NBB Collection Account</td><td>Bank</td><td>BHD 28,100.000</td></tr>
+              <tr><td>Cash on Hand</td><td>Cash</td><td>BHD 1,580.000</td></tr>
+              <tr><td>Undeposited Cheques</td><td>Clearing</td><td>BHD 4,250.000</td></tr>
+            </tbody>
+          </table></div>
+        </div>`;
+    }else{
+      html+=`
+        <div class="report-section">
+          <h3>Management Insight</h3>
+          <div class="collector-note">
+            RECOVA currently shows a 64.8% portfolio recovery rate, with BHD 150,850.000 outstanding.
+            Broken PTP and high-risk escalation cases should remain priority items for the collection team.
+          </div>
+        </div>`;
+    }
+
+    document.getElementById("reportPreviewContent").innerHTML=html;
+  }
+
+  function reportExportDemo(format){
+    alert(format+" export is prepared as a portfolio demo workflow.");
+  }
+
+  function showAddUserDemo(){
+    alert("Add User — Demo\\n\\nName, Email, Role, Department, Status and Module Permissions.");
+  }
+
+  function userDemo(name){
+    const u=USERS.find(x=>x.name===name);
+    if(!u) return;
+    alert("User Profile — Demo\\n\\n"+u.name+"\\n"+u.role+"\\n"+u.department+"\\nLast Login: "+u.lastLogin);
+  }
+
+  function saveSettingsDemo(){
+    alert("Settings Saved — Demo\\n\\nCompany, collection, financial and notification settings are represented in this portfolio version.");
+  }
+
+
   const PAGE_NAMES = {
     dashboard:"Collection Dashboard",
     clients:"Clients",
@@ -4533,7 +5070,7 @@
 
     document.getElementById("pageTitle").textContent=PAGE_NAMES[page]||"RECOVA";
 
-    ["dashboardPage","clientsPage","client360Page","debtorsPage","debtor360Page","casesPage","case360Page","followupsPage","ptpPage","ptp360Page","collectionsPage","receipt360Page","settlementsPage","settlement360Page","commissionPage","commission360Page","expensesPage","expense360Page","bankingPage","placeholderPage"].forEach(id=>{
+    ["dashboardPage","clientsPage","client360Page","debtorsPage","debtor360Page","casesPage","case360Page","followupsPage","ptpPage","ptp360Page","collectionsPage","receipt360Page","settlementsPage","settlement360Page","commissionPage","commission360Page","expensesPage","expense360Page","bankingPage","reportsPage","reportPreviewPage","usersPage","settingsPage","auditPage","placeholderPage"].forEach(id=>{
       const el=document.getElementById(id);
       if(el) el.classList.add("hidden");
     });
@@ -4582,6 +5119,20 @@
       document.getElementById("pageSubtitle").textContent="Collection bank accounts, client funds and treasury movements";
       renderTreasuryModule();
       openTreasuryTab("accounts",document.querySelector(".treasury-tab-btn"));
+    }else if(page==="reports"){
+      document.getElementById("reportsPage").classList.remove("hidden");
+      document.getElementById("pageSubtitle").textContent="Collection, client, collector and financial intelligence";
+    }else if(page==="users"){
+      document.getElementById("usersPage").classList.remove("hidden");
+      document.getElementById("pageSubtitle").textContent="System users, roles and access permissions";
+      renderUsers();
+    }else if(page==="settings"){
+      document.getElementById("settingsPage").classList.remove("hidden");
+      document.getElementById("pageSubtitle").textContent="Company, collection rules, financial settings and templates";
+    }else if(page==="audit"){
+      document.getElementById("auditPage").classList.remove("hidden");
+      document.getElementById("pageSubtitle").textContent="System activity and audit trail";
+      renderAuditLog();
     }else{
       document.getElementById("placeholderPage").classList.remove("hidden");
       document.getElementById("placeholderTitle").textContent=PAGE_NAMES[page];
@@ -4626,7 +5177,7 @@
       "5. Follow-ups & PTP\\n"+
       "6. Collections & Settlements\\n"+
       "7. Commission & Reports\\n\\n"+
-      "Release 1.9 activates the financial layer with Expenses, Expense 360°, Banking & Treasury, Client Funds and treasury-linked collection movements."
+      "RECOVA core demo is complete through Release 1.10: Dashboard, Clients, Debtors, Collection Cases, Follow-ups, PTP, Collections, Settlements, Commission & Fees, Expenses, Banking & Treasury, Reports, Users, Settings and Audit Log."
     );
   }
 
@@ -4641,6 +5192,8 @@
   renderCommissionBatches();
   renderExpenses();
   renderTreasuryModule();
+  renderUsers();
+  renderAuditLog();
 </script>
 
 </body>
