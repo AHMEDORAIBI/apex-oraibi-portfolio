@@ -444,6 +444,140 @@
       .calendar-title{flex:1}
     }
 
+
+    /* PROPOSALS */
+    .proposal-kpi-grid{
+      display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-bottom:16px
+    }
+
+    .proposal-toolbar{
+      display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:16px
+    }
+
+    .proposal-toolbar-left{display:flex;gap:10px;flex-wrap:wrap}
+
+    .proposal-toolbar input,.proposal-toolbar select{
+      height:40px;border:1px solid var(--border);border-radius:6px;background:white;padding:0 12px;font-size:11px;outline:none
+    }
+
+    .proposal-toolbar input{width:280px}
+
+    .proposal-name-btn{
+      border:0;background:transparent;color:var(--navy);font-weight:700;cursor:pointer;padding:0
+    }
+
+    .proposal-name-btn:hover{color:#9a742d}
+
+    .proposal-status{
+      display:inline-flex;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700
+    }
+
+    .proposal-status.draft{background:#f3f4f6;color:#6f7780}
+    .proposal-status.sent{background:#eef2f7;color:#36506d}
+    .proposal-status.approved{background:#edf5f0;color:#347b57}
+    .proposal-status.rejected{background:#fbeaea;color:#a74646}
+    .proposal-status.invoiced{background:#f0eafa;color:#6a4b91}
+
+    .proposal-hero{
+      display:flex;justify-content:space-between;gap:20px;align-items:flex-start;background:white;border:1px solid var(--border);
+      border-radius:8px;padding:22px;margin-bottom:16px
+    }
+
+    .proposal-hero-left{display:flex;gap:16px;align-items:flex-start}
+
+    .proposal-icon{
+      width:58px;height:58px;border-radius:10px;background:var(--navy);color:var(--gold-light);
+      display:grid;place-items:center;font-size:22px;font-weight:700
+    }
+
+    .proposal-hero h2{font-size:23px;color:var(--navy)}
+    .proposal-hero p{margin-top:6px;color:var(--muted);font-size:11px}
+    .proposal-tags{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
+    .proposal-actions{display:flex;gap:8px;flex-wrap:wrap}
+
+    .proposal-summary-grid{
+      display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:16px
+    }
+
+    .proposal-layout{
+      display:grid;grid-template-columns:1.15fr .85fr;gap:16px
+    }
+
+    .fee-table td,.fee-table th{font-size:10px}
+
+    .totals-box{
+      margin-top:16px;margin-left:auto;max-width:330px;border:1px solid var(--border);border-radius:8px;padding:16px;background:var(--soft)
+    }
+
+    .total-line{
+      display:flex;justify-content:space-between;gap:12px;padding:7px 0;font-size:10px;color:var(--muted)
+    }
+
+    .total-line strong{color:var(--navy)}
+    .total-line.grand{
+      margin-top:4px;padding-top:11px;border-top:1px solid var(--border);font-size:12px;font-weight:700;color:var(--navy)
+    }
+
+    .scope-list{
+      display:flex;flex-direction:column;gap:9px
+    }
+
+    .scope-item{
+      display:flex;gap:9px;align-items:flex-start;font-size:10px;color:#53606d;line-height:1.5
+    }
+
+    .scope-check{
+      width:18px;height:18px;flex:0 0 18px;border-radius:50%;background:#edf5f0;color:#347b57;
+      display:grid;place-items:center;font-size:9px;font-weight:700
+    }
+
+    .payment-plan{
+      display:flex;flex-direction:column;gap:10px
+    }
+
+    .payment-step{
+      display:grid;grid-template-columns:36px 1fr auto;gap:10px;align-items:center;padding:12px;
+      border:1px solid var(--border);border-radius:7px;background:#fff
+    }
+
+    .payment-step-num{
+      width:30px;height:30px;border-radius:50%;background:var(--navy);color:var(--gold-light);display:grid;place-items:center;font-size:10px;font-weight:700
+    }
+
+    .payment-step strong{font-size:10px;color:var(--navy)}
+    .payment-step span{font-size:9px;color:var(--muted)}
+    .payment-step b{font-size:10px;color:var(--navy)}
+
+    .proposal-analytics{
+      display:grid;grid-template-columns:repeat(4,1fr);gap:12px
+    }
+
+    .proposal-analytics .insight strong{
+      font-size:18px;margin-bottom:5px
+    }
+
+    @media(max-width:1250px){
+      .proposal-kpi-grid{grid-template-columns:repeat(3,1fr)}
+      .proposal-summary-grid{grid-template-columns:repeat(2,1fr)}
+    }
+
+    @media(max-width:950px){
+      .proposal-layout{grid-template-columns:1fr}
+      .proposal-analytics{grid-template-columns:1fr 1fr}
+    }
+
+    @media(max-width:650px){
+      .proposal-kpi-grid,.proposal-summary-grid{grid-template-columns:1fr 1fr}
+      .proposal-toolbar{align-items:stretch}
+      .proposal-toolbar-left{width:100%}
+      .proposal-toolbar input,.proposal-toolbar select{width:100%}
+      .proposal-hero{flex-direction:column}
+      .proposal-hero-left{flex-direction:column}
+      .proposal-actions{width:100%}
+      .proposal-actions button{flex:1}
+      .proposal-analytics{grid-template-columns:1fr}
+    }
+
     /* PLACEHOLDER */
     .placeholder{min-height:500px;display:grid;place-items:center;text-align:center}
     .placeholder-box{max-width:520px;padding:45px;background:white;border:1px solid var(--border);border-radius:10px}
@@ -1524,6 +1658,265 @@
       </footer>
     </div>
 
+
+    <!-- PROPOSALS -->
+    <div id="proposalsPage" class="hidden">
+      <div class="content">
+
+        <div class="hero-row">
+          <div>
+            <h2>Professional Fee Proposals</h2>
+            <p>Create, track and convert professional fee proposals into invoices.</p>
+          </div>
+
+          <div class="hero-actions">
+            <button class="action-btn action-secondary">Export Excel</button>
+            <button class="action-btn action-primary" onclick="showAddProposalDemo()">+ New Proposal</button>
+          </div>
+        </div>
+
+        <div class="proposal-kpi-grid">
+          <div class="kpi-card">
+            <span class="kpi-label">Total Proposals</span>
+            <strong class="kpi-value">18</strong>
+            <div class="kpi-note">Current demo portfolio</div>
+          </div>
+
+          <div class="kpi-card">
+            <span class="kpi-label">Total Value</span>
+            <strong class="kpi-value money">BHD 24,500.000</strong>
+            <div class="kpi-note">All proposal values</div>
+          </div>
+
+          <div class="kpi-card">
+            <span class="kpi-label">Approved</span>
+            <strong class="kpi-value">12</strong>
+            <div class="kpi-note"><span class="positive">66.7%</span> acceptance rate</div>
+          </div>
+
+          <div class="kpi-card">
+            <span class="kpi-label">Pending</span>
+            <strong class="kpi-value">4</strong>
+            <div class="kpi-note">Awaiting client decision</div>
+          </div>
+
+          <div class="kpi-card">
+            <span class="kpi-label">Rejected</span>
+            <strong class="kpi-value">2</strong>
+            <div class="kpi-note">BHD 2,200.000 value</div>
+          </div>
+        </div>
+
+        <section class="card">
+          <div class="proposal-toolbar">
+            <div class="proposal-toolbar-left">
+              <input id="proposalSearch" type="search" placeholder="Search proposal, client or case..." oninput="renderProposals()">
+
+              <select id="proposalStatusFilter" onchange="renderProposals()">
+                <option value="">All Statuses</option>
+                <option value="Draft">Draft</option>
+                <option value="Sent">Sent</option>
+                <option value="Approved">Approved</option>
+                <option value="Rejected">Rejected</option>
+                <option value="Invoiced">Invoiced</option>
+              </select>
+
+              <select id="proposalTaxFilter" onchange="renderProposals()">
+                <option value="">All Tax Modes</option>
+                <option value="Exclusive">Exclusive</option>
+                <option value="Inclusive">Inclusive</option>
+              </select>
+            </div>
+
+            <span class="muted" style="font-size:10px;">
+              Open any proposal to view scope, tax and payment terms
+            </span>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Proposal</th>
+                  <th>Client</th>
+                  <th>Case</th>
+                  <th>Date</th>
+                  <th>Net Fees</th>
+                  <th>VAT</th>
+                  <th>Total</th>
+                  <th>Tax Mode</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="proposalsTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="card" style="margin-top:16px;">
+          <div class="card-head">
+            <div>
+              <h3>Proposal Analytics</h3>
+              <p>Commercial performance of professional fee proposals</p>
+            </div>
+          </div>
+
+          <div class="proposal-analytics">
+            <div class="insight">
+              <strong>66.7%</strong>
+              <p>Proposal acceptance rate</p>
+            </div>
+            <div class="insight">
+              <strong>BHD 17,800</strong>
+              <p>Approved proposal value</p>
+            </div>
+            <div class="insight">
+              <strong>BHD 4,500</strong>
+              <p>Pending proposal value</p>
+            </div>
+            <div class="insight">
+              <strong>BHD 2,200</strong>
+              <p>Rejected proposal value</p>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <footer class="footer">
+        <span>LEXORA — Professional Fee Proposals</span>
+        <span>Designed & Developed by <strong style="color:#a78035">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
+    <!-- PROPOSAL 360 -->
+    <div id="proposal360Page" class="hidden">
+      <div class="content">
+
+        <div style="margin-bottom:14px;">
+          <button class="action-btn action-secondary" onclick="openPage('proposals')">← Back to Proposals</button>
+        </div>
+
+        <section class="proposal-hero">
+          <div class="proposal-hero-left">
+            <div class="proposal-icon">▤</div>
+            <div>
+              <h2 id="proposal360Title">PR-2026-018</h2>
+              <p id="proposal360Meta">Gulf Trading W.L.L · Case 2026/1842</p>
+              <div class="proposal-tags">
+                <span id="proposal360Status" class="proposal-status approved">Approved</span>
+                <span id="proposal360TaxMode" class="pill company">Exclusive VAT</span>
+                <span class="pill individual">Professional Fees</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="proposal-actions">
+            <button class="action-btn action-secondary" onclick="openProposalClient()">View Client</button>
+            <button class="action-btn action-secondary" onclick="openProposalCase()">View Case</button>
+            <button class="action-btn action-secondary">Print / PDF</button>
+            <button id="convertProposalBtn" class="action-btn action-gold" onclick="convertProposalToInvoiceDemo()">Create Invoice</button>
+          </div>
+        </section>
+
+        <div class="proposal-summary-grid">
+          <div class="summary-card"><span>Net Professional Fees</span><strong id="proposalNet">BHD 2,000.000</strong></div>
+          <div class="summary-card"><span>VAT 10%</span><strong id="proposalVat">BHD 200.000</strong></div>
+          <div class="summary-card"><span>Total Proposal</span><strong id="proposalTotal">BHD 2,200.000</strong></div>
+          <div class="summary-card"><span>Valid Until</span><strong id="proposalValidUntil">31 Aug 2026</strong></div>
+        </div>
+
+        <div class="proposal-layout">
+
+          <section class="card">
+            <div class="card-head">
+              <div>
+                <h3>Professional Fee Details</h3>
+                <p>Services included in this proposal</p>
+              </div>
+            </div>
+
+            <div class="table-wrap">
+              <table class="fee-table">
+                <thead>
+                  <tr><th>Description</th><th>Qty</th><th>Rate</th><th>Amount</th></tr>
+                </thead>
+                <tbody id="proposalItemsBody"></tbody>
+              </table>
+            </div>
+
+            <div class="totals-box">
+              <div class="total-line"><span>Subtotal</span><strong id="proposalSubtotalBox"></strong></div>
+              <div class="total-line"><span>VAT 10%</span><strong id="proposalVatBox"></strong></div>
+              <div class="total-line grand"><span>Total</span><strong id="proposalTotalBox"></strong></div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-head">
+              <div>
+                <h3>Proposal Information</h3>
+                <p>Client, matter and commercial terms</p>
+              </div>
+            </div>
+
+            <div class="info-grid" style="grid-template-columns:1fr;">
+              <div class="info-item"><span>Client</span><strong id="proposalInfoClient"></strong></div>
+              <div class="info-item"><span>Case / Matter</span><strong id="proposalInfoCase"></strong></div>
+              <div class="info-item"><span>Proposal Date</span><strong id="proposalInfoDate"></strong></div>
+              <div class="info-item"><span>Tax Mode</span><strong id="proposalInfoTax"></strong></div>
+              <div class="info-item"><span>Prepared By</span><strong id="proposalPreparedBy"></strong></div>
+            </div>
+          </section>
+
+        </div>
+
+        <div class="dashboard-grid equal">
+
+          <section class="card">
+            <div class="card-head">
+              <div>
+                <h3>Scope of Services</h3>
+                <p>Professional services covered by the proposal</p>
+              </div>
+            </div>
+
+            <div id="proposalScopeList" class="scope-list"></div>
+          </section>
+
+          <section class="card">
+            <div class="card-head">
+              <div>
+                <h3>Exclusions</h3>
+                <p>Items not included in professional fees</p>
+              </div>
+            </div>
+
+            <div id="proposalExclusionsList" class="scope-list"></div>
+          </section>
+
+        </div>
+
+        <section class="card" style="margin-top:16px;">
+          <div class="card-head">
+            <div>
+              <h3>Payment Terms</h3>
+              <p>Agreed payment schedule</p>
+            </div>
+          </div>
+
+          <div id="proposalPaymentPlan" class="payment-plan"></div>
+        </section>
+
+      </div>
+
+      <footer class="footer">
+        <span>LEXORA — Proposal 360°</span>
+        <span>Designed & Developed by <strong style="color:#a78035">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
     <!-- PLACEHOLDER -->
     <div id="placeholderPage" class="hidden">
       <div class="content placeholder">
@@ -1736,6 +2129,192 @@
   ];
 
 
+
+
+  const PROPOSALS = [
+    {
+      no:"PR-2026-018",
+      clientId:"CL-001",
+      client:"Gulf Trading W.L.L",
+      caseNo:"2026/1842",
+      date:"08 Aug 2026",
+      validUntil:"31 Aug 2026",
+      taxMode:"Exclusive",
+      status:"Approved",
+      preparedBy:"Ahmed Oraibi",
+      items:[
+        ["Legal Representation",1,1500,1500],
+        ["Legal Consultation & Case Review",1,500,500]
+      ],
+      net:2000,
+      vat:200,
+      total:2200,
+      scope:[
+        "Review case documents and supporting financial records.",
+        "Prepare and file legal memorandums and submissions.",
+        "Attend scheduled court hearings related to the matter.",
+        "Provide client consultations and progress updates.",
+        "Follow up on the matter until judgment stage."
+      ],
+      exclusions:[
+        "Court and government fees.",
+        "Expert and specialist fees.",
+        "Translation and notarization charges.",
+        "Execution-stage expenses unless separately agreed."
+      ],
+      payment:[
+        ["01","Upon Acceptance","50%",1100],
+        ["02","Before First Hearing","25%",550],
+        ["03","Upon Judgment","25%",550]
+      ]
+    },
+    {
+      no:"PR-2026-019",
+      clientId:"CL-002",
+      client:"Ahmed Hassan",
+      caseNo:"2026/2190",
+      date:"10 Aug 2026",
+      validUntil:"25 Aug 2026",
+      taxMode:"Exclusive",
+      status:"Invoiced",
+      preparedBy:"Sara Ahmed",
+      items:[
+        ["Labour Case Representation",1,1500,1500]
+      ],
+      net:1500,
+      vat:150,
+      total:1650,
+      scope:[
+        "Review employment contract and salary records.",
+        "Prepare labour claim submissions.",
+        "Attend Labour Court hearings.",
+        "Client consultation and follow-up."
+      ],
+      exclusions:[
+        "Government and court fees.",
+        "External expert fees."
+      ],
+      payment:[
+        ["01","Upon Acceptance","100%",1650]
+      ]
+    },
+    {
+      no:"PR-2026-020",
+      clientId:"CL-003",
+      client:"Apex Contracting W.L.L",
+      caseNo:"2026/2351",
+      date:"12 Aug 2026",
+      validUntil:"27 Aug 2026",
+      taxMode:"Exclusive",
+      status:"Approved",
+      preparedBy:"Khalid Ali",
+      items:[
+        ["Execution Proceedings",1,3000,3000]
+      ],
+      net:3000,
+      vat:300,
+      total:3300,
+      scope:[
+        "Review final judgment and enforcement documents.",
+        "Prepare execution application.",
+        "Follow up on enforcement measures.",
+        "Client reporting on execution progress."
+      ],
+      exclusions:[
+        "Execution court fees.",
+        "Tracing and third-party service charges."
+      ],
+      payment:[
+        ["01","Upon Acceptance","50%",1650],
+        ["02","Upon Execution Filing","50%",1650]
+      ]
+    },
+    {
+      no:"PR-2026-021",
+      clientId:"CL-005",
+      client:"Fatima Ali",
+      caseNo:"2026/2104",
+      date:"14 Aug 2026",
+      validUntil:"29 Aug 2026",
+      taxMode:"Inclusive",
+      status:"Sent",
+      preparedBy:"Sara Ahmed",
+      items:[
+        ["Civil Claim Representation",1,750,750]
+      ],
+      net:681.818,
+      vat:68.182,
+      total:750,
+      scope:[
+        "Review tenancy agreement and receipts.",
+        "Prepare civil claim.",
+        "Attend Minor Civil Court hearings."
+      ],
+      exclusions:[
+        "Court filing fees.",
+        "External expert costs."
+      ],
+      payment:[
+        ["01","Upon Acceptance","100%",750]
+      ]
+    },
+    {
+      no:"PR-2026-022",
+      clientId:"CL-004",
+      client:"Al Noor Trading",
+      caseNo:"2026/2410",
+      date:"17 Aug 2026",
+      validUntil:"01 Sep 2026",
+      taxMode:"Exclusive",
+      status:"Draft",
+      preparedBy:"Ali Hasan",
+      items:[
+        ["Commercial Debt Recovery",1,1000,1000]
+      ],
+      net:1000,
+      vat:100,
+      total:1100,
+      scope:[
+        "Review supply invoices.",
+        "Prepare statement of claim.",
+        "Attend first instance proceedings."
+      ],
+      exclusions:[
+        "Court fees and enforcement expenses."
+      ],
+      payment:[
+        ["01","Upon Acceptance","60%",660],
+        ["02","Before First Hearing","40%",440]
+      ]
+    },
+    {
+      no:"PR-2026-017",
+      clientId:"CL-006",
+      client:"Bahrain Logistics W.L.L",
+      caseNo:"2025/3012",
+      date:"18 Dec 2025",
+      validUntil:"31 Dec 2025",
+      taxMode:"Exclusive",
+      status:"Rejected",
+      preparedBy:"Khalid Ali",
+      items:[
+        ["Commercial Dispute Advisory",1,2000,2000]
+      ],
+      net:2000,
+      vat:200,
+      total:2200,
+      scope:[
+        "Commercial dispute review.",
+        "Legal representation proposal."
+      ],
+      exclusions:[
+        "Court and expert fees."
+      ],
+      payment:[
+        ["01","Upon Acceptance","100%",2200]
+      ]
+    }
+  ];
 
   const HEARINGS = [
     {
@@ -2078,7 +2657,7 @@
   }
 
   function hideAllPages(){
-    ["dashboardPage","clientsPage","client360Page","casesPage","case360Page","hearingsPage","placeholderPage"].forEach(id=>{
+    ["dashboardPage","clientsPage","client360Page","casesPage","case360Page","hearingsPage","proposalsPage","proposal360Page","placeholderPage"].forEach(id=>{
       document.getElementById(id).classList.add("hidden");
     });
   }
@@ -2108,6 +2687,10 @@
       document.getElementById("pageSubtitle").textContent="Court calendar, legal tasks and daily workload";
       renderHearingsModule();
       switchHearingsView("calendar");
+    }else if(page==="proposals"){
+      document.getElementById("proposalsPage").classList.remove("hidden");
+      document.getElementById("pageSubtitle").textContent="Professional fee proposals, approval and conversion workflow";
+      renderProposals();
     }else{
       document.getElementById("placeholderPage").classList.remove("hidden");
       document.getElementById("placeholderTitle").textContent=PAGE_NAMES[page];
@@ -2401,6 +2984,186 @@
   }
 
 
+
+  let currentProposal = PROPOSALS[0];
+
+  function proposalStatusClass(status){
+    return String(status).toLowerCase();
+  }
+
+  function renderProposals(){
+    const search=(document.getElementById("proposalSearch")?.value||"").trim().toLowerCase();
+    const status=document.getElementById("proposalStatusFilter")?.value||"";
+    const tax=document.getElementById("proposalTaxFilter")?.value||"";
+
+    const rows=PROPOSALS.filter(p=>{
+      const matchesSearch=!search || [p.no,p.client,p.caseNo].join(" ").toLowerCase().includes(search);
+      const matchesStatus=!status || p.status===status;
+      const matchesTax=!tax || p.taxMode===tax;
+      return matchesSearch && matchesStatus && matchesTax;
+    }).map(p=>`
+      <tr>
+        <td><button class="proposal-name-btn" onclick="openProposal360('${p.no}')">${p.no}</button></td>
+        <td>${p.client}</td>
+        <td><button class="case-name-btn" onclick="openCase360('${p.caseNo}')">${p.caseNo}</button></td>
+        <td>${p.date}</td>
+        <td>${formatMoney(p.net)}</td>
+        <td>${formatMoney(p.vat)}</td>
+        <td>${formatMoney(p.total)}</td>
+        <td>${p.taxMode}</td>
+        <td><span class="proposal-status ${proposalStatusClass(p.status)}">${p.status}</span></td>
+        <td><button class="table-action" onclick="openProposal360('${p.no}')">View 360°</button></td>
+      </tr>
+    `).join("");
+
+    document.getElementById("proposalsTableBody").innerHTML=rows || `
+      <tr><td colspan="10" style="text-align:center;padding:28px;color:#7a8491;">No proposals match the selected filters.</td></tr>
+    `;
+  }
+
+  function openProposal360(proposalNo){
+    currentProposal=PROPOSALS.find(p=>p.no===proposalNo)||PROPOSALS[0];
+    hideAllPages();
+
+    document.getElementById("proposal360Page").classList.remove("hidden");
+    document.getElementById("pageTitle").textContent="Proposal 360°";
+    document.getElementById("pageSubtitle").textContent=currentProposal.no+" · "+currentProposal.client;
+
+    document.querySelectorAll(".nav-item").forEach(item=>{
+      item.classList.toggle("active",item.dataset.page==="proposals");
+    });
+
+    populateProposal360();
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+
+  function populateProposal360(){
+    const p=currentProposal;
+
+    document.getElementById("proposal360Title").textContent=p.no;
+    document.getElementById("proposal360Meta").textContent=p.client+" · Case "+p.caseNo;
+
+    const statusEl=document.getElementById("proposal360Status");
+    statusEl.textContent=p.status;
+    statusEl.className="proposal-status "+proposalStatusClass(p.status);
+
+    document.getElementById("proposal360TaxMode").textContent=p.taxMode+" VAT";
+
+    document.getElementById("proposalNet").textContent=formatMoney(p.net);
+    document.getElementById("proposalVat").textContent=formatMoney(p.vat);
+    document.getElementById("proposalTotal").textContent=formatMoney(p.total);
+    document.getElementById("proposalValidUntil").textContent=p.validUntil;
+
+    document.getElementById("proposalInfoClient").textContent=p.client;
+    document.getElementById("proposalInfoCase").textContent=p.caseNo;
+    document.getElementById("proposalInfoDate").textContent=p.date;
+    document.getElementById("proposalInfoTax").textContent=p.taxMode+" · VAT 10%";
+    document.getElementById("proposalPreparedBy").textContent=p.preparedBy;
+
+    document.getElementById("proposalItemsBody").innerHTML=p.items.map(i=>`
+      <tr>
+        <td>${i[0]}</td>
+        <td>${i[1]}</td>
+        <td>${formatMoney(i[2])}</td>
+        <td>${formatMoney(i[3])}</td>
+      </tr>
+    `).join("");
+
+    document.getElementById("proposalSubtotalBox").textContent=formatMoney(p.net);
+    document.getElementById("proposalVatBox").textContent=formatMoney(p.vat);
+    document.getElementById("proposalTotalBox").textContent=formatMoney(p.total);
+
+    document.getElementById("proposalScopeList").innerHTML=p.scope.map(s=>`
+      <div class="scope-item">
+        <div class="scope-check">✓</div>
+        <div>${s}</div>
+      </div>
+    `).join("");
+
+    document.getElementById("proposalExclusionsList").innerHTML=p.exclusions.map(s=>`
+      <div class="scope-item">
+        <div class="scope-check" style="background:#fbeaea;color:#a74646;">×</div>
+        <div>${s}</div>
+      </div>
+    `).join("");
+
+    document.getElementById("proposalPaymentPlan").innerHTML=p.payment.map(step=>`
+      <div class="payment-step">
+        <div class="payment-step-num">${step[0]}</div>
+        <div>
+          <strong>${step[1]}</strong>
+          <span>${step[2]} of total proposal</span>
+        </div>
+        <b>${formatMoney(step[3])}</b>
+      </div>
+    `).join("");
+
+    const convertBtn=document.getElementById("convertProposalBtn");
+
+    if(p.status==="Approved"){
+      convertBtn.disabled=false;
+      convertBtn.textContent="Create Invoice";
+      convertBtn.style.opacity="1";
+    }else if(p.status==="Invoiced"){
+      convertBtn.disabled=true;
+      convertBtn.textContent="Already Invoiced";
+      convertBtn.style.opacity=".55";
+    }else{
+      convertBtn.disabled=true;
+      convertBtn.textContent="Approval Required";
+      convertBtn.style.opacity=".55";
+    }
+  }
+
+  function openProposalClient(){
+    if(!currentProposal) return;
+    openClient360(currentProposal.clientId);
+  }
+
+  function openProposalCase(){
+    if(!currentProposal) return;
+    openCase360(currentProposal.caseNo);
+  }
+
+  function convertProposalToInvoiceDemo(){
+    const p=currentProposal;
+
+    if(!p || p.status!=="Approved") return;
+
+    const invoiceMap={
+      "PR-2026-018":"INV-2026-041",
+      "PR-2026-020":"INV-2026-043"
+    };
+
+    const invoiceNo=invoiceMap[p.no] || "INV-2026-DEMO";
+
+    alert(
+      "Proposal Converted to Invoice\\n\\n"+
+      p.no+" → "+invoiceNo+"\\n\\n"+
+      "Client: "+p.client+"\\n"+
+      "Case: "+p.caseNo+"\\n"+
+      "Total: "+formatMoney(p.total)+"\\n"+
+      "VAT Mode: "+p.taxMode+"\\n\\n"+
+      "In the next release, this action will open Invoice 360° directly with all proposal data carried forward automatically."
+    );
+  }
+
+  function showAddProposalDemo(){
+    alert(
+      "New Professional Fee Proposal — Demo\\n\\n"+
+      "Prepared workflow:\\n"+
+      "• Select Client\\n"+
+      "• Select Case / Matter\\n"+
+      "• Add Professional Services\\n"+
+      "• Choose Inclusive / Exclusive VAT\\n"+
+      "• VAT 10%\\n"+
+      "• Define Scope of Services\\n"+
+      "• Define Exclusions\\n"+
+      "• Set Payment Terms\\n"+
+      "• Save as Draft / Send to Client"
+    );
+  }
+
   let calendarMonth = 7; // August (0-based)
   let calendarYear = 2026;
 
@@ -2661,7 +3424,7 @@
       "5. Professional Fee Proposal\n"+
       "6. Invoice & Collection\n"+
       "7. Management Reports\n\n"+
-      "Dashboard, Clients, Client 360°, Cases, Case 360°, Tasks & Hearings, Legal Calendar and My Day are active in Release 1.3."
+      "Dashboard, Clients, Cases, Tasks & Hearings and Professional Fee Proposals are active through Release 1.4. Proposal 360° can also convert approved proposals into an Invoice demo workflow."
     );
   }
 
@@ -2669,6 +3432,7 @@
   renderClients();
   renderCases();
   renderHearingsModule();
+  renderProposals();
 </script>
 
 </body>
