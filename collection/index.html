@@ -947,60 +947,42 @@
       .footer{flex-direction:column;padding-left:18px;padding-right:18px}
     }
   
-    /* RECOVA 1.11 — FORCE VISIBLE LANGUAGE SWITCH */
-    .top-actions{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      min-width:0;
-      flex-wrap:nowrap;
-      overflow:visible;
-    }
-    .search{width:220px}
-
-    .lang-switcher{
-      display:flex !important;
+    /* RECOVA RELEASE 1.11 — LANGUAGE BUTTONS */
+    .language-top-btn{
+      display:inline-flex !important;
       visibility:visible !important;
       opacity:1 !important;
       align-items:center;
-      flex:0 0 auto;
-      height:38px;
-      min-width:118px;
-      border:2px solid var(--teal);
-      border-radius:7px;
-      background:#fff;
-      overflow:hidden;
-      position:relative;
-      z-index:1000;
-      box-shadow:0 2px 8px rgba(7,21,37,.08);
-    }
-    .lang-btn{
-      display:flex !important;
-      align-items:center;
       justify-content:center;
-      flex:1 1 50%;
-      height:100%;
-      min-width:56px;
-      padding:0 9px;
-      border:0;
-      background:#fff;
-      color:var(--navy);
-      font-size:10px;
-      font-weight:800;
-      cursor:pointer;
+      min-width:54px !important;
+      padding:0 10px !important;
+      border:1px solid var(--teal) !important;
+      color:var(--navy) !important;
+      background:#fff !important;
+      font-weight:800 !important;
       white-space:nowrap;
+      position:relative;
+      z-index:999;
     }
-    .lang-btn + .lang-btn{border-left:1px solid var(--border)}
-    .lang-btn.active{background:var(--teal);color:#fff}
-    html[dir="rtl"] .lang-btn + .lang-btn{border-left:0;border-right:1px solid var(--border)}
+    .language-top-btn.active{
+      background:var(--teal) !important;
+      color:#fff !important;
+      border-color:var(--teal) !important;
+    }
 
-    html[dir="rtl"] body{direction:rtl;text-align:right;font-family:Tahoma,Arial,Helvetica,sans-serif}
+    html[dir="rtl"] body{
+      direction:rtl;
+      text-align:right;
+      font-family:Tahoma,Arial,Helvetica,sans-serif;
+    }
     html[dir="rtl"] .app{grid-template-columns:1fr 245px}
     html[dir="rtl"] .sidebar{right:0;left:auto}
     html[dir="rtl"] .main{grid-column:1}
     html[dir="rtl"] .nav-item{text-align:right}
     html[dir="rtl"] th,html[dir="rtl"] td{text-align:right}
-    html[dir="rtl"] input,html[dir="rtl"] select,html[dir="rtl"] textarea{direction:rtl;text-align:right}
+    html[dir="rtl"] input,
+    html[dir="rtl"] select,
+    html[dir="rtl"] textarea{direction:rtl;text-align:right}
     html[dir="rtl"] .permission-table td,
     html[dir="rtl"] .permission-table th{text-align:center}
     html[dir="rtl"] .permission-table td:first-child,
@@ -1008,22 +990,11 @@
     html[dir="rtl"] .account-card::after{right:auto;left:-35px}
     html[dir="rtl"] .transfer-arrow{transform:rotate(180deg)}
 
-    @media(max-width:1100px){
-      .search{width:160px}
-      .profile{padding-right:6px}
-    }
     @media(max-width:950px){
-      .search{display:none}
-      .lang-switcher{min-width:112px}
       html[dir="rtl"] .app{display:block}
       html[dir="rtl"] .sidebar{transform:translateX(100%)}
       html[dir="rtl"] .sidebar.open{transform:translateX(0)}
       html[dir="rtl"] .main{grid-column:auto}
-    }
-    @media(max-width:650px){
-      .profile{display:none}
-      .top-actions{gap:6px}
-      .lang-switcher{min-width:108px;height:36px}
     }
 
 </style>
@@ -1130,10 +1101,24 @@
 
       <div class="top-actions">
         <input class="search" placeholder="Search debtor, account or case...">
-        <div class="lang-switcher" id="recovaLanguageSwitcher" aria-label="Language switcher">
-          <button id="langEnBtn" class="lang-btn active" type="button" onclick="setRecovaLanguage('en')">EN</button>
-          <button id="langArBtn" class="lang-btn" type="button" onclick="setRecovaLanguage('ar')">العربية</button>
-        </div>
+
+        <!-- LANGUAGE SWITCH — ALWAYS VISIBLE -->
+        <button
+          id="langEnBtn"
+          class="top-btn language-top-btn active"
+          type="button"
+          onclick="setRecovaLanguage('en')"
+          title="English"
+        >EN</button>
+
+        <button
+          id="langArBtn"
+          class="top-btn language-top-btn"
+          type="button"
+          onclick="setRecovaLanguage('ar')"
+          title="العربية"
+        >عربي</button>
+
         <button class="top-btn">♢</button>
         <div class="profile">
           <div class="avatar">AO</div>
@@ -5281,55 +5266,272 @@
 
 
 <script>
-const RECOVA_TRANSLATIONS = {
-  "Dashboard":"لوحة التحكم","Collection Dashboard":"لوحة تحكم التحصيل",
-  "Clients":"العملاء","Debtors":"المدينون","Collection Cases":"ملفات التحصيل",
-  "Follow-ups":"المتابعات","Promises to Pay":"وعود السداد","Collections":"التحصيلات",
-  "Settlements":"التسويات","Commission & Fees":"العمولات والأتعاب","Expenses":"المصروفات",
-  "Banking & Treasury":"البنوك والخزينة","Reports & Analytics":"التقارير والتحليلات",
-  "Users & Permissions":"المستخدمون والصلاحيات","Settings":"الإعدادات","Audit Log":"سجل التدقيق",
-  "WORKSPACE":"مساحة العمل","FINANCIAL":"المالية","MANAGEMENT":"الإدارة",
-  "Good morning,":"صباح الخير،","Start Demo Tour":"بدء الجولة التجريبية","New Action":"إجراء جديد",
-  "Assigned Portfolio":"المحفظة المسندة","Collected":"المحصل","Outstanding":"المستحق",
-  "Active Debtors":"المدينون النشطون","PTP Due Today":"وعود السداد المستحقة اليوم",
-  "Broken Promises":"وعود مكسورة","Assigned vs Collected":"المسند مقابل المحصل",
-  "Recovery Performance":"أداء التحصيل","Priority Collection Cases":"ملفات التحصيل ذات الأولوية",
-  "Top Collectors":"أفضل المحصلين","Recent Activities":"أحدث الأنشطة","Management Insights":"مؤشرات الإدارة",
-  "Export Excel":"تصدير Excel","Add Client":"إضافة عميل","Add Debtor":"إضافة مدين",
-  "Record Collection":"تسجيل تحصيل","New Settlement":"تسوية جديدة","New Expense":"مصروف جديد",
-  "New Transfer":"تحويل جديد","Cash Deposit":"إيداع نقدي","Client Settlement":"تسوية عميل",
-  "Executive PDF":"PDF تنفيذي","Open Key Report":"فتح التقرير الرئيسي",
-  "Save Settings":"حفظ الإعدادات","Export Audit":"تصدير سجل التدقيق",
-  "View":"عرض","View Client":"عرض العميل","View Debtor":"عرض المدين","View Case":"عرض الملف",
-  "Overview":"نظرة عامة","Activity":"النشاط","Status":"الحالة","Action":"الإجراء",
-  "Client":"العميل","Debtor":"المدين","Case":"الملف","Collector":"المحصل",
-  "Amount":"المبلغ","Date":"التاريخ","Reference":"المرجع","Description":"الوصف",
-  "Active":"نشط","Inactive":"غير نشط","Pending":"قيد الانتظار","Completed":"مكتمل",
-  "Approved":"معتمد","Rejected":"مرفوض","Settled":"مسوى","Paid":"مدفوع","Broken":"مكسور",
-  "Cash":"نقدًا","Bank Transfer":"تحويل بنكي","Cheque":"شيك","BenefitPay":"بنفت بي",
+/* =========================================================
+   RECOVA 1.11 — EN / AR LANGUAGE ENGINE
+   ========================================================= */
+const RECOVA_AR = {
+  "Collection Dashboard":"لوحة تحكم التحصيل",
+  "Portfolio, recovery and collector performance overview":"نظرة عامة على المحفظة والتحصيل وأداء المحصلين",
+  "Dashboard":"لوحة التحكم",
+  "Clients":"العملاء",
+  "Debtors":"المدينون",
+  "Collection Cases":"ملفات التحصيل",
+  "Follow-ups":"المتابعات",
+  "Promises to Pay":"وعود السداد",
+  "Collections":"التحصيلات",
+  "Settlements":"التسويات",
+  "Commission & Fees":"العمولات والأتعاب",
+  "Expenses":"المصروفات",
+  "Banking & Treasury":"البنوك والخزينة",
+  "Reports & Analytics":"التقارير والتحليلات",
+  "Users & Permissions":"المستخدمون والصلاحيات",
+  "Settings":"الإعدادات",
+  "Audit Log":"سجل التدقيق",
+
+  "WORKSPACE":"مساحة العمل",
+  "FINANCIAL":"المالية",
+  "MANAGEMENT":"الإدارة",
+  "DEMO ENVIRONMENT":"بيئة تجريبية",
+  "Designed & Developed by":"تصميم وتطوير",
+
+  "Good morning,":"صباح الخير،",
+  "Start Demo Tour":"بدء الجولة التجريبية",
+  "New Action":"إجراء جديد",
+  "Assigned Portfolio":"المحفظة المسندة",
+  "Assigned Value":"القيمة المسندة",
+  "Assigned Amount":"المبلغ المسند",
+  "Assigned":"المسند",
+  "Collected":"المحصل",
+  "Outstanding":"المستحق",
+  "Active Debtors":"المدينون النشطون",
+  "PTP Due Today":"وعود السداد المستحقة اليوم",
+  "Broken Promises":"وعود مكسورة",
+  "Assigned vs Collected":"المسند مقابل المحصل",
+  "Recovery Performance":"أداء التحصيل",
+  "Priority Collection Cases":"ملفات التحصيل ذات الأولوية",
+  "Top Collectors":"أفضل المحصلين",
+  "Recent Activities":"أحدث الأنشطة",
+  "Management Insights":"مؤشرات الإدارة",
+
+  "Total Clients":"إجمالي العملاء",
+  "Active Accounts":"الحسابات النشطة",
+  "Settled Accounts":"الحسابات المسواة",
+  "Client ID":"رقم العميل",
+  "Client Name":"اسم العميل",
+  "Sector":"القطاع",
+  "Recovery Rate":"نسبة التحصيل",
+  "Client Information":"بيانات العميل",
+  "Contact Person":"جهة الاتصال",
+  "CR Number":"رقم السجل",
+  "Mobile":"الهاتف",
+  "Email":"البريد الإلكتروني",
+  "Commission Rate":"نسبة العمولة",
+  "Portfolio Health":"صحة المحفظة",
+  "Portfolios":"المحافظ",
+  "Activity":"النشاط",
+
+  "Total Debtors":"إجمالي المدينين",
+  "High Risk":"مخاطر عالية",
+  "Settled":"مسوى",
+  "Debtor ID":"رقم المدين",
+  "Debtor Name":"اسم المدين",
+  "Risk":"المخاطر",
+  "Debtor Information":"بيانات المدين",
+  "Assigned Collector":"المحصل المسؤول",
+  "Current Collection Position":"موقف التحصيل الحالي",
+  "Last Contact":"آخر تواصل",
+  "Next Action":"الإجراء القادم",
+
+  "Active Cases":"الملفات النشطة",
+  "PTP Stage":"مرحلة وعد السداد",
+  "Negotiation":"تفاوض",
+  "Escalated":"مصعّد",
+  "Stage":"المرحلة",
+  "Case Information":"بيانات الملف",
+  "Case Number":"رقم الملف",
+  "Assigned Date":"تاريخ الإسناد",
+  "Current Stage":"المرحلة الحالية",
+  "Recovery Position":"موقف التحصيل",
+  "Settlement":"التسوية",
+
+  "Due Today":"مستحق اليوم",
+  "Completed Today":"مكتمل اليوم",
+  "Overdue":"متأخر",
+  "Field Visits":"زيارات ميدانية",
+  "Calls Planned":"مكالمات مخططة",
+  "Daily Work Queue":"قائمة العمل اليومية",
+  "Collector Workload":"عبء عمل المحصلين",
+  "Follow-up History":"سجل المتابعات",
+  "Call":"مكالمة",
+  "WhatsApp":"واتساب",
+  "Field Visit":"زيارة ميدانية",
+  "Meeting":"اجتماع",
+
+  "Active PTP":"وعود السداد النشطة",
+  "Paid PTP":"وعود السداد المدفوعة",
+  "Broken PTP":"وعود سداد مكسورة",
+  "Promise Value":"قيمة وعود السداد",
+  "PTP Register":"سجل وعود السداد",
+  "PTP Calendar":"تقويم وعود السداد",
+  "Broken Promise Watchlist":"قائمة مراقبة الوعود المكسورة",
+  "Promised Amount":"المبلغ الموعود",
+  "Due Date":"تاريخ الاستحقاق",
+
+  "Collected Today":"المحصل اليوم",
+  "This Month":"هذا الشهر",
+  "Allocated":"مخصص",
+  "Unallocated":"غير مخصص",
+  "Receipts":"الإيصالات",
+  "Payment Method":"طريقة السداد",
+  "Cash":"نقدًا",
+  "BenefitPay":"بنفت بي",
+  "Bank Transfer":"تحويل بنكي",
+  "Cheque":"شيك",
+  "Receipt Amount":"مبلغ الإيصال",
+  "Receipt Date":"تاريخ الإيصال",
+
+  "Open Settlements":"التسويات المفتوحة",
+  "Proposed Value":"القيمة المقترحة",
+  "Approved":"معتمد",
+  "Recovered via Settlement":"المحصل عبر التسوية",
+  "Settlement Amount":"مبلغ التسوية",
+  "Discount Amount":"مبلغ الخصم",
+  "Valid Until":"صالح حتى",
+
+  "Gross Collections":"إجمالي التحصيلات",
+  "Commission Earned":"العمولة المكتسبة",
+  "Net Due to Clients":"صافي المستحق للعملاء",
+  "Pending Approval":"بانتظار الاعتماد",
+  "Commission":"العمولة",
+  "Period":"الفترة",
+
+  "Total Expenses":"إجمالي المصروفات",
+  "Office Expenses":"مصروفات المكتب",
+  "Field Expenses":"المصروفات الميدانية",
+  "Legal / External":"قانونية / خارجية",
+  "Client Recoverable":"قابل للاسترداد من العميل",
+  "Net Amount":"صافي المبلغ",
+  "VAT":"ضريبة القيمة المضافة",
+  "Total Paid":"إجمالي المدفوع",
+  "Expense Date":"تاريخ المصروف",
+
+  "Total Funds":"إجمالي الأموال",
+  "Collection Bank":"حسابات بنك التحصيل",
+  "Cash on Hand":"النقد بالصندوق",
+  "Undeposited":"غير مودع",
+  "Client Funds Payable":"أموال مستحقة للعملاء",
+  "Today's Net Movement":"صافي حركة اليوم",
+  "Accounts":"الحسابات",
+  "Transactions":"الحركات",
+  "Transfers":"التحويلات",
+  "Client Funds":"أموال العملاء",
+  "Cash Flow":"التدفق النقدي",
+
+  "Total Users":"إجمالي المستخدمين",
+  "Collectors":"المحصلون",
+  "Finance Users":"مستخدمو المالية",
+  "Managers":"المديرون",
+  "Active Today":"النشطون اليوم",
+  "Role":"الدور",
+  "Department":"القسم",
+  "Last Login":"آخر دخول",
+  "Permission Matrix":"مصفوفة الصلاحيات",
+
+  "Company Profile":"بيانات الشركة",
+  "Company Name":"اسم الشركة",
+  "Arabic Name":"الاسم بالعربية",
+  "VAT Number":"الرقم الضريبي",
+  "Collection Rules":"قواعد التحصيل",
+  "Financial Settings":"الإعدادات المالية",
+  "Currency":"العملة",
+  "VAT Rate":"نسبة الضريبة",
+  "Notifications":"الإشعارات",
+  "Document Templates":"قوالب المستندات",
+  "Save Settings":"حفظ الإعدادات",
+
+  "Today's Actions":"إجراءات اليوم",
+  "Collection Actions":"إجراءات التحصيل",
+  "Financial Actions":"الإجراءات المالية",
+  "Case Updates":"تحديثات الملفات",
+  "Active Users Today":"المستخدمون النشطون اليوم",
+
+  "Export Excel":"تصدير Excel",
+  "Export Audit":"تصدير سجل التدقيق",
+  "Executive PDF":"PDF تنفيذي",
+  "Open Key Report":"فتح التقرير الرئيسي",
+  "View Client":"عرض العميل",
+  "View Debtor":"عرض المدين",
+  "View Case":"عرض الملف",
+  "View Attachment":"عرض المرفق",
+  "Back to Clients":"العودة إلى العملاء",
+  "Back to Debtors":"العودة إلى المدينين",
+  "Back to Collection Cases":"العودة إلى ملفات التحصيل",
+  "Back to Promises to Pay":"العودة إلى وعود السداد",
+  "Back to Collections":"العودة إلى التحصيلات",
+  "Back to Settlements":"العودة إلى التسويات",
+  "Back to Expenses":"العودة إلى المصروفات",
+  "Back to Reports":"العودة إلى التقارير",
+
+  "Status":"الحالة",
+  "Action":"الإجراء",
+  "Date":"التاريخ",
+  "Client":"العميل",
+  "Debtor":"المدين",
+  "Case":"الملف",
+  "Collector":"المحصل",
+  "Amount":"المبلغ",
+  "Reference":"المرجع",
+  "Description":"الوصف",
+  "Active":"نشط",
+  "Inactive":"غير نشط",
+  "Pending":"قيد الانتظار",
+  "Completed":"مكتمل",
+  "Paid":"مدفوع",
+  "Broken":"مكسور",
+  "Rejected":"مرفوض",
+  "Calculated":"محسوب",
+  "Partial":"جزئي",
+  "Open":"مفتوح",
+  "Create":"إنشاء",
+  "Update":"تحديث",
+  "Reverse":"عكس",
+  "Login":"تسجيل دخول",
+  "Full":"كامل",
+  "View":"عرض",
+  "Limited":"محدود",
+  "Approve":"اعتماد",
+
   "Search debtor, account or case...":"ابحث عن مدين أو حساب أو ملف...",
-  "Designed & Developed by":"تصميم وتطوير","DEMO ENVIRONMENT":"بيئة تجريبية"
+  "Search client, CR or contact...":"ابحث عن عميل أو سجل أو جهة اتصال...",
+  "Search debtor, CPR/CR, client or case...":"ابحث عن مدين أو CPR/CR أو عميل أو ملف...",
+  "Search case, debtor, client or collector...":"ابحث عن ملف أو مدين أو عميل أو محصل...",
+  "Search debtor, case or collector...":"ابحث عن مدين أو ملف أو محصل...",
+  "Search receipt, debtor, case or reference...":"ابحث عن إيصال أو مدين أو ملف أو مرجع...",
+  "Search settlement, debtor, client or case...":"ابحث عن تسوية أو مدين أو عميل أو ملف...",
+  "Search expense, vendor, client or case...":"ابحث عن مصروف أو مورد أو عميل أو ملف...",
+  "Search transaction or reference...":"ابحث عن حركة أو مرجع...",
+  "Search user, module or reference...":"ابحث عن مستخدم أو قسم أو مرجع..."
 };
 
-const RECOVA_ORIG = new WeakMap();
-const RECOVA_PLACE = new WeakMap();
+const RECOVA_ORIGINAL_TEXT = new WeakMap();
+const RECOVA_ORIGINAL_PLACEHOLDER = new WeakMap();
 let RECOVA_LANG = "en";
-let RECOVA_OBSERVER = null;
-let RECOVA_LOCK = false;
+let RECOVA_LANG_OBSERVER = null;
+let RECOVA_LANG_BUSY = false;
 
-function recovaTranslateText(value){
+function recovaTranslate(value){
   if(RECOVA_LANG !== "ar") return value;
-  let out = value;
-  Object.keys(RECOVA_TRANSLATIONS).sort((a,b)=>b.length-a.length).forEach(k=>{
-    out = out.split(k).join(RECOVA_TRANSLATIONS[k]);
+  let output = value;
+  Object.keys(RECOVA_AR).sort((a,b)=>b.length-a.length).forEach(key=>{
+    output = output.split(key).join(RECOVA_AR[key]);
   });
-  return out;
+  return output;
 }
 
 function applyRecovaLanguage(){
-  if(RECOVA_LOCK) return;
-  RECOVA_LOCK = true;
-  if(RECOVA_OBSERVER) RECOVA_OBSERVER.disconnect();
+  if(RECOVA_LANG_BUSY) return;
+  RECOVA_LANG_BUSY = true;
+  if(RECOVA_LANG_OBSERVER) RECOVA_LANG_OBSERVER.disconnect();
 
   document.documentElement.lang = RECOVA_LANG === "ar" ? "ar" : "en";
   document.documentElement.dir = RECOVA_LANG === "ar" ? "rtl" : "ltr";
@@ -5340,26 +5542,29 @@ function applyRecovaLanguage(){
   if(ar) ar.classList.toggle("active", RECOVA_LANG === "ar");
 
   document.querySelectorAll("body *").forEach(el=>{
-    if(el.closest("#recovaLanguageSwitcher")) return;
     if(["SCRIPT","STYLE","INPUT","TEXTAREA"].includes(el.tagName)) return;
+    if(el.id === "langEnBtn" || el.id === "langArBtn") return;
 
     Array.from(el.childNodes).forEach(node=>{
-      if(node.nodeType !== 3 || !node.nodeValue.trim()) return;
-      if(!RECOVA_ORIG.has(node)) RECOVA_ORIG.set(node,node.nodeValue);
-      const original = RECOVA_ORIG.get(node);
-      node.nodeValue = RECOVA_LANG === "ar" ? recovaTranslateText(original) : original;
+      if(node.nodeType !== Node.TEXT_NODE || !node.nodeValue.trim()) return;
+      if(!RECOVA_ORIGINAL_TEXT.has(node)) RECOVA_ORIGINAL_TEXT.set(node,node.nodeValue);
+      const original = RECOVA_ORIGINAL_TEXT.get(node);
+      node.nodeValue = RECOVA_LANG === "ar" ? recovaTranslate(original) : original;
     });
   });
 
   document.querySelectorAll("input[placeholder],textarea[placeholder]").forEach(el=>{
-    if(!RECOVA_PLACE.has(el)) RECOVA_PLACE.set(el,el.placeholder);
-    const original = RECOVA_PLACE.get(el);
-    el.placeholder = RECOVA_LANG === "ar" ? recovaTranslateText(original) : original;
+    if(!RECOVA_ORIGINAL_PLACEHOLDER.has(el)){
+      RECOVA_ORIGINAL_PLACEHOLDER.set(el,el.placeholder);
+    }
+    const original = RECOVA_ORIGINAL_PLACEHOLDER.get(el);
+    el.placeholder = RECOVA_LANG === "ar" ? recovaTranslate(original) : original;
   });
 
-  RECOVA_LOCK = false;
-  if(RECOVA_OBSERVER){
-    RECOVA_OBSERVER.observe(document.body,{childList:true,subtree:true});
+  RECOVA_LANG_BUSY = false;
+
+  if(RECOVA_LANG_OBSERVER){
+    RECOVA_LANG_OBSERVER.observe(document.body,{childList:true,subtree:true});
   }
 }
 
@@ -5370,12 +5575,19 @@ function setRecovaLanguage(lang){
 }
 
 function initRecovaLanguage(){
-  try{ RECOVA_LANG = localStorage.getItem("recovaLanguage") || "en"; }catch(e){ RECOVA_LANG="en"; }
+  try{
+    RECOVA_LANG = localStorage.getItem("recovaLanguage") || "en";
+  }catch(e){
+    RECOVA_LANG = "en";
+  }
+
   applyRecovaLanguage();
-  RECOVA_OBSERVER = new MutationObserver(()=>{
-    if(!RECOVA_LOCK) requestAnimationFrame(applyRecovaLanguage);
+
+  RECOVA_LANG_OBSERVER = new MutationObserver(()=>{
+    if(!RECOVA_LANG_BUSY) requestAnimationFrame(applyRecovaLanguage);
   });
-  RECOVA_OBSERVER.observe(document.body,{childList:true,subtree:true});
+
+  RECOVA_LANG_OBSERVER.observe(document.body,{childList:true,subtree:true});
 }
 
 window.addEventListener("load",initRecovaLanguage);
