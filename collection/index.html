@@ -320,6 +320,64 @@
       .debtor-actions button{flex:1}
     }
 
+
+    /* COLLECTION CASES */
+    .case-kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-bottom:16px}
+    .case-toolbar{display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+    .case-toolbar-left{display:flex;gap:10px;flex-wrap:wrap}
+    .case-toolbar input,.case-toolbar select{
+      height:40px;border:1px solid var(--border);border-radius:6px;background:white;padding:0 12px;font-size:11px;outline:none
+    }
+    .case-toolbar input{width:280px}
+    .case-link{border:0;background:transparent;color:var(--navy);font-weight:700;cursor:pointer;padding:0}
+    .case-link:hover{color:var(--teal)}
+
+    .case-status{display:inline-flex;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700}
+    .case-status.active{background:#edf5f0;color:#347b57}
+    .case-status.ptp{background:#f7f1e7;color:#8f6b27}
+    .case-status.escalate{background:#fbeaea;color:#a74646}
+    .case-status.negotiation{background:#eef2f7;color:#36506d}
+    .case-status.settled{background:#f0eafa;color:#6a4b91}
+
+    .case-stage{display:inline-flex;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700;background:#eef2f7;color:#36506d}
+
+    .case-hero{
+      display:flex;justify-content:space-between;gap:20px;align-items:flex-start;background:white;border:1px solid var(--border);
+      border-radius:8px;padding:22px;margin-bottom:16px
+    }
+    .case-hero-left{display:flex;gap:16px;align-items:flex-start}
+    .case-avatar{
+      width:58px;height:58px;border-radius:10px;background:var(--navy);color:var(--teal2);
+      display:grid;place-items:center;font-size:18px;font-weight:700
+    }
+    .case-hero h2{font-size:23px;color:var(--navy)}
+    .case-hero p{margin-top:6px;color:var(--muted);font-size:11px}
+    .case-tags{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
+    .case-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .case-summary-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-bottom:16px}
+    .case-overview-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:16px}
+    .progress{height:8px;border-radius:20px;background:#e9edf0;overflow:hidden}
+    .progress span{display:block;height:100%;background:var(--teal);border-radius:20px}
+    .progress-line{display:grid;grid-template-columns:120px 1fr 60px;gap:10px;align-items:center;margin-top:12px;font-size:10px}
+    .collector-note{padding:14px;border:1px solid var(--border);border-radius:7px;background:var(--soft);font-size:10px;color:#5c6670;line-height:1.6}
+
+    @media(max-width:1250px){
+      .case-kpi-grid,.case-summary-grid{grid-template-columns:repeat(3,1fr)}
+    }
+    @media(max-width:950px){
+      .case-overview-grid{grid-template-columns:1fr}
+    }
+    @media(max-width:650px){
+      .case-kpi-grid,.case-summary-grid{grid-template-columns:1fr 1fr}
+      .case-toolbar{align-items:stretch}
+      .case-toolbar-left{width:100%}
+      .case-toolbar input,.case-toolbar select{width:100%}
+      .case-hero{flex-direction:column}
+      .case-hero-left{flex-direction:column}
+      .case-actions{width:100%}
+      .case-actions button{flex:1}
+    }
+
     .placeholder{min-height:500px;display:grid;place-items:center;text-align:center}
     .placeholder-box{max-width:520px;padding:45px;background:white;border:1px solid var(--border);border-radius:10px}
     .placeholder-box span{font-size:9px;color:var(--teal);letter-spacing:2px;font-weight:700}
@@ -1002,6 +1060,181 @@
     </div>
 
 
+
+    <!-- COLLECTION CASES -->
+    <div id="casesPage" class="hidden">
+      <div class="content">
+        <div class="hero-row">
+          <div>
+            <h2>Collection Cases</h2>
+            <p>Manage assigned debt files, recovery stages, collectors and settlement activity.</p>
+          </div>
+          <div class="hero-actions">
+            <button class="action-btn action-secondary">Export Excel</button>
+            <button class="action-btn action-primary" onclick="showAddCaseDemo()">+ New Collection Case</button>
+          </div>
+        </div>
+
+        <div class="case-kpi-grid">
+          <div class="kpi-card"><span class="kpi-label">Active Cases</span><strong class="kpi-value">146</strong><div class="kpi-note">Current collection workload</div></div>
+          <div class="kpi-card"><span class="kpi-label">PTP Stage</span><strong class="kpi-value">27</strong><div class="kpi-note">Promise to pay cases</div></div>
+          <div class="kpi-card"><span class="kpi-label">Negotiation</span><strong class="kpi-value">18</strong><div class="kpi-note">Settlement discussions</div></div>
+          <div class="kpi-card"><span class="kpi-label">Escalated</span><strong class="kpi-value">14</strong><div class="kpi-note"><span class="danger">Immediate attention</span></div></div>
+          <div class="kpi-card"><span class="kpi-label">Settled</span><strong class="kpi-value">38</strong><div class="kpi-note">Closed successfully</div></div>
+        </div>
+
+        <section class="card">
+          <div class="case-toolbar">
+            <div class="case-toolbar-left">
+              <input id="caseSearch" type="search" placeholder="Search case, debtor, client or collector..." oninput="renderCases()">
+              <select id="caseStatusFilter" onchange="renderCases()">
+                <option value="">All Statuses</option>
+                <option value="Active">Active</option>
+                <option value="PTP">PTP</option>
+                <option value="Negotiation">Negotiation</option>
+                <option value="Escalate">Escalate</option>
+                <option value="Settled">Settled</option>
+              </select>
+              <select id="caseCollectorFilter" onchange="renderCases()">
+                <option value="">All Collectors</option>
+                <option value="Sara Ahmed">Sara Ahmed</option>
+                <option value="Khalid Ali">Khalid Ali</option>
+                <option value="Mohammed Hasan">Mohammed Hasan</option>
+                <option value="Fatima Abbas">Fatima Abbas</option>
+              </select>
+            </div>
+            <span style="font-size:10px;color:var(--muted)">Open any case to view Collection Case 360°</span>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Case</th><th>Client</th><th>Debtor</th><th>Assigned</th><th>Collected</th>
+                  <th>Outstanding</th><th>Recovery</th><th>Stage</th><th>Status</th><th>Collector</th><th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="casesTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <footer class="footer">
+        <span>RECOVA — Collection Cases</span>
+        <span>Designed & Developed by <strong style="color:#1aa6a6">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
+    <!-- COLLECTION CASE 360 -->
+    <div id="case360Page" class="hidden">
+      <div class="content">
+        <div style="margin-bottom:14px;">
+          <button class="action-btn action-secondary" onclick="openPage('cases')">← Back to Collection Cases</button>
+        </div>
+
+        <section class="case-hero">
+          <div class="case-hero-left">
+            <div class="case-avatar">C</div>
+            <div>
+              <h2 id="case360Title">COL-260184</h2>
+              <p id="case360Meta">Gulf Finance B.S.C. · Ahmed Trading</p>
+              <div class="case-tags">
+                <span id="case360Status" class="case-status escalate">Escalate</span>
+                <span id="case360Stage" class="case-stage">Escalation</span>
+                <span class="client-type">Case 360°</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="case-actions">
+            <button class="action-btn action-secondary" onclick="openCaseClient()">View Client</button>
+            <button class="action-btn action-secondary" onclick="openCaseDebtor()">View Debtor</button>
+            <button class="action-btn action-secondary">+ Follow-up</button>
+            <button class="action-btn action-primary">Record Collection</button>
+          </div>
+        </section>
+
+        <div class="case-summary-grid">
+          <div class="kpi-card"><span class="kpi-label">Assigned Amount</span><strong id="caseAssigned" class="kpi-value money"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Collected</span><strong id="caseCollected" class="kpi-value money"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Outstanding</span><strong id="caseOutstanding" class="kpi-value money"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Recovery Rate</span><strong id="caseRecovery" class="kpi-value"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Next PTP</span><strong id="caseNextPtp" class="kpi-value money"></strong></div>
+        </div>
+
+        <section class="card">
+          <div class="tabs">
+            <button class="tab-btn active" onclick="openCaseTab('overview',this)">Overview</button>
+            <button class="tab-btn" onclick="openCaseTab('followups',this)">Follow-ups</button>
+            <button class="tab-btn" onclick="openCaseTab('ptp',this)">Promises to Pay</button>
+            <button class="tab-btn" onclick="openCaseTab('collections',this)">Collections</button>
+            <button class="tab-btn" onclick="openCaseTab('settlement',this)">Settlement</button>
+            <button class="tab-btn" onclick="openCaseTab('activity',this)">Activity</button>
+          </div>
+
+          <div id="case-tab-overview" class="tab-panel active">
+            <div class="case-overview-grid">
+              <div>
+                <div class="card-head"><div><h3>Case Information</h3><p>Core assignment and recovery details</p></div></div>
+                <div class="info-grid">
+                  <div class="info-item"><span>Case Number</span><strong id="caseInfoNo"></strong></div>
+                  <div class="info-item"><span>Client</span><strong id="caseInfoClient"></strong></div>
+                  <div class="info-item"><span>Debtor</span><strong id="caseInfoDebtor"></strong></div>
+                  <div class="info-item"><span>Assigned Date</span><strong id="caseInfoDate"></strong></div>
+                  <div class="info-item"><span>Collector</span><strong id="caseInfoCollector"></strong></div>
+                  <div class="info-item"><span>Current Stage</span><strong id="caseInfoStage"></strong></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="card-head"><div><h3>Recovery Position</h3><p>Current case performance</p></div></div>
+                <div class="progress-line"><span>Collected</span><div class="progress"><span id="caseProgressCollected"></span></div><strong id="caseProgressPct"></strong></div>
+                <div class="progress-line"><span>Outstanding</span><div class="progress"><span id="caseProgressOutstanding" style="background:#c9a45c"></span></div><strong id="caseOutstandingPct"></strong></div>
+                <div class="collector-note" style="margin-top:16px;" id="caseCollectorNote"></div>
+              </div>
+            </div>
+          </div>
+
+          <div id="case-tab-followups" class="tab-panel">
+            <div class="timeline" id="caseFollowupsTimeline"></div>
+          </div>
+
+          <div id="case-tab-ptp" class="tab-panel">
+            <div id="casePtpList"></div>
+          </div>
+
+          <div id="case-tab-collections" class="tab-panel">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Date</th><th>Receipt</th><th>Method</th><th>Reference</th><th>Amount</th></tr></thead>
+                <tbody id="caseCollectionsBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="case-tab-settlement" class="tab-panel">
+            <div class="info-grid">
+              <div class="info-item"><span>Settlement Status</span><strong id="caseSettlementStatus"></strong></div>
+              <div class="info-item"><span>Proposed Amount</span><strong id="caseSettlementAmount"></strong></div>
+              <div class="info-item"><span>Proposed Date</span><strong id="caseSettlementDate"></strong></div>
+              <div class="info-item"><span>Approval Status</span><strong id="caseSettlementApproval"></strong></div>
+            </div>
+          </div>
+
+          <div id="case-tab-activity" class="tab-panel">
+            <div class="timeline" id="caseActivityTimeline"></div>
+          </div>
+        </section>
+      </div>
+
+      <footer class="footer">
+        <span>RECOVA — Collection Case 360°</span>
+        <span>Designed & Developed by <strong style="color:#1aa6a6">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
+
     <div id="placeholderPage" class="hidden">
       <div class="content placeholder">
         <div class="placeholder-box">
@@ -1432,6 +1665,214 @@
   }
 
 
+
+  const COLLECTION_CASES = [
+    {
+      no:"COL-260184",clientId:"CLI-001",client:"Gulf Finance B.S.C.",debtorId:"DBT-001",debtor:"Ahmed Trading",
+      assignedDate:"10 Feb 2026",assigned:25000,collected:6500,outstanding:18500,recovery:26.0,status:"Escalate",stage:"Escalation",
+      collector:"Sara Ahmed",nextPtp:2500,
+      note:"High-risk case with repeated broken promises. Escalation and settlement review are recommended.",
+      followups:[
+        ["18 Aug 2026","Phone Call","Debtor requested two days to confirm payment source."],
+        ["15 Aug 2026","WhatsApp","Payment reminder sent."],
+        ["11 Aug 2026","Field Visit","Business location verified."]
+      ],
+      ptp:[["19 Aug 2026",2500,"Due Today","Open"],["10 Aug 2026",1500,"Broken","Broken"],["02 Aug 2026",1000,"Paid","Completed"]],
+      collections:[["19 Aug 2026","RC-260421","Bank Transfer","FT-260819-11",2500],["02 Aug 2026","RC-260360","BenefitPay","BP-260802-09",1000]],
+      settlement:{status:"Under Review",amount:15000,date:"19 Aug 2026",approval:"Pending Client Approval"},
+      activity:[
+        ["19 Aug 2026","Payment received","BHD 2,500.000 posted to case."],
+        ["18 Aug 2026","Escalation marked","Case moved to escalation stage."],
+        ["15 Aug 2026","Reminder sent","Debtor follow-up completed."]
+      ]
+    },
+    {
+      no:"COL-260191",clientId:"CLI-003",client:"Prime Services W.L.L",debtorId:"DBT-002",debtor:"Al Noor Market",
+      assignedDate:"01 Mar 2026",assigned:14500,collected:4750,outstanding:9750,recovery:32.8,status:"PTP",stage:"Promise to Pay",
+      collector:"Sara Ahmed",nextPtp:1800,
+      note:"Debtor has active promise to pay. Monitor closely for timely fulfillment.",
+      followups:[["19 Aug 2026","Phone Call","PTP reconfirmed for 20 Aug."],["16 Aug 2026","Email","Payment plan shared."]],
+      ptp:[["20 Aug 2026",1800,"Upcoming","Open"],["05 Aug 2026",1200,"Paid","Completed"]],
+      collections:[["19 Aug 2026","RC-260422","BenefitPay","BP-260819-14",750]],
+      settlement:{status:"Not Proposed",amount:0,date:"—",approval:"—"},
+      activity:[["19 Aug 2026","PTP confirmed","BHD 1,800.000 payment reconfirmed."],["19 Aug 2026","Payment received","BHD 750.000 received."]]
+    },
+    {
+      no:"COL-260203",clientId:"CLI-002",client:"Bahrain Leasing Co.",debtorId:"DBT-003",debtor:"Modern Workshop",
+      assignedDate:"10 Feb 2026",assigned:31000,collected:8700,outstanding:22300,recovery:28.1,status:"Active",stage:"Field Follow-up",
+      collector:"Khalid Ali",nextPtp:3000,
+      note:"Field follow-up continues. Debtor requested revised payment plan.",
+      followups:[["17 Aug 2026","Field Visit","Workshop visited and owner contacted."],["12 Aug 2026","Phone Call","Revised settlement schedule requested."]],
+      ptp:[["21 Aug 2026",3000,"Upcoming","Open"]],
+      collections:[["18 Aug 2026","RC-260418","Bank Transfer","FT-260818-08",3000]],
+      settlement:{status:"Discussion",amount:22000,date:"18 Aug 2026",approval:"Internal Review"},
+      activity:[["18 Aug 2026","Payment received","BHD 3,000.000 received."],["17 Aug 2026","Field visit completed","Follow-up completed."]]
+    },
+    {
+      no:"COL-260211",clientId:"CLI-004",client:"Apex Credit Solutions",debtorId:"DBT-004",debtor:"Hassan Ali",
+      assignedDate:"12 Apr 2026",assigned:9000,collected:4200,outstanding:4800,recovery:46.7,status:"Negotiation",stage:"Settlement Negotiation",
+      collector:"Fatima Abbas",nextPtp:1200,
+      note:"Settlement proposal is under review after a broken promise.",
+      followups:[["18 Aug 2026","Meeting","Settlement proposal discussed."],["16 Aug 2026","Phone Call","Debtor requested reduced settlement amount."]],
+      ptp:[["18 Aug 2026",1200,"Broken","Broken"],["10 Aug 2026",1200,"Paid","Completed"]],
+      collections:[["16 Aug 2026","RC-260409","Cash","CASH-1608",1200]],
+      settlement:{status:"Proposed",amount:4200,date:"18 Aug 2026",approval:"Pending Client Approval"},
+      activity:[["18 Aug 2026","Settlement proposed","BHD 4,200.000 settlement proposal created."],["18 Aug 2026","PTP broken","Scheduled payment not received."]]
+    },
+    {
+      no:"COL-260170",clientId:"CLI-001",client:"Gulf Finance B.S.C.",debtorId:"DBT-005",debtor:"Al Manar Stores",
+      assignedDate:"05 Jan 2026",assigned:18000,collected:12000,outstanding:6000,recovery:66.7,status:"PTP",stage:"Installment Plan",
+      collector:"Khalid Ali",nextPtp:1800,
+      note:"Account is performing under an agreed installment plan.",
+      followups:[["18 Aug 2026","Phone Call","Next installment confirmed."],["12 Aug 2026","SMS","Reminder sent."]],
+      ptp:[["22 Aug 2026",1800,"Upcoming","Open"],["08 Aug 2026",1800,"Paid","Completed"]],
+      collections:[["08 Aug 2026","RC-260382","BenefitPay","BP-260808-02",1800]],
+      settlement:{status:"Not Required",amount:0,date:"—",approval:"—"},
+      activity:[["18 Aug 2026","PTP confirmed","Installment confirmed for 22 Aug."]]
+    }
+  ];
+
+  let currentCase = COLLECTION_CASES[0];
+
+  function caseStatusClass(status){
+    return String(status).toLowerCase();
+  }
+
+  function renderCases(){
+    const search=(document.getElementById("caseSearch")?.value||"").trim().toLowerCase();
+    const status=document.getElementById("caseStatusFilter")?.value||"";
+    const collector=document.getElementById("caseCollectorFilter")?.value||"";
+
+    const rows=COLLECTION_CASES.filter(c=>{
+      const a=!search || [c.no,c.client,c.debtor,c.collector].join(" ").toLowerCase().includes(search);
+      const b=!status || c.status===status;
+      const d=!collector || c.collector===collector;
+      return a&&b&&d;
+    }).map(c=>`
+      <tr>
+        <td><button class="case-link" onclick="openCase360('${c.no}')">${c.no}</button></td>
+        <td>${c.client}</td>
+        <td>${c.debtor}</td>
+        <td>${formatMoney(c.assigned)}</td>
+        <td>${formatMoney(c.collected)}</td>
+        <td>${formatMoney(c.outstanding)}</td>
+        <td>${c.recovery.toFixed(1)}%</td>
+        <td><span class="case-stage">${c.stage}</span></td>
+        <td><span class="case-status ${caseStatusClass(c.status)}">${c.status}</span></td>
+        <td>${c.collector}</td>
+        <td><button class="table-action" onclick="openCase360('${c.no}')">View 360°</button></td>
+      </tr>
+    `).join("");
+
+    document.getElementById("casesTableBody").innerHTML=rows || `<tr><td colspan="11" style="text-align:center;padding:28px;color:#7a8491">No collection cases found.</td></tr>`;
+  }
+
+  function openCase360(caseNo){
+    currentCase=COLLECTION_CASES.find(c=>c.no===caseNo)||COLLECTION_CASES[0];
+
+    ["dashboardPage","clientsPage","client360Page","debtorsPage","debtor360Page","casesPage","placeholderPage"].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el) el.classList.add("hidden");
+    });
+
+    document.getElementById("case360Page").classList.remove("hidden");
+    document.getElementById("pageTitle").textContent="Collection Case 360°";
+    document.getElementById("pageSubtitle").textContent=currentCase.no+" · "+currentCase.debtor;
+
+    populateCase360();
+
+    document.querySelectorAll(".nav-item").forEach(item=>{
+      item.classList.toggle("active",item.dataset.page==="cases");
+    });
+
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+
+  function populateCase360(){
+    const c=currentCase;
+    const outstandingPct=100-c.recovery;
+
+    document.getElementById("case360Title").textContent=c.no;
+    document.getElementById("case360Meta").textContent=c.client+" · "+c.debtor;
+    document.getElementById("case360Status").textContent=c.status;
+    document.getElementById("case360Status").className="case-status "+caseStatusClass(c.status);
+    document.getElementById("case360Stage").textContent=c.stage;
+
+    document.getElementById("caseAssigned").textContent=formatMoney(c.assigned);
+    document.getElementById("caseCollected").textContent=formatMoney(c.collected);
+    document.getElementById("caseOutstanding").textContent=formatMoney(c.outstanding);
+    document.getElementById("caseRecovery").textContent=c.recovery.toFixed(1)+"%";
+    document.getElementById("caseNextPtp").textContent=formatMoney(c.nextPtp);
+
+    document.getElementById("caseInfoNo").textContent=c.no;
+    document.getElementById("caseInfoClient").textContent=c.client;
+    document.getElementById("caseInfoDebtor").textContent=c.debtor;
+    document.getElementById("caseInfoDate").textContent=c.assignedDate;
+    document.getElementById("caseInfoCollector").textContent=c.collector;
+    document.getElementById("caseInfoStage").textContent=c.stage;
+
+    document.getElementById("caseProgressCollected").style.width=c.recovery+"%";
+    document.getElementById("caseProgressPct").textContent=c.recovery.toFixed(1)+"%";
+    document.getElementById("caseProgressOutstanding").style.width=outstandingPct+"%";
+    document.getElementById("caseOutstandingPct").textContent=outstandingPct.toFixed(1)+"%";
+    document.getElementById("caseCollectorNote").textContent=c.note;
+
+    document.getElementById("caseFollowupsTimeline").innerHTML=c.followups.map(f=>`
+      <div class="timeline-item"><div class="timeline-dot"></div><div><strong>${f[0]} — ${f[1]}</strong><p>${f[2]}</p></div></div>
+    `).join("");
+
+    document.getElementById("casePtpList").innerHTML=c.ptp.map(p=>`
+      <div class="promise-card"><strong>${p[0]} · ${formatMoney(p[1])}</strong><span>${p[2]} · ${p[3]}</span></div>
+    `).join("");
+
+    document.getElementById("caseCollectionsBody").innerHTML=c.collections.map(x=>`
+      <tr><td>${x[0]}</td><td>${x[1]}</td><td>${x[2]}</td><td>${x[3]}</td><td>${formatMoney(x[4])}</td></tr>
+    `).join("") || `<tr><td colspan="5" style="text-align:center;padding:25px;color:#7a8491">No collections recorded.</td></tr>`;
+
+    document.getElementById("caseSettlementStatus").textContent=c.settlement.status;
+    document.getElementById("caseSettlementAmount").textContent=formatMoney(c.settlement.amount);
+    document.getElementById("caseSettlementDate").textContent=c.settlement.date;
+    document.getElementById("caseSettlementApproval").textContent=c.settlement.approval;
+
+    document.getElementById("caseActivityTimeline").innerHTML=c.activity.map(a=>`
+      <div class="timeline-item"><div class="timeline-dot"></div><div><strong>${a[0]} — ${a[1]}</strong><p>${a[2]}</p></div></div>
+    `).join("");
+
+    openCaseTab("overview",document.querySelector('#case360Page .tab-btn'));
+  }
+
+  function openCaseTab(tab,button){
+    document.querySelectorAll('[id^="case-tab-"]').forEach(x=>x.classList.remove("active"));
+    document.querySelectorAll("#case360Page .tab-btn").forEach(x=>x.classList.remove("active"));
+    document.getElementById("case-tab-"+tab).classList.add("active");
+    if(button) button.classList.add("active");
+  }
+
+  function openCaseClient(){
+    if(currentCase?.clientId) openClient360(currentCase.clientId);
+  }
+
+  function openCaseDebtor(){
+    if(currentCase?.debtorId) openDebtor360(currentCase.debtorId);
+  }
+
+  function showAddCaseDemo(){
+    alert(
+      "New Collection Case — Demo\\n\\n"+
+      "Prepared fields:\\n"+
+      "• Client\\n"+
+      "• Debtor\\n"+
+      "• Assigned Amount\\n"+
+      "• Assigned Date\\n"+
+      "• Collector\\n"+
+      "• Stage\\n"+
+      "• Risk / Status\\n"+
+      "• Initial Follow-up\\n"+
+      "• Documents / Notes"
+    );
+  }
+
+
   const PAGE_NAMES = {
     dashboard:"Collection Dashboard",
     clients:"Clients",
@@ -1467,7 +1908,7 @@
 
     document.getElementById("pageTitle").textContent=PAGE_NAMES[page]||"RECOVA";
 
-    ["dashboardPage","clientsPage","client360Page","debtorsPage","debtor360Page","placeholderPage"].forEach(id=>{
+    ["dashboardPage","clientsPage","client360Page","debtorsPage","debtor360Page","casesPage","case360Page","placeholderPage"].forEach(id=>{
       const el=document.getElementById(id);
       if(el) el.classList.add("hidden");
     });
@@ -1483,6 +1924,10 @@
       document.getElementById("debtorsPage").classList.remove("hidden");
       document.getElementById("pageSubtitle").textContent="Debtor balances, risk and payment commitments";
       renderDebtors();
+    }else if(page==="cases"){
+      document.getElementById("casesPage").classList.remove("hidden");
+      document.getElementById("pageSubtitle").textContent="Assigned debt files, recovery stages and collector performance";
+      renderCases();
     }else{
       document.getElementById("placeholderPage").classList.remove("hidden");
       document.getElementById("placeholderTitle").textContent=PAGE_NAMES[page];
@@ -1527,13 +1972,14 @@
       "5. Follow-ups & PTP\\n"+
       "6. Collections & Settlements\\n"+
       "7. Commission & Reports\\n\\n"+
-      "Release 1.2 activates Dashboard, Clients, Client Portfolio 360°, Debtors and Debtor 360°."
+      "Release 1.3 activates Dashboard, Clients, Debtors, Collection Cases and their 360° views."
     );
   }
 
   setCurrentDate();
   renderClients();
   renderDebtors();
+  renderCases();
 </script>
 
 </body>
