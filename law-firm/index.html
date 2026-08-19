@@ -842,6 +842,72 @@
       .treasury-toolbar input,.treasury-toolbar select{width:100%}
     }
 
+
+    /* REPORTS & ANALYTICS */
+    .reports-kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-bottom:16px}
+    .reports-toolbar{
+      display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px
+    }
+    .reports-toolbar-left{display:flex;gap:10px;flex-wrap:wrap}
+    .reports-toolbar select,.reports-toolbar input{
+      height:40px;border:1px solid var(--border);border-radius:6px;background:white;padding:0 12px;font-size:11px;outline:none
+    }
+    .report-category-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+    .report-card{
+      border:1px solid var(--border);border-radius:8px;padding:18px;background:white;cursor:pointer;transition:.2s
+    }
+    .report-card:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(7,21,37,.08);border-color:#d9c28e}
+    .report-card span{font-size:9px;color:var(--gold);font-weight:700;letter-spacing:1.2px}
+    .report-card h3{margin-top:9px;font-size:14px;color:var(--navy)}
+    .report-card p{margin-top:7px;font-size:10px;line-height:1.6;color:var(--muted)}
+    .report-card button{margin-top:14px}
+
+    .report-preview-shell{
+      background:white;border:1px solid var(--border);border-radius:8px;padding:20px
+    }
+    .report-preview-head{
+      display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap;margin-bottom:18px
+    }
+    .report-preview-head h2{font-size:21px;color:var(--navy)}
+    .report-preview-head p{margin-top:5px;color:var(--muted);font-size:10px}
+    .report-preview-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .report-section{margin-top:16px}
+    .report-section h3{font-size:13px;color:var(--navy);margin-bottom:12px}
+    .report-summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .report-summary-card{padding:16px;border:1px solid var(--border);border-radius:8px;background:var(--soft)}
+    .report-summary-card span{display:block;font-size:9px;color:var(--muted)}
+    .report-summary-card strong{display:block;margin-top:7px;font-size:17px;color:var(--navy)}
+    .report-chart{
+      height:230px;display:flex;align-items:flex-end;gap:18px;border-bottom:1px solid var(--border);padding:0 10px 18px
+    }
+    .report-chart-group{flex:1;display:flex;justify-content:center;align-items:flex-end;gap:5px;height:100%;position:relative}
+    .report-bar{width:19px;border-radius:3px 3px 0 0}
+    .report-bar.a{background:var(--navy)}
+    .report-bar.b{background:var(--gold)}
+    .report-label{position:absolute;bottom:-30px;font-size:8px;color:var(--muted)}
+    .report-insight-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .report-insight{padding:15px;border:1px solid var(--border);border-radius:7px;background:#fafbfc}
+    .report-insight strong{display:block;font-size:12px;color:var(--navy)}
+    .report-insight p{margin-top:6px;font-size:9px;color:var(--muted);line-height:1.55}
+
+    @media(max-width:1250px){
+      .reports-kpi-grid{grid-template-columns:repeat(3,1fr)}
+      .report-category-grid{grid-template-columns:repeat(2,1fr)}
+      .report-summary-grid{grid-template-columns:repeat(2,1fr)}
+    }
+    @media(max-width:950px){
+      .report-insight-grid{grid-template-columns:1fr 1fr}
+    }
+    @media(max-width:650px){
+      .reports-kpi-grid{grid-template-columns:1fr 1fr}
+      .report-category-grid{grid-template-columns:1fr}
+      .reports-toolbar{align-items:stretch}
+      .reports-toolbar-left{width:100%}
+      .reports-toolbar select,.reports-toolbar input{width:100%}
+      .report-summary-grid{grid-template-columns:1fr 1fr}
+      .report-insight-grid{grid-template-columns:1fr}
+    }
+
     /* PLACEHOLDER */
     .placeholder{min-height:500px;display:grid;place-items:center;text-align:center}
     .placeholder-box{max-width:520px;padding:45px;background:white;border:1px solid var(--border);border-radius:10px}
@@ -2833,6 +2899,166 @@
     </div>
 
 
+
+    <!-- REPORTS & ANALYTICS -->
+    <div id="reportsPage" class="hidden">
+      <div class="content">
+        <div class="hero-row">
+          <div>
+            <h2>Reports & Analytics</h2>
+            <p>Financial, legal and operational intelligence for management decision-making.</p>
+          </div>
+          <div class="hero-actions">
+            <button class="action-btn action-secondary" onclick="openReportPreview('executive')">Executive PDF</button>
+            <button class="action-btn action-primary" onclick="openReportPreview('receivables')">Open Key Report</button>
+          </div>
+        </div>
+
+        <div class="reports-kpi-grid">
+          <div class="kpi-card"><span class="kpi-label">Revenue</span><strong class="kpi-value money">BHD 12,450.000</strong><div class="kpi-note">Current reporting period</div></div>
+          <div class="kpi-card"><span class="kpi-label">Collections</span><strong class="kpi-value money">BHD 9,780.000</strong><div class="kpi-note"><span class="positive">78.6%</span> collection rate</div></div>
+          <div class="kpi-card"><span class="kpi-label">Expenses</span><strong class="kpi-value money">BHD 1,340.000</strong><div class="kpi-note">Operating + case costs</div></div>
+          <div class="kpi-card"><span class="kpi-label">Outstanding</span><strong class="kpi-value money">BHD 2,670.000</strong><div class="kpi-note">Open receivables</div></div>
+          <div class="kpi-card"><span class="kpi-label">Active Cases</span><strong class="kpi-value">24</strong><div class="kpi-note">Across 18 clients</div></div>
+        </div>
+
+        <section class="card">
+          <div class="reports-toolbar">
+            <div class="reports-toolbar-left">
+              <select id="reportPeriod">
+                <option>This Month</option>
+                <option>This Quarter</option>
+                <option>This Year</option>
+                <option>Custom Period</option>
+              </select>
+              <select id="reportClient">
+                <option>All Clients</option>
+                <option>Gulf Trading W.L.L</option>
+                <option>Ahmed Hassan</option>
+                <option>Apex Contracting W.L.L</option>
+              </select>
+              <select id="reportLawyer">
+                <option>All Lawyers</option>
+                <option>Ali Hasan</option>
+                <option>Sara Ahmed</option>
+                <option>Khalid Ali</option>
+              </select>
+            </div>
+            <span class="muted" style="font-size:10px;">Choose a report below to open Report Preview</span>
+          </div>
+
+          <div class="report-category-grid">
+            <article class="report-card" onclick="openReportPreview('executive')">
+              <span>EXECUTIVE</span><h3>Executive Summary</h3>
+              <p>Revenue, collections, expenses, receivables, clients, cases and management indicators.</p>
+              <button class="table-action">View Report</button>
+            </article>
+
+            <article class="report-card" onclick="openReportPreview('pnl')">
+              <span>FINANCIAL</span><h3>Profit & Loss</h3>
+              <p>Professional fee revenue, operating expenses and net financial result.</p>
+              <button class="table-action">View Report</button>
+            </article>
+
+            <article class="report-card" onclick="openReportPreview('revenue')">
+              <span>FINANCIAL</span><h3>Revenue Analysis</h3>
+              <p>Revenue by client, case type, lawyer and period.</p>
+              <button class="table-action">View Report</button>
+            </article>
+
+            <article class="report-card" onclick="openReportPreview('expenses')">
+              <span>FINANCIAL</span><h3>Expense Analysis</h3>
+              <p>Office, case and client-recoverable expenditure analysis.</p>
+              <button class="table-action">View Report</button>
+            </article>
+
+            <article class="report-card" onclick="openReportPreview('receivables')">
+              <span>RECEIVABLES</span><h3>Accounts Receivable & Aging</h3>
+              <p>Outstanding invoices, overdue balances and aging buckets.</p>
+              <button class="table-action">View Report</button>
+            </article>
+
+            <article class="report-card" onclick="openReportPreview('collections')">
+              <span>COLLECTIONS</span><h3>Collection Performance</h3>
+              <p>Invoiced versus collected amounts and payment method performance.</p>
+              <button class="table-action">View Report</button>
+            </article>
+
+            <article class="report-card" onclick="openReportPreview('clientstatement')">
+              <span>CLIENT</span><h3>Client Statement</h3>
+              <p>Invoices, collections, adjustments and closing balance for a selected client.</p>
+              <button class="table-action">View Report</button>
+            </article>
+
+            <article class="report-card" onclick="openReportPreview('casefinancial')">
+              <span>LEGAL</span><h3>Case Financial Report</h3>
+              <p>Professional fees, collections and case-related expenditure for a matter.</p>
+              <button class="table-action">View Report</button>
+            </article>
+
+            <article class="report-card" onclick="openReportPreview('casestatus')">
+              <span>LEGAL</span><h3>Case Status Report</h3>
+              <p>Case distribution by stage, court, lawyer and client.</p>
+              <button class="table-action">View Report</button>
+            </article>
+
+            <article class="report-card" onclick="openReportPreview('vat')">
+              <span>TAX</span><h3>VAT Report</h3>
+              <p>Taxable revenue, output VAT, taxable expenses and input VAT.</p>
+              <button class="table-action">View Report</button>
+            </article>
+
+            <article class="report-card" onclick="openReportPreview('cashflow')">
+              <span>TREASURY</span><h3>Cash Flow & Treasury</h3>
+              <p>Inflows, outflows, bank balances, cash and closing funds position.</p>
+              <button class="table-action">View Report</button>
+            </article>
+
+            <article class="report-card" onclick="openReportPreview('performance')">
+              <span>MANAGEMENT</span><h3>Firm Performance</h3>
+              <p>New clients, new cases, proposal acceptance, collection rate and workload.</p>
+              <button class="table-action">View Report</button>
+            </article>
+          </div>
+        </section>
+      </div>
+
+      <footer class="footer">
+        <span>LEXORA — Reports & Analytics</span>
+        <span>Designed & Developed by <strong style="color:#a78035">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
+    <!-- REPORT PREVIEW -->
+    <div id="reportPreviewPage" class="hidden">
+      <div class="content">
+        <div style="margin-bottom:14px;"><button class="action-btn action-secondary" onclick="openPage('reports')">← Back to Reports</button></div>
+
+        <section class="report-preview-shell">
+          <div class="report-preview-head">
+            <div>
+              <span class="eyebrow">REPORT PREVIEW</span>
+              <h2 id="reportPreviewTitle">Executive Summary</h2>
+              <p id="reportPreviewSubtitle">LEXORA Law Firm · August 2026</p>
+            </div>
+            <div class="report-preview-actions">
+              <button class="action-btn action-secondary" onclick="reportExportDemo('PDF')">PDF</button>
+              <button class="action-btn action-secondary" onclick="reportExportDemo('Excel')">Excel</button>
+              <button class="action-btn action-primary" onclick="reportExportDemo('Print')">Print</button>
+            </div>
+          </div>
+
+          <div id="reportPreviewContent"></div>
+        </section>
+      </div>
+
+      <footer class="footer">
+        <span>LEXORA — Report Preview</span>
+        <span>Designed & Developed by <strong style="color:#a78035">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
+
     <!-- PLACEHOLDER -->
     <div id="placeholderPage" class="hidden">
       <div class="content placeholder">
@@ -3753,7 +3979,7 @@
   }
 
   function hideAllPages(){
-    ["dashboardPage","clientsPage","client360Page","casesPage","case360Page","hearingsPage","proposalsPage","proposal360Page","invoicesPage","invoice360Page","collectionsPage","receipt360Page","expensesPage","expense360Page","bankingPage","placeholderPage"].forEach(id=>{
+    ["dashboardPage","clientsPage","client360Page","casesPage","case360Page","hearingsPage","proposalsPage","proposal360Page","invoicesPage","invoice360Page","collectionsPage","receipt360Page","expensesPage","expense360Page","bankingPage","reportsPage","reportPreviewPage","placeholderPage"].forEach(id=>{
       document.getElementById(id).classList.add("hidden");
     });
   }
@@ -3804,6 +4030,9 @@
       document.getElementById("pageSubtitle").textContent="Bank accounts, cash, transfers and treasury movements";
       renderTreasuryModule();
       openTreasuryTab("accounts",document.querySelector(".treasury-tab-btn"));
+    }else if(page==="reports"){
+      document.getElementById("reportsPage").classList.remove("hidden");
+      document.getElementById("pageSubtitle").textContent="Financial, legal and operational intelligence";
     }else{
       document.getElementById("placeholderPage").classList.remove("hidden");
       document.getElementById("placeholderTitle").textContent=PAGE_NAMES[page];
@@ -4101,6 +4330,174 @@
 
 
 
+
+
+  const REPORTS = {
+    executive:{title:"Executive Summary",subtitle:"Management overview of legal and financial performance"},
+    pnl:{title:"Profit & Loss",subtitle:"Revenue, expenses and net result"},
+    revenue:{title:"Revenue Analysis",subtitle:"Revenue by service, client and period"},
+    expenses:{title:"Expense Analysis",subtitle:"Office, case and recoverable expense analysis"},
+    receivables:{title:"Accounts Receivable & Aging",subtitle:"Outstanding invoices and aging profile"},
+    collections:{title:"Collection Performance",subtitle:"Invoiced versus collected amounts"},
+    clientstatement:{title:"Client Statement",subtitle:"Gulf Trading W.L.L · Statement of Account"},
+    casefinancial:{title:"Case Financial Report",subtitle:"Case 2026/1842 · Gulf Trading W.L.L"},
+    casestatus:{title:"Case Status Report",subtitle:"Current legal matter distribution"},
+    vat:{title:"VAT Report",subtitle:"VAT 10% · Current reporting period"},
+    cashflow:{title:"Cash Flow & Treasury",subtitle:"Cash inflows, outflows and funds position"},
+    performance:{title:"Firm Performance",subtitle:"Commercial and operational performance indicators"}
+  };
+
+  function openReportPreview(type){
+    hideAllPages();
+    document.getElementById("reportPreviewPage").classList.remove("hidden");
+    document.getElementById("pageTitle").textContent="Report Preview";
+    document.getElementById("pageSubtitle").textContent=REPORTS[type]?.title || "Management Report";
+
+    document.querySelectorAll(".nav-item").forEach(item=>{
+      item.classList.toggle("active",item.dataset.page==="reports");
+    });
+
+    renderReportPreview(type);
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+
+  function renderReportPreview(type){
+    const r=REPORTS[type] || REPORTS.executive;
+    document.getElementById("reportPreviewTitle").textContent=r.title;
+    document.getElementById("reportPreviewSubtitle").textContent=r.subtitle+" · August 2026";
+
+    let html="";
+
+    if(type==="receivables"){
+      html=`
+        <div class="report-summary-grid">
+          <div class="report-summary-card"><span>Total Outstanding</span><strong>BHD 2,670.000</strong></div>
+          <div class="report-summary-card"><span>Current</span><strong>BHD 1,020.000</strong></div>
+          <div class="report-summary-card"><span>1–30 Days</span><strong>BHD 550.000</strong></div>
+          <div class="report-summary-card"><span>31+ Days</span><strong>BHD 1,100.000</strong></div>
+        </div>
+        <div class="report-section">
+          <h3>Receivables Aging</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Client</th><th>Invoice</th><th>Due Date</th><th>Balance</th><th>Aging</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>Gulf Trading W.L.L</td><td>INV-2026-041</td><td>31 Aug 2026</td><td>BHD 700.000</td><td>Current</td><td><span class="invoice-status partial">Partial</span></td></tr>
+              <tr><td>Apex Contracting W.L.L</td><td>INV-2026-043</td><td>18 Aug 2026</td><td>BHD 3,300.000</td><td>1–30 Days</td><td><span class="invoice-status overdue">Overdue</span></td></tr>
+              <tr><td>Fatima Ali</td><td>INV-2026-044</td><td>30 Aug 2026</td><td>BHD 250.000</td><td>Current</td><td><span class="invoice-status partial">Partial</span></td></tr>
+            </tbody>
+          </table></div>
+        </div>`;
+    }else if(type==="clientstatement"){
+      html=`
+        <div class="report-summary-grid">
+          <div class="report-summary-card"><span>Opening Balance</span><strong>BHD 0.000</strong></div>
+          <div class="report-summary-card"><span>Total Invoiced</span><strong>BHD 5,500.000</strong></div>
+          <div class="report-summary-card"><span>Total Collected</span><strong>BHD 4,000.000</strong></div>
+          <div class="report-summary-card"><span>Closing Balance</span><strong>BHD 1,500.000</strong></div>
+        </div>
+        <div class="report-section">
+          <h3>Statement Transactions</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Date</th><th>Reference</th><th>Description</th><th>Debit</th><th>Credit</th><th>Balance</th></tr></thead>
+            <tbody>
+              <tr><td>10 Aug 2026</td><td>INV-2026-041</td><td>Professional Fees</td><td>BHD 2,200.000</td><td>—</td><td>BHD 2,200.000</td></tr>
+              <tr><td>12 Aug 2026</td><td>RC-2026-031</td><td>Bank Transfer</td><td>—</td><td>BHD 1,000.000</td><td>BHD 1,200.000</td></tr>
+              <tr><td>17 Aug 2026</td><td>RC-2026-036</td><td>BenefitPay</td><td>—</td><td>BHD 500.000</td><td>BHD 700.000</td></tr>
+            </tbody>
+          </table></div>
+        </div>`;
+    }else if(type==="casefinancial"){
+      html=`
+        <div class="report-summary-grid">
+          <div class="report-summary-card"><span>Claim Amount</span><strong>BHD 25,000.000</strong></div>
+          <div class="report-summary-card"><span>Professional Fees</span><strong>BHD 2,200.000</strong></div>
+          <div class="report-summary-card"><span>Collected</span><strong>BHD 1,500.000</strong></div>
+          <div class="report-summary-card"><span>Outstanding</span><strong>BHD 700.000</strong></div>
+        </div>
+        <div class="report-section">
+          <h3>Case Financial Timeline</h3>
+          <div class="timeline">
+            <div class="timeline-item"><div class="timeline-dot"></div><div><strong>08 Aug 2026 — Proposal Approved</strong><p>PR-2026-018 · BHD 2,200.000</p></div></div>
+            <div class="timeline-item"><div class="timeline-dot"></div><div><strong>10 Aug 2026 — Invoice Issued</strong><p>INV-2026-041 · BHD 2,200.000</p></div></div>
+            <div class="timeline-item"><div class="timeline-dot"></div><div><strong>12 Aug 2026 — Collection</strong><p>BHD 1,000.000 received.</p></div></div>
+            <div class="timeline-item"><div class="timeline-dot"></div><div><strong>17 Aug 2026 — Collection</strong><p>BHD 500.000 received.</p></div></div>
+          </div>
+        </div>`;
+    }else if(type==="vat"){
+      html=`
+        <div class="report-summary-grid">
+          <div class="report-summary-card"><span>Taxable Revenue</span><strong>BHD 11,318.182</strong></div>
+          <div class="report-summary-card"><span>Output VAT</span><strong>BHD 1,131.818</strong></div>
+          <div class="report-summary-card"><span>Taxable Expenses</span><strong>BHD 686.364</strong></div>
+          <div class="report-summary-card"><span>Input VAT</span><strong>BHD 68.636</strong></div>
+        </div>
+        <div class="report-section">
+          <h3>VAT Position</h3>
+          <div class="invoice-note"><strong>Net VAT Position: BHD 1,063.182 payable</strong><br><br>This is a management report for demonstration purposes and not a statutory VAT return.</div>
+        </div>`;
+    }else if(type==="cashflow"){
+      html=`
+        <div class="report-summary-grid">
+          <div class="report-summary-card"><span>Opening Funds</span><strong>BHD 9,360.000</strong></div>
+          <div class="report-summary-card"><span>Total Inflows</span><strong>BHD 10,430.000</strong></div>
+          <div class="report-summary-card"><span>Total Outflows</span><strong>BHD 1,340.000</strong></div>
+          <div class="report-summary-card"><span>Closing Funds</span><strong>BHD 18,450.000</strong></div>
+        </div>
+        <div class="report-section">
+          <h3>Current Funds Position</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Account</th><th>Type</th><th>Balance</th></tr></thead>
+            <tbody>
+              <tr><td>BBK Operating Account</td><td>Bank</td><td>BHD 10,850.000</td></tr>
+              <tr><td>NBB Main Account</td><td>Bank</td><td>BHD 6,070.000</td></tr>
+              <tr><td>Cash on Hand</td><td>Cash</td><td>BHD 580.000</td></tr>
+              <tr><td>Petty Cash</td><td>Cash</td><td>BHD 200.000</td></tr>
+              <tr><td>Undeposited Funds</td><td>Clearing</td><td>BHD 750.000</td></tr>
+            </tbody>
+          </table></div>
+        </div>`;
+    }else{
+      html=`
+        <div class="report-summary-grid">
+          <div class="report-summary-card"><span>Revenue</span><strong>BHD 12,450.000</strong></div>
+          <div class="report-summary-card"><span>Collections</span><strong>BHD 9,780.000</strong></div>
+          <div class="report-summary-card"><span>Expenses</span><strong>BHD 1,340.000</strong></div>
+          <div class="report-summary-card"><span>Outstanding</span><strong>BHD 2,670.000</strong></div>
+        </div>
+
+        <div class="report-section">
+          <h3>Performance Trend</h3>
+          <div class="report-chart">
+            <div class="report-chart-group"><div class="report-bar a" style="height:48%"></div><div class="report-bar b" style="height:22%"></div><span class="report-label">Mar</span></div>
+            <div class="report-chart-group"><div class="report-bar a" style="height:59%"></div><div class="report-bar b" style="height:28%"></div><span class="report-label">Apr</span></div>
+            <div class="report-chart-group"><div class="report-bar a" style="height:68%"></div><div class="report-bar b" style="height:25%"></div><span class="report-label">May</span></div>
+            <div class="report-chart-group"><div class="report-bar a" style="height:73%"></div><div class="report-bar b" style="height:30%"></div><span class="report-label">Jun</span></div>
+            <div class="report-chart-group"><div class="report-bar a" style="height:84%"></div><div class="report-bar b" style="height:27%"></div><span class="report-label">Jul</span></div>
+            <div class="report-chart-group"><div class="report-bar a" style="height:94%"></div><div class="report-bar b" style="height:34%"></div><span class="report-label">Aug</span></div>
+          </div>
+        </div>
+
+        <div class="report-section">
+          <h3>Management Insights</h3>
+          <div class="report-insight-grid">
+            <div class="report-insight"><strong>78.6% Collection Rate</strong><p>Collection performance remains strong for the current period.</p></div>
+            <div class="report-insight"><strong>BHD 1,100 Overdue</strong><p>Overdue balances require focused client follow-up.</p></div>
+            <div class="report-insight"><strong>24 Active Cases</strong><p>Current legal workload remains concentrated in commercial matters.</p></div>
+            <div class="report-insight"><strong>66.7% Proposal Acceptance</strong><p>Professional fee proposal conversion remains healthy.</p></div>
+          </div>
+        </div>`;
+    }
+
+    document.getElementById("reportPreviewContent").innerHTML=html;
+  }
+
+  function reportExportDemo(format){
+    alert(
+      format+" Export — Demo\\n\\n"+
+      "The report preview is ready for "+format+" output in the full implementation.\\n\\n"+
+      "Portfolio demo purpose: demonstrate reporting workflow, filters, preview and export options."
+    );
+  }
 
   function renderTreasuryModule(){
     renderTreasuryAccounts();
@@ -5117,7 +5514,7 @@
       "5. Professional Fee Proposal\n"+
       "6. Invoice & Collection\n"+
       "7. Management Reports\n\n"+
-      "Dashboard, Clients, Cases, Tasks & Hearings, Proposals, Invoices, Collections, Expenses and Banking & Treasury are active through Release 1.8. Treasury includes bank accounts, cash, undeposited funds, internal transfers and source-linked financial transactions."
+      "Dashboard, Clients, Cases, Tasks & Hearings, Proposals, Invoices, Collections, Expenses, Banking & Treasury and Reports & Analytics are active through Release 1.9. Reports include financial, legal, VAT, receivables, client statement, case financial, cash flow and management previews."
     );
   }
 
