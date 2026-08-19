@@ -91,7 +91,7 @@
     }
     .topbar h1{font-size:20px;color:var(--navy)}
     .topbar p{margin-top:4px;color:var(--muted);font-size:11px}
-    .top-actions{display:flex;align-items:center;gap:10px}
+    .top-actions{display:flex;align-items:center;gap:10px;min-width:0}
     .search{width:260px;height:38px;border:1px solid var(--border);border-radius:6px;padding:0 12px;outline:none}
     .top-btn{height:38px;min-width:38px;border:1px solid var(--border);background:white;border-radius:6px;cursor:pointer;color:var(--navy)}
     .profile{display:flex;align-items:center;gap:9px;padding:4px 10px 4px 5px;border:1px solid var(--border);border-radius:7px}
@@ -763,16 +763,17 @@
     /* RELEASE 1.11 — BILINGUAL AR / EN */
     .lang-switcher{
       display:inline-flex;align-items:center;gap:3px;padding:3px;border:1px solid var(--border);
-      border-radius:7px;background:#fff
+      border-radius:7px;background:#fff;flex:0 0 auto
     }
     .lang-btn{
       border:0;background:transparent;color:var(--muted);height:30px;padding:0 10px;border-radius:5px;
       font-size:10px;font-weight:800;cursor:pointer
     }
-    .lang-btn.active{background:var(--navy);color:#fff}
+    .lang-btn.active{background:var(--navy);color:#fff;box-shadow:0 1px 2px rgba(11,29,43,.14)}
     html[dir="rtl"] body{direction:rtl;text-align:right}
+    html[dir="rtl"] .app{grid-template-columns:1fr 245px}
     html[dir="rtl"] .sidebar{right:0;left:auto}
-    html[dir="rtl"] .main{margin-left:0;margin-right:var(--sidebar-width)}
+    html[dir="rtl"] .main{grid-column:1;margin-left:0;margin-right:0}
     html[dir="rtl"] .topbar,html[dir="rtl"] .hero-row,html[dir="rtl"] .card-head,
     html[dir="rtl"] .list-row,html[dir="rtl"] .template-item{direction:rtl}
     html[dir="rtl"] table{direction:rtl}
@@ -805,7 +806,8 @@
       .login-left{display:none}
       .app{display:block}
       .sidebar{transform:translateX(-100%);transition:.25s}
-      .sidebar.open{transform:translateX(0)}
+      html[dir="rtl"] .sidebar{transform:translateX(100%)}
+      .sidebar.open,html[dir="rtl"] .sidebar.open{transform:translateX(0)}
       .main{grid-column:auto}
       .mobile-menu{display:inline-grid;place-items:center}
       .search{display:none}
@@ -928,19 +930,17 @@
 
       <div class="top-actions">
         <input class="search" placeholder="Search building, unit or tenant...">
-        <button class="top-btn">EN</button>
+        <div class="lang-switcher" aria-label="Language">
+          <button id="langEnBtn" class="lang-btn active" type="button" onclick="setEstaraLanguage('en')">EN</button>
+          <button id="langArBtn" class="lang-btn" type="button" onclick="setEstaraLanguage('ar')">العربية</button>
+        </div>
         <button class="top-btn">♢</button>
         <div class="profile">
           <div class="avatar">AO</div>
           <div><strong>Ahmed Oraibi</strong><span>Administrator</span></div>
         </div>
       </div>
-    
-        <div class="lang-switcher" aria-label="Language">
-          <button id="langEnBtn" class="lang-btn active" type="button" onclick="setEstaraLanguage('en')">EN</button>
-          <button id="langArBtn" class="lang-btn" type="button" onclick="setEstaraLanguage('ar')">العربية</button>
-        </div>
-    </header>
+        </header>
 
     <div id="dashboardPage">
       <div class="content">
@@ -4654,7 +4654,13 @@
     return value;
   }
 
+  let ESTARA_LANG_OBSERVER = null;
+  let ESTARA_LANG_APPLYING = false;
+
   function applyEstaraLanguage(){
+    if(ESTARA_LANG_APPLYING) return;
+    ESTARA_LANG_APPLYING = true;
+    if(ESTARA_LANG_OBSERVER) ESTARA_LANG_OBSERVER.disconnect();
     document.documentElement.lang=ESTARA_LANG==="ar"?"ar":"en";
     document.documentElement.dir=ESTARA_LANG==="ar"?"rtl":"ltr";
 
@@ -4700,6 +4706,11 @@
         el.placeholder=p;
       }else el.placeholder=original;
     });
+
+    ESTARA_LANG_APPLYING = false;
+    if(ESTARA_LANG_OBSERVER){
+      ESTARA_LANG_OBSERVER.observe(document.body,{childList:true,subtree:true});
+    }
   }
 
   function setEstaraLanguage(lang){
@@ -4715,8 +4726,10 @@
     applyEstaraLanguage();
 
     // Dynamic page content is retranslated after navigation/rendering.
-    const observer=new MutationObserver(()=>requestAnimationFrame(applyEstaraLanguage));
-    observer.observe(document.body,{childList:true,subtree:true});
+    ESTARA_LANG_OBSERVER=new MutationObserver(()=>{
+      if(!ESTARA_LANG_APPLYING) requestAnimationFrame(applyEstaraLanguage);
+    });
+    ESTARA_LANG_OBSERVER.observe(document.body,{childList:true,subtree:true});
   }
 
 
