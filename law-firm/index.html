@@ -693,6 +693,71 @@
       .receipt-actions button{flex:1}
     }
 
+
+    /* EXPENSES */
+    .expense-kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-bottom:16px}
+    .expense-toolbar{display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+    .expense-toolbar-left{display:flex;gap:10px;flex-wrap:wrap}
+    .expense-toolbar input,.expense-toolbar select{
+      height:40px;border:1px solid var(--border);border-radius:6px;background:white;padding:0 12px;font-size:11px;outline:none
+    }
+    .expense-toolbar input{width:280px}
+    .expense-link{border:0;background:transparent;color:var(--navy);font-weight:700;cursor:pointer;padding:0}
+    .expense-link:hover{color:#9a742d}
+
+    .expense-type{display:inline-flex;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700}
+    .expense-type.office{background:#eef2f7;color:#36506d}
+    .expense-type.case{background:#f7f1e7;color:#8f6b27}
+    .expense-type.recoverable{background:#f0eafa;color:#6a4b91}
+
+    .expense-status{display:inline-flex;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700}
+    .expense-status.paid{background:#edf5f0;color:#347b57}
+    .expense-status.pending{background:#fbf4e5;color:#9a6d1f}
+    .expense-status.recovered{background:#eef2f7;color:#36506d}
+
+    .expense-hero{
+      display:flex;justify-content:space-between;gap:20px;align-items:flex-start;background:white;border:1px solid var(--border);
+      border-radius:8px;padding:22px;margin-bottom:16px
+    }
+    .expense-hero-left{display:flex;gap:16px;align-items:flex-start}
+    .expense-icon{
+      width:58px;height:58px;border-radius:10px;background:var(--navy);color:var(--gold-light);
+      display:grid;place-items:center;font-size:22px;font-weight:700
+    }
+    .expense-hero h2{font-size:23px;color:var(--navy)}
+    .expense-hero p{margin-top:6px;color:var(--muted);font-size:11px}
+    .expense-tags{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
+    .expense-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .expense-summary-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-bottom:16px}
+    .expense-layout{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .expense-chart{
+      height:210px;display:flex;align-items:flex-end;gap:18px;border-bottom:1px solid var(--border);padding:0 10px 16px
+    }
+    .expense-chart-group{flex:1;display:flex;justify-content:center;align-items:flex-end;height:100%;position:relative}
+    .expense-chart-bar{width:30px;background:var(--navy);border-radius:4px 4px 0 0}
+    .expense-chart-label{position:absolute;bottom:-28px;font-size:8px;color:var(--muted);text-align:center}
+    .recoverable-box{
+      padding:16px;border:1px solid var(--border);border-radius:8px;background:#fafbfc
+    }
+    .recoverable-box strong{display:block;font-size:20px;color:var(--navy)}
+    .recoverable-box span{display:block;margin-top:6px;font-size:9px;color:var(--muted)}
+
+    @media(max-width:1250px){
+      .expense-kpi-grid{grid-template-columns:repeat(3,1fr)}
+      .expense-summary-grid{grid-template-columns:repeat(3,1fr)}
+    }
+    @media(max-width:950px){.expense-layout{grid-template-columns:1fr}}
+    @media(max-width:650px){
+      .expense-kpi-grid,.expense-summary-grid{grid-template-columns:1fr 1fr}
+      .expense-toolbar{align-items:stretch}
+      .expense-toolbar-left{width:100%}
+      .expense-toolbar input,.expense-toolbar select{width:100%}
+      .expense-hero{flex-direction:column}
+      .expense-hero-left{flex-direction:column}
+      .expense-actions{width:100%}
+      .expense-actions button{flex:1}
+    }
+
     /* PLACEHOLDER */
     .placeholder{min-height:500px;display:grid;place-items:center;text-align:center}
     .placeholder-box{max-width:520px;padding:45px;background:white;border:1px solid var(--border);border-radius:10px}
@@ -2375,6 +2440,162 @@
     </div>
 
 
+
+    <!-- EXPENSES -->
+    <div id="expensesPage" class="hidden">
+      <div class="content">
+        <div class="hero-row">
+          <div>
+            <h2>Expenses</h2>
+            <p>Manage office, case and client-recoverable expenses with payment tracking.</p>
+          </div>
+          <div class="hero-actions">
+            <button class="action-btn action-secondary">Export Excel</button>
+            <button class="action-btn action-primary" onclick="showNewExpenseDemo()">+ New Expense</button>
+          </div>
+        </div>
+
+        <div class="expense-kpi-grid">
+          <div class="kpi-card"><span class="kpi-label">Total Expenses</span><strong class="kpi-value money">BHD 1,340.000</strong><div class="kpi-note">Current demo period</div></div>
+          <div class="kpi-card"><span class="kpi-label">This Month</span><strong class="kpi-value money">BHD 420.000</strong><div class="kpi-note">August 2026</div></div>
+          <div class="kpi-card"><span class="kpi-label">Office Expenses</span><strong class="kpi-value money">BHD 845.000</strong><div class="kpi-note">Operating costs</div></div>
+          <div class="kpi-card"><span class="kpi-label">Case Expenses</span><strong class="kpi-value money">BHD 310.000</strong><div class="kpi-note">Matter related costs</div></div>
+          <div class="kpi-card"><span class="kpi-label">Recoverable</span><strong class="kpi-value money">BHD 185.000</strong><div class="kpi-note"><span class="warning">Client reimbursement</span></div></div>
+        </div>
+
+        <section class="card">
+          <div class="expense-toolbar">
+            <div class="expense-toolbar-left">
+              <input id="expenseSearch" type="search" placeholder="Search expense, vendor, client or case..." oninput="renderExpenses()">
+              <select id="expenseTypeFilter" onchange="renderExpenses()">
+                <option value="">All Types</option>
+                <option value="Office Expense">Office Expense</option>
+                <option value="Case Expense">Case Expense</option>
+                <option value="Client Recoverable">Client Recoverable</option>
+              </select>
+              <select id="expenseMethodFilter" onchange="renderExpenses()">
+                <option value="">All Payment Methods</option>
+                <option value="Cash">Cash</option>
+                <option value="BenefitPay">BenefitPay</option>
+                <option value="Bank Transfer">Bank Transfer</option>
+                <option value="Cheque">Cheque</option>
+              </select>
+            </div>
+            <span class="muted" style="font-size:10px;">Open any expense to view Expense 360°</span>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Expense</th><th>Date</th><th>Description</th><th>Type</th><th>Category</th><th>Client / Case</th><th>Method</th><th>Amount</th><th>Status</th><th>Action</th></tr>
+              </thead>
+              <tbody id="expensesTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <div class="dashboard-grid equal">
+          <section class="card">
+            <div class="card-head"><div><h3>Expense by Category</h3><p>Current expense distribution</p></div></div>
+            <div class="expense-chart">
+              <div class="expense-chart-group"><div class="expense-chart-bar" style="height:82%"></div><span class="expense-chart-label">Rent</span></div>
+              <div class="expense-chart-group"><div class="expense-chart-bar" style="height:52%"></div><span class="expense-chart-label">Professional</span></div>
+              <div class="expense-chart-group"><div class="expense-chart-bar" style="height:44%"></div><span class="expense-chart-label">Court</span></div>
+              <div class="expense-chart-group"><div class="expense-chart-bar" style="height:34%"></div><span class="expense-chart-label">Software</span></div>
+              <div class="expense-chart-group"><div class="expense-chart-bar" style="height:27%"></div><span class="expense-chart-label">Transport</span></div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-head"><div><h3>Recoverable Expenses</h3><p>Amounts paid on behalf of clients</p></div></div>
+            <div class="recoverable-box">
+              <strong>BHD 185.000</strong>
+              <span>Outstanding client-recoverable expenses</span>
+            </div>
+            <div class="list" style="margin-top:12px;">
+              <div class="list-row"><div class="list-left"><div class="list-icon">⚖</div><div><strong>Court Filing Fee</strong><span>Gulf Trading · 2026/1842</span></div></div><strong>BHD 100.000</strong></div>
+              <div class="list-row"><div class="list-left"><div class="list-icon">▤</div><div><strong>Translation</strong><span>Ahmed Hassan · 2026/2190</span></div></div><strong>BHD 85.000</strong></div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <span>LEXORA — Expenses</span>
+        <span>Designed & Developed by <strong style="color:#a78035">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
+    <!-- EXPENSE 360 -->
+    <div id="expense360Page" class="hidden">
+      <div class="content">
+        <div style="margin-bottom:14px;"><button class="action-btn action-secondary" onclick="openPage('expenses')">← Back to Expenses</button></div>
+
+        <section class="expense-hero">
+          <div class="expense-hero-left">
+            <div class="expense-icon">↗</div>
+            <div>
+              <h2 id="expense360Title"></h2>
+              <p id="expense360Meta"></p>
+              <div class="expense-tags">
+                <span id="expense360Type" class="expense-type office"></span>
+                <span id="expense360Status" class="expense-status paid"></span>
+                <span id="expense360Method" class="method-badge"></span>
+              </div>
+            </div>
+          </div>
+          <div class="expense-actions">
+            <button id="expenseViewClientBtn" class="action-btn action-secondary" onclick="openExpenseClient()">View Client</button>
+            <button id="expenseViewCaseBtn" class="action-btn action-secondary" onclick="openExpenseCase()">View Case</button>
+            <button class="action-btn action-secondary">View Attachment</button>
+            <button id="expenseRecoverBtn" class="action-btn action-gold" onclick="recoverExpenseDemo()">Add to Invoice</button>
+          </div>
+        </section>
+
+        <div class="expense-summary-grid">
+          <div class="summary-card"><span>Net Amount</span><strong id="expenseNet"></strong></div>
+          <div class="summary-card"><span>VAT</span><strong id="expenseVat"></strong></div>
+          <div class="summary-card"><span>Total Paid</span><strong id="expenseTotal"></strong></div>
+          <div class="summary-card"><span>Expense Date</span><strong id="expenseDate"></strong></div>
+          <div class="summary-card"><span>Reference</span><strong id="expenseReference"></strong></div>
+        </div>
+
+        <div class="expense-layout">
+          <section class="card">
+            <div class="card-head"><div><h3>Expense Information</h3><p>Classification and payment details</p></div></div>
+            <div class="info-grid" style="grid-template-columns:1fr;">
+              <div class="info-item"><span>Description</span><strong id="expenseDescription"></strong></div>
+              <div class="info-item"><span>Category</span><strong id="expenseCategory"></strong></div>
+              <div class="info-item"><span>Vendor / Payee</span><strong id="expenseVendor"></strong></div>
+              <div class="info-item"><span>Payment Method</span><strong id="expenseMethod"></strong></div>
+              <div class="info-item"><span>Bank / Cash Account</span><strong id="expenseAccount"></strong></div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-head"><div><h3>Client / Case Link</h3><p>Related legal matter where applicable</p></div></div>
+            <div class="info-grid" style="grid-template-columns:1fr;">
+              <div class="info-item"><span>Client</span><strong id="expenseClient"></strong></div>
+              <div class="info-item"><span>Case</span><strong id="expenseCase"></strong></div>
+              <div class="info-item"><span>Recoverable from Client</span><strong id="expenseRecoverable"></strong></div>
+              <div class="info-item"><span>Attachment</span><strong id="expenseAttachment"></strong></div>
+            </div>
+          </section>
+        </div>
+
+        <section class="card" style="margin-top:16px;">
+          <div class="card-head"><div><h3>Expense Timeline</h3><p>Creation, payment and recovery activity</p></div></div>
+          <div id="expenseTimeline" class="timeline"></div>
+        </section>
+      </div>
+
+      <footer class="footer">
+        <span>LEXORA — Expense 360°</span>
+        <span>Designed & Developed by <strong style="color:#a78035">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
+
     <!-- PLACEHOLDER -->
     <div id="placeholderPage" class="hidden">
       <div class="content placeholder">
@@ -2590,6 +2811,52 @@
 
 
 
+
+
+  const EXPENSES = [
+    {
+      no:"EXP-2026-031",date:"18 Aug 2026",description:"Office Rent",type:"Office Expense",category:"Rent",
+      vendor:"Prime Business Centre",clientId:null,client:"—",caseNo:null,caseLabel:"—",method:"Bank Transfer",
+      account:"BBK Operating Account",reference:"TRF-180826-01",net:318.182,vat:31.818,total:350,status:"Paid",
+      recoverable:false,attachment:"Rent Invoice Aug 2026.pdf",
+      timeline:[["18 Aug 2026","Expense recorded","Monthly office rent recorded."],["18 Aug 2026","Payment posted","BHD 350.000 paid from BBK Operating Account."]]
+    },
+    {
+      no:"EXP-2026-032",date:"18 Aug 2026",description:"Court Filing Fee",type:"Client Recoverable",category:"Court Fee",
+      vendor:"Ministry / Court",clientId:"CL-001",client:"Gulf Trading W.L.L",caseNo:"2026/1842",caseLabel:"2026/1842",
+      method:"BenefitPay",account:"BenefitPay / BBK",reference:"CT-180826-77",net:100,vat:0,total:100,status:"Pending",
+      recoverable:true,attachment:"Court Fee Receipt.pdf",
+      timeline:[["18 Aug 2026","Expense recorded","Court filing fee paid on behalf of client."],["18 Aug 2026","Marked recoverable","BHD 100.000 added to client recoverable balance."]]
+    },
+    {
+      no:"EXP-2026-033",date:"19 Aug 2026",description:"Translation Services",type:"Client Recoverable",category:"Translation",
+      vendor:"Bahrain Legal Translation",clientId:"CL-002",client:"Ahmed Hassan",caseNo:"2026/2190",caseLabel:"2026/2190",
+      method:"Cash",account:"Cash on Hand",reference:"CASH-1908-03",net:77.273,vat:7.727,total:85,status:"Pending",
+      recoverable:true,attachment:"Translation Invoice.pdf",
+      timeline:[["19 Aug 2026","Expense recorded","Translation invoice paid in cash."],["19 Aug 2026","Marked recoverable","BHD 85.000 pending recovery from client."]]
+    },
+    {
+      no:"EXP-2026-034",date:"19 Aug 2026",description:"Legal Research Subscription",type:"Office Expense",category:"Software",
+      vendor:"Legal Research Platform",clientId:null,client:"—",caseNo:null,caseLabel:"—",method:"Bank Transfer",
+      account:"NBB Main Account",reference:"SUB-190826",net:90.909,vat:9.091,total:100,status:"Paid",
+      recoverable:false,attachment:"Subscription Invoice.pdf",
+      timeline:[["19 Aug 2026","Expense recorded","Monthly legal research subscription."],["19 Aug 2026","Payment posted","BHD 100.000 paid from NBB Main Account."]]
+    },
+    {
+      no:"EXP-2026-035",date:"19 Aug 2026",description:"Courier & Document Delivery",type:"Case Expense",category:"Courier",
+      vendor:"Express Courier",clientId:"CL-003",client:"Apex Contracting W.L.L",caseNo:"2026/2351",caseLabel:"2026/2351",
+      method:"Cash",account:"Petty Cash",reference:"PC-1908-08",net:20,vat:0,total:20,status:"Paid",
+      recoverable:false,attachment:"Courier Receipt.pdf",
+      timeline:[["19 Aug 2026","Expense recorded","Case-related courier cost recorded."],["19 Aug 2026","Paid from petty cash","BHD 20.000 posted."]]
+    },
+    {
+      no:"EXP-2026-036",date:"19 Aug 2026",description:"Professional Consultant Fee",type:"Office Expense",category:"Professional Fees",
+      vendor:"External Consultant",clientId:null,client:"—",caseNo:null,caseLabel:"—",method:"Cheque",
+      account:"BBK Operating Account",reference:"CHQ-44018",net:200,vat:20,total:220,status:"Paid",
+      recoverable:false,attachment:"Consultant Invoice.pdf",
+      timeline:[["19 Aug 2026","Expense recorded","External consultant professional fee."],["19 Aug 2026","Cheque issued","Cheque CHQ-44018 created for BHD 220.000."]]
+    }
+  ];
 
   const COLLECTIONS = [
     {
@@ -3219,7 +3486,7 @@
   }
 
   function hideAllPages(){
-    ["dashboardPage","clientsPage","client360Page","casesPage","case360Page","hearingsPage","proposalsPage","proposal360Page","invoicesPage","invoice360Page","collectionsPage","receipt360Page","placeholderPage"].forEach(id=>{
+    ["dashboardPage","clientsPage","client360Page","casesPage","case360Page","hearingsPage","proposalsPage","proposal360Page","invoicesPage","invoice360Page","collectionsPage","receipt360Page","expensesPage","expense360Page","placeholderPage"].forEach(id=>{
       document.getElementById(id).classList.add("hidden");
     });
   }
@@ -3261,6 +3528,10 @@
       document.getElementById("collectionsPage").classList.remove("hidden");
       document.getElementById("pageSubtitle").textContent="Client collections, receipts and invoice allocation";
       renderCollections();
+    }else if(page==="expenses"){
+      document.getElementById("expensesPage").classList.remove("hidden");
+      document.getElementById("pageSubtitle").textContent="Office, case and client-recoverable expenses";
+      renderExpenses();
     }else{
       document.getElementById("placeholderPage").classList.remove("hidden");
       document.getElementById("placeholderTitle").textContent=PAGE_NAMES[page];
@@ -3556,6 +3827,150 @@
 
 
 
+
+
+  let currentExpense = EXPENSES[0];
+
+  function expenseTypeClass(type){
+    if(type==="Office Expense") return "office";
+    if(type==="Case Expense") return "case";
+    return "recoverable";
+  }
+
+  function expenseStatusClass(status){
+    return String(status).toLowerCase();
+  }
+
+  function renderExpenses(){
+    const search=(document.getElementById("expenseSearch")?.value||"").trim().toLowerCase();
+    const type=document.getElementById("expenseTypeFilter")?.value||"";
+    const method=document.getElementById("expenseMethodFilter")?.value||"";
+
+    const rows=EXPENSES.filter(e=>{
+      const matchesSearch=!search || [e.no,e.description,e.vendor,e.client,e.caseLabel,e.category].join(" ").toLowerCase().includes(search);
+      const matchesType=!type || e.type===type;
+      const matchesMethod=!method || e.method===method;
+      return matchesSearch && matchesType && matchesMethod;
+    }).map(e=>`
+      <tr>
+        <td><button class="expense-link" onclick="openExpense360('${e.no}')">${e.no}</button></td>
+        <td>${e.date}</td>
+        <td>${e.description}</td>
+        <td><span class="expense-type ${expenseTypeClass(e.type)}">${e.type}</span></td>
+        <td>${e.category}</td>
+        <td>${e.client==="—"?"—":e.client+" / "+e.caseLabel}</td>
+        <td><span class="method-badge">${e.method}</span></td>
+        <td>${formatMoney(e.total)}</td>
+        <td><span class="expense-status ${expenseStatusClass(e.status)}">${e.status}</span></td>
+        <td><button class="table-action" onclick="openExpense360('${e.no}')">View 360°</button></td>
+      </tr>
+    `).join("");
+
+    document.getElementById("expensesTableBody").innerHTML=rows || `
+      <tr><td colspan="10" style="text-align:center;padding:28px;color:#7a8491;">No expenses match the selected filters.</td></tr>
+    `;
+  }
+
+  function openExpense360(expenseNo){
+    currentExpense=EXPENSES.find(e=>e.no===expenseNo)||EXPENSES[0];
+    hideAllPages();
+
+    document.getElementById("expense360Page").classList.remove("hidden");
+    document.getElementById("pageTitle").textContent="Expense 360°";
+    document.getElementById("pageSubtitle").textContent=currentExpense.no+" · "+currentExpense.description;
+
+    document.querySelectorAll(".nav-item").forEach(item=>{
+      item.classList.toggle("active",item.dataset.page==="expenses");
+    });
+
+    populateExpense360();
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+
+  function populateExpense360(){
+    const e=currentExpense;
+
+    document.getElementById("expense360Title").textContent=e.no;
+    document.getElementById("expense360Meta").textContent=e.description+" · "+e.date;
+
+    const typeEl=document.getElementById("expense360Type");
+    typeEl.textContent=e.type;
+    typeEl.className="expense-type "+expenseTypeClass(e.type);
+
+    const statusEl=document.getElementById("expense360Status");
+    statusEl.textContent=e.status;
+    statusEl.className="expense-status "+expenseStatusClass(e.status);
+
+    document.getElementById("expense360Method").textContent=e.method;
+
+    document.getElementById("expenseNet").textContent=formatMoney(e.net);
+    document.getElementById("expenseVat").textContent=formatMoney(e.vat);
+    document.getElementById("expenseTotal").textContent=formatMoney(e.total);
+    document.getElementById("expenseDate").textContent=e.date;
+    document.getElementById("expenseReference").textContent=e.reference;
+
+    document.getElementById("expenseDescription").textContent=e.description;
+    document.getElementById("expenseCategory").textContent=e.category;
+    document.getElementById("expenseVendor").textContent=e.vendor;
+    document.getElementById("expenseMethod").textContent=e.method;
+    document.getElementById("expenseAccount").textContent=e.account;
+    document.getElementById("expenseClient").textContent=e.client;
+    document.getElementById("expenseCase").textContent=e.caseLabel;
+    document.getElementById("expenseRecoverable").textContent=e.recoverable?"Yes — Pending Client Recovery":"No";
+    document.getElementById("expenseAttachment").textContent=e.attachment;
+
+    document.getElementById("expenseTimeline").innerHTML=e.timeline.map(t=>`
+      <div class="timeline-item"><div class="timeline-dot"></div><div><strong>${t[0]} — ${t[1]}</strong><p>${t[2]}</p></div></div>
+    `).join("");
+
+    document.getElementById("expenseViewClientBtn").style.display=e.clientId?"inline-flex":"none";
+    document.getElementById("expenseViewCaseBtn").style.display=e.caseNo?"inline-flex":"none";
+
+    const recBtn=document.getElementById("expenseRecoverBtn");
+    recBtn.style.display=e.recoverable?"inline-flex":"none";
+  }
+
+  function openExpenseClient(){
+    if(currentExpense?.clientId) openClient360(currentExpense.clientId);
+  }
+
+  function openExpenseCase(){
+    if(currentExpense?.caseNo) openCase360(currentExpense.caseNo);
+  }
+
+  function recoverExpenseDemo(){
+    const e=currentExpense;
+    if(!e || !e.recoverable) return;
+
+    alert(
+      "Add Recoverable Expense to Invoice — Demo\\n\\n"+
+      "Expense: "+e.no+"\\n"+
+      "Client: "+e.client+"\\n"+
+      "Case: "+e.caseNo+"\\n"+
+      "Recoverable Amount: "+formatMoney(e.total)+"\\n\\n"+
+      "This amount can be added to the client's next invoice or recovered separately."
+    );
+  }
+
+  function showNewExpenseDemo(){
+    alert(
+      "New Expense — Demo\\n\\n"+
+      "Prepared expense types:\\n"+
+      "• Office Expense\\n"+
+      "• Case Expense\\n"+
+      "• Client Recoverable Expense\\n\\n"+
+      "Prepared fields:\\n"+
+      "• Date\\n"+
+      "• Vendor / Payee\\n"+
+      "• Category\\n"+
+      "• Client / Case if applicable\\n"+
+      "• VAT\\n"+
+      "• Payment Method\\n"+
+      "• Bank / Cash Account\\n"+
+      "• Reference\\n"+
+      "• Attachment"
+    );
+  }
 
   let currentReceipt = COLLECTIONS[0];
 
@@ -4288,7 +4703,7 @@
       "5. Professional Fee Proposal\n"+
       "6. Invoice & Collection\n"+
       "7. Management Reports\n\n"+
-      "Dashboard, Clients, Cases, Tasks & Hearings, Proposals, Invoices and Collections are active through Release 1.6. Receipt 360° includes payment methods, invoice allocation, unallocated funds and direct links back to invoices and cases."
+      "Dashboard, Clients, Cases, Tasks & Hearings, Proposals, Invoices, Collections and Expenses are active through Release 1.7. Expenses now separate Office, Case and Client-Recoverable costs with Expense 360°, VAT, payment method and client/case linking."
     );
   }
 
@@ -4299,6 +4714,7 @@
   renderProposals();
   renderInvoices();
   renderCollections();
+  renderExpenses();
 </script>
 
 </body>
