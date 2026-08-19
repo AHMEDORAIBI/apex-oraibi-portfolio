@@ -635,6 +635,74 @@
       .settlement-actions button{flex:1}
     }
 
+
+    /* COMMISSION & FEES */
+    .commission-kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-bottom:16px}
+    .commission-toolbar{display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+    .commission-toolbar-left{display:flex;gap:10px;flex-wrap:wrap}
+    .commission-toolbar input,.commission-toolbar select{
+      height:40px;border:1px solid var(--border);border-radius:6px;background:white;padding:0 12px;font-size:11px;outline:none
+    }
+    .commission-toolbar input{width:280px}
+    .commission-link{border:0;background:transparent;color:var(--navy);font-weight:700;cursor:pointer;padding:0}
+    .commission-link:hover{color:var(--teal)}
+
+    .fee-status{display:inline-flex;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700}
+    .fee-status.calculated{background:#eef2f7;color:#36506d}
+    .fee-status.approved{background:#edf5f0;color:#347b57}
+    .fee-status.pending{background:#fbf4e5;color:#9a6d1f}
+    .fee-status.settled{background:#f0eafa;color:#6a4b91}
+
+    .commission-hero{
+      display:flex;justify-content:space-between;gap:20px;align-items:flex-start;background:white;border:1px solid var(--border);
+      border-radius:8px;padding:22px;margin-bottom:16px
+    }
+    .commission-hero-left{display:flex;gap:16px;align-items:flex-start}
+    .commission-avatar{
+      width:58px;height:58px;border-radius:10px;background:var(--navy);color:var(--teal2);display:grid;place-items:center;
+      font-size:18px;font-weight:700
+    }
+    .commission-hero h2{font-size:23px;color:var(--navy)}
+    .commission-hero p{margin-top:6px;color:var(--muted);font-size:11px}
+    .commission-tags{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
+    .commission-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .commission-summary-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-bottom:16px}
+
+    .fee-formula{
+      display:grid;grid-template-columns:1fr 45px 1fr 45px 1fr;gap:10px;align-items:center
+    }
+    .fee-formula-box{padding:16px;border:1px solid var(--border);border-radius:8px;background:var(--soft)}
+    .fee-formula-box span{display:block;font-size:9px;color:var(--muted)}
+    .fee-formula-box strong{display:block;margin-top:7px;font-size:16px;color:var(--navy)}
+    .fee-symbol{text-align:center;font-size:20px;color:var(--gold)}
+
+    .client-net-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .client-net-card{padding:16px;border:1px solid var(--border);border-radius:8px;background:#fafbfc}
+    .client-net-card span{display:block;font-size:9px;color:var(--muted)}
+    .client-net-card strong{display:block;margin-top:7px;font-size:16px;color:var(--navy)}
+    .commission-layout{display:grid;grid-template-columns:1.05fr .95fr;gap:16px}
+
+    @media(max-width:1250px){
+      .commission-kpi-grid,.commission-summary-grid{grid-template-columns:repeat(3,1fr)}
+      .client-net-grid{grid-template-columns:repeat(2,1fr)}
+    }
+    @media(max-width:950px){
+      .commission-layout{grid-template-columns:1fr}
+      .fee-formula{grid-template-columns:1fr}
+      .fee-symbol{transform:rotate(90deg)}
+    }
+    @media(max-width:650px){
+      .commission-kpi-grid,.commission-summary-grid{grid-template-columns:1fr 1fr}
+      .commission-toolbar{align-items:stretch}
+      .commission-toolbar-left{width:100%}
+      .commission-toolbar input,.commission-toolbar select{width:100%}
+      .commission-hero{flex-direction:column}
+      .commission-hero-left{flex-direction:column}
+      .commission-actions{width:100%}
+      .commission-actions button{flex:1}
+      .client-net-grid{grid-template-columns:1fr}
+    }
+
     .placeholder{min-height:500px;display:grid;place-items:center;text-align:center}
     .placeholder-box{max-width:520px;padding:45px;background:white;border:1px solid var(--border);border-radius:10px}
     .placeholder-box span{font-size:9px;color:var(--teal);letter-spacing:2px;font-weight:700}
@@ -2088,6 +2156,178 @@
     </div>
 
 
+
+    <!-- COMMISSION & FEES -->
+    <div id="commissionPage" class="hidden">
+      <div class="content">
+        <div class="hero-row">
+          <div>
+            <h2>Commission & Fees</h2>
+            <p>Calculate collection commission, net client settlements and fee performance.</p>
+          </div>
+          <div class="hero-actions">
+            <button class="action-btn action-secondary">Export Fee Report</button>
+            <button class="action-btn action-primary" onclick="showCalculateCommissionDemo()">+ Calculate Commission</button>
+          </div>
+        </div>
+
+        <div class="commission-kpi-grid">
+          <div class="kpi-card"><span class="kpi-label">Gross Collections</span><strong class="kpi-value money">BHD 277,650.000</strong><div class="kpi-note">Year-to-date</div></div>
+          <div class="kpi-card"><span class="kpi-label">Commission Earned</span><strong class="kpi-value money">BHD 34,215.000</strong><div class="kpi-note"><span class="positive">12.3%</span> effective rate</div></div>
+          <div class="kpi-card"><span class="kpi-label">Net Due to Clients</span><strong class="kpi-value money">BHD 243,435.000</strong><div class="kpi-note">After commission</div></div>
+          <div class="kpi-card"><span class="kpi-label">Pending Approval</span><strong class="kpi-value money">BHD 5,460.000</strong><div class="kpi-note"><span class="warning">Fee batches pending</span></div></div>
+          <div class="kpi-card"><span class="kpi-label">Settled Fee Batches</span><strong class="kpi-value">18</strong><div class="kpi-note">Current year</div></div>
+        </div>
+
+        <section class="card">
+          <div class="commission-toolbar">
+            <div class="commission-toolbar-left">
+              <input id="commissionSearch" type="search" placeholder="Search batch, client or period..." oninput="renderCommissionBatches()">
+              <select id="commissionStatusFilter" onchange="renderCommissionBatches()">
+                <option value="">All Statuses</option>
+                <option value="Calculated">Calculated</option>
+                <option value="Pending">Pending</option>
+                <option value="Approved">Approved</option>
+                <option value="Settled">Settled</option>
+              </select>
+            </div>
+            <span style="font-size:10px;color:var(--muted)">Open any batch to view Fee 360°</span>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Batch</th><th>Client</th><th>Period</th><th>Gross Collections</th><th>Rate</th>
+                  <th>Commission</th><th>Net Due</th><th>Status</th><th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="commissionTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <div class="dashboard-grid equal">
+          <section class="card">
+            <div class="card-head"><div><h3>Client Net Settlement</h3><p>Current calculated client positions</p></div></div>
+            <div class="client-net-grid">
+              <div class="client-net-card"><span>Gulf Finance</span><strong>BHD 73,284</strong></div>
+              <div class="client-net-card"><span>Bahrain Leasing</span><strong>BHD 53,190</strong></div>
+              <div class="client-net-card"><span>Prime Services</span><strong>BHD 44,285</strong></div>
+              <div class="client-net-card"><span>Apex Credit</span><strong>BHD 36,838</strong></div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-head"><div><h3>Fee Performance</h3><p>Collection-to-fee conversion</p></div></div>
+            <div class="collections-mini-grid">
+              <div class="mini-card"><span>Average Rate</span><strong>12.3%</strong></div>
+              <div class="mini-card"><span>Highest Rate</span><strong>15.0%</strong></div>
+              <div class="mini-card"><span>Approved Fees</span><strong>BHD 28,755</strong></div>
+              <div class="mini-card"><span>Pending Fees</span><strong>BHD 5,460</strong></div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <span>RECOVA — Commission & Fees</span>
+        <span>Designed & Developed by <strong style="color:#1aa6a6">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
+    <!-- FEE 360 -->
+    <div id="commission360Page" class="hidden">
+      <div class="content">
+        <div style="margin-bottom:14px;">
+          <button class="action-btn action-secondary" onclick="openPage('commission')">← Back to Commission & Fees</button>
+        </div>
+
+        <section class="commission-hero">
+          <div class="commission-hero-left">
+            <div class="commission-avatar">%</div>
+            <div>
+              <h2 id="commission360Title"></h2>
+              <p id="commission360Meta"></p>
+              <div class="commission-tags">
+                <span id="commission360Status" class="fee-status calculated"></span>
+                <span id="commission360Rate" class="client-type"></span>
+                <span class="client-type">Fee 360°</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="commission-actions">
+            <button class="action-btn action-secondary" onclick="openCommissionClient()">View Client</button>
+            <button class="action-btn action-secondary">Download Statement</button>
+            <button class="action-btn action-secondary" onclick="commissionRecalculateDemo()">Recalculate</button>
+            <button class="action-btn action-primary" onclick="commissionApproveDemo()">Approve Fees</button>
+          </div>
+        </section>
+
+        <div class="commission-summary-grid">
+          <div class="kpi-card"><span class="kpi-label">Gross Collections</span><strong id="fGross" class="kpi-value money"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Commission Rate</span><strong id="fRate" class="kpi-value"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Commission</span><strong id="fCommission" class="kpi-value money"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Net Due to Client</span><strong id="fNet" class="kpi-value money"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Period</span><strong id="fPeriod" class="kpi-value" style="font-size:15px"></strong></div>
+        </div>
+
+        <div class="commission-layout">
+          <section class="card">
+            <div class="card-head"><div><h3>Commission Calculation</h3><p>Fee formula for this client batch</p></div></div>
+            <div class="fee-formula">
+              <div class="fee-formula-box"><span>Gross Collections</span><strong id="formulaGross"></strong></div>
+              <div class="fee-symbol">×</div>
+              <div class="fee-formula-box"><span>Commission Rate</span><strong id="formulaRate"></strong></div>
+              <div class="fee-symbol">=</div>
+              <div class="fee-formula-box"><span>Commission Earned</span><strong id="formulaCommission"></strong></div>
+            </div>
+
+            <div class="fee-formula" style="margin-top:14px;">
+              <div class="fee-formula-box"><span>Gross Collections</span><strong id="formulaGross2"></strong></div>
+              <div class="fee-symbol">−</div>
+              <div class="fee-formula-box"><span>Commission Earned</span><strong id="formulaCommission2"></strong></div>
+              <div class="fee-symbol">=</div>
+              <div class="fee-formula-box"><span>Net Due to Client</span><strong id="formulaNet"></strong></div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-head"><div><h3>Batch Information</h3><p>Client and approval details</p></div></div>
+            <div class="info-grid" style="grid-template-columns:1fr;">
+              <div class="info-item"><span>Client</span><strong id="fClient"></strong></div>
+              <div class="info-item"><span>Client ID</span><strong id="fClientId"></strong></div>
+              <div class="info-item"><span>Calculated By</span><strong id="fCalculatedBy"></strong></div>
+              <div class="info-item"><span>Calculation Date</span><strong id="fDate"></strong></div>
+              <div class="info-item"><span>Approval Status</span><strong id="fApproval"></strong></div>
+            </div>
+          </section>
+        </div>
+
+        <section class="card" style="margin-top:16px;">
+          <div class="card-head"><div><h3>Collection Breakdown</h3><p>Receipts included in this fee calculation</p></div></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Date</th><th>Receipt</th><th>Debtor</th><th>Case</th><th>Collected</th><th>Commission</th><th>Net to Client</th></tr></thead>
+              <tbody id="commissionBreakdownBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="card" style="margin-top:16px;">
+          <div class="card-head"><div><h3>Fee Timeline</h3><p>Calculation, approval and settlement activity</p></div></div>
+          <div id="commissionTimeline" class="timeline"></div>
+        </section>
+      </div>
+
+      <footer class="footer">
+        <span>RECOVA — Fee 360°</span>
+        <span>Designed & Developed by <strong style="color:#1aa6a6">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
+
     <div id="placeholderPage" class="hidden">
       <div class="content placeholder">
         <div class="placeholder-box">
@@ -3388,6 +3628,168 @@
   }
 
 
+
+  const COMMISSION_BATCHES = [
+    {
+      no:"FEE-260081",clientId:"CLI-001",client:"Gulf Finance B.S.C.",period:"Aug 2026",gross:84200,rate:13,
+      commission:10946,net:73254,status:"Approved",calculatedBy:"Ahmed Oraibi",date:"19 Aug 2026",approval:"Approved",
+      breakdown:[
+        ["19 Aug 2026","RC-260421","Ahmed Trading","COL-260184",2500,325,2175],
+        ["19 Aug 2026","RC-260430","Al Manar Stores","COL-260170",2500,325,2175],
+        ["08 Aug 2026","RC-260382","Al Manar Stores","COL-260170",1800,234,1566]
+      ],
+      timeline:[["19 Aug 2026","Fee batch calculated","Commission calculated at 13%."],["19 Aug 2026","Fee batch approved","Approved for client settlement."]]
+    },
+    {
+      no:"FEE-260082",clientId:"CLI-002",client:"Bahrain Leasing Co.",period:"Aug 2026",gross:59100,rate:10,
+      commission:5910,net:53190,status:"Approved",calculatedBy:"Ahmed Oraibi",date:"19 Aug 2026",approval:"Approved",
+      breakdown:[["18 Aug 2026","RC-260418","Modern Workshop","COL-260203",3000,300,2700]],
+      timeline:[["19 Aug 2026","Fee batch calculated","10% commission applied."],["19 Aug 2026","Approved","Batch approved."]]
+    },
+    {
+      no:"FEE-260083",clientId:"CLI-003",client:"Prime Services W.L.L",period:"Aug 2026",gross:52100,rate:15,
+      commission:7815,net:44285,status:"Pending",calculatedBy:"Fatima Finance",date:"19 Aug 2026",approval:"Pending Management Approval",
+      breakdown:[["19 Aug 2026","RC-260422","Al Noor Market","COL-260191",750,112.5,637.5]],
+      timeline:[["19 Aug 2026","Fee batch calculated","15% commission calculated."],["19 Aug 2026","Approval requested","Pending management approval."]]
+    },
+    {
+      no:"FEE-260084",clientId:"CLI-004",client:"Apex Credit Solutions",period:"Aug 2026",gross:42100,rate:12.5,
+      commission:5262.5,net:36837.5,status:"Calculated",calculatedBy:"Fatima Finance",date:"19 Aug 2026",approval:"Not Yet Approved",
+      breakdown:[["16 Aug 2026","RC-260409","Hassan Ali","COL-260211",1200,150,1050]],
+      timeline:[["19 Aug 2026","Fee batch calculated","12.5% client commission applied."]]
+    },
+    {
+      no:"FEE-260070",clientId:"CLI-005",client:"Bahrain Trading Group",period:"Jul 2026",gross:40150,rate:10,
+      commission:4015,net:36135,status:"Settled",calculatedBy:"Ahmed Oraibi",date:"31 Jul 2026",approval:"Settled with Client",
+      breakdown:[],
+      timeline:[["31 Jul 2026","Fee batch calculated","July fee batch calculated."],["02 Aug 2026","Client net settled","Net amount transferred to client."]]
+    }
+  ];
+
+  let currentCommission = COMMISSION_BATCHES[0];
+
+  function feeStatusClass(status){
+    return String(status).toLowerCase();
+  }
+
+  function renderCommissionBatches(){
+    const search=(document.getElementById("commissionSearch")?.value||"").trim().toLowerCase();
+    const status=document.getElementById("commissionStatusFilter")?.value||"";
+
+    const rows=COMMISSION_BATCHES.filter(f=>{
+      const a=!search || [f.no,f.client,f.period].join(" ").toLowerCase().includes(search);
+      const b=!status || f.status===status;
+      return a&&b;
+    }).map(f=>`
+      <tr>
+        <td><button class="commission-link" onclick="openCommission360('${f.no}')">${f.no}</button></td>
+        <td>${f.client}</td>
+        <td>${f.period}</td>
+        <td>${formatMoney(f.gross)}</td>
+        <td>${f.rate}%</td>
+        <td>${formatMoney(f.commission)}</td>
+        <td>${formatMoney(f.net)}</td>
+        <td><span class="fee-status ${feeStatusClass(f.status)}">${f.status}</span></td>
+        <td><button class="table-action" onclick="openCommission360('${f.no}')">View 360°</button></td>
+      </tr>
+    `).join("");
+
+    document.getElementById("commissionTableBody").innerHTML=rows || `<tr><td colspan="9" style="text-align:center;padding:28px;color:#7a8491">No fee batches found.</td></tr>`;
+  }
+
+  function openCommission360(no){
+    currentCommission=COMMISSION_BATCHES.find(f=>f.no===no)||COMMISSION_BATCHES[0];
+
+    ["dashboardPage","clientsPage","client360Page","debtorsPage","debtor360Page","casesPage","case360Page","followupsPage","ptpPage","ptp360Page","collectionsPage","receipt360Page","settlementsPage","settlement360Page","commissionPage","placeholderPage"].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el) el.classList.add("hidden");
+    });
+
+    document.getElementById("commission360Page").classList.remove("hidden");
+    document.getElementById("pageTitle").textContent="Fee 360°";
+    document.getElementById("pageSubtitle").textContent=currentCommission.no+" · "+currentCommission.client;
+
+    document.querySelectorAll(".nav-item").forEach(item=>{
+      item.classList.toggle("active",item.dataset.page==="commission");
+    });
+
+    populateCommission360();
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+
+  function populateCommission360(){
+    const f=currentCommission;
+
+    document.getElementById("commission360Title").textContent=f.no;
+    document.getElementById("commission360Meta").textContent=f.client+" · "+f.period;
+    document.getElementById("commission360Status").textContent=f.status;
+    document.getElementById("commission360Status").className="fee-status "+feeStatusClass(f.status);
+    document.getElementById("commission360Rate").textContent=f.rate+"% Commission";
+
+    document.getElementById("fGross").textContent=formatMoney(f.gross);
+    document.getElementById("fRate").textContent=f.rate+"%";
+    document.getElementById("fCommission").textContent=formatMoney(f.commission);
+    document.getElementById("fNet").textContent=formatMoney(f.net);
+    document.getElementById("fPeriod").textContent=f.period;
+
+    document.getElementById("formulaGross").textContent=formatMoney(f.gross);
+    document.getElementById("formulaRate").textContent=f.rate+"%";
+    document.getElementById("formulaCommission").textContent=formatMoney(f.commission);
+    document.getElementById("formulaGross2").textContent=formatMoney(f.gross);
+    document.getElementById("formulaCommission2").textContent=formatMoney(f.commission);
+    document.getElementById("formulaNet").textContent=formatMoney(f.net);
+
+    document.getElementById("fClient").textContent=f.client;
+    document.getElementById("fClientId").textContent=f.clientId;
+    document.getElementById("fCalculatedBy").textContent=f.calculatedBy;
+    document.getElementById("fDate").textContent=f.date;
+    document.getElementById("fApproval").textContent=f.approval;
+
+    document.getElementById("commissionBreakdownBody").innerHTML=f.breakdown.map(b=>`
+      <tr>
+        <td>${b[0]}</td><td>${b[1]}</td><td>${b[2]}</td><td>${b[3]}</td>
+        <td>${formatMoney(b[4])}</td><td>${formatMoney(b[5])}</td><td>${formatMoney(b[6])}</td>
+      </tr>
+    `).join("") || `<tr><td colspan="7" style="text-align:center;padding:25px;color:#7a8491">No receipt breakdown available.</td></tr>`;
+
+    document.getElementById("commissionTimeline").innerHTML=f.timeline.map(t=>`
+      <div class="timeline-item"><div class="timeline-dot"></div><div><strong>${t[0]} — ${t[1]}</strong><p>${t[2]}</p></div></div>
+    `).join("");
+  }
+
+  function openCommissionClient(){
+    if(currentCommission?.clientId) openClient360(currentCommission.clientId);
+  }
+
+  function showCalculateCommissionDemo(){
+    alert(
+      "Calculate Commission — Demo\\n\\n"+
+      "Prepared workflow:\\n"+
+      "• Select Client\\n"+
+      "• Select Period\\n"+
+      "• Pull Allocated Collections\\n"+
+      "• Apply Client Commission Rate\\n"+
+      "• Calculate Commission Earned\\n"+
+      "• Calculate Net Due to Client\\n"+
+      "• Submit for Approval"
+    );
+  }
+
+  function commissionRecalculateDemo(){
+    alert(
+      "Recalculate Fees — Demo\\n\\n"+
+      "The system can recalculate the fee batch when new receipts are added or adjustments are approved."
+    );
+  }
+
+  function commissionApproveDemo(){
+    alert(
+      "Approve Fees — Demo\\n\\n"+
+      "Approval finalizes the commission amount and creates the client's net settlement position for payment."
+    );
+  }
+
+
   const PAGE_NAMES = {
     dashboard:"Collection Dashboard",
     clients:"Clients",
@@ -3423,7 +3825,7 @@
 
     document.getElementById("pageTitle").textContent=PAGE_NAMES[page]||"RECOVA";
 
-    ["dashboardPage","clientsPage","client360Page","debtorsPage","debtor360Page","casesPage","case360Page","followupsPage","ptpPage","ptp360Page","collectionsPage","receipt360Page","settlementsPage","settlement360Page","placeholderPage"].forEach(id=>{
+    ["dashboardPage","clientsPage","client360Page","debtorsPage","debtor360Page","casesPage","case360Page","followupsPage","ptpPage","ptp360Page","collectionsPage","receipt360Page","settlementsPage","settlement360Page","commissionPage","commission360Page","placeholderPage"].forEach(id=>{
       const el=document.getElementById(id);
       if(el) el.classList.add("hidden");
     });
@@ -3459,6 +3861,10 @@
       document.getElementById("settlementsPage").classList.remove("hidden");
       document.getElementById("pageSubtitle").textContent="Settlement proposals, approvals and completion";
       renderSettlements();
+    }else if(page==="commission"){
+      document.getElementById("commissionPage").classList.remove("hidden");
+      document.getElementById("pageSubtitle").textContent="Collection commission, client net settlements and fee performance";
+      renderCommissionBatches();
     }else{
       document.getElementById("placeholderPage").classList.remove("hidden");
       document.getElementById("placeholderTitle").textContent=PAGE_NAMES[page];
@@ -3503,7 +3909,7 @@
       "5. Follow-ups & PTP\\n"+
       "6. Collections & Settlements\\n"+
       "7. Commission & Reports\\n\\n"+
-      "Release 1.7 activates Dashboard, Clients, Debtors, Collection Cases, Follow-ups, Promises to Pay, Collections and Settlements with Settlement 360° and client approval workflow."
+      "Release 1.8 activates Dashboard, Clients, Debtors, Collection Cases, Follow-ups, Promises to Pay, Collections, Settlements and Commission & Fees with Fee 360° and client net settlement calculation."
     );
   }
 
@@ -3515,6 +3921,7 @@
   renderPtps();
   renderCollectionsModule();
   renderSettlements();
+  renderCommissionBatches();
 </script>
 
 </body>
