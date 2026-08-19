@@ -361,6 +361,61 @@
     @media(max-width:950px){.contract-layout{grid-template-columns:1fr}}
     @media(max-width:650px){.contract-kpi-grid,.contract-summary-grid{grid-template-columns:1fr 1fr}.contract-toolbar-left{width:100%}.contract-toolbar input,.contract-toolbar select{width:100%}.contract-hero{flex-direction:column}.contract-hero-left{flex-direction:column}.contract-actions{width:100%}.contract-actions button{flex:1}}
 
+
+    /* MONTHLY DUES */
+    .due-kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-bottom:16px}
+    .due-toolbar{display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+    .due-toolbar-left{display:flex;gap:10px;flex-wrap:wrap}
+    .due-toolbar input,.due-toolbar select{
+      height:40px;border:1px solid var(--border);border-radius:6px;background:white;padding:0 12px;font-size:11px;outline:none
+    }
+    .due-toolbar input{width:280px}
+    .due-link{border:0;background:transparent;color:var(--navy);font-weight:700;cursor:pointer;padding:0}
+    .due-link:hover{color:var(--emerald)}
+    .due-status{display:inline-flex;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700}
+    .due-status.paid{background:#edf5f0;color:#347b57}
+    .due-status.partial{background:#fbf4e5;color:#9a6d1f}
+    .due-status.unpaid{background:#fbeaea;color:#a74646}
+    .due-status.upcoming{background:#eef2f7;color:#36506d}
+
+    .due-hero{
+      display:flex;justify-content:space-between;gap:20px;align-items:flex-start;background:white;border:1px solid var(--border);
+      border-radius:8px;padding:22px;margin-bottom:16px
+    }
+    .due-hero-left{display:flex;gap:16px;align-items:flex-start}
+    .due-avatar{
+      width:64px;height:64px;border-radius:10px;background:var(--navy);color:var(--emerald2);display:grid;place-items:center;
+      font-size:18px;font-weight:700
+    }
+    .due-hero h2{font-size:23px;color:var(--navy)}
+    .due-hero p{margin-top:6px;color:var(--muted);font-size:11px}
+    .due-tags{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
+    .due-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .due-summary-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-bottom:16px}
+    .due-layout{display:grid;grid-template-columns:1.05fr .95fr;gap:16px}
+    .allocation-box{padding:16px;border:1px solid var(--border);border-radius:8px;background:var(--soft)}
+    .allocation-box span{display:block;font-size:9px;color:var(--muted)}
+    .allocation-box strong{display:block;margin-top:7px;font-size:17px;color:var(--navy)}
+    .allocation-progress{height:9px;background:#e9edf0;border-radius:20px;overflow:hidden;margin-top:10px}
+    .allocation-progress span{display:block;height:100%;background:var(--emerald);border-radius:20px}
+
+    @media(max-width:1250px){
+      .due-kpi-grid,.due-summary-grid{grid-template-columns:repeat(3,1fr)}
+    }
+    @media(max-width:950px){
+      .due-layout{grid-template-columns:1fr}
+    }
+    @media(max-width:650px){
+      .due-kpi-grid,.due-summary-grid{grid-template-columns:1fr 1fr}
+      .due-toolbar{align-items:stretch}
+      .due-toolbar-left{width:100%}
+      .due-toolbar input,.due-toolbar select{width:100%}
+      .due-hero{flex-direction:column}
+      .due-hero-left{flex-direction:column}
+      .due-actions{width:100%}
+      .due-actions button{flex:1}
+    }
+
     .placeholder{min-height:500px;display:grid;place-items:center;text-align:center}
     .placeholder-box{max-width:520px;padding:45px;background:white;border:1px solid var(--border);border-radius:10px}
     .placeholder-box span{font-size:9px;color:var(--emerald);letter-spacing:2px;font-weight:700}
@@ -1237,6 +1292,194 @@
       <footer class="footer"><span>ESTARA — Contract 360°</span><span>Designed & Developed by <strong style="color:#1f8a70">APEX ORAIBI</strong></span></footer>
     </div>
 
+
+    <!-- MONTHLY DUES -->
+    <div id="duesPage" class="hidden">
+      <div class="content">
+        <div class="hero-row">
+          <div>
+            <h2>Monthly Dues</h2>
+            <p>Automatically generated rent dues linked to active contracts, units and tenants.</p>
+          </div>
+          <div class="hero-actions">
+            <button class="action-btn action-secondary" onclick="generateDuesDemo()">Generate Monthly Dues</button>
+            <button class="action-btn action-primary" onclick="recordRentDemo()">+ Record Collection</button>
+          </div>
+        </div>
+
+        <div class="due-kpi-grid">
+          <div class="kpi-card"><span class="kpi-label">August Rent Due</span><strong class="kpi-value money">BHD 42,850.000</strong><div class="kpi-note">Current month</div></div>
+          <div class="kpi-card"><span class="kpi-label">Paid</span><strong class="kpi-value money">BHD 37,900.000</strong><div class="kpi-note"><span class="positive">88.4%</span> fully paid</div></div>
+          <div class="kpi-card"><span class="kpi-label">Partial</span><strong class="kpi-value money">BHD 1,350.000</strong><div class="kpi-note">Partially settled dues</div></div>
+          <div class="kpi-card"><span class="kpi-label">Unpaid</span><strong class="kpi-value money">BHD 3,600.000</strong><div class="kpi-note"><span class="danger">31 dues outstanding</span></div></div>
+          <div class="kpi-card"><span class="kpi-label">Upcoming</span><strong class="kpi-value money">BHD 42,850.000</strong><div class="kpi-note">September scheduled dues</div></div>
+        </div>
+
+        <section class="card">
+          <div class="due-toolbar">
+            <div class="due-toolbar-left">
+              <input id="dueSearch" type="search" placeholder="Search due, tenant, unit or contract..." oninput="renderMonthlyDues()">
+              <select id="dueMonthFilter" onchange="renderMonthlyDues()">
+                <option value="">All Months</option>
+                <option value="Aug 2026">Aug 2026</option>
+                <option value="Jul 2026">Jul 2026</option>
+                <option value="Sep 2026">Sep 2026</option>
+              </select>
+              <select id="dueStatusFilter" onchange="renderMonthlyDues()">
+                <option value="">All Statuses</option>
+                <option value="Paid">Paid</option>
+                <option value="Partial">Partial</option>
+                <option value="Unpaid">Unpaid</option>
+                <option value="Upcoming">Upcoming</option>
+              </select>
+              <select id="dueBuildingFilter" onchange="renderMonthlyDues()">
+                <option value="">All Buildings</option>
+                <option value="Seef Residence">Seef Residence</option>
+                <option value="Riffa Plaza">Riffa Plaza</option>
+                <option value="Juffair Heights">Juffair Heights</option>
+                <option value="Adliya Court">Adliya Court</option>
+              </select>
+            </div>
+            <span style="font-size:10px;color:var(--muted)">Open a due to view Due 360°</span>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Due</th><th>Month</th><th>Tenant</th><th>Building</th><th>Unit</th><th>Contract</th>
+                  <th>Rent Due</th><th>Collected</th><th>Balance</th><th>Status</th><th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="duesTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <div class="dashboard-grid equal">
+          <section class="card">
+            <div class="card-head"><div><h3>Automatic Due Generation</h3><p>How ESTARA handles monthly rent obligations</p></div></div>
+            <div class="list">
+              <div class="list-row"><div class="list-left"><div class="list-icon">1</div><div><strong>Active contract detected</strong><span>Fixed-term and open-ended contracts are included.</span></div></div></div>
+              <div class="list-row"><div class="list-left"><div class="list-icon">2</div><div><strong>Monthly due generated</strong><span>Rent due is created automatically for the contract period.</span></div></div></div>
+              <div class="list-row"><div class="list-left"><div class="list-icon">3</div><div><strong>Collection allocation</strong><span>Payments are allocated to the oldest unpaid due first.</span></div></div></div>
+              <div class="list-row"><div class="list-left"><div class="list-icon">4</div><div><strong>Status updated automatically</strong><span>Paid, Partial, Unpaid or Upcoming.</span></div></div></div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-head"><div><h3>Due Status Snapshot</h3><p>August 2026 monthly rent position</p></div></div>
+            <div class="insights" style="grid-template-columns:1fr 1fr;">
+              <div class="insight"><strong>146 Paid</strong><p>Fully settled monthly dues.</p></div>
+              <div class="insight"><strong>9 Partial</strong><p>Partially settled balances.</p></div>
+              <div class="insight"><strong>31 Unpaid</strong><p>Require rent collection follow-up.</p></div>
+              <div class="insight"><strong>186 Upcoming</strong><p>September dues prepared.</p></div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <span>ESTARA — Monthly Dues</span>
+        <span>Designed & Developed by <strong style="color:#1f8a70">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
+    <!-- DUE 360 -->
+    <div id="due360Page" class="hidden">
+      <div class="content">
+        <div style="margin-bottom:14px;">
+          <button class="action-btn action-secondary" onclick="openPage('dues')">← Back to Monthly Dues</button>
+        </div>
+
+        <section class="due-hero">
+          <div class="due-hero-left">
+            <div id="due360Avatar" class="due-avatar">AUG</div>
+            <div>
+              <h2 id="due360Title"></h2>
+              <p id="due360Meta"></p>
+              <div class="due-tags">
+                <span id="due360Status" class="due-status unpaid"></span>
+                <span id="due360Month" class="contract-type"></span>
+                <span class="building-type" style="background:#eaf8f3;color:#1f8a70">Due 360°</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="due-actions">
+            <button class="action-btn action-secondary" onclick="openDueTenant()">View Tenant</button>
+            <button class="action-btn action-secondary" onclick="openDueUnit()">View Unit</button>
+            <button class="action-btn action-secondary" onclick="openDueContract()">View Contract</button>
+            <button class="action-btn action-primary" onclick="recordRentDemo()">Record Collection</button>
+          </div>
+        </section>
+
+        <div class="due-summary-grid">
+          <div class="kpi-card"><span class="kpi-label">Rent Due</span><strong id="dRentDue" class="kpi-value money"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Collected</span><strong id="dCollected" class="kpi-value money"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Balance</span><strong id="dBalance" class="kpi-value money"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Due Date</span><strong id="dDueDate" class="kpi-value" style="font-size:15px"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Days Overdue</span><strong id="dDaysOverdue" class="kpi-value"></strong></div>
+        </div>
+
+        <section class="card">
+          <div class="tabs">
+            <button class="tab-btn active" onclick="openDueTab('overview',this)">Overview</button>
+            <button class="tab-btn" onclick="openDueTab('allocations',this)">Allocations</button>
+            <button class="tab-btn" onclick="openDueTab('activity',this)">Activity</button>
+          </div>
+
+          <div id="due-tab-overview" class="tab-panel active">
+            <div class="due-layout">
+              <div>
+                <div class="card-head"><div><h3>Monthly Due Information</h3><p>Contract-linked rent obligation</p></div></div>
+                <div class="info-grid">
+                  <div class="info-item"><span>Due ID</span><strong id="dId"></strong></div>
+                  <div class="info-item"><span>Month</span><strong id="dMonthInfo"></strong></div>
+                  <div class="info-item"><span>Tenant</span><strong id="dTenant"></strong></div>
+                  <div class="info-item"><span>Building</span><strong id="dBuilding"></strong></div>
+                  <div class="info-item"><span>Unit</span><strong id="dUnit"></strong></div>
+                  <div class="info-item"><span>Contract</span><strong id="dContract"></strong></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="card-head"><div><h3>Collection Allocation</h3><p>Current due payment progress</p></div></div>
+                <div class="allocation-box">
+                  <span>Collected Percentage</span>
+                  <strong id="dAllocationPct"></strong>
+                  <div class="allocation-progress"><span id="dAllocationBar"></span></div>
+                </div>
+                <div class="allocation-box" style="margin-top:12px;">
+                  <span>Allocation Rule</span>
+                  <strong style="font-size:12px">Oldest Unpaid → Current Month → Future Months</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="due-tab-allocations" class="tab-panel">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Date</th><th>Receipt</th><th>Method</th><th>Allocated Amount</th><th>Balance After</th></tr></thead>
+                <tbody id="dueAllocationsBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="due-tab-activity" class="tab-panel">
+            <div id="dueActivityTimeline" class="list"></div>
+          </div>
+        </section>
+      </div>
+
+      <footer class="footer">
+        <span>ESTARA — Monthly Due 360°</span>
+        <span>Designed & Developed by <strong style="color:#1f8a70">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
+
     <div id="placeholderPage" class="hidden">
       <div class="content placeholder">
         <div class="placeholder-box">
@@ -1749,6 +1992,161 @@
   function openContractUnit(){if(currentContract?.unitId)openUnit360(currentContract.unitId);else alert("Unit 360° demo record is not linked for this contract.");}
   function renewContractDemo(){alert("Renew Contract — Demo\\n\\nReview current rent, proposed rent, renewal dates, notice period and tenant approval before creating the renewed contract.");}
 
+
+  const MONTHLY_DUES = [
+    {
+      id:"DUE-260801",month:"Aug 2026",tenantId:"TNT-001",tenant:"Omar Ali",building:"Seef Residence",unitId:"UNT-001",unit:"101",
+      contractId:"CTR-260011",rentDue:350,collected:350,balance:0,status:"Paid",dueDate:"01 Aug 2026",daysOverdue:0,
+      allocations:[["19 Aug 2026","RC-PR-260411","BenefitPay",350,0]],
+      activity:[["19 Aug 2026","Due fully paid","BHD 350.000 allocated."],["01 Aug 2026","Monthly due generated","August rent due created automatically."]]
+    },
+    {
+      id:"DUE-260802",month:"Aug 2026",tenantId:"TNT-002",tenant:"Fatima Ali",building:"Seef Residence",unitId:"UNT-003",unit:"804",
+      contractId:"CTR-260033",rentDue:420,collected:0,balance:420,status:"Unpaid",dueDate:"01 Aug 2026",daysOverdue:18,
+      allocations:[],activity:[["10 Aug 2026","Arrears reminder sent","August rent remains unpaid."],["01 Aug 2026","Monthly due generated","BHD 420.000 due created."]]
+    },
+    {
+      id:"DUE-260803",month:"Aug 2026",tenantId:"TNT-003",tenant:"Al Noor Trading",building:"Riffa Plaza",unitId:"UNT-004",unit:"GF-03",
+      contractId:"CTR-260045",rentDue:650,collected:650,balance:0,status:"Paid",dueDate:"01 Aug 2026",daysOverdue:0,
+      allocations:[["19 Aug 2026","RC-PR-260414","Bank Transfer",650,0]],activity:[["19 Aug 2026","Due fully paid","August rent settled."],["01 Aug 2026","Monthly due generated","Open-ended contract generated monthly rent due."]]
+    },
+    {
+      id:"DUE-260804",month:"Aug 2026",tenantId:"TNT-004",tenant:"Ahmed Salman",building:"Juffair Heights",unitId:"UNT-005",unit:"1204",
+      contractId:"CTR-260084",rentDue:450,collected:0,balance:450,status:"Unpaid",dueDate:"01 Aug 2026",daysOverdue:18,
+      allocations:[],activity:[["16 Aug 2026","Second notice sent","Tenant has two overdue months."],["01 Aug 2026","Monthly due generated","August rent due created."]]
+    },
+    {
+      id:"DUE-260805",month:"Jul 2026",tenantId:"TNT-003",tenant:"Al Noor Trading",building:"Riffa Plaza",unitId:"UNT-004",unit:"GF-03",
+      contractId:"CTR-260045",rentDue:650,collected:250,balance:400,status:"Partial",dueDate:"01 Jul 2026",daysOverdue:49,
+      allocations:[["05 Jul 2026","RC-PR-260320","Cash",250,400]],activity:[["05 Jul 2026","Partial payment allocated","BHD 250.000 allocated."],["01 Jul 2026","Monthly due generated","July rent due created."]]
+    },
+    {
+      id:"DUE-260901",month:"Sep 2026",tenantId:"TNT-001",tenant:"Omar Ali",building:"Seef Residence",unitId:"UNT-001",unit:"101",
+      contractId:"CTR-260011",rentDue:350,collected:0,balance:350,status:"Upcoming",dueDate:"01 Sep 2026",daysOverdue:0,
+      allocations:[],activity:[["19 Aug 2026","Upcoming due prepared","September rent scheduled from active contract."]]
+    }
+  ];
+
+  let currentDue = MONTHLY_DUES[0];
+
+  function renderMonthlyDues(){
+    const search=(document.getElementById("dueSearch")?.value||"").trim().toLowerCase();
+    const month=document.getElementById("dueMonthFilter")?.value||"";
+    const status=document.getElementById("dueStatusFilter")?.value||"";
+    const building=document.getElementById("dueBuildingFilter")?.value||"";
+
+    const rows=MONTHLY_DUES.filter(d=>{
+      const a=!search || [d.id,d.tenant,d.unit,d.contractId,d.building].join(" ").toLowerCase().includes(search);
+      const b=!month || d.month===month;
+      const c=!status || d.status===status;
+      const e=!building || d.building===building;
+      return a&&b&&c&&e;
+    }).map(d=>`
+      <tr>
+        <td><button class="due-link" onclick="openDue360('${d.id}')">${d.id}</button></td>
+        <td>${d.month}</td>
+        <td>${d.tenant}</td>
+        <td>${d.building}</td>
+        <td>${d.unit}</td>
+        <td>${d.contractId}</td>
+        <td>${formatMoney(d.rentDue)}</td>
+        <td>${formatMoney(d.collected)}</td>
+        <td>${formatMoney(d.balance)}</td>
+        <td><span class="due-status ${d.status.toLowerCase()}">${d.status}</span></td>
+        <td><button class="action-btn action-secondary" style="min-height:30px;padding:0 10px;font-size:9px" onclick="openDue360('${d.id}')">View 360°</button></td>
+      </tr>
+    `).join("");
+
+    document.getElementById("duesTableBody").innerHTML=rows || `<tr><td colspan="11" style="text-align:center;padding:28px;color:#7f8b93">No monthly dues found.</td></tr>`;
+  }
+
+  function openDue360(id){
+    currentDue=MONTHLY_DUES.find(d=>d.id===id)||MONTHLY_DUES[0];
+
+    ["dashboardPage","buildingsPage","building360Page","unitsPage","unit360Page","tenantsPage","tenant360Page","contractsPage","contract360Page","duesPage","placeholderPage"].forEach(x=>{
+      const el=document.getElementById(x);
+      if(el) el.classList.add("hidden");
+    });
+
+    document.getElementById("due360Page").classList.remove("hidden");
+    document.getElementById("pageTitle").textContent="Monthly Due 360°";
+    document.getElementById("pageSubtitle").textContent=currentDue.month+" · "+currentDue.tenant+" · "+currentDue.building+" · Unit "+currentDue.unit;
+
+    document.querySelectorAll(".nav-item").forEach(item=>{
+      item.classList.toggle("active",item.dataset.page==="dues");
+    });
+
+    populateDue360();
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+
+  function populateDue360(){
+    const d=currentDue;
+    const pct=d.rentDue>0 ? Math.min(100,(d.collected/d.rentDue)*100) : 0;
+
+    document.getElementById("due360Avatar").textContent=d.month.split(" ")[0].toUpperCase();
+    document.getElementById("due360Title").textContent=d.id+" — "+d.month;
+    document.getElementById("due360Meta").textContent=d.tenant+" · "+d.building+" · Unit "+d.unit;
+    document.getElementById("due360Status").textContent=d.status;
+    document.getElementById("due360Status").className="due-status "+d.status.toLowerCase();
+    document.getElementById("due360Month").textContent=d.month;
+
+    document.getElementById("dRentDue").textContent=formatMoney(d.rentDue);
+    document.getElementById("dCollected").textContent=formatMoney(d.collected);
+    document.getElementById("dBalance").textContent=formatMoney(d.balance);
+    document.getElementById("dDueDate").textContent=d.dueDate;
+    document.getElementById("dDaysOverdue").textContent=d.status==="Upcoming"?"—":d.daysOverdue;
+
+    document.getElementById("dId").textContent=d.id;
+    document.getElementById("dMonthInfo").textContent=d.month;
+    document.getElementById("dTenant").textContent=d.tenant;
+    document.getElementById("dBuilding").textContent=d.building;
+    document.getElementById("dUnit").textContent=d.unit;
+    document.getElementById("dContract").textContent=d.contractId;
+
+    document.getElementById("dAllocationPct").textContent=pct.toFixed(1)+"%";
+    document.getElementById("dAllocationBar").style.width=pct+"%";
+
+    document.getElementById("dueAllocationsBody").innerHTML=d.allocations.map(a=>`
+      <tr><td>${a[0]}</td><td>${a[1]}</td><td>${a[2]}</td><td>${formatMoney(a[3])}</td><td>${formatMoney(a[4])}</td></tr>
+    `).join("") || `<tr><td colspan="5" style="text-align:center;padding:24px;color:#7f8b93">No collection allocation yet.</td></tr>`;
+
+    document.getElementById("dueActivityTimeline").innerHTML=d.activity.map(a=>`
+      <div class="list-row"><div class="list-left"><div class="list-icon">•</div><div><strong>${a[1]}</strong><span>${a[0]} · ${a[2]}</span></div></div></div>
+    `).join("");
+
+    openDueTab("overview",document.querySelector("#due360Page .tab-btn"));
+  }
+
+  function openDueTab(tab,button){
+    document.querySelectorAll('[id^="due-tab-"]').forEach(x=>x.classList.remove("active"));
+    document.querySelectorAll("#due360Page .tab-btn").forEach(x=>x.classList.remove("active"));
+    document.getElementById("due-tab-"+tab).classList.add("active");
+    if(button) button.classList.add("active");
+  }
+
+  function openDueTenant(){
+    if(currentDue?.tenantId) openTenant360(currentDue.tenantId);
+  }
+
+  function openDueUnit(){
+    if(currentDue?.unitId) openUnit360(currentDue.unitId);
+  }
+
+  function openDueContract(){
+    if(currentDue?.contractId) openContract360(currentDue.contractId);
+  }
+
+  function generateDuesDemo(){
+    alert(
+      "Generate Monthly Dues — Demo\\n\\n"+
+      "ESTARA checks all active contracts and generates the next monthly rent obligation automatically.\\n\\n"+
+      "Open-ended contracts continue monthly until they are ended.\\n"+
+      "Fixed-term contracts generate dues only within their active period."
+    );
+  }
+
+
   const PAGE_NAMES = {
     dashboard:"Property Dashboard",
     buildings:"Buildings",
@@ -1783,7 +2181,7 @@
 
     document.getElementById("pageTitle").textContent=PAGE_NAMES[page]||"ESTARA";
 
-    ["dashboardPage","buildingsPage","building360Page","unitsPage","unit360Page","tenantsPage","tenant360Page","contractsPage","contract360Page","placeholderPage"].forEach(id=>document.getElementById(id)?.classList.add("hidden"));
+    ["dashboardPage","buildingsPage","building360Page","unitsPage","unit360Page","tenantsPage","tenant360Page","contractsPage","contract360Page","duesPage","due360Page","placeholderPage"].forEach(id=>document.getElementById(id)?.classList.add("hidden"));
     if(page==="dashboard"){
       document.getElementById("dashboardPage").classList.remove("hidden");
       document.getElementById("pageSubtitle").textContent="Buildings, occupancy, rent and arrears overview";
@@ -1803,6 +2201,10 @@
       document.getElementById("contractsPage").classList.remove("hidden");
       document.getElementById("pageSubtitle").textContent="Tenancy contracts, renewals, expiry alerts and rent schedules";
       renderContracts();
+    }else if(page==="dues"){
+      document.getElementById("duesPage").classList.remove("hidden");
+      document.getElementById("pageSubtitle").textContent="Automatically generated monthly rent dues and collection status";
+      renderMonthlyDues();
     }else{
       document.getElementById("placeholderPage").classList.remove("hidden");
       document.getElementById("placeholderTitle").textContent=PAGE_NAMES[page];
@@ -1848,7 +2250,7 @@
       "6. Monthly Dues & Collections\\n"+
       "7. Arrears\\n"+
       "8. Expenses & Reports\\n\\n"+
-      "Release 1.4 activates Contracts and Contract 360° with fixed-term, open-ended, renewal alerts and rent schedules."
+      "Release 1.5 activates Monthly Dues with automatic contract-linked rent generation, Paid / Partial / Unpaid / Upcoming statuses and Due 360°."
     );
   }
 
@@ -1857,6 +2259,7 @@
   renderUnits();
   renderTenants();
   renderContracts();
+  renderMonthlyDues();
 </script>
 
 </body>
