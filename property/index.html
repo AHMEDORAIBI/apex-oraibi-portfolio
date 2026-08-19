@@ -538,6 +538,72 @@
       .aging-grid{grid-template-columns:1fr}
     }
 
+
+    /* PROPERTY EXPENSES */
+    .pex-kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-bottom:16px}
+    .pex-toolbar{display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+    .pex-toolbar-left{display:flex;gap:10px;flex-wrap:wrap}
+    .pex-toolbar input,.pex-toolbar select{
+      height:40px;border:1px solid var(--border);border-radius:6px;background:white;padding:0 12px;font-size:11px;outline:none
+    }
+    .pex-toolbar input{width:280px}
+    .pex-link{border:0;background:transparent;color:var(--navy);font-weight:700;cursor:pointer;padding:0}
+    .pex-link:hover{color:var(--emerald)}
+    .pex-category,.pex-status,.pex-recovery{display:inline-flex;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:700}
+    .pex-category.maintenance{background:#eef2f7;color:#36506d}
+    .pex-category.utilities{background:#edf6fb;color:#2f7ba5}
+    .pex-category.management{background:#f0eafa;color:#6a4b91}
+    .pex-category.government{background:#f7f1e7;color:#8f6b27}
+    .pex-category.other{background:#f3f4f6;color:#6f7780}
+    .pex-status.paid{background:#edf5f0;color:#347b57}
+    .pex-status.pending{background:#fbf4e5;color:#9a6d1f}
+    .pex-status.reversed{background:#fbeaea;color:#a74646}
+    .pex-recovery.recoverable{background:#eaf8f3;color:#1f8a70}
+    .pex-recovery.owner{background:#eef2f7;color:#36506d}
+
+    .pex-hero{
+      display:flex;justify-content:space-between;gap:20px;align-items:flex-start;background:white;border:1px solid var(--border);
+      border-radius:8px;padding:22px;margin-bottom:16px
+    }
+    .pex-hero-left{display:flex;gap:16px;align-items:flex-start}
+    .pex-avatar{
+      width:64px;height:64px;border-radius:10px;background:var(--navy);color:var(--emerald2);display:grid;place-items:center;
+      font-size:18px;font-weight:700
+    }
+    .pex-hero h2{font-size:23px;color:var(--navy)}
+    .pex-hero p{margin-top:6px;color:var(--muted);font-size:11px}
+    .pex-tags{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
+    .pex-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .pex-summary-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-bottom:16px}
+    .pex-layout{display:grid;grid-template-columns:1.05fr .95fr;gap:16px}
+    .allocation-chip{display:inline-flex;padding:6px 9px;border-radius:20px;background:#eef7f4;color:#1f8a70;font-size:9px;font-weight:700}
+    .recoverable-box{padding:16px;border:1px solid var(--border);border-radius:8px;background:var(--soft)}
+    .recoverable-box span{display:block;font-size:9px;color:var(--muted)}
+    .recoverable-box strong{display:block;margin-top:7px;font-size:17px;color:var(--navy)}
+    .expense-mix-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .expense-mix-card{padding:16px;border:1px solid var(--border);border-radius:8px;background:var(--soft)}
+    .expense-mix-card span{display:block;font-size:9px;color:var(--muted)}
+    .expense-mix-card strong{display:block;margin-top:7px;font-size:15px;color:var(--navy)}
+
+    @media(max-width:1250px){
+      .pex-kpi-grid,.pex-summary-grid{grid-template-columns:repeat(3,1fr)}
+      .expense-mix-grid{grid-template-columns:repeat(2,1fr)}
+    }
+    @media(max-width:950px){
+      .pex-layout{grid-template-columns:1fr}
+    }
+    @media(max-width:650px){
+      .pex-kpi-grid,.pex-summary-grid{grid-template-columns:1fr 1fr}
+      .pex-toolbar{align-items:stretch}
+      .pex-toolbar-left{width:100%}
+      .pex-toolbar input,.pex-toolbar select{width:100%}
+      .pex-hero{flex-direction:column}
+      .pex-hero-left{flex-direction:column}
+      .pex-actions{width:100%}
+      .pex-actions button{flex:1}
+      .expense-mix-grid{grid-template-columns:1fr}
+    }
+
     .placeholder{min-height:500px;display:grid;place-items:center;text-align:center}
     .placeholder-box{max-width:520px;padding:45px;background:white;border:1px solid var(--border);border-radius:10px}
     .placeholder-box span{font-size:9px;color:var(--emerald);letter-spacing:2px;font-weight:700}
@@ -1956,6 +2022,201 @@
     </div>
 
 
+
+    <!-- PROPERTY EXPENSES -->
+    <div id="expensesPage" class="hidden">
+      <div class="content">
+        <div class="hero-row">
+          <div>
+            <h2>Property Expenses</h2>
+            <p>Track maintenance, utilities, management and recoverable property costs by building and unit.</p>
+          </div>
+          <div class="hero-actions">
+            <button class="action-btn action-secondary">Export Excel</button>
+            <button class="action-btn action-primary" onclick="showAddPropertyExpenseDemo()">+ Add Expense</button>
+          </div>
+        </div>
+
+        <div class="pex-kpi-grid">
+          <div class="kpi-card"><span class="kpi-label">Total Expenses</span><strong class="kpi-value money">BHD 6,940.000</strong><div class="kpi-note">August 2026</div></div>
+          <div class="kpi-card"><span class="kpi-label">Maintenance</span><strong class="kpi-value money">BHD 2,780.000</strong><div class="kpi-note">Repairs and servicing</div></div>
+          <div class="kpi-card"><span class="kpi-label">Utilities</span><strong class="kpi-value money">BHD 1,460.000</strong><div class="kpi-note">Common-area utilities</div></div>
+          <div class="kpi-card"><span class="kpi-label">Recoverable</span><strong class="kpi-value money">BHD 1,120.000</strong><div class="kpi-note"><span class="positive">Chargeable to tenant/client</span></div></div>
+          <div class="kpi-card"><span class="kpi-label">Owner Cost</span><strong class="kpi-value money">BHD 5,820.000</strong><div class="kpi-note">Non-recoverable property cost</div></div>
+        </div>
+
+        <section class="card">
+          <div class="pex-toolbar">
+            <div class="pex-toolbar-left">
+              <input id="propertyExpenseSearch" type="search" placeholder="Search expense, building, unit, vendor..." oninput="renderPropertyExpenses()">
+              <select id="propertyExpenseCategoryFilter" onchange="renderPropertyExpenses()">
+                <option value="">All Categories</option>
+                <option value="Maintenance">Maintenance</option>
+                <option value="Utilities">Utilities</option>
+                <option value="Management">Management</option>
+                <option value="Government">Government</option>
+                <option value="Other">Other</option>
+              </select>
+              <select id="propertyExpenseRecoveryFilter" onchange="renderPropertyExpenses()">
+                <option value="">All Recovery Types</option>
+                <option value="Recoverable">Recoverable</option>
+                <option value="Owner Cost">Owner Cost</option>
+              </select>
+            </div>
+            <span style="font-size:10px;color:var(--muted)">Open an expense to view Expense 360°</span>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Expense</th><th>Date</th><th>Description</th><th>Category</th><th>Building</th><th>Unit</th>
+                  <th>Vendor</th><th>Total</th><th>Recovery</th><th>Status</th><th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="propertyExpensesBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <div class="dashboard-grid equal">
+          <section class="card">
+            <div class="card-head"><div><h3>Expense Mix</h3><p>August 2026 by category</p></div></div>
+            <div class="expense-mix-grid">
+              <div class="expense-mix-card"><span>Maintenance</span><strong>BHD 2,780</strong></div>
+              <div class="expense-mix-card"><span>Utilities</span><strong>BHD 1,460</strong></div>
+              <div class="expense-mix-card"><span>Management</span><strong>BHD 1,620</strong></div>
+              <div class="expense-mix-card"><span>Other</span><strong>BHD 1,080</strong></div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-head"><div><h3>Recoverable Expense Position</h3><p>Amounts to recharge tenants / owners</p></div></div>
+            <div class="recoverable-box">
+              <span>Recoverable Expenses</span>
+              <strong>BHD 1,120.000</strong>
+            </div>
+            <div class="recoverable-box" style="margin-top:12px;">
+              <span>Already Recharged</span>
+              <strong>BHD 620.000</strong>
+            </div>
+            <div class="recoverable-box" style="margin-top:12px;">
+              <span>Pending Recharge</span>
+              <strong>BHD 500.000</strong>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <span>ESTARA — Property Expenses</span>
+        <span>Designed & Developed by <strong style="color:#1f8a70">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
+    <!-- PROPERTY EXPENSE 360 -->
+    <div id="propertyExpense360Page" class="hidden">
+      <div class="content">
+        <div style="margin-bottom:14px;">
+          <button class="action-btn action-secondary" onclick="openPage('expenses')">← Back to Property Expenses</button>
+        </div>
+
+        <section class="pex-hero">
+          <div class="pex-hero-left">
+            <div class="pex-avatar">E</div>
+            <div>
+              <h2 id="propertyExpense360Title"></h2>
+              <p id="propertyExpense360Meta"></p>
+              <div class="pex-tags">
+                <span id="propertyExpense360Category" class="pex-category maintenance"></span>
+                <span id="propertyExpense360Recovery" class="pex-recovery recoverable"></span>
+                <span id="propertyExpense360Status" class="pex-status paid"></span>
+                <span class="building-type" style="background:#eaf8f3;color:#1f8a70">Expense 360°</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="pex-actions">
+            <button class="action-btn action-secondary" onclick="openExpenseBuilding()">View Building</button>
+            <button id="propertyExpenseUnitBtn" class="action-btn action-secondary" onclick="openExpenseUnit()">View Unit</button>
+            <button class="action-btn action-secondary">View Attachment</button>
+            <button class="action-btn action-primary" onclick="rechargePropertyExpenseDemo()">Recharge Expense</button>
+          </div>
+        </section>
+
+        <div class="pex-summary-grid">
+          <div class="kpi-card"><span class="kpi-label">Net Amount</span><strong id="peNet" class="kpi-value money"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">VAT</span><strong id="peVat" class="kpi-value money"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Total</span><strong id="peTotal" class="kpi-value money"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Expense Date</span><strong id="peDate" class="kpi-value" style="font-size:15px"></strong></div>
+          <div class="kpi-card"><span class="kpi-label">Reference</span><strong id="peReference" class="kpi-value" style="font-size:15px"></strong></div>
+        </div>
+
+        <section class="card">
+          <div class="tabs">
+            <button class="tab-btn active" onclick="openPropertyExpenseTab('overview',this)">Overview</button>
+            <button class="tab-btn" onclick="openPropertyExpenseTab('allocation',this)">Allocation</button>
+            <button class="tab-btn" onclick="openPropertyExpenseTab('recovery',this)">Recovery</button>
+            <button class="tab-btn" onclick="openPropertyExpenseTab('activity',this)">Activity</button>
+          </div>
+
+          <div id="property-expense-tab-overview" class="tab-panel active">
+            <div class="pex-layout">
+              <div>
+                <div class="card-head"><div><h3>Expense Information</h3><p>Cost, vendor and payment details</p></div></div>
+                <div class="info-grid">
+                  <div class="info-item"><span>Description</span><strong id="peDescription"></strong></div>
+                  <div class="info-item"><span>Vendor / Payee</span><strong id="peVendor"></strong></div>
+                  <div class="info-item"><span>Category</span><strong id="peCategory"></strong></div>
+                  <div class="info-item"><span>Payment Method</span><strong id="peMethod"></strong></div>
+                  <div class="info-item"><span>Account</span><strong id="peAccount"></strong></div>
+                  <div class="info-item"><span>Attachment</span><strong id="peAttachment"></strong></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="card-head"><div><h3>Property Link</h3><p>Where this expense belongs</p></div></div>
+                <div class="info-grid" style="grid-template-columns:1fr">
+                  <div class="info-item"><span>Building</span><strong id="peBuilding"></strong></div>
+                  <div class="info-item"><span>Unit</span><strong id="peUnit"></strong></div>
+                  <div class="info-item"><span>Recovery Type</span><strong id="peRecovery"></strong></div>
+                  <div class="info-item"><span>Recorded By</span><strong id="peRecordedBy"></strong></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="property-expense-tab-allocation" class="tab-panel">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Building</th><th>Unit</th><th>Allocation %</th><th>Allocated Amount</th><th>Basis</th></tr></thead>
+                <tbody id="propertyExpenseAllocationBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="property-expense-tab-recovery" class="tab-panel">
+            <div class="info-grid">
+              <div class="info-item"><span>Recoverable?</span><strong id="peRecoverableFlag"></strong></div>
+              <div class="info-item"><span>Recoverable From</span><strong id="peRecoverableFrom"></strong></div>
+              <div class="info-item"><span>Recovery Status</span><strong id="peRecoveryStatus"></strong></div>
+              <div class="info-item"><span>Recovered Amount</span><strong id="peRecoveredAmount"></strong></div>
+            </div>
+          </div>
+
+          <div id="property-expense-tab-activity" class="tab-panel">
+            <div id="propertyExpenseActivity" class="list"></div>
+          </div>
+        </section>
+      </div>
+
+      <footer class="footer">
+        <span>ESTARA — Property Expense 360°</span>
+        <span>Designed & Developed by <strong style="color:#1f8a70">APEX ORAIBI</strong></span>
+      </footer>
+    </div>
+
+
     <div id="placeholderPage" class="hidden">
       <div class="content placeholder">
         <div class="placeholder-box">
@@ -3021,6 +3282,212 @@
   }
 
 
+
+  const PROPERTY_EXPENSES = [
+    {
+      no:"PEX-260081",date:"19 Aug 2026",description:"AC Repair — Unit 804",category:"Maintenance",buildingId:"BLD-001",building:"Seef Residence",
+      unitId:"UNT-003",unit:"804",vendor:"CoolTech Services",method:"Bank Transfer",account:"BBK Operating Account",reference:"INV-CT-8821",
+      net:136.364,vat:13.636,total:150,recovery:"Recoverable",status:"Paid",attachment:"AC Repair Invoice.pdf",recordedBy:"Mariam Hassan",
+      recoverable:true,recoverableFrom:"Tenant — Fatima Ali",recoveryStatus:"Pending Recharge",recoveredAmount:0,
+      allocations:[["Seef Residence","804","100%",150,"Direct Unit Expense"]],
+      activity:[["19 Aug 2026","Expense recorded","AC repair expense linked to Unit 804."],["19 Aug 2026","Marked recoverable","Expense pending tenant recharge."]]
+    },
+    {
+      no:"PEX-260082",date:"19 Aug 2026",description:"Common Area Electricity",category:"Utilities",buildingId:"BLD-002",building:"Riffa Plaza",
+      unitId:null,unit:"—",vendor:"EWA",method:"Bank Transfer",account:"NBB Operating Account",reference:"EWA-RP-AUG26",
+      net:363.636,vat:36.364,total:400,recovery:"Owner Cost",status:"Paid",attachment:"EWA Bill.pdf",recordedBy:"Ali Nasser",
+      recoverable:false,recoverableFrom:"—",recoveryStatus:"Not Recoverable",recoveredAmount:0,
+      allocations:[["Riffa Plaza","All Units","100%",400,"Common Area Allocation"]],
+      activity:[["19 Aug 2026","Utility expense posted","Common area electricity allocated to Riffa Plaza."]]
+    },
+    {
+      no:"PEX-260083",date:"18 Aug 2026",description:"Lift Preventive Maintenance",category:"Maintenance",buildingId:"BLD-003",building:"Juffair Heights",
+      unitId:null,unit:"—",vendor:"Elevate Bahrain",method:"Cheque",account:"Undeposited Cheques",reference:"CHQ-88190",
+      net:500,vat:50,total:550,recovery:"Owner Cost",status:"Paid",attachment:"Lift Service Invoice.pdf",recordedBy:"Noor Ahmed",
+      recoverable:false,recoverableFrom:"—",recoveryStatus:"Not Recoverable",recoveredAmount:0,
+      allocations:[["Juffair Heights","Common Area","100%",550,"Building Maintenance"]],
+      activity:[["18 Aug 2026","Maintenance expense recorded","Preventive lift maintenance for Juffair Heights."]]
+    },
+    {
+      no:"PEX-260084",date:"18 Aug 2026",description:"Municipality Fee — Commercial Unit",category:"Government",buildingId:"BLD-004",building:"Adliya Court",
+      unitId:null,unit:"OFF-01",vendor:"Municipality",method:"BenefitPay",account:"BenefitPay / BBK",reference:"MUN-180826",
+      net:90.909,vat:9.091,total:100,recovery:"Recoverable",status:"Pending",attachment:"Municipality Receipt.pdf",recordedBy:"Mariam Hassan",
+      recoverable:true,recoverableFrom:"Tenant — Legal Point W.L.L",recoveryStatus:"Pending Recharge",recoveredAmount:0,
+      allocations:[["Adliya Court","OFF-01","100%",100,"Direct Unit Expense"]],
+      activity:[["18 Aug 2026","Government fee recorded","Expense marked for tenant recovery."]]
+    },
+    {
+      no:"PEX-260085",date:"17 Aug 2026",description:"Property Management Fee",category:"Management",buildingId:"BLD-001",building:"Seef Residence",
+      unitId:null,unit:"All",vendor:"Property Management Office",method:"Bank Transfer",account:"BBK Operating Account",reference:"PMF-AUG26",
+      net:818.182,vat:81.818,total:900,recovery:"Owner Cost",status:"Paid",attachment:"Management Fee Invoice.pdf",recordedBy:"Ahmed Oraibi",
+      recoverable:false,recoverableFrom:"—",recoveryStatus:"Not Recoverable",recoveredAmount:0,
+      allocations:[["Seef Residence","All Units","100%",900,"Building Management"]],
+      activity:[["17 Aug 2026","Management fee recorded","August management fee posted to Seef Residence."]]
+    }
+  ];
+
+  let currentPropertyExpense = PROPERTY_EXPENSES[0];
+
+  function propertyExpenseCategoryClass(category){
+    if(category==="Maintenance") return "maintenance";
+    if(category==="Utilities") return "utilities";
+    if(category==="Management") return "management";
+    if(category==="Government") return "government";
+    return "other";
+  }
+
+  function renderPropertyExpenses(){
+    const search=(document.getElementById("propertyExpenseSearch")?.value||"").trim().toLowerCase();
+    const category=document.getElementById("propertyExpenseCategoryFilter")?.value||"";
+    const recovery=document.getElementById("propertyExpenseRecoveryFilter")?.value||"";
+
+    const rows=PROPERTY_EXPENSES.filter(e=>{
+      const a=!search || [e.no,e.description,e.vendor,e.building,e.unit].join(" ").toLowerCase().includes(search);
+      const b=!category || e.category===category;
+      const c=!recovery || e.recovery===recovery;
+      return a&&b&&c;
+    }).map(e=>`
+      <tr>
+        <td><button class="pex-link" onclick="openPropertyExpense360('${e.no}')">${e.no}</button></td>
+        <td>${e.date}</td>
+        <td>${e.description}</td>
+        <td><span class="pex-category ${propertyExpenseCategoryClass(e.category)}">${e.category}</span></td>
+        <td>${e.building}</td>
+        <td>${e.unit}</td>
+        <td>${e.vendor}</td>
+        <td>${formatMoney(e.total)}</td>
+        <td><span class="pex-recovery ${e.recovery==="Recoverable"?"recoverable":"owner"}">${e.recovery}</span></td>
+        <td><span class="pex-status ${e.status.toLowerCase()}">${e.status}</span></td>
+        <td><button class="action-btn action-secondary" style="min-height:30px;padding:0 10px;font-size:9px" onclick="openPropertyExpense360('${e.no}')">View 360°</button></td>
+      </tr>
+    `).join("");
+
+    document.getElementById("propertyExpensesBody").innerHTML=rows || `<tr><td colspan="11" style="text-align:center;padding:28px;color:#7f8b93">No property expenses found.</td></tr>`;
+  }
+
+  function openPropertyExpense360(no){
+    currentPropertyExpense=PROPERTY_EXPENSES.find(e=>e.no===no)||PROPERTY_EXPENSES[0];
+
+    ["dashboardPage","buildingsPage","building360Page","unitsPage","unit360Page","tenantsPage","tenant360Page","contractsPage","contract360Page","duesPage","due360Page","collectionsPage","propertyReceipt360Page","arrearsPage","arrears360Page","expensesPage","placeholderPage"].forEach(x=>{
+      const el=document.getElementById(x);
+      if(el) el.classList.add("hidden");
+    });
+
+    document.getElementById("propertyExpense360Page").classList.remove("hidden");
+    document.getElementById("pageTitle").textContent="Property Expense 360°";
+    document.getElementById("pageSubtitle").textContent=currentPropertyExpense.no+" · "+currentPropertyExpense.building;
+
+    document.querySelectorAll(".nav-item").forEach(item=>{
+      item.classList.toggle("active",item.dataset.page==="expenses");
+    });
+
+    populatePropertyExpense360();
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+
+  function populatePropertyExpense360(){
+    const e=currentPropertyExpense;
+
+    document.getElementById("propertyExpense360Title").textContent=e.no+" — "+e.description;
+    document.getElementById("propertyExpense360Meta").textContent=e.building+(e.unit&&e.unit!=="—"?" · Unit "+e.unit:"");
+
+    document.getElementById("propertyExpense360Category").textContent=e.category;
+    document.getElementById("propertyExpense360Category").className="pex-category "+propertyExpenseCategoryClass(e.category);
+
+    document.getElementById("propertyExpense360Recovery").textContent=e.recovery;
+    document.getElementById("propertyExpense360Recovery").className="pex-recovery "+(e.recovery==="Recoverable"?"recoverable":"owner");
+
+    document.getElementById("propertyExpense360Status").textContent=e.status;
+    document.getElementById("propertyExpense360Status").className="pex-status "+e.status.toLowerCase();
+
+    document.getElementById("peNet").textContent=formatMoney(e.net);
+    document.getElementById("peVat").textContent=formatMoney(e.vat);
+    document.getElementById("peTotal").textContent=formatMoney(e.total);
+    document.getElementById("peDate").textContent=e.date;
+    document.getElementById("peReference").textContent=e.reference;
+
+    document.getElementById("peDescription").textContent=e.description;
+    document.getElementById("peVendor").textContent=e.vendor;
+    document.getElementById("peCategory").textContent=e.category;
+    document.getElementById("peMethod").textContent=e.method;
+    document.getElementById("peAccount").textContent=e.account;
+    document.getElementById("peAttachment").textContent=e.attachment;
+
+    document.getElementById("peBuilding").textContent=e.building;
+    document.getElementById("peUnit").textContent=e.unit;
+    document.getElementById("peRecovery").textContent=e.recovery;
+    document.getElementById("peRecordedBy").textContent=e.recordedBy;
+
+    document.getElementById("propertyExpenseUnitBtn").style.display=e.unitId?"inline-flex":"none";
+
+    document.getElementById("propertyExpenseAllocationBody").innerHTML=e.allocations.map(a=>`
+      <tr><td>${a[0]}</td><td>${a[1]}</td><td>${a[2]}</td><td>${formatMoney(a[3])}</td><td>${a[4]}</td></tr>
+    `).join("");
+
+    document.getElementById("peRecoverableFlag").textContent=e.recoverable?"Yes":"No";
+    document.getElementById("peRecoverableFrom").textContent=e.recoverableFrom;
+    document.getElementById("peRecoveryStatus").textContent=e.recoveryStatus;
+    document.getElementById("peRecoveredAmount").textContent=formatMoney(e.recoveredAmount);
+
+    document.getElementById("propertyExpenseActivity").innerHTML=e.activity.map(a=>`
+      <div class="list-row"><div class="list-left"><div class="list-icon">•</div><div><strong>${a[1]}</strong><span>${a[0]} · ${a[2]}</span></div></div></div>
+    `).join("");
+
+    openPropertyExpenseTab("overview",document.querySelector("#propertyExpense360Page .tab-btn"));
+  }
+
+  function openPropertyExpenseTab(tab,button){
+    document.querySelectorAll('[id^="property-expense-tab-"]').forEach(x=>x.classList.remove("active"));
+    document.querySelectorAll("#propertyExpense360Page .tab-btn").forEach(x=>x.classList.remove("active"));
+    document.getElementById("property-expense-tab-"+tab).classList.add("active");
+    if(button) button.classList.add("active");
+  }
+
+  function openExpenseBuilding(){
+    if(currentPropertyExpense?.buildingId) openBuilding360(currentPropertyExpense.buildingId);
+  }
+
+  function openExpenseUnit(){
+    if(currentPropertyExpense?.unitId) openUnit360(currentPropertyExpense.unitId);
+  }
+
+  function rechargePropertyExpenseDemo(){
+    const e=currentPropertyExpense;
+    if(!e) return;
+
+    if(!e.recoverable){
+      alert("This expense is classified as an owner cost and is not recoverable.");
+      return;
+    }
+
+    alert(
+      "Recharge Property Expense — Demo\\n\\n"+
+      "Expense: "+e.no+"\\n"+
+      "Recoverable From: "+e.recoverableFrom+"\\n"+
+      "Amount: "+formatMoney(e.total)+"\\n\\n"+
+      "The recoverable amount can be added to the tenant/client settlement or charged as a separate property recovery item."
+    );
+  }
+
+  function showAddPropertyExpenseDemo(){
+    alert(
+      "Add Property Expense — Demo\\n\\n"+
+      "Prepared fields:\\n"+
+      "• Expense Date\\n"+
+      "• Description\\n"+
+      "• Category\\n"+
+      "• Building\\n"+
+      "• Unit (optional)\\n"+
+      "• Vendor / Payee\\n"+
+      "• Net Amount / VAT / Total\\n"+
+      "• Payment Method\\n"+
+      "• Bank / Cash Account\\n"+
+      "• Recoverable or Owner Cost\\n"+
+      "• Attachment"
+    );
+  }
+
+
   const PAGE_NAMES = {
     dashboard:"Property Dashboard",
     buildings:"Buildings",
@@ -3055,7 +3522,7 @@
 
     document.getElementById("pageTitle").textContent=PAGE_NAMES[page]||"ESTARA";
 
-    ["dashboardPage","buildingsPage","building360Page","unitsPage","unit360Page","tenantsPage","tenant360Page","contractsPage","contract360Page","duesPage","due360Page","collectionsPage","propertyReceipt360Page","arrearsPage","arrears360Page","placeholderPage"].forEach(id=>document.getElementById(id)?.classList.add("hidden"));
+    ["dashboardPage","buildingsPage","building360Page","unitsPage","unit360Page","tenantsPage","tenant360Page","contractsPage","contract360Page","duesPage","due360Page","collectionsPage","propertyReceipt360Page","arrearsPage","arrears360Page","expensesPage","propertyExpense360Page","placeholderPage"].forEach(id=>document.getElementById(id)?.classList.add("hidden"));
     if(page==="dashboard"){
       document.getElementById("dashboardPage").classList.remove("hidden");
       document.getElementById("pageSubtitle").textContent="Buildings, occupancy, rent and arrears overview";
@@ -3087,6 +3554,10 @@
       document.getElementById("arrearsPage").classList.remove("hidden");
       document.getElementById("pageSubtitle").textContent="Overdue rent, aging analysis and tenant follow-up actions";
       renderArrears();
+    }else if(page==="expenses"){
+      document.getElementById("expensesPage").classList.remove("hidden");
+      document.getElementById("pageSubtitle").textContent="Property expenses, allocation and recoverable cost tracking";
+      renderPropertyExpenses();
     }else{
       document.getElementById("placeholderPage").classList.remove("hidden");
       document.getElementById("placeholderTitle").textContent=PAGE_NAMES[page];
@@ -3132,7 +3603,7 @@
       "6. Monthly Dues & Collections\\n"+
       "7. Arrears\\n"+
       "8. Expenses & Reports\\n\\n"+
-      "Release 1.7 activates Arrears with aging analysis, follow-up status, recommended collection actions and Arrears 360°."
+      "Release 1.8 activates Property Expenses with Expense 360°, building/unit allocation and recoverable expense tracking."
     );
   }
 
@@ -3144,6 +3615,7 @@
   renderMonthlyDues();
   renderPropertyCollections();
   renderArrears();
+  renderPropertyExpenses();
 </script>
 
 </body>
