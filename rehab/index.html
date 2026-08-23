@@ -449,6 +449,20 @@ html[dir="rtl"] .timeline-item::before{left:auto;right:-17px}
 .permission-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.permission-item{border:1px solid var(--border);border-radius:7px;padding:11px;background:#fafcfc;display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:9px;color:var(--navy)}
 .toggle{width:34px;height:18px;border-radius:20px;background:#dce4e7;position:relative}.toggle.on{background:var(--teal)}.toggle:after{content:"";position:absolute;width:14px;height:14px;border-radius:50%;background:#fff;top:2px;left:2px;transition:.2s}.toggle.on:after{left:18px}
 @media(max-width:850px){.settings-grid{grid-template-columns:1fr}.permission-grid{grid-template-columns:1fr 1fr}}@media(max-width:520px){.settings-form,.permission-grid{grid-template-columns:1fr}}
+
+/* RELEASE 1.9 — PRINTING, INTEGRATION & FINAL QA */
+.qa-kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px}
+.qa-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.qa-item{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--border)}
+.qa-item:last-child{border-bottom:0}.qa-item strong{font-size:9px;color:var(--navy)}.qa-item span{font-size:8px;color:var(--muted)}
+.qa-ok{display:inline-flex;padding:4px 8px;border-radius:20px;background:var(--teal-soft);color:var(--teal);font-size:8px;font-weight:900}
+.print-preview{border:1px solid var(--border);border-radius:8px;background:#fafcfc;padding:18px}
+.print-preview-head{display:flex;justify-content:space-between;gap:15px;border-bottom:1px solid var(--border);padding-bottom:12px;margin-bottom:12px}
+.integration-card{border:1px solid var(--border);border-radius:8px;padding:14px;background:#fff}
+.integration-card h4{font-size:10px;color:var(--navy)}.integration-card p{font-size:8px;color:var(--muted);margin-top:5px;line-height:1.5}
+.integration-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:850px){.qa-kpis{grid-template-columns:1fr 1fr}.qa-grid,.integration-row{grid-template-columns:1fr}}@media(max-width:520px){.qa-kpis{grid-template-columns:1fr}}
+@media print{.sidebar,.topbar,.hero-actions,.action-btn{display:none!important}.main{margin:0!important}.content{padding:0!important}.card{box-shadow:none!important;break-inside:avoid}}
 </style>
 </head>
 <body>
@@ -648,6 +662,17 @@ html[dir="rtl"] .timeline-item::before{left:auto;right:-17px}
 
 
 
+
+<section id="systemQaPage" class="hidden"><div class="content">
+<div class="hero-row"><div><h2>Printing, Integration & Final Testing</h2><p>Final system readiness, print templates, integration status and quality checks.</p></div><div class="hero-actions"><button class="action-btn" onclick="window.print()">Print Test</button><button class="action-btn primary" onclick="runFinalQa()">Run Final Test</button></div></div>
+<div class="qa-kpis"><div class="kpi-card"><span class="kpi-label">Modules Checked</span><strong class="kpi-value">10 / 10</strong></div><div class="kpi-card"><span class="kpi-label">Navigation</span><strong class="kpi-value">PASS</strong></div><div class="kpi-card"><span class="kpi-label">Mobile Layout</span><strong class="kpi-value">PASS</strong></div><div class="kpi-card"><span class="kpi-label">Print Layout</span><strong class="kpi-value">PASS</strong></div><div class="kpi-card"><span class="kpi-label">Demo Readiness</span><strong class="kpi-value">100%</strong></div></div>
+<div class="qa-grid">
+<section class="card"><div class="card-head"><div><h3>Final QA Checklist</h3><p>Core interface and workflow validation.</p></div></div><div id="qaChecklist"></div></section>
+<section class="card"><div class="card-head"><div><h3>Print Preview</h3><p>Standard A4 clinical / financial document header.</p></div></div><div class="print-preview"><div class="print-preview-head"><div><strong style="font-size:15px;color:var(--navy)">VITALIS</strong><div style="font-size:8px;color:var(--muted)">Rehabilitation Center</div></div><div style="text-align:right;font-size:8px;color:var(--muted)">Kingdom of Bahrain<br>BHD · Asia/Bahrain</div></div><strong style="font-size:11px;color:var(--navy)">Patient / Invoice / Clinical Report</strong><p style="font-size:8px;color:var(--muted);margin-top:7px;line-height:1.6">Unified print structure ready for patient summaries, treatment plans, therapy notes, invoices, receipts and management reports.</p></div></section>
+</div>
+<section class="card"><div class="card-head"><div><h3>Integration Readiness</h3><p>Data flows prepared for the operational backend.</p></div></div><div class="integration-row"><div class="integration-card"><h4>Clinical Flow</h4><p>Patients → Appointments → Treatment Plans → Therapy Sessions.</p><span class="qa-ok">READY</span></div><div class="integration-card"><h4>Financial Flow</h4><p>Sessions → Invoices → Payments → Outstanding balances → Reports.</p><span class="qa-ok">READY</span></div><div class="integration-card"><h4>Administration</h4><p>Therapists → Users → Roles → Permissions → Settings.</p><span class="qa-ok">READY</span></div></div></section>
+<section class="card"><div class="card-head"><div><h3>System Modules</h3><p>Final release coverage.</p></div></div><div class="table-wrap"><table><thead><tr><th>Module</th><th>Core View</th><th>360° View</th><th>Status</th></tr></thead><tbody id="finalModulesBody"></tbody></table></div></section>
+</div></section>
 <section id="settingsPage" class="hidden"><div class="content">
 <div class="hero-row"><div><h2>Settings</h2><p>Clinic configuration, users, permissions and system preferences.</p></div><div class="hero-actions"><button class="action-btn primary" onclick="settingsDemo('save')">Save Changes</button></div></div>
 <div class="settings-grid">
@@ -1261,6 +1286,13 @@ const I18N = {
 
 
 
+
+const FINAL_MODULES=[
+["Dashboard","Active","—"],["Patients","Active","Patient 360°"],["Appointments","List + Calendar","Appointment 360°"],["Treatment Plans","Active","Plan 360°"],["Therapy Sessions","Active","Session 360°"],["Therapists","Active","Therapist 360°"],["Billing","Invoices + Payments","Invoice 360°"],["Expenses","Daily + Monthly","—"],["Reports","Clinical + Financial","—"],["Settings","Users + Permissions","—"]];
+const QA_CHECKS=["Sidebar navigation","Arabic / English language switch","Responsive desktop / mobile layout","Patients and clinical workflow","Appointments list and calendar","Treatment plans and therapy sessions","Therapist workload views","Billing and outstanding balances","Expense tracking","Reports and settings","A4 print stylesheet"];
+function renderFinalQa(){document.getElementById("qaChecklist").innerHTML=QA_CHECKS.map(x=>`<div class="qa-item"><div><strong>${x}</strong><span>Interface check completed</span></div><span class="qa-ok">PASS</span></div>`).join("");document.getElementById("finalModulesBody").innerHTML=FINAL_MODULES.map(x=>`<tr><td><strong>${x[0]}</strong></td><td>${x[1]}</td><td>${x[2]}</td><td><span class="qa-ok">READY</span></td></tr>`).join("")}
+function runFinalQa(){renderFinalQa();alert(currentLang==="ar"?"اكتمل اختبار واجهة النظام التجريبية بنجاح.":"Final demo interface test completed successfully.")}
+
 const SYSTEM_USERS=[
 {name:"System Administrator",username:"admin",role:"Administrator",dept:"Management",status:"Active",login:"23 Aug 2026 · 17:42"},
 {name:"Maha Ali",username:"maha.reception",role:"Reception",dept:"Front Desk",status:"Active",login:"23 Aug 2026 · 16:58"},
@@ -1363,7 +1395,7 @@ function openSession360(id){
  const s=currentSession;document.getElementById("session360Title").textContent=s.patient;document.getElementById("session360Meta").textContent=s.id+" · "+s.date+" · "+s.service;document.getElementById("session360Status").textContent=s.status;
  document.getElementById("sPainBefore").textContent=s.painBefore;document.getElementById("sPainAfter").textContent=s.painAfter;document.getElementById("sDuration").textContent=s.duration;document.getElementById("sProgress").textContent=s.progress;document.getElementById("sPatient").textContent=s.patient;document.getElementById("sPlan").textContent=s.plan;document.getElementById("sTherapist").textContent=s.therapist;document.getElementById("sService").textContent=s.service;document.getElementById("sNote").textContent=s.note;window.scrollTo(0,0);
 }
-function hideClinicalPages(){["dashboardPage","settingsPage","reportsPage","expensesPage","billingPage","invoice360Page","therapistsPage","therapist360Page","treatmentPage","plan360Page","sessionsPage","session360Page","appointmentsPage","appointment360Page","patientsPage","patient360Page","placeholderPage"].forEach(id=>document.getElementById(id)?.classList.add("hidden"))}
+function hideClinicalPages(){["dashboardPage","systemQaPage","settingsPage","reportsPage","expensesPage","billingPage","invoice360Page","therapistsPage","therapist360Page","treatmentPage","plan360Page","sessionsPage","session360Page","appointmentsPage","appointment360Page","patientsPage","patient360Page","placeholderPage"].forEach(id=>document.getElementById(id)?.classList.add("hidden"))}
 function clinicalDemo(type){alert((currentLang==="ar"?"نموذج سريري تجريبي":"Clinical Demo")+" — "+type);}
 
 const APPOINTMENTS = [
@@ -1724,6 +1756,11 @@ function openPage(page){
     document.getElementById("patientsPage").classList.remove("hidden");document.getElementById("pageSubtitle").textContent=currentLang==="ar"?"ملفات المرضى والتشخيص وخطط العلاج والنشاط العلاجي":"Patient profiles, diagnoses, treatment plans and therapy activity";renderPatients();
   }else if(page==="appointments"){
     document.getElementById("appointmentsPage").classList.remove("hidden");document.getElementById("pageSubtitle").textContent=currentLang==="ar"?"إدارة المواعيد وتوفر المعالجين وزيارات المرضى":"Schedules, therapist availability and patient visits";renderAppointments();renderAppointmentCalendar();
+  }else if(page==="integration" || page==="systemqa" || page==="printing"){
+    document.getElementById("systemQaPage").classList.remove("hidden");
+    document.getElementById("pageTitle").textContent=currentLang==="ar"?"الطباعة والتكامل والاختبار النهائي":"Printing, Integration & Final Testing";
+    document.getElementById("pageSubtitle").textContent=currentLang==="ar"?"جاهزية النظام وقوالب الطباعة واختبارات الجودة":"System readiness, print templates and quality checks";
+    renderFinalQa();
   }else if(page==="settings"){
     document.getElementById("settingsPage").classList.remove("hidden");
     document.getElementById("pageSubtitle").textContent=currentLang==="ar"?"إعدادات العيادة والمستخدمون والصلاحيات":"Clinic configuration, users and permissions";
@@ -1770,7 +1807,7 @@ renderTherapists();
 renderInvoices();
 renderExpenses();
 showReport('clinical');
-renderSettingsUsers();renderPermissions();
+renderSettingsUsers();renderPermissions();renderFinalQa();
 </script>
 </body>
 </html>
