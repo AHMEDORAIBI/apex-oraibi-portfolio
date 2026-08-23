@@ -192,6 +192,27 @@ html[dir="rtl"] .alert-tile{border-left:1px solid var(--border);border-right:3px
 @media(max-width:420px){.doc-grid,.party-risk,.installment-grid{grid-template-columns:1fr}}
 html[dir="rtl"] .global-search-results{left:auto;right:0}
 
+
+/* ===== ENFORZA ADVANCED DEMO — PHASE 3 ===== */
+.modal-backdrop{position:fixed;inset:0;background:rgba(10,12,16,.58);z-index:950;display:none}
+.demo-modal{position:fixed;z-index:951;left:50%;top:50%;transform:translate(-50%,-50%);width:min(620px,calc(100vw - 28px));max-height:86vh;overflow:auto;background:#fff;border:1px solid #dbc3ad;border-radius:11px;box-shadow:0 24px 70px rgba(0,0,0,.28);display:none}
+.demo-modal-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:18px;border-bottom:1px solid var(--border)}
+.demo-modal-head h3{font-size:15px;color:var(--navy)}.demo-modal-head p{font-size:8px;color:var(--muted);margin-top:4px}
+.demo-modal-body{padding:18px}.demo-modal-foot{display:flex;justify-content:flex-end;gap:8px;padding:14px 18px;border-top:1px solid var(--border)}
+.modal-form{display:grid;grid-template-columns:1fr 1fr;gap:12px}.modal-field{display:grid;gap:6px}.modal-field.full{grid-column:1/-1}.modal-field label{font-size:8px;color:var(--muted);font-weight:800}.modal-field input,.modal-field select,.modal-field textarea{border:1px solid var(--border);border-radius:7px;padding:10px;background:#fff;font-size:10px;color:var(--navy)}.modal-field textarea{min-height:88px;resize:vertical}
+.action-type-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:15px}
+.action-type{border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center;background:#fff;cursor:pointer;font-size:8px;font-weight:800;color:var(--navy)}
+.action-type.active,.action-type:hover{border-color:#d8b18f;background:var(--bronze-soft);color:var(--bronze)}
+.aging-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.aging-card{border:1px solid var(--border);border-radius:8px;background:#fff;padding:14px}.aging-card span{display:block;font-size:8px;color:var(--muted)}.aging-card strong{display:block;font-size:16px;color:var(--navy);margin-top:7px}.aging-card small{display:block;font-size:7px;color:var(--muted);margin-top:5px}
+.officer-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.officer-card{border:1px solid var(--border);border-radius:8px;padding:14px;background:#fff;cursor:pointer}.officer-card:hover{border-color:#d6b18e;background:#fffaf6}.officer-card strong{display:block;font-size:10px;color:var(--navy)}.officer-card span{display:block;font-size:8px;color:var(--muted);margin-top:4px}.officer-card b{display:block;font-size:18px;color:var(--bronze);margin-top:10px}
+.toast{position:fixed;right:22px;bottom:22px;z-index:980;background:var(--navy);color:#fff;padding:12px 14px;border-radius:8px;box-shadow:0 12px 35px rgba(0,0,0,.22);font-size:9px;display:none;max-width:340px}
+html[dir="rtl"] .toast{right:auto;left:22px}
+@media(max-width:900px){.action-type-grid,.officer-grid{grid-template-columns:1fr 1fr}.aging-grid{grid-template-columns:1fr 1fr 1fr}}
+@media(max-width:560px){.modal-form{grid-template-columns:1fr}.modal-field.full{grid-column:auto}.aging-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:420px){.action-type-grid,.officer-grid,.aging-grid{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -205,6 +226,7 @@ html[dir="rtl"] .global-search-results{left:auto;right:0}
     <a class="nav-item" data-page="parties" href="#" onclick="openPage('parties');return false;"><span class="nav-icon">♙</span><span data-i18n="Parties">Parties</span></a>
     <a class="nav-item" data-page="claims" href="#" onclick="openPage('claims');return false;"><span class="nav-icon">§</span><span data-i18n="Financial Claims">Financial Claims</span></a>
     <a class="nav-item" data-page="tasks" href="#" onclick="openPage('tasks');return false;"><span class="nav-icon">✓</span><span data-i18n="Tasks & Follow-ups">Tasks & Follow-ups</span></a>
+    <a class="nav-item" data-page="actionsCenter" href="#" onclick="openPage('actionsCenter');return false;"><span class="nav-icon">⚑</span><span data-i18n="Execution Action Center">Execution Action Center</span></a>
   </div>
   <div class="nav-section">
     <div class="nav-label" data-i18n="FINANCIAL">FINANCIAL</div>
@@ -275,10 +297,10 @@ html[dir="rtl"] .global-search-results{left:auto;right:0}
   <div class="dashboard-grid">
     <section class="card"><div class="card-head"><div><h3 data-i18n="Priority Enforcement Files">Priority Enforcement Files</h3><p data-i18n="Files requiring immediate action">Files requiring immediate action</p></div><button class="card-link" onclick="openPage('files')" data-i18n="View All">View All</button></div><div class="table-wrap"><table><thead><tr><th data-i18n="File">File</th><th data-i18n="Creditor">Creditor</th><th data-i18n="Debtor">Debtor</th><th data-i18n="Claim">Claim</th><th data-i18n="Outstanding">Outstanding</th><th data-i18n="Next Action">Next Action</th><th data-i18n="Status">Status</th></tr></thead><tbody id="priorityFiles"></tbody></table></div></section>
     <section class="card"><div class="card-head"><div><h3 data-i18n="Recovery by Officer">Recovery by Officer</h3><p data-i18n="Current month performance">Current month performance</p></div></div>
-      <div class="progress-row"><strong>Ali Hassan</strong><div class="progress-track"><div class="progress-fill" style="width:88%"></div></div><span>88%</span></div>
-      <div class="progress-row"><strong>Maryam Yusuf</strong><div class="progress-track"><div class="progress-fill" style="width:81%"></div></div><span>81%</span></div>
-      <div class="progress-row"><strong>Khalid Salman</strong><div class="progress-track"><div class="progress-fill" style="width:74%"></div></div><span>74%</span></div>
-      <div class="progress-row"><strong>Noor Ahmed</strong><div class="progress-track"><div class="progress-fill" style="width:69%"></div></div><span>69%</span></div>
+      <div class="progress-row"><strong><button class="link-btn" onclick="openOfficer360('Ali Hassan')">Ali Hassan</button></strong><div class="progress-track"><div class="progress-fill" style="width:88%"></div></div><span>88%</span></div>
+      <div class="progress-row"><strong><button class="link-btn" onclick="openOfficer360('Maryam Yusuf')">Maryam Yusuf</button></strong><div class="progress-track"><div class="progress-fill" style="width:81%"></div></div><span>81%</span></div>
+      <div class="progress-row"><strong><button class="link-btn" onclick="openOfficer360('Khalid Salman')">Khalid Salman</button></strong><div class="progress-track"><div class="progress-fill" style="width:74%"></div></div><span>74%</span></div>
+      <div class="progress-row"><strong><button class="link-btn" onclick="openOfficer360('Noor Ahmed')">Noor Ahmed</button></strong><div class="progress-track"><div class="progress-fill" style="width:69%"></div></div><span>69%</span></div>
     </section>
   </div>
   <div class="dashboard-grid equal">
@@ -326,6 +348,24 @@ html[dir="rtl"] .global-search-results{left:auto;right:0}
   <section class="card"><div class="card-head"><div><h3 data-i18n="Party Activity">Party Activity</h3><p data-i18n="Recent enforcement and financial interactions">Recent enforcement and financial interactions</p></div></div><div id="partyActivity" class="list"></div></section>
 </div></section>
 
+
+<section id="officer360Page" class="page hidden"><div class="content">
+  <button class="action-btn" style="margin-bottom:14px" onclick="openPage('dashboard')">← <span data-i18n="Back to Dashboard">Back to Dashboard</span></button>
+  <section class="detail-hero"><div class="detail-left"><div class="detail-mark" id="officerAvatar">AO</div><div><h2 id="officerName"></h2><p id="officerMeta"></p><div class="tags"><span class="badge active" data-i18n="Active Officer">Active Officer</span></div></div></div><div class="actions"><button class="action-btn" onclick="openQuickModal('task')" data-i18n="Assign Task">Assign Task</button><button class="action-btn bronze" onclick="openQuickModal('action')" data-i18n="New Enforcement Action">New Enforcement Action</button></div></section>
+  <div id="officerKpis" class="kpi-grid"></div>
+  <div class="dashboard-grid equal">
+    <section class="card"><div class="card-head"><div><h3 data-i18n="Assigned Files">Assigned Files</h3><p data-i18n="Current enforcement workload">Current enforcement workload</p></div></div><div class="table-wrap"><table><thead><tr><th data-i18n="File">File</th><th data-i18n="Debtor">Debtor</th><th data-i18n="Claim">Claim</th><th data-i18n="Outstanding">Outstanding</th><th data-i18n="Status">Status</th></tr></thead><tbody id="officerFilesBody"></tbody></table></div></section>
+    <section class="card"><div class="card-head"><div><h3 data-i18n="Officer Performance">Officer Performance</h3></div></div><div id="officerPerformance"></div></section>
+  </div>
+  <section class="card"><div class="card-head"><div><h3 data-i18n="Recent Actions">Recent Actions</h3></div></div><div id="officerActions" class="timeline"></div></section>
+</div></section>
+
+<section id="actionsCenterPage" class="page hidden"><div class="content">
+  <div class="hero-row"><div><h2 data-i18n="Execution Action Center">Execution Action Center</h2><p data-i18n="Dedicated demo workspace for enforcement procedures, deadlines and outcomes.">Dedicated demo workspace for enforcement procedures, deadlines and outcomes.</p></div><button class="action-btn primary" onclick="openQuickModal('action')">+ <span data-i18n="New Enforcement Action">New Enforcement Action</span></button></div>
+  <div class="kpi-grid"><div class="kpi-card"><span class="kpi-label" data-i18n="Open Actions">Open Actions</span><strong class="kpi-value">42</strong></div><div class="kpi-card"><span class="kpi-label" data-i18n="Due Today">Due Today</span><strong class="kpi-value">9</strong></div><div class="kpi-card"><span class="kpi-label" data-i18n="Overdue">Overdue</span><strong class="kpi-value">6</strong></div><div class="kpi-card"><span class="kpi-label" data-i18n="Bank Attachments">Bank Attachments</span><strong class="kpi-value">14</strong></div><div class="kpi-card"><span class="kpi-label" data-i18n="Asset Inquiries">Asset Inquiries</span><strong class="kpi-value">11</strong></div><div class="kpi-card"><span class="kpi-label" data-i18n="Settlement Actions">Settlement Actions</span><strong class="kpi-value">8</strong></div></div>
+  <section class="card"><div class="toolbar"><div class="toolbar-left"><input id="actionSearch" placeholder="Search action or file..." oninput="renderActionCenter()"><select id="actionStatus" onchange="renderActionCenter()"><option value="">All Statuses</option><option>Pending</option><option>In Progress</option><option>Completed</option></select></div></div><div class="table-wrap"><table><thead><tr><th data-i18n="Action ID">Action ID</th><th data-i18n="File">File</th><th data-i18n="Action Type">Action Type</th><th data-i18n="Officer">Officer</th><th data-i18n="Due Date">Due Date</th><th data-i18n="Outcome">Outcome</th><th data-i18n="Status">Status</th></tr></thead><tbody id="actionCenterBody"></tbody></table></div></section>
+</div></section>
+
 <section id="reportsPage" class="page hidden"><div class="content">
   <div class="hero-row"><div><h2 data-i18n="Reports & Analytics">Reports & Analytics</h2><p data-i18n="Executive, enforcement and financial intelligence.">Executive, enforcement and financial intelligence.</p></div><div class="hero-actions"><button class="action-btn">PDF</button><button class="action-btn primary" onclick="window.print()" data-i18n="Print">Print</button></div></div>
   <div class="kpi-grid"><div class="kpi-card"><span class="kpi-label" data-i18n="Total Claims">Total Claims</span><strong class="kpi-value">BHD 1.84M</strong></div><div class="kpi-card"><span class="kpi-label" data-i18n="Collections">Collections</span><strong class="kpi-value">BHD 742.6K</strong></div><div class="kpi-card"><span class="kpi-label" data-i18n="Expenses">Expenses</span><strong class="kpi-value">BHD 38.4K</strong></div><div class="kpi-card"><span class="kpi-label" data-i18n="Net Recovery">Net Recovery</span><strong class="kpi-value">BHD 704.2K</strong></div><div class="kpi-card"><span class="kpi-label" data-i18n="Recovery Rate">Recovery Rate</span><strong class="kpi-value">40.4%</strong></div><div class="kpi-card"><span class="kpi-label" data-i18n="Settled Files">Settled Files</span><strong class="kpi-value">18</strong></div></div>
@@ -337,6 +377,11 @@ html[dir="rtl"] .global-search-results{left:auto;right:0}
     <div class="report-card" onclick="showReport('expense')"><h4 data-i18n="Expense Analysis">Expense Analysis</h4><p data-i18n="Legal, court and operating expenses.">Legal, court and operating expenses.</p><strong>BHD 38.4K</strong></div>
     <div class="report-card" onclick="showReport('treasury')"><h4 data-i18n="Cash Flow & Treasury">Cash Flow & Treasury</h4><p data-i18n="Collections, client funds and transfers.">Collections, client funds and transfers.</p><strong>BHD 522K</strong></div>
   </div></section>
+
+  <section class="card"><div class="card-head"><div><h3 data-i18n="Outstanding Aging Analysis">Outstanding Aging Analysis</h3><p data-i18n="Age of outstanding enforcement balances">Age of outstanding enforcement balances</p></div></div>
+    <div class="aging-grid"><div class="aging-card"><span>0–30 Days</span><strong>BHD 312K</strong><small>28%</small></div><div class="aging-card"><span>31–60 Days</span><strong>BHD 246K</strong><small>22%</small></div><div class="aging-card"><span>61–90 Days</span><strong>BHD 198K</strong><small>18%</small></div><div class="aging-card"><span>91–180 Days</span><strong>BHD 214K</strong><small>19%</small></div><div class="aging-card"><span>180+ Days</span><strong>BHD 143K</strong><small>13%</small></div></div>
+  </section>
+
   <section class="card"><div class="card-head"><div><h3 id="reportTitle">Executive Summary</h3><p>August 2026</p></div></div><div class="table-wrap"><table><thead><tr><th data-i18n="Indicator">Indicator</th><th data-i18n="Current">Current</th><th data-i18n="Previous">Previous</th><th data-i18n="Change">Change</th></tr></thead><tbody id="reportBody"></tbody></table></div></section>
 </div></section>
 
@@ -364,6 +409,15 @@ html[dir="rtl"] .global-search-results{left:auto;right:0}
 <section id="auditPage" class="page hidden"><div class="content"><div class="hero-row"><div><h2 data-i18n="Audit Log">Audit Log</h2><p data-i18n="Track system, enforcement and financial activity.">Track system, enforcement and financial activity.</p></div><button class="action-btn" data-i18n="Export Audit">Export Audit</button></div><section class="card"><div class="table-wrap"><table><thead><tr><th data-i18n="Date & Time">Date & Time</th><th data-i18n="User">User</th><th data-i18n="Module">Module</th><th data-i18n="Action">Action</th><th data-i18n="Reference">Reference</th><th data-i18n="Description">Description</th></tr></thead><tbody id="auditBody"></tbody></table></div></section></div></section>
 
 <footer class="footer"><span>ENFORZA — Private Enforcement Management System</span><span><span data-i18n="Designed & Developed by">Designed & Developed by</span> <strong style="color:var(--bronze)">APEX ORAIBI</strong></span></footer>
+
+<div class="modal-backdrop" id="modalBackdrop" onclick="closeQuickModal()"></div>
+<div class="demo-modal" id="quickModal">
+  <div class="demo-modal-head"><div><h3 id="quickModalTitle"></h3><p id="quickModalSub"></p></div><button class="top-btn" onclick="closeQuickModal()">×</button></div>
+  <div class="demo-modal-body" id="quickModalBody"></div>
+  <div class="demo-modal-foot"><button class="action-btn" onclick="closeQuickModal()" data-i18n="Cancel">Cancel</button><button class="action-btn bronze" onclick="saveDemoModal()" data-i18n="Save Demo Record">Save Demo Record</button></div>
+</div>
+<div class="toast" id="demoToast"></div>
+
 <div class="demo-tour-mask" id="demoTourMask"></div>
 <div class="demo-tour-card" id="demoTourCard">
   <div class="tour-count" id="tourCount"></div><h3 id="tourTitle"></h3><p id="tourText"></p>
@@ -668,6 +722,59 @@ Object.assign(I18N.ar,{
  "Total Documents":"إجمالي المستندات","Execution Orders":"أوامر التنفيذ","Financial Documents":"المستندات المالية","Correspondence":"المراسلات","Receipts":"الإيصالات","Pending Review":"بانتظار المراجعة","All Types":"جميع الأنواع",
  "Back to Parties":"العودة إلى الأطراف","Linked Enforcement Files":"ملفات التنفيذ المرتبطة","All files connected to this party":"جميع الملفات المرتبطة بهذا الطرف","Party Profile":"بيانات الطرف","Party Activity":"نشاط الطرف","Recent enforcement and financial interactions":"أحدث التعاملات التنفيذية والمالية",
  "Risk Level":"مستوى المخاطر","Last Activity":"آخر نشاط","Portfolio Balance":"رصيد المحفظة","No results found":"لا توجد نتائج"
+});
+
+
+const ACTION_CENTER=[
+{id:"ACT-260901",file:"ENF-260184",type:"Bank Attachment",officer:"Ali Hassan",due:"24 Aug 2026",outcome:"Bank response under review",status:"In Progress"},
+{id:"ACT-260902",file:"ENF-260203",type:"Asset Inquiry",officer:"Khalid Salman",due:"25 Aug 2026",outcome:"Awaiting registry response",status:"Pending"},
+{id:"ACT-260903",file:"ENF-260211",type:"Payment Follow-up",officer:"Noor Ahmed",due:"24 Aug 2026",outcome:"Installment received",status:"Completed"},
+{id:"ACT-260904",file:"ENF-260219",type:"Settlement Review",officer:"Ali Hassan",due:"26 Aug 2026",outcome:"Management approval pending",status:"Pending"},
+{id:"ACT-260905",file:"ENF-260191",type:"Debtor Notice",officer:"Maryam Yusuf",due:"23 Aug 2026",outcome:"Notice delivered",status:"Completed"}
+];
+function renderActionCenter(){
+ const q=(document.getElementById("actionSearch")?.value||"").toLowerCase(),st=document.getElementById("actionStatus")?.value||"",el=document.getElementById("actionCenterBody");if(!el)return;
+ el.innerHTML=ACTION_CENTER.filter(x=>(!q||Object.values(x).join(" ").toLowerCase().includes(q))&&(!st||x.status===st)).map(x=>`<tr><td><button class="link-btn" onclick="openDetail('files','${x.file}')">${x.id}</button></td><td>${x.file}</td><td>${x.type}</td><td><button class="link-btn" onclick="openOfficer360('${x.officer}')">${x.officer}</button></td><td>${x.due}</td><td>${x.outcome}</td><td><span class="badge ${badgeClass(x.status)}">${x.status}</span></td></tr>`).join("");
+}
+const OFFICER_DATA={
+"Ali Hassan":{initials:"AH",role:"Senior Enforcement Officer",util:88,collected:224600,files:28,actions:36,success:84},
+"Maryam Yusuf":{initials:"MY",role:"Enforcement Officer",util:81,collected:188400,files:24,actions:31,success:79},
+"Khalid Salman":{initials:"KS",role:"Enforcement Officer",util:74,collected:161900,files:19,actions:27,success:75},
+"Noor Ahmed":{initials:"NA",role:"Enforcement Officer",util:69,collected:167700,files:15,actions:22,success:72}
+};
+function openOfficer360(name){
+ const o=OFFICER_DATA[name]||OFFICER_DATA["Ali Hassan"];hidePages();document.getElementById("officer360Page").classList.remove("hidden");setHeading("Officer 360°",name);document.getElementById("officerAvatar").textContent=o.initials;document.getElementById("officerName").textContent=name;document.getElementById("officerMeta").textContent=o.role+" · Enforcement Department";
+ document.getElementById("officerKpis").innerHTML=[["Assigned Files",o.files],["Collected This Year",money(o.collected)],["Open Actions",o.actions],["Utilization",o.util+"%"],["Success Rate",o.success+"%"],["Avg. Response","1.8 Days"]].map(x=>`<div class="kpi-card"><span class="kpi-label">${t(x[0])}</span><strong class="kpi-value" style="font-size:${String(x[1]).length>14?"13px":"18px"}">${x[1]}</strong></div>`).join("");
+ const files=DATA.files.filter(f=>f.officer===name);document.getElementById("officerFilesBody").innerHTML=(files.length?files:DATA.files.slice(0,2)).map(f=>`<tr><td><button class="link-btn" onclick="openDetail('files','${f.id}')">${f.id}</button></td><td>${f.debtor}</td><td>${money(f.claim)}</td><td>${money(f.claim-f.collected)}</td><td><span class="badge ${badgeClass(f.status)}">${f.status}</span></td></tr>`).join("");
+ document.getElementById("officerPerformance").innerHTML=[["Utilization",o.util],["Recovery Success",o.success],["Documentation",96],["Follow-up Timeliness",91]].map(x=>`<div class="progress-row"><strong>${t(x[0])}</strong><div class="progress-track"><div class="progress-fill" style="width:${x[1]}%"></div></div><span>${x[1]}%</span></div>`).join("");
+ document.getElementById("officerActions").innerHTML=ACTION_CENTER.filter(a=>a.officer===name).concat(ACTION_CENTER.slice(0,2)).slice(0,4).map(a=>`<div class="timeline-item"><strong>${a.type} · ${a.file}</strong><span>${a.due} — ${a.outcome}</span></div>`).join("");window.scrollTo(0,0);applyLanguage();
+}
+const _openPagePhase3=openPage;
+openPage=function(page){
+ if(page==="actionsCenter"){hidePages();currentModule="actionsCenter";document.querySelectorAll(".nav-item").forEach(el=>el.classList.toggle("active",el.dataset.page===page));document.getElementById("actionsCenterPage").classList.remove("hidden");setHeading("Execution Action Center","Dedicated demo workspace for enforcement procedures, deadlines and outcomes.");renderActionCenter();document.getElementById("sidebar").classList.remove("open");window.scrollTo(0,0);applyLanguage();return}
+ _openPagePhase3(page);
+}
+function openQuickModal(type){
+ const back=document.getElementById("modalBackdrop"),modal=document.getElementById("quickModal"),title=document.getElementById("quickModalTitle"),sub=document.getElementById("quickModalSub"),body=document.getElementById("quickModalBody");back.style.display="block";modal.style.display="block";
+ let html="";
+ if(type==="action"){title.textContent=t("New Enforcement Action");sub.textContent=t("Create a demo enforcement procedure linked to a file.");html=`<div class="action-type-grid">${["Bank Attachment","Asset Inquiry","Debtor Notice","Travel Restriction","Vehicle Attachment","Property Attachment","Payment Follow-up","Settlement Review"].map((x,i)=>`<div class="action-type ${i===0?"active":""}" onclick="document.querySelectorAll('.action-type').forEach(z=>z.classList.remove('active'));this.classList.add('active')">${x}</div>`).join("")}</div><div class="modal-form"><div class="modal-field"><label>${t("File")}</label><select><option>ENF-260184</option><option>ENF-260191</option><option>ENF-260203</option></select></div><div class="modal-field"><label>${t("Officer")}</label><select><option>Ali Hassan</option><option>Maryam Yusuf</option><option>Khalid Salman</option></select></div><div class="modal-field"><label>${t("Due Date")}</label><input value="24 Aug 2026"></div><div class="modal-field"><label>${t("Priority")}</label><select><option>High</option><option>Medium</option><option>Low</option></select></div><div class="modal-field full"><label>${t("Notes")}</label><textarea>Demo enforcement action notes.</textarea></div></div>`}
+ else if(type==="collection"){title.textContent=t("Record Collection");sub.textContent=t("Allocate a demo payment to an enforcement file.");html=`<div class="modal-form"><div class="modal-field"><label>${t("File")}</label><select><option>ENF-260184</option><option>ENF-260211</option></select></div><div class="modal-field"><label>${t("Amount")}</label><input value="1,000.000"></div><div class="modal-field"><label>${t("Method")}</label><select><option>Bank Transfer</option><option>BenefitPay</option><option>Cheque</option><option>Cash</option></select></div><div class="modal-field"><label>${t("Reference")}</label><input value="RC-DEMO-001"></div><div class="modal-field full"><label>${t("Allocation")}</label><select><option>100% → Oldest Outstanding</option><option>Current Claim</option></select></div></div>`}
+ else if(type==="settlement"){title.textContent=t("New Settlement");sub.textContent=t("Create a demo settlement schedule.");html=`<div class="modal-form"><div class="modal-field"><label>${t("File")}</label><select><option>ENF-260219</option><option>ENF-260211</option></select></div><div class="modal-field"><label>${t("Outstanding")}</label><input value="40,000.000"></div><div class="modal-field"><label>${t("Proposed Settlement")}</label><input value="32,000.000"></div><div class="modal-field"><label>${t("First Payment")}</label><input value="8,000.000"></div><div class="modal-field"><label>${t("Installments")}</label><select><option>6 Monthly</option><option>12 Monthly</option></select></div><div class="modal-field"><label>${t("Next Due")}</label><input value="01 Sep 2026"></div></div>`}
+ else{title.textContent=t("Assign Task");sub.textContent=t("Create a demo follow-up task.");html=`<div class="modal-form"><div class="modal-field"><label>${t("Officer")}</label><select><option>Ali Hassan</option><option>Maryam Yusuf</option></select></div><div class="modal-field"><label>${t("File")}</label><select><option>ENF-260184</option></select></div><div class="modal-field full"><label>${t("Task")}</label><input value="Review bank response"></div></div>`}
+ body.innerHTML=html;applyLanguage();
+}
+function closeQuickModal(){document.getElementById("modalBackdrop").style.display="none";document.getElementById("quickModal").style.display="none"}
+function saveDemoModal(){closeQuickModal();showToast(t("Demo record saved successfully."))}
+function showToast(msg){const x=document.getElementById("demoToast");x.textContent=msg;x.style.display="block";setTimeout(()=>x.style.display="none",2600)}
+// Replace generic demo buttons with useful demo modals for key modules.
+const _demoAlertPhase3=demoAlert;
+demoAlert=function(type){if(type==="add"&&currentModule==="collections")return openQuickModal("collection");if(type==="add"&&currentModule==="settlements")return openQuickModal("settlement");if(type==="action")return openQuickModal("action");return _demoAlertPhase3(type)}
+Object.assign(I18N.ar,{
+ "Execution Action Center":"مركز الإجراءات التنفيذية","Dedicated demo workspace for enforcement procedures, deadlines and outcomes.":"مساحة تجريبية مخصصة للإجراءات التنفيذية والمواعيد والنتائج.",
+ "Open Actions":"الإجراءات المفتوحة","Bank Attachments":"حجوزات الحسابات","Asset Inquiries":"استعلامات الأصول","Settlement Actions":"إجراءات التسوية","Action ID":"رقم الإجراء","Action Type":"نوع الإجراء","Outcome":"النتيجة",
+ "Officer 360°":"المنفذ 360°","Back to Dashboard":"العودة إلى لوحة التحكم","Active Officer":"منفذ نشط","Assign Task":"إسناد مهمة","New Enforcement Action":"إجراء تنفيذي جديد","Assigned Files":"الملفات المسندة","Current enforcement workload":"عبء العمل التنفيذي الحالي","Recent Actions":"أحدث الإجراءات","Collected This Year":"المحصل هذا العام","Open Actions":"الإجراءات المفتوحة","Utilization":"نسبة الاستفادة","Success Rate":"نسبة النجاح","Avg. Response":"متوسط الاستجابة","Recovery Success":"نجاح التحصيل","Documentation":"التوثيق","Follow-up Timeliness":"الالتزام بالمتابعة",
+ "Outstanding Aging Analysis":"تحليل أعمار الأرصدة المستحقة","Age of outstanding enforcement balances":"أعمار الأرصدة المستحقة في ملفات التنفيذ",
+ "Cancel":"إلغاء","Save Demo Record":"حفظ السجل التجريبي","Create a demo enforcement procedure linked to a file.":"إنشاء إجراء تنفيذي تجريبي مرتبط بملف.","Priority":"الأولوية","Notes":"ملاحظات","Record Collection":"تسجيل تحصيل","Allocate a demo payment to an enforcement file.":"تخصيص دفعة تجريبية لملف تنفيذ.","Method":"طريقة السداد","New Settlement":"تسوية جديدة","Create a demo settlement schedule.":"إنشاء جدول تسوية تجريبي.","Create a demo follow-up task.":"إنشاء مهمة متابعة تجريبية.","Task":"المهمة","Demo record saved successfully.":"تم حفظ السجل التجريبي بنجاح."
 });
 
 renderDashboard();renderUsers();renderAudit();renderPermissions();showReport("executive");applyLanguage();
