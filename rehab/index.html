@@ -409,6 +409,22 @@ html[dir="rtl"] .timeline-item::before{left:auto;right:-17px}
 .workload-card span{display:block;font-size:8px;color:var(--muted)}.workload-card strong{display:block;font-size:19px;color:var(--navy);margin-top:7px}
 .workload-bar{height:7px;background:#e9eef0;border-radius:10px;overflow:hidden;margin-top:10px}.workload-bar i{display:block;height:100%;background:var(--teal)}
 @media(max-width:800px){.therapist-kpis,.workload-grid{grid-template-columns:1fr 1fr}}@media(max-width:520px){.therapist-kpis,.workload-grid{grid-template-columns:1fr}}
+
+/* RELEASE 1.5 — BILLING + INVOICES + PAYMENTS */
+.billing-kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px}
+.billing-toolbar{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.billing-toolbar-left{display:flex;gap:8px;flex-wrap:wrap}
+.billing-toolbar input,.billing-toolbar select{height:38px;border:1px solid var(--border);border-radius:6px;background:#fff;padding:0 11px;font-size:10px;outline:none}
+.billing-toolbar input{width:245px}
+.invoice-total-box{display:grid;grid-template-columns:1fr auto;gap:10px;padding:12px 0;border-bottom:1px solid var(--border)}
+.invoice-total-box:last-child{border-bottom:0}
+.invoice-total-box span{font-size:9px;color:var(--muted)}
+.invoice-total-box strong{font-size:10px;color:var(--navy)}
+.invoice-total-box.grand strong{font-size:17px}
+.payment-card{border:1px solid var(--border);border-radius:8px;padding:13px;background:#fafcfc;margin-bottom:9px}
+.payment-card strong{font-size:9px;color:var(--navy)}.payment-card span{display:block;font-size:8px;color:var(--muted);margin-top:4px}
+@media(max-width:1100px){.billing-kpis{grid-template-columns:repeat(3,1fr)}}@media(max-width:650px){.billing-kpis{grid-template-columns:1fr 1fr}.billing-toolbar-left{width:100%}.billing-toolbar input,.billing-toolbar select{width:100%}}
+
 </style>
 </head>
 <body>
@@ -604,6 +620,68 @@ html[dir="rtl"] .timeline-item::before{left:auto;right:-17px}
 
 
     
+
+<section id="billingPage" class="hidden"><div class="content">
+  <div class="hero-row">
+    <div><h2 data-i18n="Billing">Billing</h2><p data-i18n="Invoices, payments and outstanding patient balances.">Invoices, payments and outstanding patient balances.</p></div>
+    <div class="hero-actions"><button class="action-btn" onclick="billingDemo('payment')">+ <span data-i18n="Record Payment">Record Payment</span></button><button class="action-btn primary" onclick="billingDemo('invoice')">+ <span data-i18n="New Invoice">New Invoice</span></button></div>
+  </div>
+
+  <div class="billing-kpis">
+    <div class="kpi-card"><span class="kpi-label" data-i18n="Revenue This Month">Revenue This Month</span><strong class="kpi-value">BHD 18,420</strong><div class="kpi-note"><span class="positive">↑ 8.4%</span></div></div>
+    <div class="kpi-card"><span class="kpi-label" data-i18n="Collected This Month">Collected This Month</span><strong class="kpi-value">BHD 15,980</strong></div>
+    <div class="kpi-card"><span class="kpi-label" data-i18n="Outstanding Balance">Outstanding Balance</span><strong class="kpi-value">BHD 6,240</strong></div>
+    <div class="kpi-card"><span class="kpi-label" data-i18n="Unpaid Invoices">Unpaid Invoices</span><strong class="kpi-value">31</strong></div>
+    <div class="kpi-card"><span class="kpi-label" data-i18n="Collection Rate">Collection Rate</span><strong class="kpi-value">86.8%</strong></div>
+  </div>
+
+  <section class="card">
+    <div class="billing-toolbar"><div class="billing-toolbar-left">
+      <input id="invoiceSearch" placeholder="Search invoice or patient..." data-i18n-placeholder="Search invoice or patient..." oninput="renderInvoices()">
+      <select id="invoiceStatus" onchange="renderInvoices()"><option value="" data-i18n="All Statuses">All Statuses</option><option>Paid</option><option>Partial</option><option>Unpaid</option></select>
+      <select id="invoicePayer" onchange="renderInvoices()"><option value="" data-i18n="All Payers">All Payers</option><option>Self Pay</option><option>Insurance</option><option>Family Account</option></select>
+    </div></div>
+    <div class="table-wrap"><table><thead><tr>
+      <th data-i18n="Invoice No.">Invoice No.</th><th data-i18n="Date">Date</th><th data-i18n="Patient">Patient</th><th data-i18n="Payer">Payer</th><th data-i18n="Amount">Amount</th><th data-i18n="Paid">Paid</th><th data-i18n="Outstanding">Outstanding</th><th data-i18n="Status">Status</th><th data-i18n="Action">Action</th>
+    </tr></thead><tbody id="invoicesBody"></tbody></table></div>
+  </section>
+</div></section>
+
+<section id="invoice360Page" class="hidden"><div class="content">
+  <button class="action-btn" style="margin-bottom:14px" onclick="openPage('billing')">← <span data-i18n="Back to Billing">Back to Billing</span></button>
+  <section class="patient-hero">
+    <div class="patient-hero-left"><div class="patient-avatar">INV</div><div><h2 id="invoice360No"></h2><p id="invoice360Meta"></p><div class="patient-tags"><span id="invoice360Status" class="badge confirmed"></span></div></div></div>
+    <div class="patient-actions"><button class="action-btn" onclick="billingDemo('print')" data-i18n="Print Invoice">Print Invoice</button><button class="action-btn teal" onclick="billingDemo('payment')" data-i18n="Record Payment">Record Payment</button></div>
+  </section>
+
+  <div class="dashboard-grid">
+    <section class="card">
+      <div class="card-head"><div><h3 data-i18n="Invoice Information">Invoice Information</h3></div></div>
+      <div class="patient-info-grid">
+        <div class="patient-info-item"><span data-i18n="Patient">Patient</span><strong id="invPatient"></strong></div>
+        <div class="patient-info-item"><span data-i18n="Patient ID">Patient ID</span><strong id="invPatientId"></strong></div>
+        <div class="patient-info-item"><span data-i18n="Invoice Date">Invoice Date</span><strong id="invDate"></strong></div>
+        <div class="patient-info-item"><span data-i18n="Payer">Payer</span><strong id="invPayer"></strong></div>
+        <div class="patient-info-item"><span data-i18n="Service">Service</span><strong id="invService"></strong></div>
+        <div class="patient-info-item"><span data-i18n="Reference">Reference</span><strong id="invReference"></strong></div>
+      </div>
+    </section>
+    <section class="card">
+      <div class="card-head"><div><h3 data-i18n="Invoice Totals">Invoice Totals</h3></div></div>
+      <div class="invoice-total-box"><span data-i18n="Subtotal">Subtotal</span><strong id="invSubtotal"></strong></div>
+      <div class="invoice-total-box"><span data-i18n="Discount">Discount</span><strong id="invDiscount"></strong></div>
+      <div class="invoice-total-box grand"><span data-i18n="Total">Total</span><strong id="invTotal"></strong></div>
+      <div class="invoice-total-box"><span data-i18n="Paid">Paid</span><strong id="invPaid"></strong></div>
+      <div class="invoice-total-box grand"><span data-i18n="Outstanding">Outstanding</span><strong id="invOutstanding"></strong></div>
+    </section>
+  </div>
+
+  <div class="dashboard-grid equal">
+    <section class="card"><div class="card-head"><div><h3 data-i18n="Invoice Items">Invoice Items</h3></div></div><div class="table-wrap"><table><thead><tr><th data-i18n="Description">Description</th><th data-i18n="Qty">Qty</th><th data-i18n="Rate">Rate</th><th data-i18n="Amount">Amount</th></tr></thead><tbody id="invoiceItemsBody"></tbody></table></div></section>
+    <section class="card"><div class="card-head"><div><h3 data-i18n="Payment History">Payment History</h3></div></div><div id="paymentHistory"></div></section>
+  </div>
+</div></section>
+
 <section id="therapistsPage" class="hidden"><div class="content">
 <div class="hero-row"><div><h2>Therapists</h2><p>Profiles, workload, schedules and clinical performance.</p></div><div class="hero-actions"><button class="action-btn primary" onclick="alert('Add Therapist — Demo')">+ Add Therapist</button></div></div>
 <div class="therapist-kpis"><div class="kpi-card"><span class="kpi-label">Active Therapists</span><strong class="kpi-value">12</strong></div><div class="kpi-card"><span class="kpi-label">Sessions Today</span><strong class="kpi-value">34</strong></div><div class="kpi-card"><span class="kpi-label">Average Utilization</span><strong class="kpi-value">81%</strong></div><div class="kpi-card"><span class="kpi-label">Notes Pending</span><strong class="kpi-value">4</strong></div></div>
@@ -1113,6 +1191,35 @@ const I18N = {
 
 
 
+
+const INVOICES=[
+{id:"INV-260820-014",date:"20 Aug 2026",patient:"Fatima Ali",patientId:"PAT-260184",payer:"Self Pay",service:"Physiotherapy",amount:85,paid:0,status:"Unpaid",ref:"APT-260820-01",items:[["Physiotherapy Session",1,85]],payments:[]},
+{id:"INV-260820-013",date:"20 Aug 2026",patient:"Ahmed Salman",patientId:"PAT-260179",payer:"Insurance",service:"Occupational Therapy",amount:120,paid:0,status:"Unpaid",ref:"APT-260820-02",items:[["Occupational Therapy Session",1,120]],payments:[]},
+{id:"INV-260819-011",date:"19 Aug 2026",patient:"Noor Hussain",patientId:"PAT-260155",payer:"Family Account",service:"Speech Therapy",amount:70,paid:70,status:"Paid",ref:"TS-260819-05",items:[["Speech Therapy Session",1,70]],payments:[["19 Aug 2026","BenefitPay",70,"RCPT-260819-021"]]},
+{id:"INV-260818-008",date:"18 Aug 2026",patient:"Yousef Khalid",patientId:"PAT-260141",payer:"Insurance",service:"Physiotherapy",amount:200,paid:50,status:"Partial",ref:"TS-260818-04",items:[["Physiotherapy Session",1,90],["Clinical Assessment",1,110]],payments:[["18 Aug 2026","Card",50,"RCPT-260818-017"]]}
+];
+let currentInvoice=INVOICES[0];
+function money(v){return "BHD "+Number(v).toFixed(3)}
+function invoiceBadge(s){return s==="Paid"?"confirmed":s==="Partial"?"waiting":"cancelled"}
+function renderInvoices(){
+ const q=(document.getElementById("invoiceSearch")?.value||"").toLowerCase(),st=document.getElementById("invoiceStatus")?.value||"",payer=document.getElementById("invoicePayer")?.value||"";
+ document.getElementById("invoicesBody").innerHTML=INVOICES.filter(x=>(!q||[x.id,x.patient,x.patientId].join(" ").toLowerCase().includes(q))&&(!st||x.status===st)&&(!payer||x.payer===payer)).map(x=>`<tr><td>${x.id}</td><td>${x.date}</td><td><button class="patient-link" onclick="openInvoice360('${x.id}')">${x.patient}</button></td><td>${x.payer}</td><td>${money(x.amount)}</td><td>${money(x.paid)}</td><td><strong>${money(x.amount-x.paid)}</strong></td><td><span class="badge ${invoiceBadge(x.status)}">${x.status}</span></td><td><button class="action-btn" style="min-height:30px;font-size:8px" onclick="openInvoice360('${x.id}')">View 360°</button></td></tr>`).join("");
+}
+function openInvoice360(id){
+ currentInvoice=INVOICES.find(x=>x.id===id)||INVOICES[0];hideClinicalPages();document.getElementById("invoice360Page").classList.remove("hidden");
+ document.querySelectorAll(".nav-item").forEach(e=>e.classList.toggle("active",e.dataset.page==="billing"));
+ document.getElementById("pageTitle").textContent=currentLang==="ar"?"الفاتورة 360°":"Invoice 360°";document.getElementById("pageSubtitle").textContent=currentInvoice.id+" · "+currentInvoice.patient;
+ const x=currentInvoice,o=x.amount-x.paid;
+ document.getElementById("invoice360No").textContent=x.id;document.getElementById("invoice360Meta").textContent=x.patient+" · "+x.date+" · "+x.service;
+ let st=document.getElementById("invoice360Status");st.textContent=x.status;st.className="badge "+invoiceBadge(x.status);
+ document.getElementById("invPatient").textContent=x.patient;document.getElementById("invPatientId").textContent=x.patientId;document.getElementById("invDate").textContent=x.date;document.getElementById("invPayer").textContent=x.payer;document.getElementById("invService").textContent=x.service;document.getElementById("invReference").textContent=x.ref;
+ document.getElementById("invSubtotal").textContent=money(x.amount);document.getElementById("invDiscount").textContent=money(0);document.getElementById("invTotal").textContent=money(x.amount);document.getElementById("invPaid").textContent=money(x.paid);document.getElementById("invOutstanding").textContent=money(o);
+ document.getElementById("invoiceItemsBody").innerHTML=x.items.map(i=>`<tr><td>${i[0]}</td><td>${i[1]}</td><td>${money(i[2])}</td><td>${money(i[1]*i[2])}</td></tr>`).join("");
+ document.getElementById("paymentHistory").innerHTML=x.payments.length?x.payments.map(p=>`<div class="payment-card"><strong>${money(p[2])} · ${p[1]}</strong><span>${p[0]} · ${p[3]}</span></div>`).join(""):`<div class="session-note-box">${currentLang==="ar"?"لا توجد دفعات مسجلة حتى الآن.":"No payments recorded yet."}</div>`;
+ window.scrollTo(0,0);
+}
+function billingDemo(type){alert((currentLang==="ar"?"الفوترة — نموذج تجريبي":"Billing — Demo")+" · "+type)}
+
 const THERAPISTS=[
 {id:"TH-001",name:"Dr. Sara Ahmed",initials:"SA",specialty:"Physiotherapy",patients:58,today:9,util:92,sessions:168,completion:96,mobile:"+973 3900 4421",email:"sara@vitalis.local",rating:"4.9 / 5"},
 {id:"TH-002",name:"Maryam Hasan",initials:"MH",specialty:"Occupational Therapy",patients:46,today:8,util:86,sessions:142,completion:94,mobile:"+973 3660 2271",email:"maryam@vitalis.local",rating:"4.8 / 5"},
@@ -1158,7 +1265,7 @@ function openSession360(id){
  const s=currentSession;document.getElementById("session360Title").textContent=s.patient;document.getElementById("session360Meta").textContent=s.id+" · "+s.date+" · "+s.service;document.getElementById("session360Status").textContent=s.status;
  document.getElementById("sPainBefore").textContent=s.painBefore;document.getElementById("sPainAfter").textContent=s.painAfter;document.getElementById("sDuration").textContent=s.duration;document.getElementById("sProgress").textContent=s.progress;document.getElementById("sPatient").textContent=s.patient;document.getElementById("sPlan").textContent=s.plan;document.getElementById("sTherapist").textContent=s.therapist;document.getElementById("sService").textContent=s.service;document.getElementById("sNote").textContent=s.note;window.scrollTo(0,0);
 }
-function hideClinicalPages(){["dashboardPage","therapistsPage","therapist360Page","treatmentPage","plan360Page","sessionsPage","session360Page","appointmentsPage","appointment360Page","patientsPage","patient360Page","placeholderPage"].forEach(id=>document.getElementById(id)?.classList.add("hidden"))}
+function hideClinicalPages(){["dashboardPage","billingPage","invoice360Page","therapistsPage","therapist360Page","treatmentPage","plan360Page","sessionsPage","session360Page","appointmentsPage","appointment360Page","patientsPage","patient360Page","placeholderPage"].forEach(id=>document.getElementById(id)?.classList.add("hidden"))}
 function clinicalDemo(type){alert((currentLang==="ar"?"نموذج سريري تجريبي":"Clinical Demo")+" — "+type);}
 
 const APPOINTMENTS = [
@@ -1519,6 +1626,10 @@ function openPage(page){
     document.getElementById("patientsPage").classList.remove("hidden");document.getElementById("pageSubtitle").textContent=currentLang==="ar"?"ملفات المرضى والتشخيص وخطط العلاج والنشاط العلاجي":"Patient profiles, diagnoses, treatment plans and therapy activity";renderPatients();
   }else if(page==="appointments"){
     document.getElementById("appointmentsPage").classList.remove("hidden");document.getElementById("pageSubtitle").textContent=currentLang==="ar"?"إدارة المواعيد وتوفر المعالجين وزيارات المرضى":"Schedules, therapist availability and patient visits";renderAppointments();renderAppointmentCalendar();
+  }else if(page==="billing"){
+    document.getElementById("billingPage").classList.remove("hidden");
+    document.getElementById("pageSubtitle").textContent=currentLang==="ar"?"الفواتير والمدفوعات والأرصدة المستحقة":"Invoices, payments and outstanding patient balances";
+    renderInvoices();
   }else if(page==="therapists"){
     document.getElementById("therapistsPage").classList.remove("hidden");
     document.getElementById("pageSubtitle").textContent=currentLang==="ar"?"ملفات المعالجين وعبء العمل والأداء":"Therapist profiles, workload and performance";
@@ -1546,6 +1657,7 @@ renderAppointmentCalendar();
 renderTreatmentPlans();
 renderTherapySessions();
 renderTherapists();
+renderInvoices();
 </script>
 </body>
 </html>
