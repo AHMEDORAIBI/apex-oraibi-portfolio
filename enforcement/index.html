@@ -144,6 +144,33 @@ html[dir="rtl"] input,html[dir="rtl"] select,html[dir="rtl"] textarea{text-align
 }
 @media(max-width:650px){.kpi-grid,.summary-grid,.info-grid,.report-grid,.permission-grid,.settings-form{grid-template-columns:1fr 1fr}.hero-row,.detail-hero{flex-direction:column;align-items:flex-start}.profile{display:none}.toolbar-left{width:100%}.toolbar input,.toolbar select{width:100%}}
 @media(max-width:470px){.kpi-grid,.summary-grid,.info-grid,.report-grid,.permission-grid,.settings-form{grid-template-columns:1fr}}
+
+/* ===== ENFORZA ADVANCED DEMO UPGRADE ===== */
+.file360-nav{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 16px}
+.file360-nav button{border:1px solid var(--border);background:#fff;border-radius:7px;padding:9px 11px;font-size:9px;font-weight:800;color:var(--muted)}
+.file360-nav button.active{background:var(--bronze-soft);border-color:#e3c5ab;color:var(--bronze)}
+.timeline{position:relative;padding-left:18px}
+.timeline:before{content:"";position:absolute;left:5px;top:4px;bottom:4px;width:1px;background:var(--border)}
+.timeline-item{position:relative;padding:0 0 15px 14px}
+.timeline-item:before{content:"";position:absolute;left:-17px;top:3px;width:9px;height:9px;border-radius:50%;background:var(--bronze);box-shadow:0 0 0 3px var(--bronze-soft)}
+.timeline-item strong{display:block;font-size:10px;color:var(--navy)}
+.timeline-item span{display:block;font-size:8px;color:var(--muted);margin-top:3px;line-height:1.5}
+.alert-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.alert-tile{background:#fff;border:1px solid var(--border);border-left:3px solid var(--bronze);border-radius:7px;padding:12px}
+.alert-tile strong{display:block;font-size:15px;color:var(--navy)}.alert-tile span{font-size:8px;color:var(--muted)}
+.alloc-box{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.demo-tour-mask{position:fixed;inset:0;background:rgba(10,12,16,.62);z-index:900;display:none}
+.demo-tour-card{position:fixed;z-index:901;width:min(390px,calc(100vw - 30px));background:#fff;border:1px solid #d9c0aa;border-radius:10px;padding:18px;box-shadow:0 20px 60px rgba(0,0,0,.25);left:50%;bottom:25px;transform:translateX(-50%);display:none}
+.demo-tour-card h3{font-size:16px;color:var(--navy)}.demo-tour-card p{font-size:10px;color:var(--muted);line-height:1.7;margin:8px 0 14px}
+.demo-tour-card .tour-count{font-size:8px;color:var(--bronze);font-weight:800;margin-bottom:6px}
+@media(max-width:650px){.alert-strip,.alloc-box{grid-template-columns:1fr 1fr}}
+@media(max-width:470px){.alert-strip,.alloc-box{grid-template-columns:1fr}}
+html[dir="rtl"] .timeline{padding-left:0;padding-right:18px}
+html[dir="rtl"] .timeline:before{left:auto;right:5px}
+html[dir="rtl"] .timeline-item{padding-left:0;padding-right:14px}
+html[dir="rtl"] .timeline-item:before{left:auto;right:-17px}
+html[dir="rtl"] .alert-tile{border-left:1px solid var(--border);border-right:3px solid var(--bronze)}
+
 </style>
 </head>
 <body>
@@ -191,7 +218,7 @@ html[dir="rtl"] input,html[dir="rtl"] select,html[dir="rtl"] textarea{text-align
 
 <section id="dashboardPage" class="page">
 <div class="content">
-  <div class="hero-row"><div><h2><span data-i18n="Good morning,">Good morning,</span> <span>Ahmed</span></h2><p data-i18n="Here is the current enforcement portfolio position.">Here is the current enforcement portfolio position.</p></div><div class="hero-actions"><button class="action-btn">▶ <span data-i18n="Start Demo Tour">Start Demo Tour</span></button><button class="action-btn primary">+ <span data-i18n="New Action">New Action</span></button></div></div>
+  <div class="hero-row"><div><h2><span data-i18n="Good morning,">Good morning,</span> <span>Ahmed</span></h2><p data-i18n="Here is the current enforcement portfolio position.">Here is the current enforcement portfolio position.</p></div><div class="hero-actions"><button class="action-btn" onclick="startDemoTour()">▶ <span data-i18n="Start Demo Tour">Start Demo Tour</span></button><button class="action-btn primary" onclick="quickNewAction()">+ <span data-i18n="New Action">New Action</span></button></div></div>
   <div class="kpi-grid">
     <div class="kpi-card"><span class="kpi-label" data-i18n="Active Enforcement Files">Active Enforcement Files</span><strong class="kpi-value">86</strong><div class="kpi-note"><span class="positive">+7</span> <span data-i18n="this month">this month</span></div></div>
     <div class="kpi-card"><span class="kpi-label" data-i18n="Total Claims">Total Claims</span><strong class="kpi-value">BHD 1.84M</strong><div class="kpi-note">112 <span data-i18n="open claims">open claims</span></div></div>
@@ -199,6 +226,12 @@ html[dir="rtl"] input,html[dir="rtl"] select,html[dir="rtl"] textarea{text-align
     <div class="kpi-card"><span class="kpi-label" data-i18n="Outstanding">Outstanding</span><strong class="kpi-value">BHD 1.10M</strong><div class="kpi-note"><span class="warning">BHD 214K</span> <span data-i18n="overdue">overdue</span></div></div>
     <div class="kpi-card"><span class="kpi-label" data-i18n="Settlements">Settlements</span><strong class="kpi-value">18</strong><div class="kpi-note">BHD 196,000</div></div>
     <div class="kpi-card"><span class="kpi-label" data-i18n="Collected This Month">Collected This Month</span><strong class="kpi-value">BHD 96,450</strong><div class="kpi-note"><span class="positive">↑ 12.8%</span></div></div>
+  </div>
+  <div class="alert-strip" id="smartAlerts">
+    <div class="alert-tile"><strong>7</strong><span data-i18n="Files without action">Files without action</span></div>
+    <div class="alert-tile"><strong>5</strong><span data-i18n="Installments due today">Installments due today</span></div>
+    <div class="alert-tile"><strong>3</strong><span data-i18n="Broken settlements">Broken settlements</span></div>
+    <div class="alert-tile"><strong>12</strong><span data-i18n="High priority actions">High priority actions</span></div>
   </div>
   <div class="dashboard-grid">
     <section class="card">
@@ -240,11 +273,16 @@ html[dir="rtl"] input,html[dir="rtl"] select,html[dir="rtl"] textarea{text-align
   <button class="action-btn" style="margin-bottom:14px" onclick="openPage(currentModule)">← <span data-i18n="Back">Back</span></button>
   <section class="detail-hero"><div class="detail-left"><div class="detail-mark" id="detailMark">§</div><div><h2 id="detailTitle"></h2><p id="detailMeta"></p><div class="tags"><span id="detailStatus" class="badge active"></span><span id="detailTag" class="badge info"></span></div></div></div><div class="actions"><button class="action-btn" onclick="demoAlert('edit')" data-i18n="Edit">Edit</button><button class="action-btn bronze" onclick="demoAlert('action')" data-i18n="New Action">New Action</button></div></section>
   <div id="detailSummary" class="summary-grid"></div>
-  <section class="card"><div class="tabs"><button class="tab-btn active" onclick="openTab('overview',this)" data-i18n="Overview">Overview</button><button class="tab-btn" onclick="openTab('financial',this)" data-i18n="Financial">Financial</button><button class="tab-btn" onclick="openTab('activity',this)" data-i18n="Activity">Activity</button><button class="tab-btn" onclick="openTab('documents',this)" data-i18n="Documents">Documents</button></div>
+  <section class="card"><div class="tabs"><button class="tab-btn active" onclick="openTab('overview',this)" data-i18n="Overview">Overview</button><button class="tab-btn" onclick="openTab('parties360',this)" data-i18n="Parties">Parties</button><button class="tab-btn" onclick="openTab('financial',this)" data-i18n="Financial Position">Financial Position</button><button class="tab-btn" onclick="openTab('actions360',this)" data-i18n="Execution Actions">Execution Actions</button><button class="tab-btn" onclick="openTab('collections360',this)" data-i18n="Collections">Collections</button><button class="tab-btn" onclick="openTab('expenses360',this)" data-i18n="Expenses">Expenses</button><button class="tab-btn" onclick="openTab('settlement360',this)" data-i18n="Settlement">Settlement</button><button class="tab-btn" onclick="openTab('documents',this)" data-i18n="Documents">Documents</button><button class="tab-btn" onclick="openTab('activity',this)" data-i18n="Activity Log">Activity Log</button></div>
     <div id="tab-overview" class="tab-panel active"><div id="detailInfo" class="info-grid"></div></div>
+    <div id="tab-parties360" class="tab-panel"><div id="detailParties360" class="info-grid"></div></div>
     <div id="tab-financial" class="tab-panel"><div id="detailFinancial" class="table-wrap"></div></div>
-    <div id="tab-activity" class="tab-panel"><div id="detailActivity" class="list"></div></div>
+    <div id="tab-actions360" class="tab-panel"><div id="detailActions360" class="timeline"></div></div>
+    <div id="tab-collections360" class="tab-panel"><div id="detailCollections360" class="table-wrap"></div></div>
+    <div id="tab-expenses360" class="tab-panel"><div id="detailExpenses360" class="table-wrap"></div></div>
+    <div id="tab-settlement360" class="tab-panel"><div id="detailSettlement360"></div></div>
     <div id="tab-documents" class="tab-panel"><div id="detailDocuments" class="list"></div></div>
+    <div id="tab-activity" class="tab-panel"><div id="detailActivity" class="list"></div></div>
   </section>
 </div></section>
 
@@ -279,6 +317,12 @@ html[dir="rtl"] input,html[dir="rtl"] select,html[dir="rtl"] textarea{text-align
 <section id="auditPage" class="page hidden"><div class="content"><div class="hero-row"><div><h2 data-i18n="Audit Log">Audit Log</h2><p data-i18n="Track system, enforcement and financial activity.">Track system, enforcement and financial activity.</p></div><button class="action-btn" data-i18n="Export Audit">Export Audit</button></div><section class="card"><div class="table-wrap"><table><thead><tr><th data-i18n="Date & Time">Date & Time</th><th data-i18n="User">User</th><th data-i18n="Module">Module</th><th data-i18n="Action">Action</th><th data-i18n="Reference">Reference</th><th data-i18n="Description">Description</th></tr></thead><tbody id="auditBody"></tbody></table></div></section></div></section>
 
 <footer class="footer"><span>ENFORZA — Private Enforcement Management System</span><span><span data-i18n="Designed & Developed by">Designed & Developed by</span> <strong style="color:var(--bronze)">APEX ORAIBI</strong></span></footer>
+<div class="demo-tour-mask" id="demoTourMask"></div>
+<div class="demo-tour-card" id="demoTourCard">
+  <div class="tour-count" id="tourCount"></div><h3 id="tourTitle"></h3><p id="tourText"></p>
+  <div class="actions"><button class="action-btn" onclick="endDemoTour()">Close</button><button class="action-btn bronze" onclick="nextDemoTour()">Next →</button></div>
+</div>
+
 </main>
 </div>
 
@@ -470,6 +514,55 @@ function renderPermissions(){let r=document.getElementById("roleSelect").value,a
 function renderAudit(){document.getElementById("auditBody").innerHTML=AUDIT.map(r=>`<tr>${r.map((v,i)=>`<td>${i===0||i===4?v:`${v}`}</td>`).join("")}</tr>`).join("")}
 function showReport(type){let names={executive:"Executive Summary",recovery:"Recovery Performance",settlement:"Settlement Performance",officer:"Officer Performance",expense:"Expense Analysis",treasury:"Cash Flow & Treasury"};document.getElementById("reportTitle").textContent=t(names[type]);document.getElementById("reportBody").innerHTML=REPORTS[type].map(r=>`<tr><td>${r[0]}</td><td><strong>${r[1]}</strong></td><td>${r[2]}</td><td><span class="${r[3].startsWith("+")?"positive":"warning"}">${r[3]}</span></td></tr>`).join("")}
 function demoAlert(type){alert((currentLang==="ar"?"ENFORZA — نموذج تجريبي":"ENFORZA — Demo")+" · "+type)}
+
+const ENF_ACTIONS=[
+ {date:"23 Aug 2026",title:"Bank attachment review",status:"In Progress",note:"Bank responses reviewed and account attachment position updated."},
+ {date:"21 Aug 2026",title:"Asset inquiry",status:"Completed",note:"Vehicle and property inquiry recorded in the enforcement file."},
+ {date:"19 Aug 2026",title:"Debtor notification",status:"Completed",note:"Formal notification and follow-up action recorded."},
+ {date:"17 Aug 2026",title:"Travel restriction review",status:"Review",note:"Eligibility and supporting documents checked."}
+];
+const ENF_DOCS=["Judgment / Execution Instrument","Bank Attachment Request","Payment Receipt","Settlement Draft","Party Correspondence"];
+function enrichFile360(m,r){
+ if(m!=="files") return;
+ const outstanding=Math.max(0,(r.claim||0)-(r.collected||0)), pct=r.claim?((r.collected||0)/r.claim*100):0;
+ const p=document.getElementById("detailParties360");
+ if(p)p.innerHTML=`<div class="info-item"><span>${t("Creditor")}</span><strong>${r.creditor||"Gulf Finance W.L.L"}</strong></div><div class="info-item"><span>${t("Debtor")}</span><strong>${r.debtor||"Al Noor Trading"}</strong></div><div class="info-item"><span>${t("Officer")}</span><strong>${r.officer||"Ali Hassan"}</strong></div><div class="info-item"><span>${t("Linked Files")}</span><strong>3</strong></div><div class="info-item"><span>${t("Total Exposure")}</span><strong>${money((r.claim||0)+12750)}</strong></div><div class="info-item"><span>${t("Party Risk")}</span><strong>Medium</strong></div>`;
+ const a=document.getElementById("detailActions360");
+ if(a)a.innerHTML=ENF_ACTIONS.map(x=>`<div class="timeline-item"><strong>${x.title} · ${x.status}</strong><span>${x.date} — ${x.note}</span></div>`).join("");
+ const c=document.getElementById("detailCollections360");
+ if(c)c.innerHTML=`<table><thead><tr><th>${t("Date")}</th><th>${t("Receipt")}</th><th>${t("Method")}</th><th>${t("Amount")}</th><th>${t("Allocation")}</th></tr></thead><tbody><tr><td>18 Aug 2026</td><td>RC-260818</td><td>Bank Transfer</td><td>${money(Math.min(r.collected||4200,4200))}</td><td>100% → ${r.id}</td></tr><tr><td>05 Aug 2026</td><td>RC-260805</td><td>Cheque</td><td>${money(Math.min(r.collected||2500,2500))}</td><td>100% → ${r.id}</td></tr></tbody></table>`;
+ const e=document.getElementById("detailExpenses360");
+ if(e)e.innerHTML=`<table><thead><tr><th>${t("Date")}</th><th>${t("Type")}</th><th>${t("Reference")}</th><th>${t("Amount")}</th><th>${t("Status")}</th></tr></thead><tbody><tr><td>20 Aug 2026</td><td>Court / Filing</td><td>EXP-260188</td><td>${money(75)}</td><td><span class="badge paid">Paid</span></td></tr><tr><td>12 Aug 2026</td><td>Notification</td><td>EXP-260171</td><td>${money(25)}</td><td><span class="badge paid">Paid</span></td></tr></tbody></table>`;
+ const st=document.getElementById("detailSettlement360");
+ if(st)st.innerHTML=`<div class="info-grid"><div class="info-item"><span>${t("Original Outstanding")}</span><strong>${money(outstanding)}</strong></div><div class="info-item"><span>${t("Proposed Settlement")}</span><strong>${money(outstanding*.82)}</strong></div><div class="info-item"><span>${t("Discount")}</span><strong>18%</strong></div><div class="info-item"><span>${t("First Payment")}</span><strong>${money(outstanding*.20)}</strong></div><div class="info-item"><span>${t("Installments")}</span><strong>6 Monthly</strong></div><div class="info-item"><span>${t("Next Due")}</span><strong>01 Sep 2026</strong></div></div><div class="note-box" style="margin-top:12px"><strong>${t("Settlement Compliance")}: ${pct>25?"On Track":"Review Required"}</strong><br>${t("Demo settlement schedule linked directly to the enforcement file.")}</div>`;
+}
+const _openDetail=openDetail;
+openDetail=function(m,id){_openDetail(m,id);const r=(DATA[m]||[]).find(x=>x.id===id);if(r)enrichFile360(m,r)}
+function quickNewAction(){openPage("files");setTimeout(()=>openDetail("files",(DATA.files&&DATA.files[0]&&DATA.files[0].id)||"ENF-260184"),50)}
+const TOUR=[
+ ["Executive Dashboard","Portfolio KPIs, alerts, recovery performance and priority files."],
+ ["Enforcement File 360°","One operational view for parties, financial position, actions, collections, expenses, settlement, documents and activity."],
+ ["Collections Allocation","Collections are linked to the relevant enforcement file with receipt, method and allocation trail."],
+ ["Settlement Management","Track proposed settlement, discount, first payment, installments, next due date and compliance."],
+ ["Reports & Analytics","Management reporting covers recovery, settlements, officers, expenses and treasury."]
+];
+let tourIndex=0;
+function startDemoTour(){tourIndex=0;document.getElementById("demoTourMask").style.display="block";document.getElementById("demoTourCard").style.display="block";showTourStep()}
+function showTourStep(){let x=TOUR[tourIndex];document.getElementById("tourCount").textContent=`${tourIndex+1} / ${TOUR.length}`;document.getElementById("tourTitle").textContent=t(x[0]);document.getElementById("tourText").textContent=t(x[1]);if(tourIndex===1){openPage("files");setTimeout(()=>openDetail("files",(DATA.files&&DATA.files[0]&&DATA.files[0].id)||"ENF-260184"),30)}else if(tourIndex===4){openPage("reports")}}
+function nextDemoTour(){tourIndex++;if(tourIndex>=TOUR.length){endDemoTour();return}showTourStep()}
+function endDemoTour(){document.getElementById("demoTourMask").style.display="none";document.getElementById("demoTourCard").style.display="none";openPage("dashboard")}
+Object.assign(I18N.ar,{
+ "Files without action":"ملفات دون إجراء","Installments due today":"أقساط مستحقة اليوم","Broken settlements":"تسويات متعثرة","High priority actions":"إجراءات عالية الأولوية",
+ "Financial Position":"المركز المالي","Execution Actions":"الإجراءات التنفيذية","Activity Log":"سجل النشاط","Linked Files":"الملفات المرتبطة","Total Exposure":"إجمالي التعرض","Party Risk":"مخاطر الطرف",
+ "Receipt":"الإيصال","Allocation":"التخصيص","Original Outstanding":"المبلغ القائم الأصلي","Proposed Settlement":"التسوية المقترحة","Discount":"الخصم","First Payment":"الدفعة الأولى","Installments":"الأقساط","Next Due":"الاستحقاق القادم","Settlement Compliance":"الالتزام بالتسوية",
+ "Enforcement File 360°":"ملف التنفيذ 360°","Collections Allocation":"تخصيص التحصيلات","Settlement Management":"إدارة التسويات",
+ "Portfolio KPIs, alerts, recovery performance and priority files.":"مؤشرات المحفظة والتنبيهات وأداء التحصيل والملفات ذات الأولوية.",
+ "One operational view for parties, financial position, actions, collections, expenses, settlement, documents and activity.":"عرض تشغيلي موحد للأطراف والمركز المالي والإجراءات والتحصيلات والمصروفات والتسوية والمستندات والنشاط.",
+ "Collections are linked to the relevant enforcement file with receipt, method and allocation trail.":"ربط التحصيلات بملف التنفيذ مع الإيصال وطريقة السداد ومسار التخصيص.",
+ "Track proposed settlement, discount, first payment, installments, next due date and compliance.":"متابعة التسوية المقترحة والخصم والدفعة الأولى والأقساط والاستحقاق القادم والالتزام.",
+ "Management reporting covers recovery, settlements, officers, expenses and treasury.":"تقارير إدارية تغطي التحصيل والتسويات والمنفذين والمصروفات والخزينة."
+});
+
 renderDashboard();renderUsers();renderAudit();renderPermissions();showReport("executive");applyLanguage();
 </script>
 </body>
