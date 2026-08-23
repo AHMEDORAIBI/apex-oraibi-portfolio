@@ -425,6 +425,11 @@ html[dir="rtl"] .timeline-item::before{left:auto;right:-17px}
 .payment-card strong{font-size:9px;color:var(--navy)}.payment-card span{display:block;font-size:8px;color:var(--muted);margin-top:4px}
 @media(max-width:1100px){.billing-kpis{grid-template-columns:repeat(3,1fr)}}@media(max-width:650px){.billing-kpis{grid-template-columns:1fr 1fr}.billing-toolbar-left{width:100%}.billing-toolbar input,.billing-toolbar select{width:100%}}
 
+
+.expense-kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px}
+.expense-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.expense-toolbar input,.expense-toolbar select{height:38px;border:1px solid var(--border);border-radius:6px;background:#fff;padding:0 11px;font-size:10px}.expense-toolbar input{width:245px}
+.category-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.category-card{border:1px solid var(--border);border-radius:8px;padding:14px;background:#fafcfc}.category-card span{display:block;font-size:8px;color:var(--muted)}.category-card strong{display:block;margin-top:7px;font-size:15px;color:var(--navy)}
+@media(max-width:800px){.expense-kpis,.category-grid{grid-template-columns:1fr 1fr}}@media(max-width:520px){.expense-kpis,.category-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -621,6 +626,13 @@ html[dir="rtl"] .timeline-item::before{left:auto;right:-17px}
 
     
 
+
+<section id="expensesPage" class="hidden"><div class="content">
+<div class="hero-row"><div><h2>Expenses</h2><p>Daily and monthly clinic operating expense tracking.</p></div><div class="hero-actions"><button class="action-btn primary" onclick="alert('Add Expense — Demo')">+ Add Expense</button></div></div>
+<div class="expense-kpis"><div class="kpi-card"><span class="kpi-label">Expenses Today</span><strong class="kpi-value">BHD 286.500</strong></div><div class="kpi-card"><span class="kpi-label">This Week</span><strong class="kpi-value">BHD 1,420</strong></div><div class="kpi-card"><span class="kpi-label">This Month</span><strong class="kpi-value">BHD 4,860</strong></div><div class="kpi-card"><span class="kpi-label">Largest Category</span><strong class="kpi-value">Payroll</strong></div><div class="kpi-card"><span class="kpi-label">Budget Used</span><strong class="kpi-value">68%</strong></div></div>
+<section class="card"><div class="card-head"><div><h3>Expense Categories</h3><p>Current month distribution</p></div></div><div class="category-grid"><div class="category-card"><span>Payroll & Staff</span><strong>BHD 2,150.000</strong></div><div class="category-card"><span>Rent & Utilities</span><strong>BHD 1,120.000</strong></div><div class="category-card"><span>Medical Supplies</span><strong>BHD 890.000</strong></div><div class="category-card"><span>Other Operating</span><strong>BHD 700.000</strong></div></div></section>
+<section class="card"><div class="expense-toolbar"><input id="expenseSearch" placeholder="Search expense or supplier..." oninput="renderExpenses()"><select id="expenseCategory" onchange="renderExpenses()"><option value="">All Categories</option><option>Payroll & Staff</option><option>Rent & Utilities</option><option>Medical Supplies</option><option>Other Operating</option></select></div><div class="table-wrap"><table><thead><tr><th>ID</th><th>Date</th><th>Description</th><th>Category</th><th>Supplier</th><th>Payment Method</th><th>Amount</th><th>Status</th></tr></thead><tbody id="expensesBody"></tbody></table></div></section>
+</div></section>
 <section id="billingPage" class="hidden"><div class="content">
   <div class="hero-row">
     <div><h2 data-i18n="Billing">Billing</h2><p data-i18n="Invoices, payments and outstanding patient balances.">Invoices, payments and outstanding patient balances.</p></div>
@@ -1192,6 +1204,15 @@ const I18N = {
 
 
 
+
+const EXPENSES=[
+{id:"EXP-260823-006",date:"23 Aug 2026",description:"Physiotherapy consumables",category:"Medical Supplies",supplier:"Gulf Medical Supplies",method:"Bank Transfer",amount:146.500,status:"Posted"},
+{id:"EXP-260823-005",date:"23 Aug 2026",description:"Internet and telephone",category:"Rent & Utilities",supplier:"Telecom Provider",method:"Card",amount:58.000,status:"Posted"},
+{id:"EXP-260823-004",date:"23 Aug 2026",description:"Clinic cleaning materials",category:"Other Operating",supplier:"CleanCare W.L.L.",method:"BenefitPay",amount:42.000,status:"Posted"},
+{id:"EXP-260823-003",date:"23 Aug 2026",description:"Staff transport reimbursement",category:"Payroll & Staff",supplier:"Staff Reimbursement",method:"Cash",amount:40.000,status:"Posted"},
+{id:"EXP-260822-009",date:"22 Aug 2026",description:"Therapy bands and exercise equipment",category:"Medical Supplies",supplier:"Rehab Equipment Co.",method:"Bank Transfer",amount:215.000,status:"Posted"}];
+function renderExpenses(){let q=(document.getElementById("expenseSearch")?.value||"").toLowerCase(),c=document.getElementById("expenseCategory")?.value||"";document.getElementById("expensesBody").innerHTML=EXPENSES.filter(x=>(!q||[x.id,x.description,x.supplier].join(" ").toLowerCase().includes(q))&&(!c||x.category===c)).map(x=>`<tr><td>${x.id}</td><td>${x.date}</td><td>${x.description}</td><td>${x.category}</td><td>${x.supplier}</td><td>${x.method}</td><td><strong>BHD ${x.amount.toFixed(3)}</strong></td><td><span class="badge confirmed">${x.status}</span></td></tr>`).join("")}
+
 const INVOICES=[
 {id:"INV-260820-014",date:"20 Aug 2026",patient:"Fatima Ali",patientId:"PAT-260184",payer:"Self Pay",service:"Physiotherapy",amount:85,paid:0,status:"Unpaid",ref:"APT-260820-01",items:[["Physiotherapy Session",1,85]],payments:[]},
 {id:"INV-260820-013",date:"20 Aug 2026",patient:"Ahmed Salman",patientId:"PAT-260179",payer:"Insurance",service:"Occupational Therapy",amount:120,paid:0,status:"Unpaid",ref:"APT-260820-02",items:[["Occupational Therapy Session",1,120]],payments:[]},
@@ -1265,7 +1286,7 @@ function openSession360(id){
  const s=currentSession;document.getElementById("session360Title").textContent=s.patient;document.getElementById("session360Meta").textContent=s.id+" · "+s.date+" · "+s.service;document.getElementById("session360Status").textContent=s.status;
  document.getElementById("sPainBefore").textContent=s.painBefore;document.getElementById("sPainAfter").textContent=s.painAfter;document.getElementById("sDuration").textContent=s.duration;document.getElementById("sProgress").textContent=s.progress;document.getElementById("sPatient").textContent=s.patient;document.getElementById("sPlan").textContent=s.plan;document.getElementById("sTherapist").textContent=s.therapist;document.getElementById("sService").textContent=s.service;document.getElementById("sNote").textContent=s.note;window.scrollTo(0,0);
 }
-function hideClinicalPages(){["dashboardPage","billingPage","invoice360Page","therapistsPage","therapist360Page","treatmentPage","plan360Page","sessionsPage","session360Page","appointmentsPage","appointment360Page","patientsPage","patient360Page","placeholderPage"].forEach(id=>document.getElementById(id)?.classList.add("hidden"))}
+function hideClinicalPages(){["dashboardPage","expensesPage","billingPage","invoice360Page","therapistsPage","therapist360Page","treatmentPage","plan360Page","sessionsPage","session360Page","appointmentsPage","appointment360Page","patientsPage","patient360Page","placeholderPage"].forEach(id=>document.getElementById(id)?.classList.add("hidden"))}
 function clinicalDemo(type){alert((currentLang==="ar"?"نموذج سريري تجريبي":"Clinical Demo")+" — "+type);}
 
 const APPOINTMENTS = [
@@ -1626,6 +1647,10 @@ function openPage(page){
     document.getElementById("patientsPage").classList.remove("hidden");document.getElementById("pageSubtitle").textContent=currentLang==="ar"?"ملفات المرضى والتشخيص وخطط العلاج والنشاط العلاجي":"Patient profiles, diagnoses, treatment plans and therapy activity";renderPatients();
   }else if(page==="appointments"){
     document.getElementById("appointmentsPage").classList.remove("hidden");document.getElementById("pageSubtitle").textContent=currentLang==="ar"?"إدارة المواعيد وتوفر المعالجين وزيارات المرضى":"Schedules, therapist availability and patient visits";renderAppointments();renderAppointmentCalendar();
+  }else if(page==="expenses"){
+    document.getElementById("expensesPage").classList.remove("hidden");
+    document.getElementById("pageSubtitle").textContent=currentLang==="ar"?"متابعة المصروفات اليومية والشهرية للعيادة":"Daily and monthly clinic expense tracking";
+    renderExpenses();
   }else if(page==="billing"){
     document.getElementById("billingPage").classList.remove("hidden");
     document.getElementById("pageSubtitle").textContent=currentLang==="ar"?"الفواتير والمدفوعات والأرصدة المستحقة":"Invoices, payments and outstanding patient balances";
@@ -1658,6 +1683,7 @@ renderTreatmentPlans();
 renderTherapySessions();
 renderTherapists();
 renderInvoices();
+renderExpenses();
 </script>
 </body>
 </html>
