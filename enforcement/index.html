@@ -1,1 +1,476 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ENFORZA Private Enforcement | APEX ORAIBI Demo</title>
+<style>
+:root{
+  --sidebar:#17120f;
+  --navy:#171c24;
+  --navy2:#222833;
+  --bronze:#a86f3d;
+  --bronze2:#c28a58;
+  --bronze-soft:#f8f0ea;
+  --gold:#d0a06d;
+  --bg:#f6f7f8;
+  --white:#fff;
+  --text:#1a2028;
+  --muted:#76808c;
+  --border:#e1e5e9;
+  --success:#2f8a61;
+  --warning:#b27b24;
+  --danger:#b74b4b;
+  --info:#4d7397;
+  --shadow:0 8px 28px rgba(23,28,36,.06);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%}
+body{font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text);font-size:13px}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.app{display:grid;grid-template-columns:235px 1fr;min-height:100vh}
+.sidebar{
+  background:linear-gradient(180deg,#16110e 0%,#211812 100%);
+  color:#fff;padding:18px 14px;display:flex;flex-direction:column;
+  position:sticky;top:0;height:100vh;z-index:80
+}
+.brand{display:flex;align-items:center;gap:11px;padding:4px 8px 18px;border-bottom:1px solid rgba(255,255,255,.08)}
+.brand-mark{width:39px;height:39px;border:1px solid var(--bronze2);display:grid;place-items:center;color:#e2b78d;font-weight:900;border-radius:5px}
+.brand strong{display:block;font-size:13px;letter-spacing:1.5px}
+.brand span{display:block;font-size:8px;letter-spacing:1.2px;color:#b9a99d;margin-top:2px}
+.nav-section{margin-top:20px}
+.nav-label{font-size:8px;letter-spacing:1.5px;color:#8e7b6e;padding:0 10px 8px;font-weight:800}
+.nav-item{display:flex;align-items:center;gap:10px;color:#e8dfd9;text-decoration:none;padding:10px 10px;border-radius:6px;margin-bottom:4px;font-size:11px;transition:.18s}
+.nav-item:hover{background:rgba(255,255,255,.06)}
+.nav-item.active{background:rgba(168,111,61,.22);color:#e7b98e}
+.nav-icon{width:16px;text-align:center;color:#c38b5e}
+.sidebar-footer{margin-top:auto;border-top:1px solid rgba(255,255,255,.08);padding:14px 8px 0;color:#9e8e83;font-size:8px;line-height:1.7}
+.sidebar-footer strong{color:#d59e6a;letter-spacing:1px}
+.main{min-width:0}
+.topbar{
+  height:68px;background:#fff;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;padding:0 24px;
+  position:sticky;top:0;z-index:60
+}
+.page-heading h1{font-size:18px;color:var(--navy)}
+.page-heading p{font-size:9px;color:var(--muted);margin-top:3px}
+.top-actions{display:flex;align-items:center;gap:8px}
+.search{width:245px;height:38px;border:1px solid var(--border);border-radius:6px;padding:0 12px;outline:none;background:#fff;font-size:10px}
+.top-btn{height:38px;min-width:38px;border:1px solid var(--border);border-radius:6px;background:#fff;color:var(--navy);font-size:10px;font-weight:700;padding:0 10px}
+.lang-switch{display:flex;border:1px solid var(--bronze);border-radius:6px;overflow:hidden;height:38px}
+.lang-switch button{border:0;background:#fff;color:var(--navy);min-width:48px;padding:0 10px;font-size:10px;font-weight:800}
+.lang-switch button.active{background:var(--bronze);color:#fff}
+.profile{display:flex;align-items:center;gap:9px;border:1px solid var(--border);border-radius:7px;padding:5px 8px}
+.avatar{width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:9px;font-weight:800}
+.profile strong{display:block;font-size:9px}.profile span{display:block;color:var(--muted);font-size:8px;margin-top:1px}
+.content{padding:24px}
+.hero-row{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:18px}
+.hero-row h2{font-size:24px;color:var(--navy)}.hero-row h2 span{color:var(--bronze)}
+.hero-row p{margin-top:6px;color:var(--muted);font-size:10px}
+.hero-actions,.actions{display:flex;gap:8px;flex-wrap:wrap}
+.action-btn{min-height:38px;border-radius:6px;border:1px solid var(--border);padding:0 13px;font-size:10px;font-weight:700;background:#fff;color:var(--navy)}
+.action-btn.primary{background:var(--navy);color:#fff;border-color:var(--navy)}
+.action-btn.bronze{background:var(--bronze);color:#fff;border-color:var(--bronze)}
+.kpi-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:16px}
+.kpi-card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:16px;min-height:102px}
+.kpi-label{display:block;font-size:9px;color:var(--muted)}
+.kpi-value{display:block;margin-top:10px;font-size:19px;color:var(--navy);font-weight:800}
+.kpi-note{margin-top:7px;font-size:8px;color:var(--muted)}
+.positive{color:var(--success);font-weight:800}.warning{color:var(--warning);font-weight:800}.danger{color:var(--danger);font-weight:800}
+.dashboard-grid{display:grid;grid-template-columns:1.55fr .85fr;gap:16px;margin-bottom:16px}
+.dashboard-grid.equal{grid-template-columns:1fr 1fr}
+.card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:16px;box-shadow:var(--shadow)}
+.card-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:14px}
+.card-head h3{font-size:13px;color:var(--navy)}.card-head p{font-size:8px;color:var(--muted);margin-top:4px}
+.card-link{border:0;background:transparent;color:var(--bronze);font-size:9px;font-weight:800}
+.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse}
+th{text-align:left;font-size:8px;color:var(--muted);font-weight:800;padding:10px;border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:11px 10px;border-bottom:1px solid #edf1f3;font-size:9px;white-space:nowrap}
+td strong{color:var(--navy)}
+.link-btn{border:0;background:transparent;color:var(--navy);font-weight:800;font-size:9px}
+.link-btn:hover{color:var(--bronze)}
+.badge{display:inline-flex;padding:5px 8px;border-radius:20px;font-size:8px;font-weight:800}
+.badge.active,.badge.paid,.badge.approved,.badge.completed{background:#e9f6ef;color:#337f59}
+.badge.pending,.badge.partial,.badge.review,.badge.due{background:#fbf3e4;color:#9c7025}
+.badge.escalated,.badge.overdue,.badge.rejected{background:#fbeaea;color:#a74646}
+.badge.closed,.badge.draft{background:#eef1f3;color:#697781}
+.badge.info{background:#eaf0f7;color:#486a8a}
+.toolbar{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.toolbar-left{display:flex;gap:8px;flex-wrap:wrap}
+.toolbar input,.toolbar select{height:38px;border:1px solid var(--border);border-radius:6px;background:#fff;padding:0 11px;font-size:10px;outline:none}
+.toolbar input{width:260px}
+.donut-wrap{display:grid;place-items:center;padding:8px}
+.donut{width:150px;height:150px;border-radius:50%;background:conic-gradient(var(--bronze) 0 68%,#e1e6e9 68% 100%);display:grid;place-items:center;position:relative}
+.donut::after{content:"";position:absolute;width:105px;height:105px;border-radius:50%;background:#fff}
+.donut-center{position:relative;z-index:1;text-align:center}.donut-center strong{display:block;font-size:24px;color:var(--navy)}.donut-center span{display:block;font-size:8px;color:var(--muted);margin-top:2px}
+.list{display:flex;flex-direction:column}.list-row{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:11px 0;border-bottom:1px solid #edf1f3}
+.list-row:last-child{border-bottom:0}.list-left{display:flex;gap:10px;align-items:center}
+.list-icon{width:34px;height:34px;border-radius:8px;background:var(--bronze-soft);color:var(--bronze);display:grid;place-items:center;font-weight:900;font-size:10px}
+.list-row strong{display:block;font-size:9px;color:var(--navy)}.list-row span{display:block;font-size:8px;color:var(--muted);margin-top:3px}
+.progress-row{display:grid;grid-template-columns:1fr 100px 55px;gap:10px;align-items:center;padding:10px 0}
+.progress-row strong{font-size:9px;color:var(--navy)}.progress-track{height:7px;border-radius:10px;background:#e9edef;overflow:hidden}
+.progress-fill{height:100%;background:var(--bronze);border-radius:10px}.progress-row span{font-size:9px;color:var(--muted);text-align:right}
+.detail-hero{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;background:#fff;border:1px solid var(--border);border-radius:8px;padding:20px;margin-bottom:16px}
+.detail-left{display:flex;gap:14px;align-items:flex-start}.detail-mark{width:62px;height:62px;border-radius:12px;background:var(--bronze-soft);color:var(--bronze);display:grid;place-items:center;font-size:18px;font-weight:900;border:1px solid #ecd9c9}
+.detail-hero h2{font-size:21px;color:var(--navy)}.detail-hero p{margin-top:5px;color:var(--muted);font-size:10px}.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
+.summary-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px}
+.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.info-item{padding:14px;border:1px solid var(--border);border-radius:7px;background:#fafcfc}
+.info-item span{display:block;font-size:8px;color:var(--muted)}.info-item strong{display:block;margin-top:6px;font-size:10px;color:var(--navy)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid var(--border);margin-bottom:18px}.tab-btn{border:0;background:transparent;padding:10px 11px;font-size:9px;font-weight:800;color:var(--muted);border-bottom:2px solid transparent}
+.tab-btn.active{color:var(--navy);border-bottom-color:var(--bronze)}
+.tab-panel{display:none}.tab-panel.active{display:block}
+.note-box{border:1px solid var(--border);border-radius:8px;padding:14px;background:#fafcfc;line-height:1.7;font-size:10px;color:#40515d}
+.report-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.report-card{border:1px solid var(--border);border-radius:8px;padding:16px;background:#fff;cursor:pointer;transition:.15s}
+.report-card:hover{transform:translateY(-1px);box-shadow:0 5px 18px rgba(20,48,65,.07)}.report-card h4{font-size:11px;color:var(--navy);margin-bottom:6px}.report-card p{font-size:8px;color:var(--muted);line-height:1.55}.report-card strong{display:block;font-size:17px;color:var(--bronze);margin-top:12px}
+.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.settings-form{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:grid;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:8px;font-weight:800;color:var(--muted)}.field input,.field select{height:40px;border:1px solid var(--border);border-radius:7px;padding:0 11px;background:#fff;font-size:10px}
+.permission-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.permission-item{border:1px solid var(--border);border-radius:7px;padding:11px;background:#fafcfc;display:flex;justify-content:space-between;align-items:center;font-size:9px}
+.toggle{width:34px;height:18px;border-radius:20px;background:#dce4e7;position:relative}.toggle.on{background:var(--bronze)}.toggle:after{content:"";position:absolute;width:14px;height:14px;border-radius:50%;background:#fff;top:2px;left:2px}.toggle.on:after{left:18px}
+.hidden{display:none!important}
+.footer{display:flex;justify-content:space-between;gap:15px;padding:16px 24px;border-top:1px solid var(--border);font-size:8px;color:var(--muted);background:#fff}
+.mobile-menu{display:none}
+html[dir="rtl"] body{direction:rtl;text-align:right;font-family:Tahoma,Arial,sans-serif}
+html[dir="rtl"] .app{grid-template-columns:1fr 235px}
+html[dir="rtl"] .sidebar{grid-column:2}
+html[dir="rtl"] .main{grid-column:1;grid-row:1}
+html[dir="rtl"] th,html[dir="rtl"] td{text-align:right}
+html[dir="rtl"] .progress-row span{text-align:left}
+html[dir="rtl"] input,html[dir="rtl"] select,html[dir="rtl"] textarea{text-align:right;direction:rtl}
+@media(max-width:1200px){.kpi-grid{grid-template-columns:repeat(3,1fr)}.summary-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:950px){
+ .app{display:block}.sidebar{position:fixed;left:0;top:0;transform:translateX(-100%);transition:.25s}.sidebar.open{transform:translateX(0)}
+ html[dir="rtl"] .sidebar{left:auto;right:0;transform:translateX(100%)}html[dir="rtl"] .sidebar.open{transform:translateX(0)}
+ .dashboard-grid,.dashboard-grid.equal,.settings-grid{grid-template-columns:1fr}.content{padding:16px}.search{display:none}.mobile-menu{display:inline-flex}.report-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:650px){.kpi-grid,.summary-grid,.info-grid,.report-grid,.permission-grid,.settings-form{grid-template-columns:1fr 1fr}.hero-row,.detail-hero{flex-direction:column;align-items:flex-start}.profile{display:none}.toolbar-left{width:100%}.toolbar input,.toolbar select{width:100%}}
+@media(max-width:470px){.kpi-grid,.summary-grid,.info-grid,.report-grid,.permission-grid,.settings-form{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar" id="sidebar">
+  <div class="brand"><div class="brand-mark">E</div><div><strong>ENFORZA</strong><span>PRIVATE ENFORCEMENT</span></div></div>
+  <div class="nav-section">
+    <div class="nav-label" data-i18n="WORKSPACE">WORKSPACE</div>
+    <a class="nav-item active" data-page="dashboard" href="#" onclick="openPage('dashboard');return false;"><span class="nav-icon">⌂</span><span data-i18n="Dashboard">Dashboard</span></a>
+    <a class="nav-item" data-page="files" href="#" onclick="openPage('files');return false;"><span class="nav-icon">▤</span><span data-i18n="Enforcement Files">Enforcement Files</span></a>
+    <a class="nav-item" data-page="parties" href="#" onclick="openPage('parties');return false;"><span class="nav-icon">♙</span><span data-i18n="Parties">Parties</span></a>
+    <a class="nav-item" data-page="claims" href="#" onclick="openPage('claims');return false;"><span class="nav-icon">§</span><span data-i18n="Financial Claims">Financial Claims</span></a>
+    <a class="nav-item" data-page="tasks" href="#" onclick="openPage('tasks');return false;"><span class="nav-icon">✓</span><span data-i18n="Tasks & Follow-ups">Tasks & Follow-ups</span></a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label" data-i18n="FINANCIAL">FINANCIAL</div>
+    <a class="nav-item" data-page="collections" href="#" onclick="openPage('collections');return false;"><span class="nav-icon">↙</span><span data-i18n="Collections">Collections</span></a>
+    <a class="nav-item" data-page="expenses" href="#" onclick="openPage('expenses');return false;"><span class="nav-icon">↗</span><span data-i18n="Expenses">Expenses</span></a>
+    <a class="nav-item" data-page="settlements" href="#" onclick="openPage('settlements');return false;"><span class="nav-icon">≈</span><span data-i18n="Settlements">Settlements</span></a>
+    <a class="nav-item" data-page="treasury" href="#" onclick="openPage('treasury');return false;"><span class="nav-icon">▣</span><span data-i18n="Banking & Treasury">Banking & Treasury</span></a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label" data-i18n="MANAGEMENT">MANAGEMENT</div>
+    <a class="nav-item" data-page="reports" href="#" onclick="openPage('reports');return false;"><span class="nav-icon">◩</span><span data-i18n="Reports & Analytics">Reports & Analytics</span></a>
+    <a class="nav-item" data-page="users" href="#" onclick="openPage('users');return false;"><span class="nav-icon">♙</span><span data-i18n="Users & Permissions">Users & Permissions</span></a>
+    <a class="nav-item" data-page="settings" href="#" onclick="openPage('settings');return false;"><span class="nav-icon">⚙</span><span data-i18n="Settings">Settings</span></a>
+    <a class="nav-item" data-page="audit" href="#" onclick="openPage('audit');return false;"><span class="nav-icon">⊙</span><span data-i18n="Audit Log">Audit Log</span></a>
+  </div>
+  <div class="sidebar-footer"><div>● <span data-i18n="DEMO ENVIRONMENT">DEMO ENVIRONMENT</span></div><div style="margin-top:8px" data-i18n="Designed & Developed by">Designed & Developed by</div><strong>APEX ORAIBI</strong></div>
+</aside>
 
+<main class="main">
+<header class="topbar">
+  <div style="display:flex;align-items:center;gap:10px">
+    <button class="top-btn mobile-menu" onclick="toggleSidebar()">☰</button>
+    <div class="page-heading"><h1 id="pageTitle" data-i18n="Executive Dashboard">Executive Dashboard</h1><p id="pageSubtitle" data-i18n="Enforcement, collection and financial performance overview">Enforcement, collection and financial performance overview</p></div>
+  </div>
+  <div class="top-actions">
+    <input class="search" data-i18n-placeholder="Search file, party or reference..." placeholder="Search file, party or reference...">
+    <div class="lang-switch"><button id="langEn" class="active" onclick="setLanguage('en')">EN</button><button id="langAr" onclick="setLanguage('ar')">عربي</button></div>
+    <button class="top-btn">◇</button>
+    <div class="profile"><div class="avatar">AO</div><div><strong>Ahmed Oraibi</strong><span data-i18n="Administrator">Administrator</span></div></div>
+  </div>
+</header>
+
+<section id="dashboardPage" class="page">
+<div class="content">
+  <div class="hero-row"><div><h2><span data-i18n="Good morning,">Good morning,</span> <span>Ahmed</span></h2><p data-i18n="Here is the current enforcement portfolio position.">Here is the current enforcement portfolio position.</p></div><div class="hero-actions"><button class="action-btn">▶ <span data-i18n="Start Demo Tour">Start Demo Tour</span></button><button class="action-btn primary">+ <span data-i18n="New Action">New Action</span></button></div></div>
+  <div class="kpi-grid">
+    <div class="kpi-card"><span class="kpi-label" data-i18n="Active Enforcement Files">Active Enforcement Files</span><strong class="kpi-value">86</strong><div class="kpi-note"><span class="positive">+7</span> <span data-i18n="this month">this month</span></div></div>
+    <div class="kpi-card"><span class="kpi-label" data-i18n="Total Claims">Total Claims</span><strong class="kpi-value">BHD 1.84M</strong><div class="kpi-note">112 <span data-i18n="open claims">open claims</span></div></div>
+    <div class="kpi-card"><span class="kpi-label" data-i18n="Collected">Collected</span><strong class="kpi-value">BHD 742,600</strong><div class="kpi-note"><span class="positive">40.4%</span> <span data-i18n="recovery rate">recovery rate</span></div></div>
+    <div class="kpi-card"><span class="kpi-label" data-i18n="Outstanding">Outstanding</span><strong class="kpi-value">BHD 1.10M</strong><div class="kpi-note"><span class="warning">BHD 214K</span> <span data-i18n="overdue">overdue</span></div></div>
+    <div class="kpi-card"><span class="kpi-label" data-i18n="Settlements">Settlements</span><strong class="kpi-value">18</strong><div class="kpi-note">BHD 196,000</div></div>
+    <div class="kpi-card"><span class="kpi-label" data-i18n="Collected This Month">Collected This Month</span><strong class="kpi-value">BHD 96,450</strong><div class="kpi-note"><span class="positive">↑ 12.8%</span></div></div>
+  </div>
+  <div class="dashboard-grid">
+    <section class="card">
+      <div class="card-head"><div><h3 data-i18n="Claims vs Collections">Claims vs Collections</h3><p data-i18n="Last 6 months portfolio movement">Last 6 months portfolio movement</p></div></div>
+      <div id="barChart" style="height:230px;display:flex;align-items:flex-end;gap:26px;padding:10px 18px 0;border-bottom:1px solid var(--border)"></div>
+      <div style="display:flex;gap:16px;margin-top:10px;font-size:8px;color:var(--muted)"><span>● <span data-i18n="Claims">Claims</span></span><span style="color:var(--bronze)">● <span data-i18n="Collections">Collections</span></span></div>
+    </section>
+    <section class="card">
+      <div class="card-head"><div><h3 data-i18n="Recovery Performance">Recovery Performance</h3><p data-i18n="Current enforcement portfolio">Current enforcement portfolio</p></div></div>
+      <div class="donut-wrap"><div class="donut"><div class="donut-center"><strong>40.4%</strong><span data-i18n="RECOVERED">RECOVERED</span></div></div></div>
+      <div class="list-row"><span data-i18n="Total Claims">Total Claims</span><strong>BHD 1.84M</strong></div>
+      <div class="list-row"><span data-i18n="Collected">Collected</span><strong>BHD 742.6K</strong></div>
+      <div class="list-row"><span data-i18n="Outstanding">Outstanding</span><strong>BHD 1.10M</strong></div>
+    </section>
+  </div>
+  <div class="dashboard-grid">
+    <section class="card"><div class="card-head"><div><h3 data-i18n="Priority Enforcement Files">Priority Enforcement Files</h3><p data-i18n="Files requiring immediate action">Files requiring immediate action</p></div><button class="card-link" onclick="openPage('files')" data-i18n="View All">View All</button></div><div class="table-wrap"><table><thead><tr><th data-i18n="File">File</th><th data-i18n="Creditor">Creditor</th><th data-i18n="Debtor">Debtor</th><th data-i18n="Claim">Claim</th><th data-i18n="Outstanding">Outstanding</th><th data-i18n="Next Action">Next Action</th><th data-i18n="Status">Status</th></tr></thead><tbody id="priorityFiles"></tbody></table></div></section>
+    <section class="card"><div class="card-head"><div><h3 data-i18n="Recovery by Officer">Recovery by Officer</h3><p data-i18n="Current month performance">Current month performance</p></div></div>
+      <div class="progress-row"><strong>Ali Hassan</strong><div class="progress-track"><div class="progress-fill" style="width:88%"></div></div><span>88%</span></div>
+      <div class="progress-row"><strong>Maryam Yusuf</strong><div class="progress-track"><div class="progress-fill" style="width:81%"></div></div><span>81%</span></div>
+      <div class="progress-row"><strong>Khalid Salman</strong><div class="progress-track"><div class="progress-fill" style="width:74%"></div></div><span>74%</span></div>
+      <div class="progress-row"><strong>Noor Ahmed</strong><div class="progress-track"><div class="progress-fill" style="width:69%"></div></div><span>69%</span></div>
+    </section>
+  </div>
+  <div class="dashboard-grid equal">
+    <section class="card"><div class="card-head"><div><h3 data-i18n="Upcoming Actions">Upcoming Actions</h3><p data-i18n="Next enforcement activities">Next enforcement activities</p></div></div><div class="list" id="upcomingActions"></div></section>
+    <section class="card"><div class="card-head"><div><h3 data-i18n="Recent Financial Activity">Recent Financial Activity</h3><p data-i18n="Latest collections and expenses">Latest collections and expenses</p></div></div><div class="list" id="recentFinancial"></div></section>
+  </div>
+</div>
+</section>
+
+<section id="genericListPage" class="page hidden"><div class="content">
+  <div class="hero-row"><div><h2 id="genericTitle"></h2><p id="genericDesc"></p></div><div class="hero-actions"><button class="action-btn" onclick="demoAlert('export')" data-i18n="Export Excel">Export Excel</button><button class="action-btn primary" onclick="demoAlert('add')">+ <span id="genericAddLabel"></span></button></div></div>
+  <div id="genericKpis" class="kpi-grid"></div>
+  <section class="card"><div class="toolbar"><div class="toolbar-left"><input id="genericSearch" placeholder="Search..." oninput="renderGenericTable()"><select id="genericFilter" onchange="renderGenericTable()"><option value="">All Statuses</option></select></div></div><div class="table-wrap"><table><thead id="genericHead"></thead><tbody id="genericBody"></tbody></table></div></section>
+</div></section>
+
+<section id="detailPage" class="page hidden"><div class="content">
+  <button class="action-btn" style="margin-bottom:14px" onclick="openPage(currentModule)">← <span data-i18n="Back">Back</span></button>
+  <section class="detail-hero"><div class="detail-left"><div class="detail-mark" id="detailMark">§</div><div><h2 id="detailTitle"></h2><p id="detailMeta"></p><div class="tags"><span id="detailStatus" class="badge active"></span><span id="detailTag" class="badge info"></span></div></div></div><div class="actions"><button class="action-btn" onclick="demoAlert('edit')" data-i18n="Edit">Edit</button><button class="action-btn bronze" onclick="demoAlert('action')" data-i18n="New Action">New Action</button></div></section>
+  <div id="detailSummary" class="summary-grid"></div>
+  <section class="card"><div class="tabs"><button class="tab-btn active" onclick="openTab('overview',this)" data-i18n="Overview">Overview</button><button class="tab-btn" onclick="openTab('financial',this)" data-i18n="Financial">Financial</button><button class="tab-btn" onclick="openTab('activity',this)" data-i18n="Activity">Activity</button><button class="tab-btn" onclick="openTab('documents',this)" data-i18n="Documents">Documents</button></div>
+    <div id="tab-overview" class="tab-panel active"><div id="detailInfo" class="info-grid"></div></div>
+    <div id="tab-financial" class="tab-panel"><div id="detailFinancial" class="table-wrap"></div></div>
+    <div id="tab-activity" class="tab-panel"><div id="detailActivity" class="list"></div></div>
+    <div id="tab-documents" class="tab-panel"><div id="detailDocuments" class="list"></div></div>
+  </section>
+</div></section>
+
+<section id="reportsPage" class="page hidden"><div class="content">
+  <div class="hero-row"><div><h2 data-i18n="Reports & Analytics">Reports & Analytics</h2><p data-i18n="Executive, enforcement and financial intelligence.">Executive, enforcement and financial intelligence.</p></div><div class="hero-actions"><button class="action-btn">PDF</button><button class="action-btn primary" onclick="window.print()" data-i18n="Print">Print</button></div></div>
+  <div class="kpi-grid"><div class="kpi-card"><span class="kpi-label" data-i18n="Total Claims">Total Claims</span><strong class="kpi-value">BHD 1.84M</strong></div><div class="kpi-card"><span class="kpi-label" data-i18n="Collections">Collections</span><strong class="kpi-value">BHD 742.6K</strong></div><div class="kpi-card"><span class="kpi-label" data-i18n="Expenses">Expenses</span><strong class="kpi-value">BHD 38.4K</strong></div><div class="kpi-card"><span class="kpi-label" data-i18n="Net Recovery">Net Recovery</span><strong class="kpi-value">BHD 704.2K</strong></div><div class="kpi-card"><span class="kpi-label" data-i18n="Recovery Rate">Recovery Rate</span><strong class="kpi-value">40.4%</strong></div><div class="kpi-card"><span class="kpi-label" data-i18n="Settled Files">Settled Files</span><strong class="kpi-value">18</strong></div></div>
+  <section class="card"><div class="report-grid">
+    <div class="report-card" onclick="showReport('executive')"><h4 data-i18n="Executive Summary">Executive Summary</h4><p data-i18n="Portfolio position and management indicators.">Portfolio position and management indicators.</p><strong>86 Files</strong></div>
+    <div class="report-card" onclick="showReport('recovery')"><h4 data-i18n="Recovery Performance">Recovery Performance</h4><p data-i18n="Claims, collections and outstanding balances.">Claims, collections and outstanding balances.</p><strong>40.4%</strong></div>
+    <div class="report-card" onclick="showReport('settlement')"><h4 data-i18n="Settlement Performance">Settlement Performance</h4><p data-i18n="Settlement proposals and completion.">Settlement proposals and completion.</p><strong>BHD 196K</strong></div>
+    <div class="report-card" onclick="showReport('officer')"><h4 data-i18n="Officer Performance">Officer Performance</h4><p data-i18n="Workload and recovery by enforcement officer.">Workload and recovery by enforcement officer.</p><strong>81%</strong></div>
+    <div class="report-card" onclick="showReport('expense')"><h4 data-i18n="Expense Analysis">Expense Analysis</h4><p data-i18n="Legal, court and operating expenses.">Legal, court and operating expenses.</p><strong>BHD 38.4K</strong></div>
+    <div class="report-card" onclick="showReport('treasury')"><h4 data-i18n="Cash Flow & Treasury">Cash Flow & Treasury</h4><p data-i18n="Collections, client funds and transfers.">Collections, client funds and transfers.</p><strong>BHD 522K</strong></div>
+  </div></section>
+  <section class="card"><div class="card-head"><div><h3 id="reportTitle">Executive Summary</h3><p>August 2026</p></div></div><div class="table-wrap"><table><thead><tr><th data-i18n="Indicator">Indicator</th><th data-i18n="Current">Current</th><th data-i18n="Previous">Previous</th><th data-i18n="Change">Change</th></tr></thead><tbody id="reportBody"></tbody></table></div></section>
+</div></section>
+
+<section id="usersPage" class="page hidden"><div class="content">
+  <div class="hero-row"><div><h2 data-i18n="Users & Permissions">Users & Permissions</h2><p data-i18n="Manage enforcement team access and roles.">Manage enforcement team access and roles.</p></div><button class="action-btn primary">+ <span data-i18n="Add User">Add User</span></button></div>
+  <section class="card"><div class="table-wrap"><table><thead><tr><th data-i18n="User">User</th><th data-i18n="Username">Username</th><th data-i18n="Role">Role</th><th data-i18n="Department">Department</th><th data-i18n="Status">Status</th><th data-i18n="Last Login">Last Login</th></tr></thead><tbody id="usersBody"></tbody></table></div></section>
+  <section class="card"><div class="card-head"><div><h3 data-i18n="Permission Matrix">Permission Matrix</h3></div><select id="roleSelect" onchange="renderPermissions()" style="height:36px;border:1px solid var(--border);border-radius:6px;padding:0 9px"><option>Administrator</option><option>Enforcement Officer</option><option>Finance</option><option>Management</option></select></div><div id="permissionGrid" class="permission-grid"></div></section>
+</div></section>
+
+<section id="settingsPage" class="page hidden"><div class="content">
+  <div class="hero-row"><div><h2 data-i18n="Settings">Settings</h2><p data-i18n="Company, financial and enforcement workflow settings.">Company, financial and enforcement workflow settings.</p></div><button class="action-btn primary" onclick="demoAlert('save')" data-i18n="Save Settings">Save Settings</button></div>
+  <div class="settings-grid">
+    <section class="card"><div class="card-head"><div><h3 data-i18n="Company Profile">Company Profile</h3></div></div><div class="settings-form"><div class="field full"><label>Company Name</label><input value="ENFORZA Private Enforcement"></div><div class="field"><label>Currency</label><select><option>BHD — Bahraini Dinar</option></select></div><div class="field"><label>Timezone</label><select><option>Asia/Bahrain</option></select></div><div class="field"><label>Default Language</label><select><option>English</option><option>العربية</option></select></div><div class="field"><label>File Prefix</label><input value="ENF"></div></div></section>
+    <section class="card"><div class="card-head"><div><h3 data-i18n="Enforcement Rules">Enforcement Rules</h3></div></div><div class="settings-form"><div class="field"><label>Priority Threshold</label><select><option>BHD 25,000+</option></select></div><div class="field"><label>Overdue Alert</label><select><option>7 days</option></select></div><div class="field"><label>Settlement Approval</label><select><option>Management Approval</option></select></div><div class="field"><label>Client Funds Review</label><select><option>Daily</option></select></div></div></section>
+  </div>
+</div></section>
+
+<section id="auditPage" class="page hidden"><div class="content"><div class="hero-row"><div><h2 data-i18n="Audit Log">Audit Log</h2><p data-i18n="Track system, enforcement and financial activity.">Track system, enforcement and financial activity.</p></div><button class="action-btn" data-i18n="Export Audit">Export Audit</button></div><section class="card"><div class="table-wrap"><table><thead><tr><th data-i18n="Date & Time">Date & Time</th><th data-i18n="User">User</th><th data-i18n="Module">Module</th><th data-i18n="Action">Action</th><th data-i18n="Reference">Reference</th><th data-i18n="Description">Description</th></tr></thead><tbody id="auditBody"></tbody></table></div></section></div></section>
+
+<footer class="footer"><span>ENFORZA — Private Enforcement Management System</span><span><span data-i18n="Designed & Developed by">Designed & Developed by</span> <strong style="color:var(--bronze)">APEX ORAIBI</strong></span></footer>
+</main>
+</div>
+
+<script>
+const DATA={
+files:[
+{id:"ENF-260184",creditor:"Gulf Finance W.L.L.",debtor:"Al Noor Trading",claim:18500,collected:4200,status:"Escalated",officer:"Ali Hassan",next:"Bank attachment review",court:"Execution Court",opened:"03 Aug 2026"},
+{id:"ENF-260191",creditor:"Prime Services",debtor:"Modern Workshop",claim:9750,collected:2500,status:"Active",officer:"Maryam Yusuf",next:"Payment follow-up",court:"Execution Court",opened:"05 Aug 2026"},
+{id:"ENF-260203",creditor:"Bahrain Leasing",debtor:"Eastern Market",claim:22300,collected:0,status:"Review",officer:"Khalid Salman",next:"Asset inquiry",court:"Execution Court",opened:"10 Aug 2026"},
+{id:"ENF-260211",creditor:"Apex Contracting",debtor:"Yusuf Ahmed",claim:36200,collected:12000,status:"Active",officer:"Noor Ahmed",next:"Installment review",court:"Execution Court",opened:"12 Aug 2026"},
+{id:"ENF-260219",creditor:"Manama Holdings",debtor:"Blue Coast W.L.L.",claim:61800,collected:21800,status:"Settlement",officer:"Ali Hassan",next:"Settlement approval",court:"Execution Court",opened:"15 Aug 2026"}],
+parties:[
+{id:"PTY-260045",name:"Gulf Finance W.L.L.",type:"Creditor",ref:"CR 88421",mobile:"+973 1700 2200",status:"Active",files:12,balance:248000},
+{id:"PTY-260087",name:"Al Noor Trading",type:"Debtor",ref:"CR 77219",mobile:"+973 3990 1182",status:"Active",files:2,balance:18500},
+{id:"PTY-260102",name:"Prime Services",type:"Creditor",ref:"CR 90812",mobile:"+973 1755 0044",status:"Active",files:8,balance:132400},
+{id:"PTY-260119",name:"Modern Workshop",type:"Debtor",ref:"CR 66192",mobile:"+973 3660 1188",status:"Active",files:1,balance:9750}],
+claims:[
+{id:"CLM-260184",file:"ENF-260184",party:"Al Noor Trading",type:"Principal",amount:18500,paid:4200,status:"Partial",due:"31 Aug 2026"},
+{id:"CLM-260191",file:"ENF-260191",party:"Modern Workshop",type:"Principal",amount:9750,paid:2500,status:"Partial",due:"28 Aug 2026"},
+{id:"CLM-260203",file:"ENF-260203",party:"Eastern Market",type:"Principal",amount:22300,paid:0,status:"Unpaid",due:"26 Aug 2026"},
+{id:"CLM-260211",file:"ENF-260211",party:"Yusuf Ahmed",type:"Principal",amount:36200,paid:12000,status:"Partial",due:"10 Sep 2026"}],
+tasks:[
+{id:"TSK-260812",title:"Bank attachment review",file:"ENF-260184",officer:"Ali Hassan",due:"24 Aug 2026",priority:"High",status:"Pending"},
+{id:"TSK-260814",title:"Debtor payment follow-up",file:"ENF-260191",officer:"Maryam Yusuf",due:"24 Aug 2026",priority:"Medium",status:"Pending"},
+{id:"TSK-260819",title:"Asset inquiry",file:"ENF-260203",officer:"Khalid Salman",due:"25 Aug 2026",priority:"High",status:"Pending"},
+{id:"TSK-260823",title:"Settlement approval",file:"ENF-260219",officer:"Ali Hassan",due:"26 Aug 2026",priority:"High",status:"Pending"}],
+collections:[
+{id:"RC-260823-015",date:"23 Aug 2026",file:"ENF-260211",debtor:"Yusuf Ahmed",method:"Bank Transfer",amount:5000,status:"Allocated"},
+{id:"RC-260822-011",date:"22 Aug 2026",file:"ENF-260184",debtor:"Al Noor Trading",method:"BenefitPay",amount:2200,status:"Allocated"},
+{id:"RC-260821-008",date:"21 Aug 2026",file:"ENF-260191",debtor:"Modern Workshop",method:"Cheque",amount:2500,status:"Allocated"},
+{id:"RC-260820-004",date:"20 Aug 2026",file:"ENF-260219",debtor:"Blue Coast W.L.L.",method:"Bank Transfer",amount:9800,status:"Allocated"}],
+expenses:[
+{id:"EXP-260823-006",date:"23 Aug 2026",file:"ENF-260184",category:"Court Fee",description:"Execution filing fee",amount:42,status:"Posted"},
+{id:"EXP-260822-004",date:"22 Aug 2026",file:"ENF-260203",category:"External Search",description:"Asset inquiry fee",amount:65,status:"Posted"},
+{id:"EXP-260821-002",date:"21 Aug 2026",file:"ENF-260211",category:"Courier",description:"Document delivery",amount:18.5,status:"Posted"},
+{id:"EXP-260819-009",date:"19 Aug 2026",file:"ENF-260219",category:"Legal Notice",description:"Notice publication",amount:120,status:"Posted"}],
+settlements:[
+{id:"SET-260031",file:"ENF-260219",debtor:"Blue Coast W.L.L.",outstanding:40000,proposed:32000,status:"Pending",valid:"31 Aug 2026"},
+{id:"SET-260028",file:"ENF-260211",debtor:"Yusuf Ahmed",outstanding:24200,proposed:22000,status:"Approved",valid:"15 Sep 2026"},
+{id:"SET-260024",file:"ENF-260191",debtor:"Modern Workshop",outstanding:7250,proposed:6500,status:"Completed",valid:"28 Aug 2026"}],
+treasury:[
+{id:"TRX-260823-019",date:"23 Aug 2026",type:"Collection",source:"RC-260823-015",inflow:5000,outflow:0,account:"Collection Bank"},
+{id:"TRX-260823-018",date:"23 Aug 2026",type:"Expense",source:"EXP-260823-006",inflow:0,outflow:42,account:"Operating Bank"},
+{id:"TRX-260822-014",date:"22 Aug 2026",type:"Collection",source:"RC-260822-011",inflow:2200,outflow:0,account:"Collection Bank"},
+{id:"TRX-260821-010",date:"21 Aug 2026",type:"Client Settlement",source:"CLS-260821-002",inflow:0,outflow:12000,account:"Client Funds"}]
+};
+const CONFIG={
+files:{title:"Enforcement Files",desc:"Manage enforcement cases, officers, claims and recovery stages.",add:"New Enforcement File",headers:["File No.","Creditor","Debtor","Claim","Collected","Outstanding","Officer","Status"],statuses:["Active","Escalated","Review","Settlement"],kpis:[["Total Files","112"],["Active Files","86"],["Escalated","14"],["Settlement","8"],["Claim Value","BHD 1.84M"]]},
+parties:{title:"Parties",desc:"Manage creditors, debtors and related contact information.",add:"Add Party",headers:["Party ID","Name","Type","Reference","Mobile","Files","Balance","Status"],statuses:["Active"],kpis:[["Total Parties","246"],["Creditors","54"],["Debtors","192"],["Active Parties","231"],["Linked Files","112"]]},
+claims:{title:"Financial Claims",desc:"Track principal claims, paid amounts and outstanding balances.",add:"New Claim",headers:["Claim ID","File","Party","Type","Amount","Paid","Outstanding","Status"],statuses:["Partial","Unpaid","Paid"],kpis:[["Total Claims","112"],["Claim Value","BHD 1.84M"],["Paid","BHD 742.6K"],["Outstanding","BHD 1.10M"],["Overdue","BHD 214K"]]},
+tasks:{title:"Tasks & Follow-ups",desc:"Manage enforcement actions, deadlines and officer follow-ups.",add:"New Task",headers:["Task ID","Task","File","Officer","Due Date","Priority","Status"],statuses:["Pending","Completed"],kpis:[["Open Tasks","42"],["Due Today","9"],["Overdue","6"],["High Priority","14"],["Completed This Week","38"]]},
+collections:{title:"Collections",desc:"Record debtor payments and allocate collections to enforcement files.",add:"Record Collection",headers:["Receipt","Date","File","Debtor","Method","Amount","Status"],statuses:["Allocated","Unallocated"],kpis:[["Collected Today","BHD 12,450"],["This Month","BHD 96,450"],["Allocated","98.7%"],["Receipts","64"],["Average Receipt","BHD 1,507"]]},
+expenses:{title:"Expenses",desc:"Track court, legal and operating expenses linked to enforcement files.",add:"Add Expense",headers:["Expense ID","Date","File","Category","Description","Amount","Status"],statuses:["Posted","Draft"],kpis:[["Expenses Today","BHD 245"],["This Month","BHD 3,840"],["Court Fees","BHD 1,420"],["External Costs","BHD 1,180"],["Other","BHD 1,240"]]},
+settlements:{title:"Settlements",desc:"Manage settlement proposals, approvals and completion.",add:"New Settlement",headers:["Settlement","File","Debtor","Outstanding","Proposed","Discount","Valid Until","Status"],statuses:["Pending","Approved","Completed"],kpis:[["Open Settlements","7"],["Approved","5"],["Completed","18"],["Proposed Value","BHD 196K"],["Average Discount","12.4%"]]},
+treasury:{title:"Banking & Treasury",desc:"Monitor collection accounts, client funds and treasury movements.",add:"New Transfer",headers:["Transaction","Date","Type","Reference","Inflow","Outflow","Account"],statuses:["Collection","Expense","Client Settlement"],kpis:[["Total Funds","BHD 522K"],["Collection Bank","BHD 318K"],["Client Funds","BHD 176K"],["Operating Bank","BHD 28K"],["Today Net","BHD 7,158"]]}
+};
+const USERS=[
+{name:"System Administrator",username:"admin",role:"Administrator",dept:"Management",status:"Active",login:"23 Aug 2026 · 19:10"},
+{name:"Ali Hassan",username:"ali.hassan",role:"Enforcement Officer",dept:"Enforcement",status:"Active",login:"23 Aug 2026 · 18:42"},
+{name:"Maha Yusuf",username:"maha.finance",role:"Finance",dept:"Finance",status:"Active",login:"23 Aug 2026 · 17:56"},
+{name:"Noor Ahmed",username:"noor.manager",role:"Management",dept:"Management",status:"Active",login:"23 Aug 2026 · 16:34"}];
+const AUDIT=[
+["23 Aug 2026 · 19:02","Ali Hassan","Enforcement Files","Update","ENF-260184","Updated next enforcement action"],
+["23 Aug 2026 · 18:44","Maha Yusuf","Collections","Create","RC-260823-015","Recorded BHD 5,000 collection"],
+["23 Aug 2026 · 18:20","System Administrator","Users","Update","USR-004","Updated role permissions"],
+["23 Aug 2026 · 17:58","Noor Ahmed","Settlements","Approve","SET-260028","Approved settlement proposal"]];
+const REPORTS={
+executive:[["Active Files","86","79","+8.9%"],["Total Claims","BHD 1.84M","BHD 1.72M","+7.0%"],["Collections","BHD 742.6K","BHD 681.4K","+9.0%"],["Recovery Rate","40.4%","39.6%","+0.8%"]],
+recovery:[["Collected This Month","BHD 96,450","BHD 85,500","+12.8%"],["Outstanding","BHD 1.10M","BHD 1.04M","+5.8%"],["Overdue","BHD 214K","BHD 228K","-6.1%"],["Receipts","64","59","+8.5%"]],
+settlement:[["Open Settlements","7","9","-22.2%"],["Approved","5","4","+25%"],["Completed","18","15","+20%"],["Average Discount","12.4%","13.1%","-0.7%"]],
+officer:[["Ali Hassan","88%","84%","+4%"],["Maryam Yusuf","81%","79%","+2%"],["Khalid Salman","74%","73%","+1%"],["Noor Ahmed","69%","66%","+3%"]],
+expense:[["Total Expenses","BHD 38.4K","BHD 35.8K","+7.3%"],["Court Fees","BHD 14.2K","BHD 13.6K","+4.4%"],["External Costs","BHD 11.8K","BHD 10.9K","+8.3%"],["Other","BHD 12.4K","BHD 11.3K","+9.7%"]],
+treasury:[["Total Funds","BHD 522K","BHD 488K","+7.0%"],["Client Funds","BHD 176K","BHD 161K","+9.3%"],["Net Movement","BHD 34K","BHD 29K","+17.2%"],["Pending Transfers","BHD 42K","BHD 51K","-17.6%"]]
+};
+const I18N={ar:{
+"WORKSPACE":"مساحة العمل","FINANCIAL":"المالية","MANAGEMENT":"الإدارة","Dashboard":"لوحة التحكم","Executive Dashboard":"لوحة التحكم التنفيذية",
+"Enforcement Files":"ملفات التنفيذ","Parties":"الأطراف","Financial Claims":"المطالبات المالية","Tasks & Follow-ups":"المهام والمتابعات",
+"Collections":"التحصيلات","Expenses":"المصروفات","Settlements":"التسويات","Banking & Treasury":"البنوك والخزينة",
+"Reports & Analytics":"التقارير والتحليلات","Users & Permissions":"المستخدمون والصلاحيات","Settings":"الإعدادات","Audit Log":"سجل التدقيق",
+"DEMO ENVIRONMENT":"بيئة تجريبية","Designed & Developed by":"تصميم وتطوير","Administrator":"مدير النظام",
+"Enforcement, collection and financial performance overview":"نظرة عامة على أداء التنفيذ والتحصيل والمالية",
+"Good morning,":"صباح الخير،","Here is the current enforcement portfolio position.":"هذا هو الوضع الحالي لمحفظة التنفيذ.",
+"Start Demo Tour":"بدء الجولة التجريبية","New Action":"إجراء جديد","Active Enforcement Files":"ملفات التنفيذ النشطة","this month":"هذا الشهر",
+"Total Claims":"إجمالي المطالبات","open claims":"مطالبات مفتوحة","Collected":"المحصل","recovery rate":"نسبة التحصيل","Outstanding":"المستحق","overdue":"متأخر",
+"Settlements":"التسويات","Collected This Month":"المحصل هذا الشهر","Claims vs Collections":"المطالبات مقابل التحصيلات","Last 6 months portfolio movement":"حركة المحفظة لآخر 6 أشهر",
+"Claims":"المطالبات","Recovery Performance":"أداء التحصيل","Current enforcement portfolio":"محفظة التنفيذ الحالية","RECOVERED":"تم التحصيل",
+"Priority Enforcement Files":"ملفات التنفيذ ذات الأولوية","Files requiring immediate action":"ملفات تتطلب إجراءً فوريًا","View All":"عرض الكل",
+"File":"الملف","Creditor":"الدائن","Debtor":"المدين","Claim":"المطالبة","Next Action":"الإجراء القادم","Status":"الحالة",
+"Recovery by Officer":"التحصيل حسب المنفذ","Current month performance":"أداء الشهر الحالي","Upcoming Actions":"الإجراءات القادمة","Next enforcement activities":"أنشطة التنفيذ القادمة",
+"Recent Financial Activity":"أحدث الأنشطة المالية","Latest collections and expenses":"أحدث التحصيلات والمصروفات","Export Excel":"تصدير Excel",
+"Back":"رجوع","Edit":"تعديل","Overview":"نظرة عامة","Financial":"المالية","Activity":"النشاط","Documents":"المستندات",
+"Executive, enforcement and financial intelligence.":"تقارير تنفيذية ومالية وتحليلات التنفيذ.","Print":"طباعة","Net Recovery":"صافي التحصيل","Recovery Rate":"نسبة التحصيل",
+"Settled Files":"الملفات المسواة","Executive Summary":"الملخص التنفيذي","Portfolio position and management indicators.":"وضع المحفظة ومؤشرات الإدارة.",
+"Claims, collections and outstanding balances.":"المطالبات والتحصيلات والأرصدة المستحقة.","Settlement Performance":"أداء التسويات","Settlement proposals and completion.":"عروض التسوية ونسب الإكمال.",
+"Officer Performance":"أداء المنفذين","Workload and recovery by enforcement officer.":"عبء العمل والتحصيل حسب المنفذ.","Expense Analysis":"تحليل المصروفات",
+"Legal, court and operating expenses.":"المصروفات القانونية والقضائية والتشغيلية.","Cash Flow & Treasury":"التدفق النقدي والخزينة","Collections, client funds and transfers.":"التحصيلات وأموال العملاء والتحويلات.",
+"Indicator":"المؤشر","Current":"الحالي","Previous":"السابق","Change":"التغيير","Manage enforcement team access and roles.":"إدارة صلاحيات وأدوار فريق التنفيذ.",
+"Add User":"إضافة مستخدم","User":"المستخدم","Username":"اسم المستخدم","Role":"الدور","Department":"القسم","Last Login":"آخر دخول","Permission Matrix":"مصفوفة الصلاحيات",
+"Company, financial and enforcement workflow settings.":"إعدادات الشركة والمالية ومسار عمل التنفيذ.","Save Settings":"حفظ الإعدادات","Company Profile":"بيانات الشركة","Enforcement Rules":"قواعد التنفيذ",
+"Track system, enforcement and financial activity.":"متابعة نشاط النظام والتنفيذ والمالية.","Export Audit":"تصدير سجل التدقيق","Date & Time":"التاريخ والوقت","Module":"القسم","Action":"الإجراء","Reference":"المرجع","Description":"الوصف",
+"Search file, party or reference...":"ابحث عن ملف أو طرف أو مرجع..."
+}};
+
+let currentLang=localStorage.getItem("enforzaLang")||"en";
+let currentModule="files";
+let currentDetail=null;
+
+function t(k){return currentLang==="ar"?(I18N.ar[k]||k):k}
+function setLanguage(lang){currentLang=lang;localStorage.setItem("enforzaLang",lang);applyLanguage()}
+function applyLanguage(){
+ document.documentElement.lang=currentLang==="ar"?"ar":"en";document.documentElement.dir=currentLang==="ar"?"rtl":"ltr";
+ document.getElementById("langEn").classList.toggle("active",currentLang==="en");document.getElementById("langAr").classList.toggle("active",currentLang==="ar");
+ document.querySelectorAll("[data-i18n]").forEach(el=>el.textContent=t(el.dataset.i18n));
+ document.querySelectorAll("[data-i18n-placeholder]").forEach(el=>el.placeholder=t(el.dataset.i18nPlaceholder));
+}
+function toggleSidebar(){document.getElementById("sidebar").classList.toggle("open")}
+function hidePages(){document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"))}
+function openPage(page){
+ hidePages();currentModule=page;document.querySelectorAll(".nav-item").forEach(el=>el.classList.toggle("active",el.dataset.page===page));
+ if(page==="dashboard"){document.getElementById("dashboardPage").classList.remove("hidden");setHeading("Executive Dashboard","Enforcement, collection and financial performance overview")}
+ else if(CONFIG[page]){document.getElementById("genericListPage").classList.remove("hidden");loadGeneric(page)}
+ else if(page==="reports"){document.getElementById("reportsPage").classList.remove("hidden");setHeading("Reports & Analytics","Executive, enforcement and financial intelligence.");showReport("executive")}
+ else if(page==="users"){document.getElementById("usersPage").classList.remove("hidden");setHeading("Users & Permissions","Manage enforcement team access and roles.");renderUsers();renderPermissions()}
+ else if(page==="settings"){document.getElementById("settingsPage").classList.remove("hidden");setHeading("Settings","Company, financial and enforcement workflow settings.")}
+ else if(page==="audit"){document.getElementById("auditPage").classList.remove("hidden");setHeading("Audit Log","Track system, enforcement and financial activity.");renderAudit()}
+ document.getElementById("sidebar").classList.remove("open");window.scrollTo(0,0);applyLanguage()
+}
+function setHeading(title,sub){document.getElementById("pageTitle").textContent=t(title);document.getElementById("pageSubtitle").textContent=t(sub)}
+function money(v){return "BHD "+Number(v).toLocaleString(undefined,{minimumFractionDigits:3,maximumFractionDigits:3})}
+function loadGeneric(module){
+ const c=CONFIG[module];setHeading(c.title,c.desc);document.getElementById("genericTitle").textContent=t(c.title);document.getElementById("genericDesc").textContent=t(c.desc);document.getElementById("genericAddLabel").textContent=t(c.add);
+ document.getElementById("genericKpis").innerHTML=c.kpis.map(k=>`<div class="kpi-card"><span class="kpi-label">${t(k[0])}</span><strong class="kpi-value">${k[1]}</strong></div>`).join("");
+ document.getElementById("genericHead").innerHTML="<tr>"+c.headers.map(h=>`<th>${t(h)}</th>`).join("")+"</tr>";
+ const f=document.getElementById("genericFilter");f.innerHTML=`<option value="">${t("All Statuses")}</option>`+c.statuses.map(s=>`<option>${s}</option>`).join("");
+ document.getElementById("genericSearch").value="";renderGenericTable()
+}
+function renderGenericTable(){
+ const q=document.getElementById("genericSearch").value.toLowerCase(),filter=document.getElementById("genericFilter").value,rows=DATA[currentModule]||[];
+ document.getElementById("genericBody").innerHTML=rows.filter(r=>(!q||Object.values(r).join(" ").toLowerCase().includes(q))&&(!filter||r.status===filter||r.type===filter)).map(r=>rowHtml(currentModule,r)).join("")
+}
+function rowHtml(m,r){
+ const btn=(label=r.id)=>`<button class="link-btn" onclick="openDetail('${m}','${r.id}')">${label}</button>`;
+ if(m==="files")return `<tr><td>${btn()}</td><td>${r.creditor}</td><td>${r.debtor}</td><td>${money(r.claim)}</td><td>${money(r.collected)}</td><td>${money(r.claim-r.collected)}</td><td>${r.officer}</td><td><span class="badge ${badgeClass(r.status)}">${r.status}</span></td></tr>`;
+ if(m==="parties")return `<tr><td>${btn()}</td><td>${r.name}</td><td>${r.type}</td><td>${r.ref}</td><td>${r.mobile}</td><td>${r.files}</td><td>${money(r.balance)}</td><td><span class="badge active">${r.status}</span></td></tr>`;
+ if(m==="claims")return `<tr><td>${btn()}</td><td>${r.file}</td><td>${r.party}</td><td>${r.type}</td><td>${money(r.amount)}</td><td>${money(r.paid)}</td><td>${money(r.amount-r.paid)}</td><td><span class="badge ${badgeClass(r.status)}">${r.status}</span></td></tr>`;
+ if(m==="tasks")return `<tr><td>${btn()}</td><td>${r.title}</td><td>${r.file}</td><td>${r.officer}</td><td>${r.due}</td><td>${r.priority}</td><td><span class="badge pending">${r.status}</span></td></tr>`;
+ if(m==="collections")return `<tr><td>${btn()}</td><td>${r.date}</td><td>${r.file}</td><td>${r.debtor}</td><td>${r.method}</td><td>${money(r.amount)}</td><td><span class="badge active">${r.status}</span></td></tr>`;
+ if(m==="expenses")return `<tr><td>${btn()}</td><td>${r.date}</td><td>${r.file}</td><td>${r.category}</td><td>${r.description}</td><td>${money(r.amount)}</td><td><span class="badge active">${r.status}</span></td></tr>`;
+ if(m==="settlements")return `<tr><td>${btn()}</td><td>${r.file}</td><td>${r.debtor}</td><td>${money(r.outstanding)}</td><td>${money(r.proposed)}</td><td>${((r.outstanding-r.proposed)/r.outstanding*100).toFixed(1)}%</td><td>${r.valid}</td><td><span class="badge ${badgeClass(r.status)}">${r.status}</span></td></tr>`;
+ if(m==="treasury")return `<tr><td>${btn()}</td><td>${r.date}</td><td>${r.type}</td><td>${r.source}</td><td>${r.inflow?money(r.inflow):"—"}</td><td>${r.outflow?money(r.outflow):"—"}</td><td>${r.account}</td></tr>`;
+ return ""
+}
+function badgeClass(s){s=s.toLowerCase();if(["active","paid","approved","completed","allocated","posted"].includes(s))return"active";if(["pending","partial","review","settlement"].includes(s))return"pending";if(["escalated","overdue","rejected","unpaid"].includes(s))return"escalated";return"closed"}
+function openDetail(module,id){
+ currentModule=module;currentDetail=(DATA[module]||[]).find(x=>x.id===id);if(!currentDetail)return;hidePages();document.getElementById("detailPage").classList.remove("hidden");
+ document.getElementById("detailTitle").textContent=currentDetail.name||currentDetail.debtor||currentDetail.title||currentDetail.id;document.getElementById("detailMeta").textContent=id+" · "+(currentDetail.file||currentDetail.type||module);
+ const st=currentDetail.status||currentDetail.type||"Active";document.getElementById("detailStatus").textContent=st;document.getElementById("detailStatus").className="badge "+badgeClass(st);document.getElementById("detailTag").textContent=t(CONFIG[module].title);
+ document.getElementById("detailSummary").innerHTML=makeSummary(module,currentDetail);document.getElementById("detailInfo").innerHTML=Object.entries(currentDetail).slice(0,9).map(([k,v])=>`<div class="info-item"><span>${titleCase(k)}</span><strong>${formatVal(k,v)}</strong></div>`).join("");
+ document.getElementById("detailFinancial").innerHTML=`<table><thead><tr><th>Reference</th><th>Type</th><th>Amount</th><th>Status</th></tr></thead><tbody><tr><td>${id}</td><td>${CONFIG[module].title}</td><td>${financialAmount(module,currentDetail)}</td><td><span class="badge ${badgeClass(st)}">${st}</span></td></tr></tbody></table>`;
+ document.getElementById("detailActivity").innerHTML=[["23 Aug 2026","Record reviewed and updated."],["21 Aug 2026","Follow-up action recorded."],["19 Aug 2026","Document added to file."]].map(a=>`<div class="list-row"><div class="list-left"><div class="list-icon">✓</div><div><strong>${a[0]}</strong><span>${a[1]}</span></div></div></div>`).join("");
+ document.getElementById("detailDocuments").innerHTML=["Execution Order.pdf","Financial Statement.pdf","Party Correspondence.pdf"].map(d=>`<div class="list-row"><div class="list-left"><div class="list-icon">▤</div><div><strong>${d}</strong><span>PDF Document</span></div></div><button class="card-link">View</button></div>`).join("");
+ setHeading(CONFIG[module].title+" 360°",id);openTab("overview",document.querySelector(".tab-btn"));window.scrollTo(0,0)
+}
+function makeSummary(m,r){
+ let arr=[];
+ if(m==="files")arr=[["Claim",money(r.claim)],["Collected",money(r.collected)],["Outstanding",money(r.claim-r.collected)],["Officer",r.officer],["Next Action",r.next]];
+ else if(m==="parties")arr=[["Type",r.type],["Linked Files",r.files],["Balance",money(r.balance)],["Reference",r.ref],["Status",r.status]];
+ else if(m==="claims")arr=[["Amount",money(r.amount)],["Paid",money(r.paid)],["Outstanding",money(r.amount-r.paid)],["Due",r.due],["Status",r.status]];
+ else if(m==="collections")arr=[["Amount",money(r.amount)],["Method",r.method],["File",r.file],["Date",r.date],["Status",r.status]];
+ else if(m==="expenses")arr=[["Amount",money(r.amount)],["Category",r.category],["File",r.file],["Date",r.date],["Status",r.status]];
+ else if(m==="settlements")arr=[["Outstanding",money(r.outstanding)],["Proposed",money(r.proposed)],["Discount",((r.outstanding-r.proposed)/r.outstanding*100).toFixed(1)+"%"],["Valid Until",r.valid],["Status",r.status]];
+ else if(m==="treasury")arr=[["Inflow",r.inflow?money(r.inflow):"—"],["Outflow",r.outflow?money(r.outflow):"—"],["Account",r.account],["Date",r.date],["Type",r.type]];
+ else arr=[["File",r.file||"—"],["Officer",r.officer||"—"],["Due",r.due||"—"],["Priority",r.priority||"—"],["Status",r.status||"—"]];
+ return arr.map(x=>`<div class="kpi-card"><span class="kpi-label">${t(x[0])}</span><strong class="kpi-value" style="font-size:${String(x[1]).length>15?"13px":"18px"}">${x[1]}</strong></div>`).join("")
+}
+function financialAmount(m,r){if(r.amount!=null)return money(r.amount);if(r.claim!=null)return money(r.claim);if(r.balance!=null)return money(r.balance);if(r.proposed!=null)return money(r.proposed);if(r.inflow!=null)return money(r.inflow-r.outflow);return"—"}
+function formatVal(k,v){if(["amount","claim","collected","paid","balance","outstanding","proposed","inflow","outflow"].includes(k))return money(v);return v}
+function titleCase(s){return s.replace(/([A-Z])/g," $1").replace(/^./,c=>c.toUpperCase())}
+function openTab(tab,btn){document.querySelectorAll(".tab-panel").forEach(x=>x.classList.remove("active"));document.querySelectorAll(".tab-btn").forEach(x=>x.classList.remove("active"));document.getElementById("tab-"+tab).classList.add("active");if(btn)btn.classList.add("active")}
+function renderDashboard(){
+ const p=DATA.files.slice(0,3);document.getElementById("priorityFiles").innerHTML=p.map(r=>`<tr><td><button class="link-btn" onclick="openDetail('files','${r.id}')">${r.id}</button></td><td>${r.creditor}</td><td>${r.debtor}</td><td>${money(r.claim)}</td><td>${money(r.claim-r.collected)}</td><td>${r.next}</td><td><span class="badge ${badgeClass(r.status)}">${r.status}</span></td></tr>`).join("");
+ document.getElementById("upcomingActions").innerHTML=DATA.tasks.slice(0,3).map(x=>`<div class="list-row"><div class="list-left"><div class="list-icon">✓</div><div><strong>${x.title}</strong><span>${x.file} · ${x.due}</span></div></div><span class="badge ${x.priority==="High"?"escalated":"pending"}">${x.priority}</span></div>`).join("");
+ document.getElementById("recentFinancial").innerHTML=[...DATA.collections.slice(0,2).map(x=>({title:"Collection Received",sub:x.id+" · "+x.debtor,amt:money(x.amount),icon:"↙"})),...DATA.expenses.slice(0,1).map(x=>({title:"Expense Recorded",sub:x.id+" · "+x.category,amt:money(x.amount),icon:"↗"}))].map(x=>`<div class="list-row"><div class="list-left"><div class="list-icon">${x.icon}</div><div><strong>${x.title}</strong><span>${x.sub}</span></div></div><strong>${x.amt}</strong></div>`).join("");
+ let months=["Mar","Apr","May","Jun","Jul","Aug"],claims=[58,66,72,69,83,91],cols=[28,34,38,43,48,57];document.getElementById("barChart").innerHTML=months.map((m,i)=>`<div style="flex:1;text-align:center"><div style="height:175px;display:flex;align-items:flex-end;justify-content:center;gap:6px"><div style="width:18px;height:${claims[i]}%;background:var(--navy);border-radius:3px 3px 0 0"></div><div style="width:18px;height:${cols[i]}%;background:var(--bronze);border-radius:3px 3px 0 0"></div></div><div style="font-size:8px;color:var(--muted);margin-top:8px">${m}</div></div>`).join("")
+}
+function renderUsers(){document.getElementById("usersBody").innerHTML=USERS.map(u=>`<tr><td><strong>${u.name}</strong></td><td>${u.username}</td><td>${u.role}</td><td>${u.dept}</td><td><span class="badge active">${u.status}</span></td><td>${u.login}</td></tr>`).join("")}
+const PERMS={Administrator:["Dashboard","Enforcement Files","Parties","Financial Claims","Tasks & Follow-ups","Collections","Expenses","Settlements","Banking & Treasury","Reports & Analytics","Settings"],"Enforcement Officer":["Dashboard","Enforcement Files","Parties","Financial Claims","Tasks & Follow-ups","Collections","Settlements"],Finance:["Dashboard","Collections","Expenses","Banking & Treasury","Reports & Analytics"],Management:["Dashboard","Enforcement Files","Collections","Settlements","Reports & Analytics"]};
+function renderPermissions(){let r=document.getElementById("roleSelect").value,a=PERMS[r]||[],mods=["Dashboard","Enforcement Files","Parties","Financial Claims","Tasks & Follow-ups","Collections","Expenses","Settlements","Banking & Treasury","Reports & Analytics","Settings"];document.getElementById("permissionGrid").innerHTML=mods.map(m=>`<div class="permission-item"><span>${t(m)}</span><div class="toggle ${a.includes(m)?"on":""}" onclick="this.classList.toggle('on')"></div></div>`).join("")}
+function renderAudit(){document.getElementById("auditBody").innerHTML=AUDIT.map(r=>`<tr>${r.map((v,i)=>`<td>${i===0||i===4?v:`${v}`}</td>`).join("")}</tr>`).join("")}
+function showReport(type){let names={executive:"Executive Summary",recovery:"Recovery Performance",settlement:"Settlement Performance",officer:"Officer Performance",expense:"Expense Analysis",treasury:"Cash Flow & Treasury"};document.getElementById("reportTitle").textContent=t(names[type]);document.getElementById("reportBody").innerHTML=REPORTS[type].map(r=>`<tr><td>${r[0]}</td><td><strong>${r[1]}</strong></td><td>${r[2]}</td><td><span class="${r[3].startsWith("+")?"positive":"warning"}">${r[3]}</span></td></tr>`).join("")}
+function demoAlert(type){alert((currentLang==="ar"?"ENFORZA — نموذج تجريبي":"ENFORZA — Demo")+" · "+type)}
+renderDashboard();renderUsers();renderAudit();renderPermissions();showReport("executive");applyLanguage();
+</script>
+</body>
+</html>
