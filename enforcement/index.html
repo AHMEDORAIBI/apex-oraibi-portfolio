@@ -213,6 +213,27 @@ html[dir="rtl"] .toast{right:auto;left:22px}
 @media(max-width:560px){.modal-form{grid-template-columns:1fr}.modal-field.full{grid-column:auto}.aging-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:420px){.action-type-grid,.officer-grid,.aging-grid{grid-template-columns:1fr}}
 
+
+/* ===== ENFORZA ADVANCED DEMO — PHASE 4 ===== */
+.workflow-steps{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:16px}
+.workflow-step{border:1px solid var(--border);border-radius:8px;padding:11px;background:#fff;position:relative}
+.workflow-step strong{display:block;font-size:9px;color:var(--navy)}
+.workflow-step span{display:block;font-size:7px;color:var(--muted);margin-top:4px}
+.workflow-step.done{background:#eef8f3;border-color:#cde7da}.workflow-step.current{background:var(--bronze-soft);border-color:#d8b18f}.workflow-step.current strong{color:var(--bronze)}
+.followup-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.followup-card{border:1px solid var(--border);border-radius:8px;padding:14px;background:#fff;cursor:pointer}
+.followup-card:hover{background:#fffaf6;border-color:#d8b18f}
+.followup-card span{display:block;font-size:8px;color:var(--muted)}.followup-card strong{display:block;font-size:18px;color:var(--navy);margin-top:7px}.followup-card small{display:block;font-size:7px;color:var(--bronze);margin-top:6px;font-weight:800}
+.portal-hero{background:linear-gradient(135deg,#191511,#2a211b);color:#fff;border-radius:10px;padding:22px;margin-bottom:16px}
+.portal-hero h2{font-size:22px}.portal-hero p{font-size:9px;color:#cdbbaa;margin-top:5px}
+.portal-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.portal-kpi{background:#fff;border:1px solid var(--border);border-radius:8px;padding:14px}.portal-kpi span{display:block;font-size:8px;color:var(--muted)}.portal-kpi strong{display:block;font-size:17px;color:var(--navy);margin-top:7px}
+.closing-summary{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}
+.closing-panel{border:1px solid var(--border);border-radius:8px;padding:16px;background:#fff}
+.closing-line{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #edf1f3}.closing-line:last-child{border-bottom:0}.closing-line span{font-size:9px;color:var(--muted)}.closing-line strong{font-size:10px;color:var(--navy)}.closing-line.total strong{font-size:17px;color:var(--bronze)}
+@media(max-width:1000px){.workflow-steps{grid-template-columns:repeat(3,1fr)}.followup-grid,.portal-grid{grid-template-columns:1fr 1fr}.closing-summary{grid-template-columns:1fr}}
+@media(max-width:560px){.workflow-steps,.followup-grid,.portal-grid{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -227,6 +248,7 @@ html[dir="rtl"] .toast{right:auto;left:22px}
     <a class="nav-item" data-page="claims" href="#" onclick="openPage('claims');return false;"><span class="nav-icon">§</span><span data-i18n="Financial Claims">Financial Claims</span></a>
     <a class="nav-item" data-page="tasks" href="#" onclick="openPage('tasks');return false;"><span class="nav-icon">✓</span><span data-i18n="Tasks & Follow-ups">Tasks & Follow-ups</span></a>
     <a class="nav-item" data-page="actionsCenter" href="#" onclick="openPage('actionsCenter');return false;"><span class="nav-icon">⚑</span><span data-i18n="Execution Action Center">Execution Action Center</span></a>
+    <a class="nav-item" data-page="followupBoard" href="#" onclick="openPage('followupBoard');return false;"><span class="nav-icon">◷</span><span data-i18n="Daily Follow-up Board">Daily Follow-up Board</span></a>
   </div>
   <div class="nav-section">
     <div class="nav-label" data-i18n="FINANCIAL">FINANCIAL</div>
@@ -238,6 +260,7 @@ html[dir="rtl"] .toast{right:auto;left:22px}
   <div class="nav-section">
     <div class="nav-label" data-i18n="MANAGEMENT">MANAGEMENT</div>
     <a class="nav-item" data-page="documents" href="#" onclick="openPage('documents');return false;"><span class="nav-icon">▤</span><span data-i18n="Document Center">Document Center</span></a>
+    <a class="nav-item" data-page="creditorPortal" href="#" onclick="openPage('creditorPortal');return false;"><span class="nav-icon">◈</span><span data-i18n="Creditor Portal Preview">Creditor Portal Preview</span></a>
     <a class="nav-item" data-page="reports" href="#" onclick="openPage('reports');return false;"><span class="nav-icon">◩</span><span data-i18n="Reports & Analytics">Reports & Analytics</span></a>
     <a class="nav-item" data-page="users" href="#" onclick="openPage('users');return false;"><span class="nav-icon">♙</span><span data-i18n="Users & Permissions">Users & Permissions</span></a>
     <a class="nav-item" data-page="settings" href="#" onclick="openPage('settings');return false;"><span class="nav-icon">⚙</span><span data-i18n="Settings">Settings</span></a>
@@ -320,8 +343,8 @@ html[dir="rtl"] .toast{right:auto;left:22px}
   <button class="action-btn" style="margin-bottom:14px" onclick="openPage(currentModule)">← <span data-i18n="Back">Back</span></button>
   <section class="detail-hero"><div class="detail-left"><div class="detail-mark" id="detailMark">§</div><div><h2 id="detailTitle"></h2><p id="detailMeta"></p><div class="tags"><span id="detailStatus" class="badge active"></span><span id="detailTag" class="badge info"></span></div></div></div><div class="actions"><button class="action-btn" onclick="demoAlert('edit')" data-i18n="Edit">Edit</button><button class="action-btn bronze" onclick="demoAlert('action')" data-i18n="New Action">New Action</button></div></section>
   <div id="detailSummary" class="summary-grid"></div>
-  <section class="card"><div class="tabs"><button class="tab-btn active" onclick="openTab('overview',this)" data-i18n="Overview">Overview</button><button class="tab-btn" onclick="openTab('parties360',this)" data-i18n="Parties">Parties</button><button class="tab-btn" onclick="openTab('financial',this)" data-i18n="Financial Position">Financial Position</button><button class="tab-btn" onclick="openTab('actions360',this)" data-i18n="Execution Actions">Execution Actions</button><button class="tab-btn" onclick="openTab('collections360',this)" data-i18n="Collections">Collections</button><button class="tab-btn" onclick="openTab('expenses360',this)" data-i18n="Expenses">Expenses</button><button class="tab-btn" onclick="openTab('settlement360',this)" data-i18n="Settlement">Settlement</button><button class="tab-btn" onclick="openTab('documents',this)" data-i18n="Documents">Documents</button><button class="tab-btn" onclick="openTab('activity',this)" data-i18n="Activity Log">Activity Log</button></div>
-    <div id="tab-overview" class="tab-panel active"><div id="detailInfo" class="info-grid"></div></div>
+  <section class="card"><div class="tabs"><button class="tab-btn active" onclick="openTab('overview',this)" data-i18n="Overview">Overview</button><button class="tab-btn" onclick="openTab('workflow360',this)" data-i18n="Workflow">Workflow</button><button class="tab-btn" onclick="openTab('parties360',this)" data-i18n="Parties">Parties</button><button class="tab-btn" onclick="openTab('financial',this)" data-i18n="Financial Position">Financial Position</button><button class="tab-btn" onclick="openTab('actions360',this)" data-i18n="Execution Actions">Execution Actions</button><button class="tab-btn" onclick="openTab('collections360',this)" data-i18n="Collections">Collections</button><button class="tab-btn" onclick="openTab('expenses360',this)" data-i18n="Expenses">Expenses</button><button class="tab-btn" onclick="openTab('settlement360',this)" data-i18n="Settlement">Settlement</button><button class="tab-btn" onclick="openTab('documents',this)" data-i18n="Documents">Documents</button><button class="tab-btn" onclick="openTab('closing360',this)" data-i18n="Closing Statement">Closing Statement</button><button class="tab-btn" onclick="openTab('activity',this)" data-i18n="Activity Log">Activity Log</button></div>
+    <div id="tab-overview" class="tab-panel active"><div id="detailInfo" class="info-grid"></div></div><div id="tab-workflow360" class="tab-panel"><div id="detailWorkflow360"></div></div>
     <div id="tab-parties360" class="tab-panel"><div id="detailParties360" class="info-grid"></div></div>
     <div id="tab-financial" class="tab-panel"><div id="detailFinancial" class="table-wrap"></div></div>
     <div id="tab-actions360" class="tab-panel"><div id="detailActions360" class="timeline"></div></div>
@@ -329,7 +352,7 @@ html[dir="rtl"] .toast{right:auto;left:22px}
     <div id="tab-expenses360" class="tab-panel"><div id="detailExpenses360" class="table-wrap"></div></div>
     <div id="tab-settlement360" class="tab-panel"><div id="detailSettlement360"></div></div>
     <div id="tab-documents" class="tab-panel"><div id="detailDocuments" class="list"></div></div>
-    <div id="tab-activity" class="tab-panel"><div id="detailActivity" class="list"></div></div>
+    <div id="tab-closing360" class="tab-panel"><div id="detailClosing360"></div></div><div id="tab-activity" class="tab-panel"><div id="detailActivity" class="list"></div></div>
   </section>
 </div></section>
 
@@ -364,6 +387,28 @@ html[dir="rtl"] .toast{right:auto;left:22px}
   <div class="hero-row"><div><h2 data-i18n="Execution Action Center">Execution Action Center</h2><p data-i18n="Dedicated demo workspace for enforcement procedures, deadlines and outcomes.">Dedicated demo workspace for enforcement procedures, deadlines and outcomes.</p></div><button class="action-btn primary" onclick="openQuickModal('action')">+ <span data-i18n="New Enforcement Action">New Enforcement Action</span></button></div>
   <div class="kpi-grid"><div class="kpi-card"><span class="kpi-label" data-i18n="Open Actions">Open Actions</span><strong class="kpi-value">42</strong></div><div class="kpi-card"><span class="kpi-label" data-i18n="Due Today">Due Today</span><strong class="kpi-value">9</strong></div><div class="kpi-card"><span class="kpi-label" data-i18n="Overdue">Overdue</span><strong class="kpi-value">6</strong></div><div class="kpi-card"><span class="kpi-label" data-i18n="Bank Attachments">Bank Attachments</span><strong class="kpi-value">14</strong></div><div class="kpi-card"><span class="kpi-label" data-i18n="Asset Inquiries">Asset Inquiries</span><strong class="kpi-value">11</strong></div><div class="kpi-card"><span class="kpi-label" data-i18n="Settlement Actions">Settlement Actions</span><strong class="kpi-value">8</strong></div></div>
   <section class="card"><div class="toolbar"><div class="toolbar-left"><input id="actionSearch" placeholder="Search action or file..." oninput="renderActionCenter()"><select id="actionStatus" onchange="renderActionCenter()"><option value="">All Statuses</option><option>Pending</option><option>In Progress</option><option>Completed</option></select></div></div><div class="table-wrap"><table><thead><tr><th data-i18n="Action ID">Action ID</th><th data-i18n="File">File</th><th data-i18n="Action Type">Action Type</th><th data-i18n="Officer">Officer</th><th data-i18n="Due Date">Due Date</th><th data-i18n="Outcome">Outcome</th><th data-i18n="Status">Status</th></tr></thead><tbody id="actionCenterBody"></tbody></table></div></section>
+</div></section>
+
+
+<section id="followupBoardPage" class="page hidden"><div class="content">
+  <div class="hero-row"><div><h2 data-i18n="Daily Follow-up Board">Daily Follow-up Board</h2><p data-i18n="Today’s operational priorities for enforcement officers and management.">Today’s operational priorities for enforcement officers and management.</p></div><button class="action-btn primary" onclick="openQuickModal('task')">+ <span data-i18n="New Follow-up">New Follow-up</span></button></div>
+  <div class="followup-grid">
+    <div class="followup-card" onclick="filterFollowup('today')"><span data-i18n="Due Today">Due Today</span><strong>9</strong><small data-i18n="Immediate attention">Immediate attention</small></div>
+    <div class="followup-card" onclick="filterFollowup('overdue')"><span data-i18n="Overdue">Overdue</span><strong>6</strong><small data-i18n="Escalate now">Escalate now</small></div>
+    <div class="followup-card" onclick="filterFollowup('inactive')"><span data-i18n="Files Without Movement">Files Without Movement</span><strong>7</strong><small>14+ Days</small></div>
+    <div class="followup-card" onclick="filterFollowup('settlement')"><span data-i18n="Settlement Follow-ups">Settlement Follow-ups</span><strong>5</strong><small data-i18n="Payment / approval due">Payment / approval due</small></div>
+  </div>
+  <section class="card"><div class="card-head"><div><h3 id="followupTitle" data-i18n="Today’s Follow-ups">Today’s Follow-ups</h3><p data-i18n="Action list generated from demo enforcement workflow.">Action list generated from demo enforcement workflow.</p></div></div><div class="table-wrap"><table><thead><tr><th data-i18n="Priority">Priority</th><th data-i18n="File">File</th><th data-i18n="Debtor">Debtor</th><th data-i18n="Action">Action</th><th data-i18n="Officer">Officer</th><th data-i18n="Due Date">Due Date</th><th data-i18n="Status">Status</th></tr></thead><tbody id="followupBody"></tbody></table></div></section>
+</div></section>
+
+<section id="creditorPortalPage" class="page hidden"><div class="content">
+  <section class="portal-hero"><h2>ENFORZA Client Portal</h2><p data-i18n="Creditor-facing preview with limited visibility to own enforcement portfolio.">Creditor-facing preview with limited visibility to own enforcement portfolio.</p></section>
+  <div class="portal-grid"><div class="portal-kpi"><span data-i18n="My Enforcement Files">My Enforcement Files</span><strong>12</strong></div><div class="portal-kpi"><span data-i18n="Total Claims">Total Claims</span><strong>BHD 248K</strong></div><div class="portal-kpi"><span data-i18n="Collected">Collected</span><strong>BHD 104K</strong></div><div class="portal-kpi"><span data-i18n="Outstanding">Outstanding</span><strong>BHD 144K</strong></div></div>
+  <section class="card"><div class="card-head"><div><h3 data-i18n="My Files">My Files</h3><p data-i18n="Client-safe status view without internal office notes.">Client-safe status view without internal office notes.</p></div></div><div class="table-wrap"><table><thead><tr><th data-i18n="File">File</th><th data-i18n="Debtor">Debtor</th><th data-i18n="Claim">Claim</th><th data-i18n="Collected">Collected</th><th data-i18n="Outstanding">Outstanding</th><th data-i18n="Last Action">Last Action</th><th data-i18n="Status">Status</th></tr></thead><tbody id="portalFilesBody"></tbody></table></div></section>
+  <div class="dashboard-grid equal">
+    <section class="card"><div class="card-head"><div><h3 data-i18n="Latest Payments">Latest Payments</h3></div></div><div id="portalPayments" class="list"></div></section>
+    <section class="card"><div class="card-head"><div><h3 data-i18n="Latest File Updates">Latest File Updates</h3></div></div><div id="portalUpdates" class="list"></div></section>
+  </div>
 </div></section>
 
 <section id="reportsPage" class="page hidden"><div class="content">
@@ -775,6 +820,59 @@ Object.assign(I18N.ar,{
  "Officer 360°":"المنفذ 360°","Back to Dashboard":"العودة إلى لوحة التحكم","Active Officer":"منفذ نشط","Assign Task":"إسناد مهمة","New Enforcement Action":"إجراء تنفيذي جديد","Assigned Files":"الملفات المسندة","Current enforcement workload":"عبء العمل التنفيذي الحالي","Recent Actions":"أحدث الإجراءات","Collected This Year":"المحصل هذا العام","Open Actions":"الإجراءات المفتوحة","Utilization":"نسبة الاستفادة","Success Rate":"نسبة النجاح","Avg. Response":"متوسط الاستجابة","Recovery Success":"نجاح التحصيل","Documentation":"التوثيق","Follow-up Timeliness":"الالتزام بالمتابعة",
  "Outstanding Aging Analysis":"تحليل أعمار الأرصدة المستحقة","Age of outstanding enforcement balances":"أعمار الأرصدة المستحقة في ملفات التنفيذ",
  "Cancel":"إلغاء","Save Demo Record":"حفظ السجل التجريبي","Create a demo enforcement procedure linked to a file.":"إنشاء إجراء تنفيذي تجريبي مرتبط بملف.","Priority":"الأولوية","Notes":"ملاحظات","Record Collection":"تسجيل تحصيل","Allocate a demo payment to an enforcement file.":"تخصيص دفعة تجريبية لملف تنفيذ.","Method":"طريقة السداد","New Settlement":"تسوية جديدة","Create a demo settlement schedule.":"إنشاء جدول تسوية تجريبي.","Create a demo follow-up task.":"إنشاء مهمة متابعة تجريبية.","Task":"المهمة","Demo record saved successfully.":"تم حفظ السجل التجريبي بنجاح."
+});
+
+
+const WORKFLOW_STAGES=[
+ ["File Opened","completed"],["Party Verification","completed"],["Claim Review","completed"],["Execution Actions","current"],["Recovery / Settlement","pending"],["Closing","pending"]
+];
+const FOLLOWUPS=[
+{priority:"High",file:"ENF-260184",debtor:"Al Noor Trading",action:"Bank attachment response review",officer:"Ali Hassan",due:"24 Aug 2026",status:"Due Today",group:"today"},
+{priority:"High",file:"ENF-260203",debtor:"Eastern Market",action:"Asset inquiry follow-up",officer:"Khalid Salman",due:"23 Aug 2026",status:"Overdue",group:"overdue"},
+{priority:"Medium",file:"ENF-260191",debtor:"Modern Workshop",action:"Payment commitment follow-up",officer:"Maryam Yusuf",due:"24 Aug 2026",status:"Due Today",group:"today"},
+{priority:"High",file:"ENF-260219",debtor:"Blue Coast W.L.L.",action:"Settlement approval follow-up",officer:"Ali Hassan",due:"26 Aug 2026",status:"Pending",group:"settlement"},
+{priority:"Medium",file:"ENF-260211",debtor:"Yusuf Ahmed",action:"No file movement for 16 days",officer:"Noor Ahmed",due:"24 Aug 2026",status:"Review",group:"inactive"}
+];
+function buildWorkflow(r){
+ const holder=document.getElementById("detailWorkflow360");if(!holder)return;
+ holder.innerHTML=`<div class="workflow-steps">${WORKFLOW_STAGES.map((x,i)=>`<div class="workflow-step ${x[1]}"><strong>${i+1}. ${t(x[0])}</strong><span>${x[1]==="completed"?t("Completed"):x[1]==="current"?t("Current Stage"):t("Pending")}</span></div>`).join("")}</div>
+ <div class="dashboard-grid equal"><section class="card"><div class="card-head"><div><h3>${t("Workflow Intelligence")}</h3></div></div><div class="list">
+ <div class="list-row"><span>${t("Days Since Last Action")}</span><strong>4</strong></div><div class="list-row"><span>${t("Next Recommended Action")}</span><strong>${r.next||"Payment Follow-up"}</strong></div><div class="list-row"><span>${t("Priority Score")}</span><strong>82 / 100</strong></div><div class="list-row"><span>${t("Escalation Required")}</span><strong>${r.status==="Escalated"?t("Yes"):t("No")}</strong></div></div></section>
+ <section class="card"><div class="card-head"><div><h3>${t("Automation Preview")}</h3></div></div><div class="note-box">${t("Demo logic suggests the next action from file stage, overdue days, outstanding amount and previous activity.")}</div></section></div>`;
+}
+function buildClosing(r){
+ const holder=document.getElementById("detailClosing360");if(!holder)return;
+ let claim=r.claim||18500,col=r.collected||4200,expenses=100,settlementAdj=0,out=claim-col-settlementAdj;
+ holder.innerHTML=`<div class="closing-summary"><div class="closing-panel"><div class="closing-line"><span>${t("Original Claim")}</span><strong>${money(claim)}</strong></div><div class="closing-line"><span>${t("Collections")}</span><strong>${money(col)}</strong></div><div class="closing-line"><span>${t("File Expenses")}</span><strong>${money(expenses)}</strong></div><div class="closing-line"><span>${t("Settlement Adjustment")}</span><strong>${money(settlementAdj)}</strong></div><div class="closing-line total"><span>${t("Final Outstanding")}</span><strong>${money(out)}</strong></div></div>
+ <div class="closing-panel"><div class="list-row"><span>${t("Recovery Rate")}</span><strong>${(col/claim*100).toFixed(1)}%</strong></div><div class="list-row"><span>${t("Closing Status")}</span><strong>${out<=0?t("Ready to Close"):t("Open")}</strong></div><div class="list-row"><span>${t("Last Financial Movement")}</span><strong>23 Aug 2026</strong></div><button class="action-btn bronze" style="width:100%;margin-top:12px" onclick="demoAlert('closing-statement')">${t("Generate Closing Statement")}</button></div></div>`;
+}
+const _enrichPhase4=enrichFile360;
+enrichFile360=function(m,r){_enrichPhase4(m,r);if(m==="files"){buildWorkflow(r);buildClosing(r)}}
+
+function renderFollowups(group="today"){
+ const rows=group==="all"?FOLLOWUPS:FOLLOWUPS.filter(x=>x.group===group);
+ const titleMap={today:"Today’s Follow-ups",overdue:"Overdue Follow-ups",inactive:"Files Without Movement",settlement:"Settlement Follow-ups",all:"All Follow-ups"};
+ document.getElementById("followupTitle").textContent=t(titleMap[group]||"Today’s Follow-ups");
+ document.getElementById("followupBody").innerHTML=rows.map(x=>`<tr><td><span class="badge ${x.priority==="High"?"escalated":"pending"}">${x.priority}</span></td><td><button class="link-btn" onclick="openDetail('files','${x.file}')">${x.file}</button></td><td>${x.debtor}</td><td>${x.action}</td><td><button class="link-btn" onclick="openOfficer360('${x.officer}')">${x.officer}</button></td><td>${x.due}</td><td><span class="badge ${badgeClass(x.status)}">${x.status}</span></td></tr>`).join("");
+}
+function filterFollowup(group){renderFollowups(group)}
+function renderCreditorPortal(){
+ const rows=DATA.files.slice(0,4);
+ document.getElementById("portalFilesBody").innerHTML=rows.map(f=>`<tr><td>${f.id}</td><td>${f.debtor}</td><td>${money(f.claim)}</td><td>${money(f.collected)}</td><td>${money(f.claim-f.collected)}</td><td>${f.next}</td><td><span class="badge ${badgeClass(f.status)}">${f.status}</span></td></tr>`).join("");
+ document.getElementById("portalPayments").innerHTML=DATA.collections.slice(0,3).map(x=>`<div class="list-row"><div class="list-left"><div class="list-icon">↙</div><div><strong>${money(x.amount)}</strong><span>${x.date} · ${x.file}</span></div></div></div>`).join("");
+ document.getElementById("portalUpdates").innerHTML=rows.slice(0,3).map(f=>`<div class="list-row"><div class="list-left"><div class="list-icon">✓</div><div><strong>${f.next}</strong><span>${f.id} · ${f.status}</span></div></div></div>`).join("");
+}
+const _openPagePhase4=openPage;
+openPage=function(page){
+ if(page==="followupBoard"){hidePages();currentModule=page;document.querySelectorAll(".nav-item").forEach(el=>el.classList.toggle("active",el.dataset.page===page));document.getElementById("followupBoardPage").classList.remove("hidden");setHeading("Daily Follow-up Board","Today’s operational priorities for enforcement officers and management.");renderFollowups("today");document.getElementById("sidebar").classList.remove("open");window.scrollTo(0,0);applyLanguage();return}
+ if(page==="creditorPortal"){hidePages();currentModule=page;document.querySelectorAll(".nav-item").forEach(el=>el.classList.toggle("active",el.dataset.page===page));document.getElementById("creditorPortalPage").classList.remove("hidden");setHeading("Creditor Portal Preview","Creditor-facing preview with limited visibility to own enforcement portfolio.");renderCreditorPortal();document.getElementById("sidebar").classList.remove("open");window.scrollTo(0,0);applyLanguage();return}
+ _openPagePhase4(page);
+}
+Object.assign(I18N.ar,{
+ "Daily Follow-up Board":"لوحة المتابعة اليومية","Today’s operational priorities for enforcement officers and management.":"أولويات العمل اليومية للمنفذين والإدارة.","New Follow-up":"متابعة جديدة","Immediate attention":"تحتاج اهتمامًا فوريًا","Escalate now":"تصعيد الآن","Files Without Movement":"ملفات دون حركة","Settlement Follow-ups":"متابعات التسويات","Payment / approval due":"استحقاق سداد / موافقة","Today’s Follow-ups":"متابعات اليوم","Overdue Follow-ups":"المتابعات المتأخرة","Action list generated from demo enforcement workflow.":"قائمة إجراءات مولدة من مسار التنفيذ التجريبي.",
+ "Creditor Portal Preview":"معاينة بوابة الدائن","Creditor-facing preview with limited visibility to own enforcement portfolio.":"معاينة مخصصة للدائن تعرض فقط محفظته التنفيذية.","My Enforcement Files":"ملفات التنفيذ الخاصة بي","My Files":"ملفاتي","Client-safe status view without internal office notes.":"عرض آمن للعميل دون الملاحظات الداخلية للمكتب.","Latest Payments":"أحدث الدفعات","Latest File Updates":"أحدث تحديثات الملفات","Last Action":"آخر إجراء",
+ "Workflow":"مسار العمل","Closing Statement":"بيان الإقفال","File Opened":"فتح الملف","Party Verification":"التحقق من الأطراف","Claim Review":"مراجعة المطالبة","Execution Actions":"الإجراءات التنفيذية","Recovery / Settlement":"التحصيل / التسوية","Closing":"الإقفال","Completed":"مكتمل","Current Stage":"المرحلة الحالية","Pending":"قيد الانتظار","Workflow Intelligence":"ذكاء مسار العمل","Days Since Last Action":"الأيام منذ آخر إجراء","Next Recommended Action":"الإجراء المقترح التالي","Priority Score":"درجة الأولوية","Escalation Required":"يتطلب تصعيدًا","Yes":"نعم","No":"لا","Automation Preview":"معاينة الأتمتة","Demo logic suggests the next action from file stage, overdue days, outstanding amount and previous activity.":"منطق تجريبي يقترح الإجراء التالي بناءً على مرحلة الملف والتأخير والمبلغ المستحق والنشاط السابق.",
+ "Original Claim":"أصل المطالبة","File Expenses":"مصروفات الملف","Settlement Adjustment":"تعديل التسوية","Final Outstanding":"المتبقي النهائي","Closing Status":"حالة الإقفال","Ready to Close":"جاهز للإقفال","Open":"مفتوح","Last Financial Movement":"آخر حركة مالية","Generate Closing Statement":"إنشاء بيان الإقفال"
 });
 
 renderDashboard();renderUsers();renderAudit();renderPermissions();showReport("executive");applyLanguage();
