@@ -234,6 +234,32 @@ html[dir="rtl"] .toast{right:auto;left:22px}
 @media(max-width:1000px){.workflow-steps{grid-template-columns:repeat(3,1fr)}.followup-grid,.portal-grid{grid-template-columns:1fr 1fr}.closing-summary{grid-template-columns:1fr}}
 @media(max-width:560px){.workflow-steps,.followup-grid,.portal-grid{grid-template-columns:1fr}}
 
+
+/* ===== ENFORZA ADVANCED DEMO — PHASE 5 FINAL POLISH ===== */
+.notify-panel{position:fixed;top:72px;right:22px;width:min(380px,calc(100vw - 30px));max-height:70vh;overflow:auto;background:#fff;border:1px solid var(--border);border-radius:10px;box-shadow:0 18px 50px rgba(20,24,30,.18);z-index:940;display:none}
+.notify-head{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:14px;border-bottom:1px solid var(--border)}
+.notify-head h3{font-size:12px;color:var(--navy)}
+.notify-item{padding:12px 14px;border-bottom:1px solid #edf1f3}.notify-item:last-child{border-bottom:0}.notify-item strong{display:block;font-size:9px;color:var(--navy)}.notify-item span{display:block;font-size:8px;color:var(--muted);margin-top:4px;line-height:1.5}
+.notify-dot{width:8px;height:8px;border-radius:50%;background:var(--bronze);display:inline-block;margin-right:6px}
+.demo-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.demo-summary-card{border:1px solid var(--border);border-radius:8px;padding:14px;background:#fff}.demo-summary-card span{font-size:8px;color:var(--muted)}.demo-summary-card strong{display:block;margin-top:7px;font-size:16px;color:var(--navy)}
+.print-sheet{background:#fff;border:1px solid var(--border);border-radius:8px;padding:22px;max-width:850px;margin:auto}
+.print-sheet-head{display:flex;justify-content:space-between;gap:15px;padding-bottom:14px;border-bottom:1px solid var(--border);margin-bottom:16px}.print-sheet-head strong{font-size:16px;color:var(--navy)}.print-sheet-head span{display:block;font-size:8px;color:var(--muted);margin-top:3px}
+.mobile-bottom-nav{display:none}
+@media(max-width:720px){
+ .topbar{padding:0 12px;height:62px}.content{padding:12px}.hero-row h2{font-size:20px}.kpi-card{padding:13px;min-height:88px}.kpi-value{font-size:16px}
+ .top-actions{gap:5px}.top-btn{height:34px;min-width:34px}.lang-switch{height:34px}.lang-switch button{min-width:42px;padding:0 7px}
+ .mobile-bottom-nav{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--border);z-index:850;padding:6px 4px}
+ .mobile-bottom-nav button{border:0;background:transparent;font-size:7px;color:var(--muted);padding:5px 2px}.mobile-bottom-nav button b{display:block;font-size:14px;color:var(--navy);margin-bottom:3px}
+ .footer{padding-bottom:68px}.notify-panel{top:66px;right:10px}
+}
+html[dir="rtl"] .notify-panel{right:auto;left:22px}
+html[dir="rtl"] .notify-dot{margin-right:0;margin-left:6px}
+@media print{
+ body{background:#fff!important}.sidebar,.topbar,.footer,.mobile-bottom-nav,.hero-actions,.action-btn,.tabs,.nav-item,.notify-panel{display:none!important}
+ .app{display:block!important}.main{display:block!important}.content{padding:0!important}.card,.detail-hero,.kpi-card{box-shadow:none!important;break-inside:avoid}
+}
+
 </style>
 </head>
 <body>
@@ -263,6 +289,7 @@ html[dir="rtl"] .toast{right:auto;left:22px}
     <a class="nav-item" data-page="creditorPortal" href="#" onclick="openPage('creditorPortal');return false;"><span class="nav-icon">◈</span><span data-i18n="Creditor Portal Preview">Creditor Portal Preview</span></a>
     <a class="nav-item" data-page="reports" href="#" onclick="openPage('reports');return false;"><span class="nav-icon">◩</span><span data-i18n="Reports & Analytics">Reports & Analytics</span></a>
     <a class="nav-item" data-page="users" href="#" onclick="openPage('users');return false;"><span class="nav-icon">♙</span><span data-i18n="Users & Permissions">Users & Permissions</span></a>
+    <a class="nav-item" data-page="presentation" href="#" onclick="openPage('presentation');return false;"><span class="nav-icon">◉</span><span data-i18n="Demo Presentation Mode">Demo Presentation Mode</span></a>
     <a class="nav-item" data-page="settings" href="#" onclick="openPage('settings');return false;"><span class="nav-icon">⚙</span><span data-i18n="Settings">Settings</span></a>
     <a class="nav-item" data-page="audit" href="#" onclick="openPage('audit');return false;"><span class="nav-icon">⊙</span><span data-i18n="Audit Log">Audit Log</span></a>
   </div>
@@ -281,7 +308,7 @@ html[dir="rtl"] .toast{right:auto;left:22px}
 <div id="globalSearchResults" class="global-search-results"></div>
 </div>
     <div class="lang-switch"><button id="langEn" class="active" onclick="setLanguage('en')">EN</button><button id="langAr" onclick="setLanguage('ar')">عربي</button></div>
-    <button class="top-btn">◇</button>
+    <button class="top-btn" onclick="toggleNotifications()" title="Notifications">●</button>
     <div class="profile"><div class="avatar">AO</div><div><strong>Ahmed Oraibi</strong><span data-i18n="Administrator">Administrator</span></div></div>
   </div>
 </header>
@@ -443,6 +470,33 @@ html[dir="rtl"] .toast{right:auto;left:22px}
   <section class="card"><div class="card-head"><div><h3 data-i18n="Permission Matrix">Permission Matrix</h3></div><select id="roleSelect" onchange="renderPermissions()" style="height:36px;border:1px solid var(--border);border-radius:6px;padding:0 9px"><option>Administrator</option><option>Enforcement Officer</option><option>Finance</option><option>Management</option></select></div><div id="permissionGrid" class="permission-grid"></div></section>
 </div></section>
 
+
+<section id="presentationPage" class="page hidden"><div class="content">
+  <div class="hero-row"><div><h2 data-i18n="Demo Presentation Mode">Demo Presentation Mode</h2><p data-i18n="A concise executive view for client presentations.">A concise executive view for client presentations.</p></div><div class="hero-actions"><button class="action-btn" onclick="window.print()" data-i18n="Print">Print</button><button class="action-btn primary" onclick="startDemoTour()" data-i18n="Start Demo Tour">Start Demo Tour</button></div></div>
+  <div class="demo-summary">
+    <div class="demo-summary-card"><span data-i18n="Active Enforcement Files">Active Enforcement Files</span><strong>86</strong></div>
+    <div class="demo-summary-card"><span data-i18n="Total Claims">Total Claims</span><strong>BHD 1.84M</strong></div>
+    <div class="demo-summary-card"><span data-i18n="Collected">Collected</span><strong>BHD 742.6K</strong></div>
+    <div class="demo-summary-card"><span data-i18n="Recovery Rate">Recovery Rate</span><strong>40.4%</strong></div>
+  </div>
+  <section class="card" style="margin-top:16px">
+    <div class="card-head"><div><h3 data-i18n="System Capabilities">System Capabilities</h3><p data-i18n="Key functions included in this interactive demo.">Key functions included in this interactive demo.</p></div></div>
+    <div class="report-grid">
+      <div class="report-card"><h4 data-i18n="Enforcement File 360°">Enforcement File 360°</h4><p data-i18n="Single operational view for file, parties, finance, actions and documents.">Single operational view for file, parties, finance, actions and documents.</p><strong>360°</strong></div>
+      <div class="report-card"><h4 data-i18n="Daily Follow-up Board">Daily Follow-up Board</h4><p data-i18n="Daily priorities, overdue actions and files without movement.">Daily priorities, overdue actions and files without movement.</p><strong>24/7</strong></div>
+      <div class="report-card"><h4 data-i18n="Creditor Portal Preview">Creditor Portal Preview</h4><p data-i18n="Client-safe portfolio visibility without internal office notes.">Client-safe portfolio visibility without internal office notes.</p><strong>Portal</strong></div>
+      <div class="report-card"><h4 data-i18n="Collections & Settlements">Collections & Settlements</h4><p data-i18n="Payment allocation, settlement schedules and recovery tracking.">Payment allocation, settlement schedules and recovery tracking.</p><strong>BHD</strong></div>
+      <div class="report-card"><h4 data-i18n="Reports & Analytics">Reports & Analytics</h4><p data-i18n="Recovery, aging, officer, expense and treasury analytics.">Recovery, aging, officer, expense and treasury analytics.</p><strong>Live</strong></div>
+      <div class="report-card"><h4 data-i18n="Arabic & English">Arabic & English</h4><p data-i18n="Full LTR and RTL interface support.">Full LTR and RTL interface support.</p><strong>EN | عربي</strong></div>
+    </div>
+  </section>
+  <section class="print-sheet" style="margin-top:16px">
+    <div class="print-sheet-head"><div><strong>ENFORZA</strong><span>PRIVATE ENFORCEMENT</span></div><div style="text-align:right"><strong>APEX ORAIBI</strong><span>SYSTEM DESIGN & DEVELOPMENT</span></div></div>
+    <h3 style="font-size:14px;color:var(--navy)" data-i18n="Executive Demo Summary">Executive Demo Summary</h3>
+    <p style="font-size:9px;color:var(--muted);line-height:1.8;margin-top:8px" data-i18n="ENFORZA is a private enforcement management demo designed to centralize case follow-up, collections, settlements, treasury, documents, reporting and client visibility in one interface.">ENFORZA is a private enforcement management demo designed to centralize case follow-up, collections, settlements, treasury, documents, reporting and client visibility in one interface.</p>
+  </section>
+</div></section>
+
 <section id="settingsPage" class="page hidden"><div class="content">
   <div class="hero-row"><div><h2 data-i18n="Settings">Settings</h2><p data-i18n="Company, financial and enforcement workflow settings.">Company, financial and enforcement workflow settings.</p></div><button class="action-btn primary" onclick="demoAlert('save')" data-i18n="Save Settings">Save Settings</button></div>
   <div class="settings-grid">
@@ -452,6 +506,22 @@ html[dir="rtl"] .toast{right:auto;left:22px}
 </div></section>
 
 <section id="auditPage" class="page hidden"><div class="content"><div class="hero-row"><div><h2 data-i18n="Audit Log">Audit Log</h2><p data-i18n="Track system, enforcement and financial activity.">Track system, enforcement and financial activity.</p></div><button class="action-btn" data-i18n="Export Audit">Export Audit</button></div><section class="card"><div class="table-wrap"><table><thead><tr><th data-i18n="Date & Time">Date & Time</th><th data-i18n="User">User</th><th data-i18n="Module">Module</th><th data-i18n="Action">Action</th><th data-i18n="Reference">Reference</th><th data-i18n="Description">Description</th></tr></thead><tbody id="auditBody"></tbody></table></div></section></div></section>
+
+
+<div class="notify-panel" id="notifyPanel">
+  <div class="notify-head"><h3 data-i18n="Notifications">Notifications</h3><button class="top-btn" onclick="toggleNotifications()">×</button></div>
+  <div class="notify-item"><strong><span class="notify-dot"></span><span data-i18n="Settlement payment due">Settlement payment due</span></strong><span>ENF-260219 · BHD 5,333 due 24 Aug 2026</span></div>
+  <div class="notify-item"><strong><span class="notify-dot"></span><span data-i18n="Bank response received">Bank response received</span></strong><span>ENF-260184 · Review attachment response</span></div>
+  <div class="notify-item"><strong><span class="notify-dot"></span><span data-i18n="File inactive alert">File inactive alert</span></strong><span>ENF-260211 · No movement for 16 days</span></div>
+  <div class="notify-item"><strong><span class="notify-dot"></span><span data-i18n="Overdue follow-up">Overdue follow-up</span></strong><span>ENF-260203 · Asset inquiry follow-up</span></div>
+</div>
+<div class="mobile-bottom-nav">
+  <button onclick="openPage('dashboard')"><b>⌂</b><span data-i18n="Dashboard">Dashboard</span></button>
+  <button onclick="openPage('files')"><b>▤</b><span data-i18n="Files">Files</span></button>
+  <button onclick="openPage('followupBoard')"><b>◷</b><span data-i18n="Follow-up">Follow-up</span></button>
+  <button onclick="openPage('collections')"><b>↙</b><span data-i18n="Collections">Collections</span></button>
+  <button onclick="openPage('reports')"><b>◩</b><span data-i18n="Reports">Reports</span></button>
+</div>
 
 <footer class="footer"><span>ENFORZA — Private Enforcement Management System</span><span><span data-i18n="Designed & Developed by">Designed & Developed by</span> <strong style="color:var(--bronze)">APEX ORAIBI</strong></span></footer>
 
@@ -873,6 +943,28 @@ Object.assign(I18N.ar,{
  "Creditor Portal Preview":"معاينة بوابة الدائن","Creditor-facing preview with limited visibility to own enforcement portfolio.":"معاينة مخصصة للدائن تعرض فقط محفظته التنفيذية.","My Enforcement Files":"ملفات التنفيذ الخاصة بي","My Files":"ملفاتي","Client-safe status view without internal office notes.":"عرض آمن للعميل دون الملاحظات الداخلية للمكتب.","Latest Payments":"أحدث الدفعات","Latest File Updates":"أحدث تحديثات الملفات","Last Action":"آخر إجراء",
  "Workflow":"مسار العمل","Closing Statement":"بيان الإقفال","File Opened":"فتح الملف","Party Verification":"التحقق من الأطراف","Claim Review":"مراجعة المطالبة","Execution Actions":"الإجراءات التنفيذية","Recovery / Settlement":"التحصيل / التسوية","Closing":"الإقفال","Completed":"مكتمل","Current Stage":"المرحلة الحالية","Pending":"قيد الانتظار","Workflow Intelligence":"ذكاء مسار العمل","Days Since Last Action":"الأيام منذ آخر إجراء","Next Recommended Action":"الإجراء المقترح التالي","Priority Score":"درجة الأولوية","Escalation Required":"يتطلب تصعيدًا","Yes":"نعم","No":"لا","Automation Preview":"معاينة الأتمتة","Demo logic suggests the next action from file stage, overdue days, outstanding amount and previous activity.":"منطق تجريبي يقترح الإجراء التالي بناءً على مرحلة الملف والتأخير والمبلغ المستحق والنشاط السابق.",
  "Original Claim":"أصل المطالبة","File Expenses":"مصروفات الملف","Settlement Adjustment":"تعديل التسوية","Final Outstanding":"المتبقي النهائي","Closing Status":"حالة الإقفال","Ready to Close":"جاهز للإقفال","Open":"مفتوح","Last Financial Movement":"آخر حركة مالية","Generate Closing Statement":"إنشاء بيان الإقفال"
+});
+
+
+function toggleNotifications(){
+ const p=document.getElementById("notifyPanel");p.style.display=p.style.display==="block"?"none":"block";
+}
+document.addEventListener("click",function(e){
+ const p=document.getElementById("notifyPanel");
+ if(p&&p.style.display==="block"&&!p.contains(e.target)&&!e.target.closest('[onclick="toggleNotifications()"]'))p.style.display="none";
+});
+const _openPagePhase5=openPage;
+openPage=function(page){
+ if(page==="presentation"){
+  hidePages();currentModule=page;document.querySelectorAll(".nav-item").forEach(el=>el.classList.toggle("active",el.dataset.page===page));
+  document.getElementById("presentationPage").classList.remove("hidden");setHeading("Demo Presentation Mode","A concise executive view for client presentations.");document.getElementById("sidebar").classList.remove("open");window.scrollTo(0,0);applyLanguage();return;
+ }
+ _openPagePhase5(page);
+}
+Object.assign(I18N.ar,{
+ "Demo Presentation Mode":"وضع عرض الديمو","A concise executive view for client presentations.":"عرض تنفيذي مختصر لتقديم النظام للعملاء.","System Capabilities":"إمكانات النظام","Key functions included in this interactive demo.":"أهم الوظائف الموجودة في هذا الديمو التفاعلي.",
+ "Single operational view for file, parties, finance, actions and documents.":"عرض تشغيلي موحد للملف والأطراف والمالية والإجراءات والمستندات.","Daily priorities, overdue actions and files without movement.":"الأولويات اليومية والإجراءات المتأخرة والملفات دون حركة.","Client-safe portfolio visibility without internal office notes.":"عرض آمن للعميل دون الملاحظات الداخلية.","Collections & Settlements":"التحصيلات والتسويات","Payment allocation, settlement schedules and recovery tracking.":"تخصيص الدفعات وجداول التسوية ومتابعة التحصيل.","Recovery, aging, officer, expense and treasury analytics.":"تحليلات التحصيل والأعمار والمنفذين والمصروفات والخزينة.","Arabic & English":"العربية والإنجليزية","Full LTR and RTL interface support.":"دعم كامل لاتجاهي LTR وRTL.","Executive Demo Summary":"ملخص الديمو التنفيذي","ENFORZA is a private enforcement management demo designed to centralize case follow-up, collections, settlements, treasury, documents, reporting and client visibility in one interface.":"ENFORZA هو نموذج تجريبي لإدارة أعمال التنفيذ الخاص يجمع متابعة الملفات والتحصيلات والتسويات والخزينة والمستندات والتقارير وواجهة العميل في نظام واحد.",
+ "Notifications":"الإشعارات","Settlement payment due":"دفعة تسوية مستحقة","Bank response received":"تم استلام رد البنك","File inactive alert":"تنبيه ملف بلا حركة","Overdue follow-up":"متابعة متأخرة","Files":"الملفات","Follow-up":"المتابعة","Reports":"التقارير"
 });
 
 renderDashboard();renderUsers();renderAudit();renderPermissions();showReport("executive");applyLanguage();
