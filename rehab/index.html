@@ -400,6 +400,15 @@ html[dir="rtl"] .timeline-item::before{left:auto;right:-17px}
 @media(max-width:1100px){.clinical-kpis{grid-template-columns:repeat(3,1fr)}.plan-card-grid{grid-template-columns:1fr 1fr}.measure-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:650px){.clinical-kpis,.plan-card-grid,.measure-grid{grid-template-columns:1fr}.clinical-toolbar-left{width:100%}.clinical-toolbar input,.clinical-toolbar select{width:100%}}
 
+
+.therapist-kpis,.workload-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.therapist-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.therapist-toolbar input,.therapist-toolbar select{height:38px;border:1px solid var(--border);border-radius:6px;background:#fff;padding:0 11px;font-size:10px}
+.therapist-avatar{width:68px;height:68px;border-radius:16px;background:var(--teal-soft);color:var(--teal);display:grid;place-items:center;font-size:18px;font-weight:900}
+.workload-card{border:1px solid var(--border);border-radius:8px;background:#fff;padding:15px}
+.workload-card span{display:block;font-size:8px;color:var(--muted)}.workload-card strong{display:block;font-size:19px;color:var(--navy);margin-top:7px}
+.workload-bar{height:7px;background:#e9eef0;border-radius:10px;overflow:hidden;margin-top:10px}.workload-bar i{display:block;height:100%;background:var(--teal)}
+@media(max-width:800px){.therapist-kpis,.workload-grid{grid-template-columns:1fr 1fr}}@media(max-width:520px){.therapist-kpis,.workload-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -594,7 +603,21 @@ html[dir="rtl"] .timeline-item::before{left:auto;right:-17px}
 
 
 
-    <section id="treatmentPage" class="hidden">
+    
+<section id="therapistsPage" class="hidden"><div class="content">
+<div class="hero-row"><div><h2>Therapists</h2><p>Profiles, workload, schedules and clinical performance.</p></div><div class="hero-actions"><button class="action-btn primary" onclick="alert('Add Therapist — Demo')">+ Add Therapist</button></div></div>
+<div class="therapist-kpis"><div class="kpi-card"><span class="kpi-label">Active Therapists</span><strong class="kpi-value">12</strong></div><div class="kpi-card"><span class="kpi-label">Sessions Today</span><strong class="kpi-value">34</strong></div><div class="kpi-card"><span class="kpi-label">Average Utilization</span><strong class="kpi-value">81%</strong></div><div class="kpi-card"><span class="kpi-label">Notes Pending</span><strong class="kpi-value">4</strong></div></div>
+<section class="card"><div class="therapist-toolbar"><input id="therapistSearch" placeholder="Search therapist..." oninput="renderTherapists()"><select id="therapistService" onchange="renderTherapists()"><option value="">All Services</option><option>Physiotherapy</option><option>Occupational Therapy</option><option>Speech Therapy</option></select></div>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Therapist</th><th>Specialty</th><th>Patients</th><th>Today</th><th>Utilization</th><th>Status</th><th>Action</th></tr></thead><tbody id="therapistsBody"></tbody></table></div></section>
+</div></section>
+<section id="therapist360Page" class="hidden"><div class="content">
+<button class="action-btn" style="margin-bottom:14px" onclick="openPage('therapists')">← Back to Therapists</button>
+<section class="patient-hero"><div class="patient-hero-left"><div id="therapistAvatar" class="therapist-avatar"></div><div><h2 id="therapistName"></h2><p id="therapistMeta"></p><div class="patient-tags"><span id="therapistSpecialty" class="patient-type physio"></span><span class="patient-status active">Active</span></div></div></div><div class="patient-actions"><button class="action-btn">Edit Schedule</button><button class="action-btn teal">+ Book Appointment</button></div></section>
+<div class="workload-grid"><div class="workload-card"><span>Active Patients</span><strong id="thPatients"></strong><div class="workload-bar"><i id="barPatients"></i></div></div><div class="workload-card"><span>Sessions This Month</span><strong id="thSessions"></strong><div class="workload-bar"><i id="barSessions"></i></div></div><div class="workload-card"><span>Utilization</span><strong id="thUtil"></strong><div class="workload-bar"><i id="barUtil"></i></div></div><div class="workload-card"><span>Completion Rate</span><strong id="thCompletion"></strong><div class="workload-bar"><i id="barCompletion"></i></div></div></div>
+<div class="dashboard-grid equal"><section class="card"><div class="card-head"><div><h3>Therapist Information</h3></div></div><div class="list"><div class="list-row"><span>Mobile</span><strong id="thMobile"></strong></div><div class="list-row"><span>Email</span><strong id="thEmail"></strong></div><div class="list-row"><span>Patient Satisfaction</span><strong id="thRating"></strong></div></div></section>
+<section class="card"><div class="card-head"><div><h3>Today's Schedule</h3></div></div><div class="table-wrap"><table><thead><tr><th>Time</th><th>Patient</th><th>Room</th><th>Status</th></tr></thead><tbody id="thToday"></tbody></table></div></section></div>
+</div></section>
+<section id="treatmentPage" class="hidden">
       <div class="content">
         <div class="hero-row">
           <div><h2 data-i18n="Treatment Plans">Treatment Plans</h2><p data-i18n="Clinical goals, prescribed sessions and patient progress.">Clinical goals, prescribed sessions and patient progress.</p></div>
@@ -1089,6 +1112,15 @@ const I18N = {
 
 
 
+
+const THERAPISTS=[
+{id:"TH-001",name:"Dr. Sara Ahmed",initials:"SA",specialty:"Physiotherapy",patients:58,today:9,util:92,sessions:168,completion:96,mobile:"+973 3900 4421",email:"sara@vitalis.local",rating:"4.9 / 5"},
+{id:"TH-002",name:"Maryam Hasan",initials:"MH",specialty:"Occupational Therapy",patients:46,today:8,util:86,sessions:142,completion:94,mobile:"+973 3660 2271",email:"maryam@vitalis.local",rating:"4.8 / 5"},
+{id:"TH-003",name:"Layla Mohammed",initials:"LM",specialty:"Speech Therapy",patients:51,today:7,util:81,sessions:136,completion:97,mobile:"+973 3880 1182",email:"layla@vitalis.local",rating:"4.9 / 5"},
+{id:"TH-004",name:"Hassan Ali",initials:"HA",specialty:"Physiotherapy",patients:39,today:6,util:74,sessions:119,completion:92,mobile:"+973 3550 7730",email:"hassan@vitalis.local",rating:"4.7 / 5"}];
+function renderTherapists(){let q=(document.getElementById("therapistSearch")?.value||"").toLowerCase(),s=document.getElementById("therapistService")?.value||"";document.getElementById("therapistsBody").innerHTML=THERAPISTS.filter(x=>(!q||[x.id,x.name,x.specialty].join(" ").toLowerCase().includes(q))&&(!s||x.specialty===s)).map(x=>`<tr><td>${x.id}</td><td><button class="patient-link" onclick="openTherapist360('${x.id}')">${x.name}</button></td><td>${x.specialty}</td><td>${x.patients}</td><td>${x.today}</td><td><strong>${x.util}%</strong></td><td><span class="patient-status active">Active</span></td><td><button class="action-btn" style="min-height:30px;font-size:8px" onclick="openTherapist360('${x.id}')">View 360°</button></td></tr>`).join("")}
+function openTherapist360(id){let x=THERAPISTS.find(v=>v.id===id)||THERAPISTS[0];hideClinicalPages();document.getElementById("therapist360Page").classList.remove("hidden");document.querySelectorAll(".nav-item").forEach(e=>e.classList.toggle("active",e.dataset.page==="therapists"));document.getElementById("pageTitle").textContent=currentLang==="ar"?"المعالج 360°":"Therapist 360°";document.getElementById("pageSubtitle").textContent=x.id+" · "+x.name;document.getElementById("therapistAvatar").textContent=x.initials;document.getElementById("therapistName").textContent=x.name;document.getElementById("therapistMeta").textContent=x.id+" · "+x.specialty;document.getElementById("therapistSpecialty").textContent=x.specialty;document.getElementById("thPatients").textContent=x.patients;document.getElementById("thSessions").textContent=x.sessions;document.getElementById("thUtil").textContent=x.util+"%";document.getElementById("thCompletion").textContent=x.completion+"%";document.getElementById("barPatients").style.width=Math.min(100,x.patients/60*100)+"%";document.getElementById("barSessions").style.width=Math.min(100,x.sessions/180*100)+"%";document.getElementById("barUtil").style.width=x.util+"%";document.getElementById("barCompletion").style.width=x.completion+"%";document.getElementById("thMobile").textContent=x.mobile;document.getElementById("thEmail").textContent=x.email;document.getElementById("thRating").textContent=x.rating;let a=APPOINTMENTS.filter(v=>v.therapist===x.name&&v.day===20);document.getElementById("thToday").innerHTML=a.length?a.map(v=>`<tr><td>${v.time}</td><td>${v.patient}</td><td>${v.room}</td><td><span class="badge ${apptBadge(v.status)}">${v.status}</span></td></tr>`).join(""):`<tr><td colspan="4">—</td></tr>`}
+
 const TREATMENT_PLANS=[
 {id:"TP-260184",patient:"Fatima Ali",service:"Physiotherapy",therapist:"Dr. Sara Ahmed",total:12,done:8,progress:72,review:"20 Aug 2026",status:"Review Due",start:"02 Jul 2026",diagnosis:"Post-operative knee rehabilitation",goals:[["Knee flexion","110° → 125°","82%"],["Pain reduction","6/10 → 2/10","75%"],["Independent stairs","Target: 1 flight","60%"]]},
 {id:"TP-260172",patient:"Ahmed Salman",service:"Occupational Therapy",therapist:"Maryam Hasan",total:12,done:10,progress:86,review:"22 Aug 2026",status:"Active",start:"18 Jun 2026",diagnosis:"Upper limb functional rehabilitation",goals:[["Grip strength","18kg → 28kg","88%"],["ADL independence","Moderate → Minimal assist","84%"]]},
@@ -1126,7 +1158,7 @@ function openSession360(id){
  const s=currentSession;document.getElementById("session360Title").textContent=s.patient;document.getElementById("session360Meta").textContent=s.id+" · "+s.date+" · "+s.service;document.getElementById("session360Status").textContent=s.status;
  document.getElementById("sPainBefore").textContent=s.painBefore;document.getElementById("sPainAfter").textContent=s.painAfter;document.getElementById("sDuration").textContent=s.duration;document.getElementById("sProgress").textContent=s.progress;document.getElementById("sPatient").textContent=s.patient;document.getElementById("sPlan").textContent=s.plan;document.getElementById("sTherapist").textContent=s.therapist;document.getElementById("sService").textContent=s.service;document.getElementById("sNote").textContent=s.note;window.scrollTo(0,0);
 }
-function hideClinicalPages(){["dashboardPage","treatmentPage","plan360Page","sessionsPage","session360Page","appointmentsPage","appointment360Page","patientsPage","patient360Page","placeholderPage"].forEach(id=>document.getElementById(id)?.classList.add("hidden"))}
+function hideClinicalPages(){["dashboardPage","therapistsPage","therapist360Page","treatmentPage","plan360Page","sessionsPage","session360Page","appointmentsPage","appointment360Page","patientsPage","patient360Page","placeholderPage"].forEach(id=>document.getElementById(id)?.classList.add("hidden"))}
 function clinicalDemo(type){alert((currentLang==="ar"?"نموذج سريري تجريبي":"Clinical Demo")+" — "+type);}
 
 const APPOINTMENTS = [
@@ -1487,6 +1519,10 @@ function openPage(page){
     document.getElementById("patientsPage").classList.remove("hidden");document.getElementById("pageSubtitle").textContent=currentLang==="ar"?"ملفات المرضى والتشخيص وخطط العلاج والنشاط العلاجي":"Patient profiles, diagnoses, treatment plans and therapy activity";renderPatients();
   }else if(page==="appointments"){
     document.getElementById("appointmentsPage").classList.remove("hidden");document.getElementById("pageSubtitle").textContent=currentLang==="ar"?"إدارة المواعيد وتوفر المعالجين وزيارات المرضى":"Schedules, therapist availability and patient visits";renderAppointments();renderAppointmentCalendar();
+  }else if(page==="therapists"){
+    document.getElementById("therapistsPage").classList.remove("hidden");
+    document.getElementById("pageSubtitle").textContent=currentLang==="ar"?"ملفات المعالجين وعبء العمل والأداء":"Therapist profiles, workload and performance";
+    renderTherapists();
   }else if(page==="treatment"){
     document.getElementById("treatmentPage").classList.remove("hidden");document.getElementById("pageSubtitle").textContent=currentLang==="ar"?"الأهداف السريرية والجلسات المقررة وتقدم المرضى":"Clinical goals, prescribed sessions and patient progress";renderTreatmentPlans();
   }else if(page==="sessions"){
@@ -1509,6 +1545,7 @@ renderAppointments();
 renderAppointmentCalendar();
 renderTreatmentPlans();
 renderTherapySessions();
+renderTherapists();
 </script>
 </body>
 </html>
