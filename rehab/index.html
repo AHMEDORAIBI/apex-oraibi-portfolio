@@ -430,6 +430,16 @@ html[dir="rtl"] .timeline-item::before{left:auto;right:-17px}
 .expense-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.expense-toolbar input,.expense-toolbar select{height:38px;border:1px solid var(--border);border-radius:6px;background:#fff;padding:0 11px;font-size:10px}.expense-toolbar input{width:245px}
 .category-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.category-card{border:1px solid var(--border);border-radius:8px;padding:14px;background:#fafcfc}.category-card span{display:block;font-size:8px;color:var(--muted)}.category-card strong{display:block;margin-top:7px;font-size:15px;color:var(--navy)}
 @media(max-width:800px){.expense-kpis,.category-grid{grid-template-columns:1fr 1fr}}@media(max-width:520px){.expense-kpis,.category-grid{grid-template-columns:1fr}}
+
+.report-kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px}
+.report-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.report-card{border:1px solid var(--border);border-radius:8px;padding:16px;background:#fff;cursor:pointer;transition:.15s}
+.report-card:hover{transform:translateY(-1px);box-shadow:0 5px 18px rgba(20,48,65,.07)}
+.report-card h4{font-size:11px;color:var(--navy);margin-bottom:6px}.report-card p{font-size:8px;color:var(--muted);line-height:1.55}
+.report-card strong{display:block;font-size:18px;color:var(--teal);margin-top:12px}
+.report-table-title{font-size:11px;color:var(--navy);margin-bottom:4px}
+.report-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.report-toolbar select,.report-toolbar input{height:38px;border:1px solid var(--border);border-radius:6px;background:#fff;padding:0 11px;font-size:10px}
+@media(max-width:900px){.report-kpis,.report-grid{grid-template-columns:1fr 1fr}}@media(max-width:560px){.report-kpis,.report-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -627,6 +637,22 @@ html[dir="rtl"] .timeline-item::before{left:auto;right:-17px}
     
 
 
+
+<section id="reportsPage" class="hidden"><div class="content">
+<div class="hero-row"><div><h2>Reports</h2><p>Clinical, operational and financial reporting center.</p></div><div class="hero-actions"><button class="action-btn" onclick="reportDemo('export')">Export</button><button class="action-btn primary" onclick="reportDemo('print')">Print Report</button></div></div>
+<div class="report-toolbar"><select><option>August 2026</option><option>July 2026</option></select><select><option>All Services</option><option>Physiotherapy</option><option>Occupational Therapy</option><option>Speech Therapy</option></select><select><option>All Therapists</option><option>Dr. Sara Ahmed</option><option>Maryam Hasan</option><option>Layla Mohammed</option></select></div>
+<div class="report-kpis"><div class="kpi-card"><span class="kpi-label">Revenue</span><strong class="kpi-value">BHD 18,420</strong></div><div class="kpi-card"><span class="kpi-label">Expenses</span><strong class="kpi-value">BHD 4,860</strong></div><div class="kpi-card"><span class="kpi-label">Operating Result</span><strong class="kpi-value">BHD 13,560</strong></div><div class="kpi-card"><span class="kpi-label">Therapy Sessions</span><strong class="kpi-value">612</strong></div><div class="kpi-card"><span class="kpi-label">Collection Rate</span><strong class="kpi-value">86.8%</strong></div></div>
+<section class="card"><div class="card-head"><div><h3>Report Center</h3><p>Select a report to view its current summary.</p></div></div>
+<div class="report-grid">
+<div class="report-card" onclick="showReport('clinical')"><h4>Clinical Performance</h4><p>Treatment plans, completed sessions, progress and outcomes.</p><strong>78%</strong></div>
+<div class="report-card" onclick="showReport('appointments')"><h4>Appointments</h4><p>Bookings, completed visits, cancellations and no-shows.</p><strong>148</strong></div>
+<div class="report-card" onclick="showReport('therapists')"><h4>Therapist Performance</h4><p>Workload, utilization, documentation and patient activity.</p><strong>81%</strong></div>
+<div class="report-card" onclick="showReport('revenue')"><h4>Revenue & Collections</h4><p>Invoices, collections, outstanding balances and collection rate.</p><strong>BHD 18,420</strong></div>
+<div class="report-card" onclick="showReport('expenses')"><h4>Expense Analysis</h4><p>Daily and monthly operating expenses by category.</p><strong>BHD 4,860</strong></div>
+<div class="report-card" onclick="showReport('patients')"><h4>Patient Activity</h4><p>Active patients, new registrations and service distribution.</p><strong>214</strong></div>
+</div></section>
+<section class="card"><div class="card-head"><div><h3 id="reportDetailTitle">Clinical Performance</h3><p id="reportDetailSubtitle">August 2026 summary</p></div></div><div class="table-wrap"><table><thead><tr><th>Indicator</th><th>Current</th><th>Previous</th><th>Change</th></tr></thead><tbody id="reportDetailBody"></tbody></table></div></section>
+</div></section>
 <section id="expensesPage" class="hidden"><div class="content">
 <div class="hero-row"><div><h2>Expenses</h2><p>Daily and monthly clinic operating expense tracking.</p></div><div class="hero-actions"><button class="action-btn primary" onclick="alert('Add Expense — Demo')">+ Add Expense</button></div></div>
 <div class="expense-kpis"><div class="kpi-card"><span class="kpi-label">Expenses Today</span><strong class="kpi-value">BHD 286.500</strong></div><div class="kpi-card"><span class="kpi-label">This Week</span><strong class="kpi-value">BHD 1,420</strong></div><div class="kpi-card"><span class="kpi-label">This Month</span><strong class="kpi-value">BHD 4,860</strong></div><div class="kpi-card"><span class="kpi-label">Largest Category</span><strong class="kpi-value">Payroll</strong></div><div class="kpi-card"><span class="kpi-label">Budget Used</span><strong class="kpi-value">68%</strong></div></div>
@@ -1205,6 +1231,18 @@ const I18N = {
 
 
 
+
+const REPORT_DATA={
+clinical:[["Completed Sessions","612","568","+7.7%"],["Average Goal Progress","78%","74%","+4.0%"],["Plans Completed","31","27","+14.8%"],["Reviews Due","14","18","-22.2%"]],
+appointments:[["Total Appointments","648","603","+7.5%"],["Completed","574","531","+8.1%"],["Cancelled / No Show","42","49","-14.3%"],["Completion Rate","88.6%","88.1%","+0.5%"]],
+therapists:[["Average Utilization","81%","78%","+3.0%"],["Sessions / Day","7.1","6.8","+4.4%"],["Documentation On Time","96%","93%","+3.0%"],["Patient Satisfaction","4.8/5","4.7/5","+2.1%"]],
+revenue:[["Revenue","BHD 18,420","BHD 16,990","+8.4%"],["Collected","BHD 15,980","BHD 14,720","+8.6%"],["Outstanding","BHD 6,240","BHD 6,510","-4.1%"],["Collection Rate","86.8%","86.6%","+0.2%"]],
+expenses:[["Total Expenses","BHD 4,860","BHD 4,520","+7.5%"],["Payroll & Staff","BHD 2,150","BHD 2,100","+2.4%"],["Rent & Utilities","BHD 1,120","BHD 1,100","+1.8%"],["Medical Supplies","BHD 890","BHD 760","+17.1%"]],
+patients:[["Active Patients","214","203","+5.4%"],["New Patients","28","24","+16.7%"],["Physiotherapy","96","91","+5.5%"],["Other Services","118","112","+5.4%"]]
+};
+function showReport(type){let names={clinical:"Clinical Performance",appointments:"Appointments",therapists:"Therapist Performance",revenue:"Revenue & Collections",expenses:"Expense Analysis",patients:"Patient Activity"};document.getElementById("reportDetailTitle").textContent=names[type];document.getElementById("reportDetailBody").innerHTML=REPORT_DATA[type].map(r=>`<tr><td>${r[0]}</td><td><strong>${r[1]}</strong></td><td>${r[2]}</td><td><span class="${r[3].startsWith('+')?'positive':'warning'}">${r[3]}</span></td></tr>`).join("")}
+function reportDemo(type){alert((currentLang==="ar"?"التقارير — نموذج تجريبي":"Reports — Demo")+" · "+type)}
+
 const EXPENSES=[
 {id:"EXP-260823-006",date:"23 Aug 2026",description:"Physiotherapy consumables",category:"Medical Supplies",supplier:"Gulf Medical Supplies",method:"Bank Transfer",amount:146.500,status:"Posted"},
 {id:"EXP-260823-005",date:"23 Aug 2026",description:"Internet and telephone",category:"Rent & Utilities",supplier:"Telecom Provider",method:"Card",amount:58.000,status:"Posted"},
@@ -1286,7 +1324,7 @@ function openSession360(id){
  const s=currentSession;document.getElementById("session360Title").textContent=s.patient;document.getElementById("session360Meta").textContent=s.id+" · "+s.date+" · "+s.service;document.getElementById("session360Status").textContent=s.status;
  document.getElementById("sPainBefore").textContent=s.painBefore;document.getElementById("sPainAfter").textContent=s.painAfter;document.getElementById("sDuration").textContent=s.duration;document.getElementById("sProgress").textContent=s.progress;document.getElementById("sPatient").textContent=s.patient;document.getElementById("sPlan").textContent=s.plan;document.getElementById("sTherapist").textContent=s.therapist;document.getElementById("sService").textContent=s.service;document.getElementById("sNote").textContent=s.note;window.scrollTo(0,0);
 }
-function hideClinicalPages(){["dashboardPage","expensesPage","billingPage","invoice360Page","therapistsPage","therapist360Page","treatmentPage","plan360Page","sessionsPage","session360Page","appointmentsPage","appointment360Page","patientsPage","patient360Page","placeholderPage"].forEach(id=>document.getElementById(id)?.classList.add("hidden"))}
+function hideClinicalPages(){["dashboardPage","reportsPage","expensesPage","billingPage","invoice360Page","therapistsPage","therapist360Page","treatmentPage","plan360Page","sessionsPage","session360Page","appointmentsPage","appointment360Page","patientsPage","patient360Page","placeholderPage"].forEach(id=>document.getElementById(id)?.classList.add("hidden"))}
 function clinicalDemo(type){alert((currentLang==="ar"?"نموذج سريري تجريبي":"Clinical Demo")+" — "+type);}
 
 const APPOINTMENTS = [
@@ -1647,6 +1685,10 @@ function openPage(page){
     document.getElementById("patientsPage").classList.remove("hidden");document.getElementById("pageSubtitle").textContent=currentLang==="ar"?"ملفات المرضى والتشخيص وخطط العلاج والنشاط العلاجي":"Patient profiles, diagnoses, treatment plans and therapy activity";renderPatients();
   }else if(page==="appointments"){
     document.getElementById("appointmentsPage").classList.remove("hidden");document.getElementById("pageSubtitle").textContent=currentLang==="ar"?"إدارة المواعيد وتوفر المعالجين وزيارات المرضى":"Schedules, therapist availability and patient visits";renderAppointments();renderAppointmentCalendar();
+  }else if(page==="reports"){
+    document.getElementById("reportsPage").classList.remove("hidden");
+    document.getElementById("pageSubtitle").textContent=currentLang==="ar"?"مركز التقارير السريرية والتشغيلية والمالية":"Clinical, operational and financial reporting center";
+    showReport("clinical");
   }else if(page==="expenses"){
     document.getElementById("expensesPage").classList.remove("hidden");
     document.getElementById("pageSubtitle").textContent=currentLang==="ar"?"متابعة المصروفات اليومية والشهرية للعيادة":"Daily and monthly clinic expense tracking";
@@ -1684,6 +1726,7 @@ renderTherapySessions();
 renderTherapists();
 renderInvoices();
 renderExpenses();
+showReport('clinical');
 </script>
 </body>
 </html>
