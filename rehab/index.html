@@ -440,6 +440,15 @@ html[dir="rtl"] .timeline-item::before{left:auto;right:-17px}
 .report-table-title{font-size:11px;color:var(--navy);margin-bottom:4px}
 .report-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.report-toolbar select,.report-toolbar input{height:38px;border:1px solid var(--border);border-radius:6px;background:#fff;padding:0 11px;font-size:10px}
 @media(max-width:900px){.report-kpis,.report-grid{grid-template-columns:1fr 1fr}}@media(max-width:560px){.report-kpis,.report-grid{grid-template-columns:1fr}}
+
+.settings-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.settings-form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.setting-field{display:grid;gap:6px}.setting-field.full{grid-column:1/-1}.setting-field label{font-size:8px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.setting-field input,.setting-field select{height:40px;border:1px solid var(--border);border-radius:7px;background:#fff;padding:0 11px;font-size:10px;color:var(--navy)}
+.user-role{display:inline-flex;padding:4px 8px;border-radius:20px;background:var(--teal-soft);color:var(--teal);font-size:8px;font-weight:800}
+.permission-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.permission-item{border:1px solid var(--border);border-radius:7px;padding:11px;background:#fafcfc;display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:9px;color:var(--navy)}
+.toggle{width:34px;height:18px;border-radius:20px;background:#dce4e7;position:relative}.toggle.on{background:var(--teal)}.toggle:after{content:"";position:absolute;width:14px;height:14px;border-radius:50%;background:#fff;top:2px;left:2px;transition:.2s}.toggle.on:after{left:18px}
+@media(max-width:850px){.settings-grid{grid-template-columns:1fr}.permission-grid{grid-template-columns:1fr 1fr}}@media(max-width:520px){.settings-form,.permission-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -638,6 +647,25 @@ html[dir="rtl"] .timeline-item::before{left:auto;right:-17px}
 
 
 
+
+<section id="settingsPage" class="hidden"><div class="content">
+<div class="hero-row"><div><h2>Settings</h2><p>Clinic configuration, users, permissions and system preferences.</p></div><div class="hero-actions"><button class="action-btn primary" onclick="settingsDemo('save')">Save Changes</button></div></div>
+<div class="settings-grid">
+<section class="card"><div class="card-head"><div><h3>Clinic Profile</h3><p>Core organization and contact information.</p></div></div><div class="settings-form">
+<div class="setting-field full"><label>Clinic Name</label><input value="VITALIS Rehabilitation Center"></div>
+<div class="setting-field"><label>Phone</label><input value="+973 1700 0000"></div><div class="setting-field"><label>Email</label><input value="info@vitalis.local"></div>
+<div class="setting-field full"><label>Address</label><input value="Kingdom of Bahrain"></div>
+<div class="setting-field"><label>Currency</label><select><option>BHD — Bahraini Dinar</option></select></div><div class="setting-field"><label>Timezone</label><select><option>Asia/Bahrain</option></select></div>
+</div></section>
+<section class="card"><div class="card-head"><div><h3>System Preferences</h3><p>Default operational settings.</p></div></div><div class="settings-form">
+<div class="setting-field"><label>Default Language</label><select><option>English</option><option>العربية</option></select></div><div class="setting-field"><label>Date Format</label><select><option>DD MMM YYYY</option></select></div>
+<div class="setting-field"><label>Session Duration</label><select><option>45 minutes</option><option>60 minutes</option></select></div><div class="setting-field"><label>Week Starts</label><select><option>Sunday</option></select></div>
+<div class="setting-field"><label>Invoice Prefix</label><input value="INV"></div><div class="setting-field"><label>Receipt Prefix</label><input value="RCPT"></div>
+</div></section>
+</div>
+<section class="card"><div class="card-head"><div><h3>Users & Roles</h3><p>System access and assigned roles.</p></div><button class="action-btn primary" onclick="settingsDemo('user')">+ Add User</button></div><div class="table-wrap"><table><thead><tr><th>User</th><th>Username</th><th>Role</th><th>Department</th><th>Status</th><th>Last Login</th><th>Action</th></tr></thead><tbody id="settingsUsersBody"></tbody></table></div></section>
+<section class="card"><div class="card-head"><div><h3>Role Permissions</h3><p>Module-level access controls for the selected role.</p></div><select id="permissionRole" onchange="renderPermissions()" style="height:36px;border:1px solid var(--border);border-radius:6px;padding:0 9px"><option>Administrator</option><option>Reception</option><option>Therapist</option><option>Finance</option></select></div><div id="permissionGrid" class="permission-grid"></div></section>
+</div></section>
 <section id="reportsPage" class="hidden"><div class="content">
 <div class="hero-row"><div><h2>Reports</h2><p>Clinical, operational and financial reporting center.</p></div><div class="hero-actions"><button class="action-btn" onclick="reportDemo('export')">Export</button><button class="action-btn primary" onclick="reportDemo('print')">Print Report</button></div></div>
 <div class="report-toolbar"><select><option>August 2026</option><option>July 2026</option></select><select><option>All Services</option><option>Physiotherapy</option><option>Occupational Therapy</option><option>Speech Therapy</option></select><select><option>All Therapists</option><option>Dr. Sara Ahmed</option><option>Maryam Hasan</option><option>Layla Mohammed</option></select></div>
@@ -1232,6 +1260,17 @@ const I18N = {
 
 
 
+
+const SYSTEM_USERS=[
+{name:"System Administrator",username:"admin",role:"Administrator",dept:"Management",status:"Active",login:"23 Aug 2026 · 17:42"},
+{name:"Maha Ali",username:"maha.reception",role:"Reception",dept:"Front Desk",status:"Active",login:"23 Aug 2026 · 16:58"},
+{name:"Dr. Sara Ahmed",username:"sara.ahmed",role:"Therapist",dept:"Physiotherapy",status:"Active",login:"23 Aug 2026 · 15:21"},
+{name:"Noor Hassan",username:"noor.finance",role:"Finance",dept:"Finance",status:"Active",login:"23 Aug 2026 · 14:03"}];
+const ROLE_PERMISSIONS={Administrator:["Dashboard","Patients","Appointments","Treatment Plans","Therapy Sessions","Therapists","Billing","Expenses","Reports","Settings"],Reception:["Dashboard","Patients","Appointments","Billing"],Therapist:["Dashboard","Patients","Appointments","Treatment Plans","Therapy Sessions"],Finance:["Dashboard","Billing","Expenses","Reports"]};
+function renderSettingsUsers(){document.getElementById("settingsUsersBody").innerHTML=SYSTEM_USERS.map(u=>`<tr><td><strong>${u.name}</strong></td><td>${u.username}</td><td><span class="user-role">${u.role}</span></td><td>${u.dept}</td><td><span class="patient-status active">${u.status}</span></td><td>${u.login}</td><td><button class="action-btn" style="min-height:30px;font-size:8px" onclick="settingsDemo('edit-user')">Edit</button></td></tr>`).join("")}
+function renderPermissions(){let role=document.getElementById("permissionRole")?.value||"Administrator",allowed=ROLE_PERMISSIONS[role]||[];let mods=["Dashboard","Patients","Appointments","Treatment Plans","Therapy Sessions","Therapists","Billing","Expenses","Reports","Settings"];document.getElementById("permissionGrid").innerHTML=mods.map(m=>`<div class="permission-item"><span>${m}</span><div class="toggle ${allowed.includes(m)?'on':''}" onclick="this.classList.toggle('on')"></div></div>`).join("")}
+function settingsDemo(type){alert((currentLang==="ar"?"الإعدادات — نموذج تجريبي":"Settings — Demo")+" · "+type)}
+
 const REPORT_DATA={
 clinical:[["Completed Sessions","612","568","+7.7%"],["Average Goal Progress","78%","74%","+4.0%"],["Plans Completed","31","27","+14.8%"],["Reviews Due","14","18","-22.2%"]],
 appointments:[["Total Appointments","648","603","+7.5%"],["Completed","574","531","+8.1%"],["Cancelled / No Show","42","49","-14.3%"],["Completion Rate","88.6%","88.1%","+0.5%"]],
@@ -1324,7 +1363,7 @@ function openSession360(id){
  const s=currentSession;document.getElementById("session360Title").textContent=s.patient;document.getElementById("session360Meta").textContent=s.id+" · "+s.date+" · "+s.service;document.getElementById("session360Status").textContent=s.status;
  document.getElementById("sPainBefore").textContent=s.painBefore;document.getElementById("sPainAfter").textContent=s.painAfter;document.getElementById("sDuration").textContent=s.duration;document.getElementById("sProgress").textContent=s.progress;document.getElementById("sPatient").textContent=s.patient;document.getElementById("sPlan").textContent=s.plan;document.getElementById("sTherapist").textContent=s.therapist;document.getElementById("sService").textContent=s.service;document.getElementById("sNote").textContent=s.note;window.scrollTo(0,0);
 }
-function hideClinicalPages(){["dashboardPage","reportsPage","expensesPage","billingPage","invoice360Page","therapistsPage","therapist360Page","treatmentPage","plan360Page","sessionsPage","session360Page","appointmentsPage","appointment360Page","patientsPage","patient360Page","placeholderPage"].forEach(id=>document.getElementById(id)?.classList.add("hidden"))}
+function hideClinicalPages(){["dashboardPage","settingsPage","reportsPage","expensesPage","billingPage","invoice360Page","therapistsPage","therapist360Page","treatmentPage","plan360Page","sessionsPage","session360Page","appointmentsPage","appointment360Page","patientsPage","patient360Page","placeholderPage"].forEach(id=>document.getElementById(id)?.classList.add("hidden"))}
 function clinicalDemo(type){alert((currentLang==="ar"?"نموذج سريري تجريبي":"Clinical Demo")+" — "+type);}
 
 const APPOINTMENTS = [
@@ -1685,6 +1724,10 @@ function openPage(page){
     document.getElementById("patientsPage").classList.remove("hidden");document.getElementById("pageSubtitle").textContent=currentLang==="ar"?"ملفات المرضى والتشخيص وخطط العلاج والنشاط العلاجي":"Patient profiles, diagnoses, treatment plans and therapy activity";renderPatients();
   }else if(page==="appointments"){
     document.getElementById("appointmentsPage").classList.remove("hidden");document.getElementById("pageSubtitle").textContent=currentLang==="ar"?"إدارة المواعيد وتوفر المعالجين وزيارات المرضى":"Schedules, therapist availability and patient visits";renderAppointments();renderAppointmentCalendar();
+  }else if(page==="settings"){
+    document.getElementById("settingsPage").classList.remove("hidden");
+    document.getElementById("pageSubtitle").textContent=currentLang==="ar"?"إعدادات العيادة والمستخدمون والصلاحيات":"Clinic configuration, users and permissions";
+    renderSettingsUsers();renderPermissions();
   }else if(page==="reports"){
     document.getElementById("reportsPage").classList.remove("hidden");
     document.getElementById("pageSubtitle").textContent=currentLang==="ar"?"مركز التقارير السريرية والتشغيلية والمالية":"Clinical, operational and financial reporting center";
@@ -1727,6 +1770,7 @@ renderTherapists();
 renderInvoices();
 renderExpenses();
 showReport('clinical');
+renderSettingsUsers();renderPermissions();
 </script>
 </body>
 </html>
