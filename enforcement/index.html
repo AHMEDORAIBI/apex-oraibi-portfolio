@@ -171,6 +171,27 @@ html[dir="rtl"] .timeline-item{padding-left:0;padding-right:14px}
 html[dir="rtl"] .timeline-item:before{left:auto;right:-17px}
 html[dir="rtl"] .alert-tile{border-left:1px solid var(--border);border-right:3px solid var(--bronze)}
 
+
+/* ===== ENFORZA ADVANCED DEMO — PHASE 2 ===== */
+.global-search-wrap{position:relative}
+.global-search-results{position:absolute;top:44px;left:0;width:420px;max-height:380px;overflow:auto;background:#fff;border:1px solid var(--border);border-radius:8px;box-shadow:0 16px 40px rgba(15,20,28,.16);z-index:120;display:none}
+.global-result{padding:11px 12px;border-bottom:1px solid #edf1f3;cursor:pointer}
+.global-result:last-child{border-bottom:0}.global-result:hover{background:#faf7f4}
+.global-result strong{display:block;font-size:9px;color:var(--navy)}.global-result span{display:block;font-size:8px;color:var(--muted);margin-top:3px}
+.doc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.doc-card{border:1px solid var(--border);border-radius:8px;padding:13px;background:#fff}
+.doc-card strong{display:block;font-size:9px;color:var(--navy)}.doc-card span{display:block;font-size:8px;color:var(--muted);margin-top:4px}.doc-card .doc-type{display:inline-flex;margin-top:8px;padding:4px 7px;border-radius:20px;background:var(--bronze-soft);color:var(--bronze);font-size:7px;font-weight:800}
+.installment-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:12px}
+.installment{border:1px solid var(--border);border-radius:7px;padding:10px;background:#fafcfc;text-align:center}
+.installment strong{display:block;font-size:9px;color:var(--navy)}.installment span{display:block;font-size:7px;color:var(--muted);margin-top:4px}
+.party-risk{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.party-risk .kpi-card{min-height:86px}
+.activity-chip{display:inline-flex;padding:4px 7px;border-radius:20px;background:#eef2f5;color:#586773;font-size:7px;font-weight:800}
+@media(max-width:900px){.global-search-results{width:min(420px,80vw)}.doc-grid,.party-risk,.installment-grid{grid-template-columns:1fr 1fr 1fr}}
+@media(max-width:600px){.doc-grid,.party-risk,.installment-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:420px){.doc-grid,.party-risk,.installment-grid{grid-template-columns:1fr}}
+html[dir="rtl"] .global-search-results{left:auto;right:0}
+
 </style>
 </head>
 <body>
@@ -194,6 +215,7 @@ html[dir="rtl"] .alert-tile{border-left:1px solid var(--border);border-right:3px
   </div>
   <div class="nav-section">
     <div class="nav-label" data-i18n="MANAGEMENT">MANAGEMENT</div>
+    <a class="nav-item" data-page="documents" href="#" onclick="openPage('documents');return false;"><span class="nav-icon">▤</span><span data-i18n="Document Center">Document Center</span></a>
     <a class="nav-item" data-page="reports" href="#" onclick="openPage('reports');return false;"><span class="nav-icon">◩</span><span data-i18n="Reports & Analytics">Reports & Analytics</span></a>
     <a class="nav-item" data-page="users" href="#" onclick="openPage('users');return false;"><span class="nav-icon">♙</span><span data-i18n="Users & Permissions">Users & Permissions</span></a>
     <a class="nav-item" data-page="settings" href="#" onclick="openPage('settings');return false;"><span class="nav-icon">⚙</span><span data-i18n="Settings">Settings</span></a>
@@ -209,7 +231,10 @@ html[dir="rtl"] .alert-tile{border-left:1px solid var(--border);border-right:3px
     <div class="page-heading"><h1 id="pageTitle" data-i18n="Executive Dashboard">Executive Dashboard</h1><p id="pageSubtitle" data-i18n="Enforcement, collection and financial performance overview">Enforcement, collection and financial performance overview</p></div>
   </div>
   <div class="top-actions">
-    <input class="search" data-i18n-placeholder="Search file, party or reference..." placeholder="Search file, party or reference...">
+    <div class="global-search-wrap">
+<input id="globalSearch" class="search" data-i18n-placeholder="Search file, party or reference..." placeholder="Search file, party or reference..." oninput="runGlobalSearch()" onfocus="runGlobalSearch()">
+<div id="globalSearchResults" class="global-search-results"></div>
+</div>
     <div class="lang-switch"><button id="langEn" class="active" onclick="setLanguage('en')">EN</button><button id="langAr" onclick="setLanguage('ar')">عربي</button></div>
     <button class="top-btn">◇</button>
     <div class="profile"><div class="avatar">AO</div><div><strong>Ahmed Oraibi</strong><span data-i18n="Administrator">Administrator</span></div></div>
@@ -286,6 +311,21 @@ html[dir="rtl"] .alert-tile{border-left:1px solid var(--border);border-right:3px
   </section>
 </div></section>
 
+
+<section id="party360Page" class="page hidden"><div class="content">
+  <button class="action-btn" style="margin-bottom:14px" onclick="openPage('parties')">← <span data-i18n="Back to Parties">Back to Parties</span></button>
+  <section class="detail-hero">
+    <div class="detail-left"><div class="detail-mark">P</div><div><h2 id="party360Name"></h2><p id="party360Meta"></p><div class="tags"><span id="party360Type" class="badge info"></span><span class="badge active">Active</span></div></div></div>
+    <div class="actions"><button class="action-btn" onclick="demoAlert('party-edit')" data-i18n="Edit">Edit</button><button class="action-btn bronze" onclick="demoAlert('party-action')" data-i18n="New Action">New Action</button></div>
+  </section>
+  <div id="partyRiskGrid" class="party-risk"></div>
+  <div class="dashboard-grid equal">
+    <section class="card"><div class="card-head"><div><h3 data-i18n="Linked Enforcement Files">Linked Enforcement Files</h3><p data-i18n="All files connected to this party">All files connected to this party</p></div></div><div class="table-wrap"><table><thead><tr><th data-i18n="File">File</th><th data-i18n="Claim">Claim</th><th data-i18n="Collected">Collected</th><th data-i18n="Outstanding">Outstanding</th><th data-i18n="Status">Status</th></tr></thead><tbody id="partyFilesBody"></tbody></table></div></section>
+    <section class="card"><div class="card-head"><div><h3 data-i18n="Party Profile">Party Profile</h3></div></div><div id="partyProfileInfo" class="info-grid"></div></section>
+  </div>
+  <section class="card"><div class="card-head"><div><h3 data-i18n="Party Activity">Party Activity</h3><p data-i18n="Recent enforcement and financial interactions">Recent enforcement and financial interactions</p></div></div><div id="partyActivity" class="list"></div></section>
+</div></section>
+
 <section id="reportsPage" class="page hidden"><div class="content">
   <div class="hero-row"><div><h2 data-i18n="Reports & Analytics">Reports & Analytics</h2><p data-i18n="Executive, enforcement and financial intelligence.">Executive, enforcement and financial intelligence.</p></div><div class="hero-actions"><button class="action-btn">PDF</button><button class="action-btn primary" onclick="window.print()" data-i18n="Print">Print</button></div></div>
   <div class="kpi-grid"><div class="kpi-card"><span class="kpi-label" data-i18n="Total Claims">Total Claims</span><strong class="kpi-value">BHD 1.84M</strong></div><div class="kpi-card"><span class="kpi-label" data-i18n="Collections">Collections</span><strong class="kpi-value">BHD 742.6K</strong></div><div class="kpi-card"><span class="kpi-label" data-i18n="Expenses">Expenses</span><strong class="kpi-value">BHD 38.4K</strong></div><div class="kpi-card"><span class="kpi-label" data-i18n="Net Recovery">Net Recovery</span><strong class="kpi-value">BHD 704.2K</strong></div><div class="kpi-card"><span class="kpi-label" data-i18n="Recovery Rate">Recovery Rate</span><strong class="kpi-value">40.4%</strong></div><div class="kpi-card"><span class="kpi-label" data-i18n="Settled Files">Settled Files</span><strong class="kpi-value">18</strong></div></div>
@@ -298,6 +338,13 @@ html[dir="rtl"] .alert-tile{border-left:1px solid var(--border);border-right:3px
     <div class="report-card" onclick="showReport('treasury')"><h4 data-i18n="Cash Flow & Treasury">Cash Flow & Treasury</h4><p data-i18n="Collections, client funds and transfers.">Collections, client funds and transfers.</p><strong>BHD 522K</strong></div>
   </div></section>
   <section class="card"><div class="card-head"><div><h3 id="reportTitle">Executive Summary</h3><p>August 2026</p></div></div><div class="table-wrap"><table><thead><tr><th data-i18n="Indicator">Indicator</th><th data-i18n="Current">Current</th><th data-i18n="Previous">Previous</th><th data-i18n="Change">Change</th></tr></thead><tbody id="reportBody"></tbody></table></div></section>
+</div></section>
+
+
+<section id="documentsPage" class="page hidden"><div class="content">
+  <div class="hero-row"><div><h2 data-i18n="Document Center">Document Center</h2><p data-i18n="Central demo library for enforcement documents and attachments.">Central demo library for enforcement documents and attachments.</p></div><button class="action-btn primary" onclick="demoAlert('upload')">+ <span data-i18n="Upload Document">Upload Document</span></button></div>
+  <div class="kpi-grid"><div class="kpi-card"><span class="kpi-label" data-i18n="Total Documents">Total Documents</span><strong class="kpi-value">428</strong></div><div class="kpi-card"><span class="kpi-label" data-i18n="Execution Orders">Execution Orders</span><strong class="kpi-value">86</strong></div><div class="kpi-card"><span class="kpi-label" data-i18n="Financial Documents">Financial Documents</span><strong class="kpi-value">132</strong></div><div class="kpi-card"><span class="kpi-label" data-i18n="Correspondence">Correspondence</span><strong class="kpi-value">164</strong></div><div class="kpi-card"><span class="kpi-label" data-i18n="Receipts">Receipts</span><strong class="kpi-value">46</strong></div><div class="kpi-card"><span class="kpi-label" data-i18n="Pending Review">Pending Review</span><strong class="kpi-value">9</strong></div></div>
+  <section class="card"><div class="toolbar"><div class="toolbar-left"><input id="docSearch" placeholder="Search document..." oninput="renderDocuments()"><select id="docType" onchange="renderDocuments()"><option value="" data-i18n="All Types">All Types</option><option>Execution Order</option><option>Financial</option><option>Correspondence</option><option>Receipt</option></select></div></div><div id="documentGrid" class="doc-grid"></div></section>
 </div></section>
 
 <section id="usersPage" class="page hidden"><div class="content">
@@ -561,6 +608,66 @@ Object.assign(I18N.ar,{
  "Collections are linked to the relevant enforcement file with receipt, method and allocation trail.":"ربط التحصيلات بملف التنفيذ مع الإيصال وطريقة السداد ومسار التخصيص.",
  "Track proposed settlement, discount, first payment, installments, next due date and compliance.":"متابعة التسوية المقترحة والخصم والدفعة الأولى والأقساط والاستحقاق القادم والالتزام.",
  "Management reporting covers recovery, settlements, officers, expenses and treasury.":"تقارير إدارية تغطي التحصيل والتسويات والمنفذين والمصروفات والخزينة."
+});
+
+
+const DOCUMENTS=[
+{id:"DOC-260901",name:"Execution Order - ENF-260184",type:"Execution Order",file:"ENF-260184",date:"23 Aug 2026",status:"Reviewed"},
+{id:"DOC-260902",name:"Bank Attachment Request",type:"Correspondence",file:"ENF-260184",date:"23 Aug 2026",status:"Reviewed"},
+{id:"DOC-260903",name:"Debtor Financial Statement",type:"Financial",file:"ENF-260191",date:"22 Aug 2026",status:"Reviewed"},
+{id:"DOC-260904",name:"Receipt RC-260823-015",type:"Receipt",file:"ENF-260211",date:"23 Aug 2026",status:"Reviewed"},
+{id:"DOC-260905",name:"Settlement Proposal",type:"Correspondence",file:"ENF-260219",date:"21 Aug 2026",status:"Pending Review"},
+{id:"DOC-260906",name:"Asset Inquiry Result",type:"Financial",file:"ENF-260203",date:"20 Aug 2026",status:"Reviewed"}
+];
+function renderDocuments(){
+ const q=(document.getElementById("docSearch")?.value||"").toLowerCase(),tp=document.getElementById("docType")?.value||"";
+ const el=document.getElementById("documentGrid");if(!el)return;
+ el.innerHTML=DOCUMENTS.filter(d=>(!q||[d.name,d.file,d.id].join(" ").toLowerCase().includes(q))&&(!tp||d.type===tp)).map(d=>`<div class="doc-card"><strong>${d.name}</strong><span>${d.id} · ${d.file}</span><span>${d.date}</span><span class="doc-type">${d.type}</span><div style="margin-top:9px;display:flex;justify-content:space-between;align-items:center"><span class="badge ${d.status==="Reviewed"?"active":"pending"}">${d.status}</span><button class="card-link" onclick="demoAlert('document-view')">View</button></div></div>`).join("");
+}
+function openParty360(id){
+ const r=(DATA.parties||[]).find(x=>x.id===id);if(!r)return;hidePages();document.getElementById("party360Page").classList.remove("hidden");currentModule="parties";
+ document.querySelectorAll(".nav-item").forEach(el=>el.classList.toggle("active",el.dataset.page==="parties"));
+ setHeading("Parties 360°",id);document.getElementById("party360Name").textContent=r.name;document.getElementById("party360Meta").textContent=r.id+" · "+r.ref;document.getElementById("party360Type").textContent=r.type;
+ const linked=DATA.files.filter(f=>f.creditor===r.name||f.debtor===r.name);let totalClaim=linked.reduce((a,b)=>a+(b.claim||0),0),totalCollected=linked.reduce((a,b)=>a+(b.collected||0),0),out=totalClaim-totalCollected;
+ document.getElementById("partyRiskGrid").innerHTML=[["Linked Files",linked.length||r.files],["Total Exposure",money(totalClaim||r.balance)],["Collected",money(totalCollected)],["Outstanding",money(out||r.balance)],["Risk Level",r.type==="Debtor"?"Medium":"Low"],["Last Activity","23 Aug 2026"]].map(x=>`<div class="kpi-card"><span class="kpi-label">${t(x[0])}</span><strong class="kpi-value" style="font-size:${String(x[1]).length>15?"13px":"18px"}">${x[1]}</strong></div>`).join("");
+ document.getElementById("partyFilesBody").innerHTML=(linked.length?linked:DATA.files.slice(0,Math.min(2,r.files||1))).map(f=>`<tr><td><button class="link-btn" onclick="openDetail('files','${f.id}')">${f.id}</button></td><td>${money(f.claim)}</td><td>${money(f.collected)}</td><td>${money(f.claim-f.collected)}</td><td><span class="badge ${badgeClass(f.status)}">${f.status}</span></td></tr>`).join("");
+ document.getElementById("partyProfileInfo").innerHTML=[["Party ID",r.id],["Type",r.type],["Reference",r.ref],["Mobile",r.mobile],["Status",r.status],["Portfolio Balance",money(r.balance)]].map(x=>`<div class="info-item"><span>${t(x[0])}</span><strong>${x[1]}</strong></div>`).join("");
+ document.getElementById("partyActivity").innerHTML=[["23 Aug 2026","Payment follow-up recorded","Follow-up"],["21 Aug 2026","Linked enforcement file updated","Enforcement"],["18 Aug 2026","Financial document received","Document"]].map(x=>`<div class="list-row"><div class="list-left"><div class="list-icon">✓</div><div><strong>${x[1]}</strong><span>${x[0]}</span></div></div><span class="activity-chip">${x[2]}</span></div>`).join("");
+ window.scrollTo(0,0);applyLanguage();
+}
+const _rowHtmlPhase2=rowHtml;
+rowHtml=function(m,r){
+ if(m==="parties")return `<tr><td><button class="link-btn" onclick="openParty360('${r.id}')">${r.id}</button></td><td><button class="link-btn" onclick="openParty360('${r.id}')">${r.name}</button></td><td>${r.type}</td><td>${r.ref}</td><td>${r.mobile}</td><td>${r.files}</td><td>${money(r.balance)}</td><td><span class="badge active">${r.status}</span></td></tr>`;
+ return _rowHtmlPhase2(m,r);
+}
+const _openPagePhase2=openPage;
+openPage=function(page){
+ if(page==="documents"){
+  hidePages();currentModule="documents";document.querySelectorAll(".nav-item").forEach(el=>el.classList.toggle("active",el.dataset.page===page));
+  document.getElementById("documentsPage").classList.remove("hidden");setHeading("Document Center","Central demo library for enforcement documents and attachments.");renderDocuments();document.getElementById("sidebar").classList.remove("open");window.scrollTo(0,0);applyLanguage();return;
+ }
+ _openPagePhase2(page);
+}
+function runGlobalSearch(){
+ const q=(document.getElementById("globalSearch")?.value||"").trim().toLowerCase(),box=document.getElementById("globalSearchResults");if(!box)return;
+ if(q.length<2){box.style.display="none";box.innerHTML="";return}
+ let res=[];
+ (DATA.files||[]).forEach(x=>{if([x.id,x.creditor,x.debtor,x.officer].join(" ").toLowerCase().includes(q))res.push({type:"file",id:x.id,title:x.id+" — "+x.debtor,sub:x.creditor+" · "+money(x.claim)})});
+ (DATA.parties||[]).forEach(x=>{if([x.id,x.name,x.ref].join(" ").toLowerCase().includes(q))res.push({type:"party",id:x.id,title:x.name,sub:x.id+" · "+x.type})});
+ DOCUMENTS.forEach(x=>{if([x.id,x.name,x.file].join(" ").toLowerCase().includes(q))res.push({type:"document",id:x.id,title:x.name,sub:x.file+" · "+x.type})});
+ box.innerHTML=res.slice(0,10).map(x=>`<div class="global-result" onclick="openGlobalResult('${x.type}','${x.id}')"><strong>${x.title}</strong><span>${x.sub}</span></div>`).join("")||`<div class="global-result"><span>${t("No results found")}</span></div>`;box.style.display="block";
+}
+function openGlobalResult(type,id){document.getElementById("globalSearchResults").style.display="none";document.getElementById("globalSearch").value="";if(type==="file")openDetail("files",id);else if(type==="party")openParty360(id);else openPage("documents")}
+function enhanceSettlementSchedule(){
+ const box=document.getElementById("detailSettlement360");if(!box)return;let old=box.innerHTML;box.innerHTML=old+`<div class="installment-grid">${[1,2,3,4,5,6].map((n,i)=>`<div class="installment"><strong>${money(1800)}</strong><span>${String(i+1).padStart(2,"0")} Sep 2026</span><span class="badge ${i<2?"active":"pending"}" style="margin-top:6px">${i<2?"Paid":"Due"}</span></div>`).join("")}</div>`;
+}
+const _enrichFile360Phase2=enrichFile360;
+enrichFile360=function(m,r){_enrichFile360Phase2(m,r);if(m==="files"){enhanceSettlementSchedule();const d=document.getElementById("detailDocuments");if(d)d.innerHTML=ENF_DOCS.map((name,i)=>`<div class="list-row"><div class="list-left"><div class="list-icon">▤</div><div><strong>${name}</strong><span>${r.id} · ${["Order","Request","Receipt","Draft","Correspondence"][i]}</span></div></div><button class="card-link" onclick="demoAlert('document-view')">View</button></div>`).join("")}}
+Object.assign(I18N.ar,{
+ "Document Center":"مركز المستندات","Central demo library for enforcement documents and attachments.":"مكتبة تجريبية مركزية لمستندات التنفيذ والمرفقات.","Upload Document":"رفع مستند",
+ "Total Documents":"إجمالي المستندات","Execution Orders":"أوامر التنفيذ","Financial Documents":"المستندات المالية","Correspondence":"المراسلات","Receipts":"الإيصالات","Pending Review":"بانتظار المراجعة","All Types":"جميع الأنواع",
+ "Back to Parties":"العودة إلى الأطراف","Linked Enforcement Files":"ملفات التنفيذ المرتبطة","All files connected to this party":"جميع الملفات المرتبطة بهذا الطرف","Party Profile":"بيانات الطرف","Party Activity":"نشاط الطرف","Recent enforcement and financial interactions":"أحدث التعاملات التنفيذية والمالية",
+ "Risk Level":"مستوى المخاطر","Last Activity":"آخر نشاط","Portfolio Balance":"رصيد المحفظة","No results found":"لا توجد نتائج"
 });
 
 renderDashboard();renderUsers();renderAudit();renderPermissions();showReport("executive");applyLanguage();
