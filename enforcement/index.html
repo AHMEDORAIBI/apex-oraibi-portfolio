@@ -675,6 +675,12 @@ html[dir="rtl"] .p29-appearance{right:auto;left:18px}html[dir="rtl"] .p29-pop{ri
 .p36-preview{background:#fff;color:#17212b;border:1px solid #ddd;border-radius:12px;padding:24px;line-height:1.75}.p36-preview h2{text-align:center;color:#17212b!important}.p36-meta{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:15px 0}.p36-meta div{border-bottom:1px solid #ddd;padding:6px}.p36-images{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}.p36-images img{width:100%;max-height:240px;object-fit:cover;border-radius:8px}.p36-sign{border-top:1px solid #ddd;margin-top:24px;padding-top:12px}.p36-sign canvas{width:100%;height:130px;border:1px dashed #aaa;border-radius:8px;touch-action:none}
 @media(max-width:520px){.p36-meta,.p36-images{grid-template-columns:1fr}}
 @media print{body *{visibility:hidden}.p36-preview,.p36-preview *{visibility:visible}.p36-preview{position:absolute;inset:0;border:0;padding:18mm}}
+</style><style id="phase37-document-evidence">
+/* PHASE 37 — DOCUMENT & EVIDENCE CENTER */
+.p37-source{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0}.p37-source button{border:1px solid var(--border);background:var(--white);color:var(--text);border-radius:11px;padding:13px 7px;font-weight:900}.p37-source b{display:block;font-size:23px;margin-bottom:5px}
+.p37-files{display:grid;gap:7px;margin-top:10px}.p37-file{border:1px solid var(--border);border-radius:9px;padding:9px;display:flex;justify-content:space-between;gap:8px}.p37-file span{color:var(--muted)}
+.p37-ai{border:1px solid color-mix(in srgb,var(--p29-accent) 40%,var(--border));background:color-mix(in srgb,var(--p29-accent) 7%,var(--white));border-radius:11px;padding:12px;margin-top:11px}.p37-ai strong{display:block}.p37-ai p{color:var(--muted);line-height:1.55;margin:6px 0}.p37-ai button{border:0;background:#111923;color:#fff;border-radius:8px;padding:8px 10px;font-weight:900}
+@media(max-width:560px){.p37-source{grid-template-columns:1fr 1fr}}
 </style></head>
 <div class="exec-action-sheet" id="execActionSheet"><div class="exec-action-box"><div class="minutes-head"><div><h2>New Action</h2><p>Choose what you want to add to this enforcement file.</p></div><button class="top-btn" onclick="closeExecActionSheet()">×</button></div><div class="exec-action-grid">
 <div class="exec-action-card" onclick="execAction('task')"><b>✓</b><strong>Task</strong></div><div class="exec-action-card" onclick="execAction('minutes')"><b>✎</b><strong>Minutes</strong></div><div class="exec-action-card" onclick="execAction('collection')"><b>◉</b><strong>Collection</strong></div><div class="exec-action-card" onclick="execAction('document')"><b>▧</b><strong>Document</strong></div><div class="exec-action-card" onclick="execAction('camera')"><b>📷</b><strong>Camera / Evidence</strong></div><div class="exec-action-card" onclick="execAction('settlement')"><b>◇</b><strong>Settlement</strong></div></div></div></div>
@@ -2505,7 +2511,54 @@ function p36Preview(){
  let f=(DATA.files||[]).find(x=>x.id===p35FileId);if(!f)return;
  let w=window.open("","_blank"),imgs=p36Photos.map(x=>`<img src="${x.data}">`).join("");
  let sig=p36SigData?`<img src="${p36SigData}" style="max-width:300px;max-height:100px">`:"";
- w.document.write(`<!doctype html><html dir="${currentLang==="ar"?"rtl":"ltr"}"><head><meta charset="utf-8"><title>ENFORZA Minutes</title><style>body{font-family:Arial;padding:35px;color:#17212b;line-height:1.8}.doc{max-width:850px;margin:auto}h2{text-align:center}.meta{display:grid;grid-template-columns:1fr 1fr;gap:8px}.meta div{border-bottom:1px solid #ddd;padding:6px}.imgs{display:grid;grid-template-columns:1fr 1fr;gap:8px}.imgs img{width:100%;max-height:300px;object-fit:cover}.sign{margin-top:30px;border-top:1px solid #ddd;padding-top:12px}@media print{button{display:none}}</style></head><body><div class="doc"><h2>${currentLang==="ar"?"محضر إجراء تنفيذي":"Enforcement Action Minutes"}</h2><div class="meta"><div><b>${currentLang==="ar"?"رقم الملف":"File"}:</b> ${f.id}</div><div><b>${currentLang==="ar"?"رقم القضية":"Case"}:</b> ${f.caseNo||"—"}</div><div><b>${currentLang==="ar"?"التاريخ":"Date"}:</b> ${p35v("p35Date")}</div><div><b>${currentLang==="ar"?"الوقت":"Time"}:</b> ${p35v("p36Time")}</div><div><b>${currentLang==="ar"?"الموقع":"Location"}:</b> ${p35v("p36Location")||"—"}</div><div><b>${currentLang==="ar"?"الموضوع":"Subject"}:</b> ${p35v("p35Subject")}</div></div><p>${(p35v("p35Text")||"").replace(/\n/g,"<br>")}</p><div class="imgs">${imgs}</div><div class="sign"><b>${currentLang==="ar"?"التوقيع":"Signature"}</b><br>${sig}</div><br><button onclick="window.print()">${currentLang==="ar"?"طباعة / حفظ PDF":"Print / Save PDF"}</button></div></body></html>`);w.document.close();
+ w.document.write(`<!doctype html><html dir="${currentLang==="ar"?"rtl":"ltr"}"><head><meta charset="utf-8"><title>ENFORZA Minutes</title><style>body{font-family:Arial;padding:35px;color:#17212b;line-height:1.8}.doc{max-width:850px;margin:auto}h2{text-align:center}.meta{display:grid;grid-template-columns:1fr 1fr;gap:8px}.meta div{border-bottom:1px solid #ddd;padding:6px}.imgs{display:grid;grid-template-columns:1fr 1fr;gap:8px}.imgs img{width:100%;max-height:300px;object-fit:cover}.sign{margin-top:30px;border-top:1px solid #ddd;padding-top:12px}@media print{button{display:none}}</style></head><body><div class="doc"><h2>${currentLang==="ar"?"محضر إجراء تنفيذي":"Enforcement Action Minutes"}</h2><div class="meta"><div><b>${currentLang==="ar"?"رقم الملف":"File"}:</b> ${f.id}</div><div><b>${currentLang==="ar"?"رقم القضية":"Case"}:</b> ${f.caseNo||"—"}</div><div><b>${currentLang==="ar"?"التاريخ":"Date"}:</b> ${p35v("p35Date")}</div><div><b>${currentLang==="ar"?"الوقت":"Time"}:</b> ${p35v("p36Time")}</div><div><b>${currentLang==="ar"?"الموقع":"Location"}:</b> ${p35v("p36Location")||"—"}</div><div><b>${currentLang==="ar"?"الموضوع":"Subject"}:</b> ${p35v("p35Subject")}</div></div><p>${(p35v("p35Text")||"").replace(/\n/g,"<br>")}</p><div class="imgs">${imgs}</div><div class="sign"><b>${currentLang==="ar"?"التوقيع":"Signature"}</b><br>${sig}</div><br><button onclick="window.print()">${currentLang==="ar"?"طباعة / حفظ PDF":"Print / Save PDF"}</button></div><script id="phase37-document-evidence-js">
+let p37Files=[];
+function p37DocForm(isEvidence=false){
+ return `<div class="p35-grid">
+ ${isEvidence?"":p35Field(currentLang==="ar"?"اسم / عنوان المستند":"Document Title","p35TitleInput")}
+ <div class="p35-field ${isEvidence?"full":""}"><label>${currentLang==="ar"?"التصنيف":"Category"}</label><select id="p37Category"><option>Judgment</option><option>Execution Order</option><option>Correspondence</option><option>Payment Evidence</option><option>Settlement</option><option>Identification</option><option>Field Evidence</option><option>Other</option></select></div>
+ <div class="p35-field full"><label>${currentLang==="ar"?"مصدر الإرفاق":"Attachment Source"}</label><div class="p37-source">
+ <button type="button" onclick="p37Pick('camera')"><b>📷</b>${currentLang==="ar"?"الكاميرا":"Camera"}</button>
+ <button type="button" onclick="p37Pick('gallery')"><b>🖼</b>${currentLang==="ar"?"الصور":"Gallery"}</button>
+ <button type="button" onclick="p37Pick('device')"><b>📁</b>${currentLang==="ar"?"الجهاز":"Device"}</button>
+ <button type="button" onclick="p37Drive()"><b>☁</b>${currentLang==="ar"?"Drive":"Drive"}</button></div>
+ <input id="p37Camera" type="file" accept="image/*" capture="environment" multiple hidden onchange="p37Selected(this)">
+ <input id="p37Gallery" type="file" accept="image/*" multiple hidden onchange="p37Selected(this)">
+ <input id="p37Device" type="file" multiple hidden onchange="p37Selected(this)">
+ <div class="p37-files" id="p37Files"></div></div>
+ ${p35Field(currentLang==="ar"?"الوصف / الملاحظات":"Description / Notes","p35Notes","textarea",true)}
+ <div class="p35-field full"><div class="p37-ai"><strong>✦ ENFORZA AI Document Reader</strong><p id="p37AIText">${currentLang==="ar"?"بعد اختيار المستند، يستطيع ENFORZA تجهيز ملخص واقتراح الإجراء أو المهمة التالية.":"After selecting a document, ENFORZA can prepare a summary and suggest the next task or action."}</p><button type="button" onclick="p37Analyze()">${currentLang==="ar"?"تحليل المستند":"Analyze Document"}</button></div></div></div>`;
+}
+const p37OldOpen=p35Open;
+p35Open=function(file,type){
+ p37OldOpen(file,type);
+ if(type==="document"||type==="evidence"){p37Files=[];document.getElementById("p35Body").innerHTML=p37DocForm(type==="evidence")}
+}
+function p37Pick(t){let id=t==="camera"?"p37Camera":t==="gallery"?"p37Gallery":"p37Device";document.getElementById(id)?.click()}
+function p37Selected(inp){
+ let fs=[...(inp.files||[])];p37Files.push(...fs.map(f=>({name:f.name,size:f.size,type:f.type,source:inp.id})));
+ document.getElementById("p37Files").innerHTML=p37Files.map((f,i)=>`<div class="p37-file"><div><strong>${f.name}</strong><span>${f.type||"file"} · ${Math.max(1,Math.round(f.size/1024))} KB</span></div><button type="button" onclick="p37Remove(${i})">×</button></div>`).join("");
+}
+function p37Remove(i){p37Files.splice(i,1);let h=document.getElementById("p37Files");if(h)h.innerHTML=p37Files.map((f,j)=>`<div class="p37-file"><div><strong>${f.name}</strong><span>${f.type||"file"}</span></div><button type="button" onclick="p37Remove(${j})">×</button></div>`).join("")}
+function p37Drive(){
+ showToast(currentLang==="ar"?"في نسخة الديمو استخدم اختيار الجهاز. ربط Google Drive الفعلي سيكون عند توصيل التخزين السحابي.":"For this demo, use Device. Live Google Drive selection will activate when cloud storage is connected.");
+}
+function p37Analyze(){
+ let e=document.getElementById("p37AIText"),cat=document.getElementById("p37Category")?.value||"Document";
+ if(!p37Files.length){showToast(currentLang==="ar"?"اختر مستندًا أولًا.":"Select a document first.");return}
+ e.textContent=currentLang==="ar"?`تم التعرف على ${p37Files.length} مرفق ضمن تصنيف ${cat}. في النسخة التشغيلية سيقرأ ENFORZA محتوى المستند ويستخرج الأطراف والمبالغ والتواريخ ويقترح مهمة أو إجراء، مع إبقاء القرار للمستخدم.`:`${p37Files.length} attachment(s) identified under ${cat}. In the live version ENFORZA will read the document, extract parties, amounts and dates, and suggest a task or action for user approval.`;
+}
+const p37OldSave=p35Save;
+p35Save=function(){
+ if(p35Type!=="document"&&p35Type!=="evidence")return p37OldSave();
+ let f=(DATA.files||[]).find(x=>x.id===p35FileId);if(!f)return;
+ if(!p37Files.length){showToast(currentLang==="ar"?"أرفق ملفًا أو صورة أولًا.":"Attach a file or photo first.");return}
+ let cat=document.getElementById("p37Category")?.value||"Other",note=p35v("p35Notes");
+ if(p35Type==="document"){DATA.smartDocuments=DATA.smartDocuments||[];p37Files.forEach((x,i)=>DATA.smartDocuments.push({id:p34Id("DOC"),file:f.id,title:p35v("p35TitleInput")||x.name,fileName:x.name,fileType:x.type,size:x.size,category:cat,date:new Date().toISOString().slice(0,10),note,status:"Active"}))}
+ else{DATA.evidence=DATA.evidence||[];p37Files.forEach(x=>DATA.evidence.push({id:p34Id("EVD"),file:f.id,description:note,fileName:x.name,fileType:x.type,size:x.size,category:cat,captured:new Date().toISOString()}))}
+ p34Persist();p35Close();showToast(currentLang==="ar"?"تم حفظ المرفقات وربطها بالملف.":"Attachments saved and linked to the file.");openDetail("files",f.id);
+}
+</script></body></html>`);w.document.close();
 }
 const p36OldSave=p35Save;
 p35Save=function(){
