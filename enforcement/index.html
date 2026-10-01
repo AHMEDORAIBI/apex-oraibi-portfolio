@@ -4062,5 +4062,76 @@ function nav(){let me=current();if(!me)return;document.body.dataset.enfRole=me.r
 function init(){document.getElementById("enfUsersSearch")?.addEventListener("input",e=>render(e.target.value));nav();document.addEventListener("keydown",e=>{if(e.ctrlKey&&e.shiftKey&&String(e.key).toLowerCase()==="u"){e.preventDefault();enfUsersOpen()}})}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
 })();
+</script><style id="enforza-smart-voice-demo-complete-css">
+/* DEMO — Smart Voice Completion */
+.enf-vcmd-preview{margin-top:10px;border:1px solid var(--desk-line);border-radius:12px;padding:12px;background:#fbfaf8}
+.enf-vcmd-preview h4{margin:0 0 8px;font-size:11px}.enf-vcmd-fields{display:grid;grid-template-columns:1fr 1fr;gap:7px}.enf-vcmd-field{padding:8px;border:1px solid var(--desk-line);border-radius:9px;background:#fff}.enf-vcmd-field small{display:block;color:var(--desk-muted);font-size:8px}.enf-vcmd-field b{display:block;font-size:10px;margin-top:3px}
+body.enf-dark .enf-vcmd-preview,body.enf-dark .enf-vcmd-field{background:#171d23;color:#eef2f5}
+@media(max-width:600px){.enf-vcmd-fields{grid-template-columns:1fr}}
+</style>
+<script id="enforza-smart-voice-demo-complete-js">
+(function(){
+"use strict";let command=null;
+function ar(){return (window.currentLang||document.documentElement.lang||"en").toLowerCase().startsWith("ar")}function t(e,a){return ar()?a:e}
+function norm(x){return String(x||"").replace(/[إأآ]/g,"ا").replace(/ى/g,"ي").replace(/ة/g,"ه").replace(/[٠-٩]/g,d=>"٠١٢٣٤٥٦٧٨٩".indexOf(d)).toLowerCase().replace(/\s+/g," ").trim()}
+function files(){return window.DATA&&Array.isArray(DATA.files)?DATA.files:[]}
+function findFile(raw){
+ let n=norm(raw),m=n.match(/(?:ملف|قضيه|قضية|file|case)\s*(?:رقم)?\s*([a-z0-9\/_-]+)/i);
+ if(m){let q=m[1];return files().find(f=>[f.id,f.ref,f.caseNumber,f.fileNumber].some(v=>norm(v)===q))||null}
+ return files().find(f=>{let name=norm(f.title||f.creditorName||f.debtorName||f.name||"");return name&&n.includes(name)})||null
+}
+function amount(raw){let m=String(raw).match(/(?:BHD|د\.?ب|دينار(?:\s+بحريني)?)\s*([0-9٠-٩,.]+)|([0-9٠-٩,.]+)\s*(?:BHD|د\.?ب|دينار(?:\s+بحريني)?)/i);return m?(m[1]||m[2]||"").replace(/[٠-٩]/g,d=>"٠١٢٣٤٥٦٧٨٩".indexOf(d)):""}
+function method(raw){return /بنفت|benefit/i.test(raw)?"BenefitPay":/تحويل|transfer/i.test(raw)?"Bank Transfer":/نقد|cash/i.test(raw)?"Cash":/شيك|cheque|check/i.test(raw)?"Cheque":""}
+function time(raw){let m=norm(raw).match(/(?:الساعه|الساعة|at)\s*(\d{1,2})(?::(\d{2}))?\s*(صباحا|صباحًا|am|مساء|مساءً|pm)?/);if(!m)return"";let h=+m[1],mi=m[2]||"00",p=m[3]||"";if(/مساء|pm/.test(p)&&h<12)h+=12;if(/صباح|am/.test(p)&&h===12)h=0;return String(h).padStart(2,"0")+":"+mi}
+function date(raw){
+ let n=norm(raw),d=new Date(),days={"الاحد":0,"الاثنين":1,"الثلاثاء":2,"الاربعاء":3,"الخميس":4,"الجمعه":5,"السبت":6};
+ if(/غدا|بكره|بكرة|tomorrow/.test(n))d.setDate(d.getDate()+1);
+ else{for(let k in days)if(n.includes(k)){let add=(days[k]-d.getDay()+7)%7;if(add===0)add=7;d.setDate(d.getDate()+add);break}}
+ return d.toISOString().slice(0,10)
+}
+function parse(raw){
+ let n=norm(raw),intent="dictation";
+ if(/(اضف|انشئ|سجل|ذكرني).*(مهمه|متابعه|موعد)|ذكرني/.test(n))intent="task";
+ else if(/(سجل|اضف|استلم|تحصيل|دفع|سدد).*(تحصيل|دفع|سداد|دينار)|تحصيل/.test(n))intent="collection";
+ else if(/(اضف|ارفق|سجل).*(مستند|وثيقه|دليل)/.test(n))intent="document";
+ else if(/(انشئ|سجل|افتح).*(محضر|اجتماع|جلسه)/.test(n))intent="minute";
+ else if(/(افتح|اعرض).*(ملف|قضيه)/.test(n))intent="openfile";
+ else if(/(اعرض|اظهر).*(متاخر|متأخر|overdue)/.test(n))intent="overdue";
+ let f=findFile(raw);
+ return{intent,raw,file:f,fileId:f?(f.id||f.ref||""):"",amount:amount(raw),method:method(raw),date:date(raw),time:time(raw)}
+}
+function preview(p){
+ let box=document.getElementById("enfVoiceConfirmData");if(!box)return;
+ let fields=[[t("Action","الإجراء"),p.intent],[t("File","الملف"),p.fileId||t("Not identified","لم يتم تحديده")]];
+ if(p.amount)fields.push([t("Amount","المبلغ"),"BHD "+p.amount]);if(p.method)fields.push([t("Method","الطريقة"),p.method]);if(p.intent==="task"){fields.push([t("Date","التاريخ"),p.date]);if(p.time)fields.push([t("Time","الوقت"),p.time])}
+ box.innerHTML=`<div class="enf-vcmd-preview"><h4>${t("ENFORZA understood","فهم ENFORZA")}</h4><div class="enf-vcmd-fields">${fields.map(x=>`<div class="enf-vcmd-field"><small>${x[0]}</small><b>${x[1]}</b></div>`).join("")}</div></div><div style="margin-top:9px">${p.raw}</div>`
+}
+window.enfVoiceExecute=function(){
+ let raw=document.getElementById("enfVoiceOriginal")?.value||"";command=parse(raw);
+ if(command.intent==="dictation"){document.getElementById("enfVoiceStatus").textContent=t("Dictation captured. No executable command detected.","تم التقاط الإملاء، ولم يتم التعرف على أمر تنفيذي.");return}
+ let role=(window.currentUser||{}).role||window.currentRole||sessionStorage.getItem("enforzaRole")||"officer";
+ if(role==="creditor"&&!["openfile","overdue","task"].includes(command.intent)){document.getElementById("enfVoiceStatus").textContent=t("This voice action is not permitted for Creditor access.","هذا الأمر الصوتي غير مسموح لصلاحية الدائن.");return}
+ document.getElementById("enfVoiceConfirmTitle").textContent=t("Confirm smart voice command","تأكيد الأمر الصوتي الذكي");
+ document.getElementById("enfVoiceConfirmMsg").textContent=t("Review what ENFORZA understood. The form will open pre-filled; final saving remains under your control.","راجع ما فهمه ENFORZA. سيتم فتح النموذج وتعبئته مبدئيًا، ويبقى الحفظ النهائي تحت سيطرتك.");
+ preview(command);document.getElementById("enfVoiceConfirm").classList.add("open")
+}
+function setVal(selectors,val){if(!val)return;for(let q of selectors){let x=document.querySelector(q);if(x){x.value=val;x.dispatchEvent(new Event("input",{bubbles:true}));x.dispatchEvent(new Event("change",{bubbles:true}));return}}}
+window.enfVoiceConfirmCommand=function(){
+ let p=command;if(!p)return;document.getElementById("enfVoiceConfirm")?.classList.remove("open");
+ if(p.intent==="task"&&typeof window.v2OpenTask==="function"){window.v2OpenTask(p.date);setTimeout(()=>{setVal(["#taskDate","#v2TaskDate",'input[name="date"]'],p.date);setVal(["#taskTime","#v2TaskTime",'input[type="time"]'],p.time);setVal(["#taskFile","#v2TaskFile",'select[name="file"]'],p.fileId)},100)}
+ else if(p.intent==="collection"&&typeof window.enfFinOpen==="function"){window.enfFinOpen("Collection");setTimeout(()=>{setVal(["#enfFinAmount",'#enfFinancePage input[type="number"]'],p.amount);setVal(["#enfFinMethod",'select[name="method"]'],p.method);setVal(["#enfFinFile",'select[name="file"]'],p.fileId)},100)}
+ else if(p.intent==="document"&&typeof window.enfDeOpen==="function"){window.enfDeOpen("Document");setTimeout(()=>setVal(["#enfDeFile",'select[name="file"]'],p.fileId),100)}
+ else if(p.intent==="minute"&&typeof window.enfOpenMinutesStudio==="function")window.enfOpenMinutesStudio(p.fileId||"");
+ else if(p.intent==="openfile"&&p.fileId&&typeof window.openFile360==="function")window.openFile360(p.fileId);
+ else if(p.intent==="overdue"){if(typeof window.v2ShowPage==="function")window.v2ShowPage("tasks");setTimeout(()=>{let q=document.querySelector('select[name="status"],#taskStatusFilter');if(q){let o=[...q.options].find(x=>/overdue|متأخر/i.test(x.text));if(o){q.value=o.value;q.dispatchEvent(new Event("change",{bubbles:true}))}}},100)}
+ command=null;
+}
+function examples(){
+ let box=document.querySelector("#enfVoiceAI .enf-voice-warning");if(box)box.innerHTML=t(
+ "Try: “Add a task for file 25 tomorrow at 10” · “Record a BHD 500 collection by BenefitPay” · “Open file 25” · “Show overdue files”.",
+ "جرّب: «أضف مهمة للملف 25 غدًا الساعة 10» · «سجل تحصيل 500 دينار بنفت» · «افتح ملف 25» · «اعرض الملفات المتأخرة»."
+ )}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",examples);else examples();
+})();
 </script></body>
 </html>
