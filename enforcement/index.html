@@ -559,6 +559,18 @@ html[dir="rtl"] .sidebar .nav-item.active{box-shadow:inset -2px 0 0 #b77a3e}
 input,select,textarea,button{font-family:inherit}
 @media(max-width:1180px){:root{--desk-side:220px}.v2-command,.v2cal,.v2360{padding:24px!important}}
 @media(max-width:820px){.sidebar{width:220px!important;transform:translateX(-105%);transition:.25s}.sidebar.open{transform:none}.main{margin-left:0!important;width:100%!important}html[dir="rtl"] .main{margin-right:0!important}.v2-command,.v2cal,.v2360{padding:18px 14px!important}}
+</style><style id="enforza-v2-phase6-shell-css">
+/* Phase 6 — premium desktop shell */
+.enf-nav-group{margin:6px 0}.enf-nav-group-title{padding:13px 12px 6px;font-size:9px;letter-spacing:1.45px;font-weight:950;color:#6f7b85;text-transform:uppercase}
+.enf-more-toggle{display:flex!important;align-items:center!important;justify-content:space-between!important}.enf-more-chevron{font-size:10px;opacity:.65;transition:.2s}.enf-more-toggle.open .enf-more-chevron{transform:rotate(180deg)}
+.enf-more-menu{display:none;padding-left:8px}.enf-more-menu.open{display:block}html[dir=rtl] .enf-more-menu{padding-left:0;padding-right:8px}
+.enf-admin-menu{margin-top:4px;padding-top:5px;border-top:1px solid rgba(255,255,255,.055)}
+.enf-top-identity{display:flex;align-items:center;gap:10px}.enf-top-mark{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;background:#111820;color:#d7a16c;font-size:11px;font-weight:950}.enf-top-name b{display:block;font-size:12px}.enf-top-name small{display:block;color:var(--muted);font-size:9px;letter-spacing:.7px}
+.enf-top-actions{display:flex;align-items:center;gap:7px;margin-left:auto}html[dir=rtl] .enf-top-actions{margin-left:0;margin-right:auto}.enf-icon-btn{width:35px;height:35px;border:1px solid var(--desk-line);border-radius:10px;background:#fff;display:grid;place-items:center;cursor:pointer;color:#47515b}
+.enf-search{width:min(330px,28vw);height:37px;border:1px solid var(--desk-line);border-radius:10px;background:#faf9f7;padding:0 12px;font-size:12px}
+.enf-role-chip{padding:7px 10px;border-radius:999px;background:#f1e7dd;color:#80562f;font-size:10px;font-weight:900;white-space:nowrap}
+.enf-page-enter{animation:enfFade .16s ease}@keyframes enfFade{from{opacity:.55;transform:translateY(3px)}to{opacity:1;transform:none}}
+@media(max-width:1000px){.enf-search{display:none}.enf-role-chip{display:none}}
 </style></head>
 <body>
 
@@ -2199,6 +2211,50 @@ function normalizeDesktop(){
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",normalizeDesktop);else normalizeDesktop();
 new MutationObserver(normalizeDesktop).observe(document.documentElement,{attributes:true,attributeFilter:["lang","dir"]});
+})();
+</script><script id="enforza-v2-phase6-shell-js">
+(function(){
+"use strict";
+function ar6(){return (window.currentLang||document.documentElement.lang||"en")==="ar"}
+function t6(en,ar){return ar6()?ar:en}
+const GROUPS={
+ core:["dashboard","files","tasks"],
+ finance:["claims","collections","expenses","settlements","treasury"],
+ records:["minutes","evidence","documents","reports","audit"],
+ admin:["users","settings"]
+};
+function pageOf(el){return el.dataset.page||el.getAttribute("data-page")||el.dataset.cleanPage||el.dataset.enfPage||""}
+function makeTitle(en,ar){let d=document.createElement("div");d.className="enf-nav-group-title";d.dataset.en=en;d.dataset.ar=ar;d.textContent=t6(en,ar);return d}
+function rebuildNav(){
+ let nav=document.querySelector(".sidebar .nav");if(!nav||nav.dataset.phase6==="1")return;
+ let items=[...nav.querySelectorAll(":scope > .nav-item")];if(!items.length)return;
+ let by={};items.forEach(x=>{let p=pageOf(x);if(p)by[p]=x});
+ let keep=new Set(Object.values(GROUPS).flat());
+ items.forEach(x=>{if(!keep.has(pageOf(x)))x.style.display="none"});
+ let anchor=items[0];
+ function group(cls,titleEn,titleAr,keys){
+   let g=document.createElement("div");g.className="enf-nav-group "+cls;g.appendChild(makeTitle(titleEn,titleAr));
+   keys.forEach(k=>{if(by[k])g.appendChild(by[k])});nav.insertBefore(g,anchor);
+ }
+ group("enf-core", "WORKSPACE","مساحة العمل",GROUPS.core);
+ let more=document.createElement("div");more.className="enf-nav-group";let tog=document.createElement("a");tog.href="#";tog.className="nav-item enf-more-toggle";tog.innerHTML='<span class="nav-icon">•••</span><span class="enf-more-label">'+t6("More","المزيد")+'</span><span class="enf-more-chevron">⌄</span>';let menu=document.createElement("div");menu.className="enf-more-menu";menu.appendChild(makeTitle("FINANCIAL","المالي"));GROUPS.finance.forEach(k=>{if(by[k])menu.appendChild(by[k])});menu.appendChild(makeTitle("RECORDS & CONTROL","السجلات والرقابة"));GROUPS.records.forEach(k=>{if(by[k])menu.appendChild(by[k])});tog.onclick=function(e){e.preventDefault();tog.classList.toggle("open");menu.classList.toggle("open")};more.append(tog,menu);nav.insertBefore(more,anchor);
+ let adm=document.createElement("div");adm.className="enf-nav-group enf-admin-menu";adm.appendChild(makeTitle("ADMINISTRATION","الإدارة"));GROUPS.admin.forEach(k=>{if(by[k])adm.appendChild(by[k])});nav.insertBefore(adm,anchor);
+ nav.dataset.phase6="1";
+}
+function topbar(){
+ let top=document.querySelector(".topbar");if(!top||top.dataset.phase6==="1")return;
+ top.innerHTML=`<div class="enf-top-identity"><div class="enf-top-mark">EN</div><div class="enf-top-name"><b>ENFORZA</b><small>${t6("PRIVATE ENFORCEMENT","التنفيذ الخاص")}</small></div></div><div class="enf-top-actions"><input class="enf-search" placeholder="${t6("Search files, tasks, documents…","ابحث في الملفات والمهام والمستندات…")}"><span class="enf-role-chip">${t6("Enforcement Officer","منفذ خاص")}</span><button class="enf-icon-btn" title="${t6("Notifications","الإشعارات")}">○</button><button class="enf-icon-btn" title="${t6("Language","اللغة")}" onclick="try{setLanguage((window.currentLang||'en')==='ar'?'en':'ar')}catch(e){}">${ar6()?"EN":"ع"}</button><button class="enf-icon-btn" title="${t6("Theme","المظهر")}" onclick="try{toggleTheme()}catch(e){}">◐</button></div>`;
+ top.dataset.phase6="1";
+}
+function relabel(){
+ document.querySelectorAll(".enf-nav-group-title").forEach(x=>x.textContent=ar6()?x.dataset.ar:x.dataset.en);
+ let ml=document.querySelector(".enf-more-label");if(ml)ml.textContent=t6("More","المزيد");
+ let top=document.querySelector(".topbar");if(top){top.dataset.phase6="";topbar()}
+}
+function animatePages(){document.addEventListener("click",function(e){let n=e.target.closest(".nav-item");if(!n)return;setTimeout(()=>{let p=[...document.querySelectorAll(".page")].find(x=>getComputedStyle(x).display!=="none");if(p){p.classList.remove("enf-page-enter");void p.offsetWidth;p.classList.add("enf-page-enter")}},20)},true)}
+function init(){rebuildNav();topbar();animatePages()}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
+new MutationObserver(relabel).observe(document.documentElement,{attributes:true,attributeFilter:["lang","dir"]});
 })();
 </script></body>
 </html>
