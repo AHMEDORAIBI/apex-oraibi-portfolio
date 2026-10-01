@@ -681,7 +681,38 @@ html[dir="rtl"] .p29-appearance{right:auto;left:18px}html[dir="rtl"] .p29-pop{ri
 .p37-files{display:grid;gap:7px;margin-top:10px}.p37-file{border:1px solid var(--border);border-radius:9px;padding:9px;display:flex;justify-content:space-between;gap:8px}.p37-file span{color:var(--muted)}
 .p37-ai{border:1px solid color-mix(in srgb,var(--p29-accent) 40%,var(--border));background:color-mix(in srgb,var(--p29-accent) 7%,var(--white));border-radius:11px;padding:12px;margin-top:11px}.p37-ai strong{display:block}.p37-ai p{color:var(--muted);line-height:1.55;margin:6px 0}.p37-ai button{border:0;background:#111923;color:#fff;border-radius:8px;padding:8px 10px;font-weight:900}
 @media(max-width:560px){.p37-source{grid-template-columns:1fr 1fr}}
-</style></head>
+</style>
+<style id="phase38-stability-role-ui">
+/* PHASE 38 — STABILITY, STRICT RBAC & PREMIUM CREDITOR */
+body{overflow-x:hidden}
+#rawCodeLeak,.raw-code-leak{display:none!important}
+.role-hidden{display:none!important}
+#creditorPremiumPage{display:none}
+body.role-creditor #creditorPremiumPage.active{display:block}
+body.role-creditor .sidebar .nav-item,
+body.role-officer .sidebar .nav-item,
+body.role-management .sidebar .nav-item{transition:.15s ease}
+
+.cp38{padding:22px;max-width:1480px;margin:auto}
+.cp38-hero{position:relative;overflow:hidden;background:linear-gradient(135deg,#101820,#243441);color:#fff;border-radius:22px;padding:28px;display:flex;justify-content:space-between;gap:20px;align-items:center;box-shadow:0 20px 55px rgba(14,23,31,.15)}
+.cp38-hero:after{content:"";position:absolute;width:280px;height:280px;border:1px solid rgba(196,139,80,.22);border-radius:50%;right:-80px;bottom:-170px}
+.cp38-hero h1{font-size:26px!important;color:#fff!important;margin:0 0 7px}.cp38-hero p{margin:0;color:#cbd4db}
+.cp38-badge{border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:8px 12px;white-space:nowrap}
+.cp38-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:15px 0}
+.cp38-kpi,.cp38-card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:17px}
+.cp38-kpi span{display:block;color:var(--muted)}.cp38-kpi strong{display:block;font-size:22px!important;margin-top:6px}
+.cp38-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:13px}.cp38-card h3{font-size:20px!important;margin:0 0 12px}
+.cp38-file{border:1px solid var(--border);border-radius:13px;padding:14px;margin-top:9px;cursor:pointer}.cp38-file:hover{border-color:var(--p29-accent)}
+.cp38-filetop{display:flex;justify-content:space-between;gap:10px}.cp38-file span{color:var(--muted);display:block;margin-top:5px}
+.cp38-progress{height:8px;background:color-mix(in srgb,var(--border) 70%,transparent);border-radius:99px;overflow:hidden;margin-top:10px}.cp38-progress i{height:100%;display:block;background:var(--p29-accent)}
+.cp38-update{padding:12px 0;border-bottom:1px solid var(--border)}.cp38-update:last-child{border:0}.cp38-update span{color:var(--muted);display:block;margin-top:4px}
+.cp38-ai{background:linear-gradient(135deg,color-mix(in srgb,var(--p29-accent) 10%,var(--white)),var(--white));border-color:color-mix(in srgb,var(--p29-accent) 38%,var(--border))}
+.cp38-btn{border:0;background:#111923;color:#fff;border-radius:10px;padding:11px 14px;font-size:16px;font-weight:900}
+.cp38-empty{text-align:center;padding:35px 15px;color:var(--muted)}.cp38-empty b{display:block;color:var(--text);font-size:20px;margin-bottom:7px}
+@media(max-width:900px){.cp38-kpis{grid-template-columns:1fr 1fr}.cp38-grid{grid-template-columns:1fr}.cp38{padding:12px}.cp38-hero{display:block}.cp38-badge{display:inline-block;margin-top:15px}}
+@media(max-width:520px){.cp38-kpis{grid-template-columns:1fr 1fr}.cp38-hero{border-radius:16px;padding:20px}.cp38-filetop{display:block}}
+</style>
+</head>
 <div class="exec-action-sheet" id="execActionSheet"><div class="exec-action-box"><div class="minutes-head"><div><h2>New Action</h2><p>Choose what you want to add to this enforcement file.</p></div><button class="top-btn" onclick="closeExecActionSheet()">×</button></div><div class="exec-action-grid">
 <div class="exec-action-card" onclick="execAction('task')"><b>✓</b><strong>Task</strong></div><div class="exec-action-card" onclick="execAction('minutes')"><b>✎</b><strong>Minutes</strong></div><div class="exec-action-card" onclick="execAction('collection')"><b>◉</b><strong>Collection</strong></div><div class="exec-action-card" onclick="execAction('document')"><b>▧</b><strong>Document</strong></div><div class="exec-action-card" onclick="execAction('camera')"><b>📷</b><strong>Camera / Evidence</strong></div><div class="exec-action-card" onclick="execAction('settlement')"><b>◇</b><strong>Settlement</strong></div></div></div></div>
 <button class="exec-ai-fab" onclick="openAI()">✦ AI</button><div class="p27-drawer" id="p27Drawer" onclick="if(event.target===this)closeP27Notifications()"><aside class="p27-panel"><div class="p27-head"><div class="p27-head-row"><div><h2 id="p27Title">Notifications</h2><p id="p27Subtitle">Important items that need your attention.</p></div><button onclick="closeP27Notifications()">×</button></div></div><div class="p27-filters" id="p27Filters"></div><div class="p27-list" id="p27List"></div><div class="p27-footer"><button onclick="p27MarkViewed()">✓ <span id="p27ViewedText">Mark Viewed</span></button><button onclick="openPage('smarttasks');closeP27Notifications()">▧ <span id="p27TasksText">Tasks</span></button></div></aside></div><body>
@@ -2665,6 +2696,81 @@ p35Save=function(){
 })();
 </script>
 
+
+<section class="page" id="creditorPremiumPage">
+  <div class="cp38" id="cp38Root"></div>
+</section>
+
+<script id="phase38-rbac-creditor">
+(function(){
+ const ROLE_ACCESS={
+  management:["dashboard","files","parties","claims","tasks","smarttasks","collections","expenses","settlements","treasury","reports","users","settings","audit","minutes","evidence","documents","notifications"],
+  officer:["dashboard","files","parties","tasks","smarttasks","collections","settlements","minutes","evidence","documents","notifications"],
+  creditor:["creditorPremium"]
+ };
+ const LABEL_ALLOW={
+  management:["Dashboard","Enforcement Files","Parties","Financial Claims","Tasks & Follow-ups","Collections","Expenses","Settlements","Banking & Treasury","Reports & Analytics","Users & Permissions","Settings","Audit Log","Minutes","Smart Tasks","Field Evidence","Document Center"],
+  officer:["Dashboard","Enforcement Files","Parties","Tasks & Follow-ups","Collections","Settlements","Minutes","Smart Tasks","Field Evidence","Document Center"]
+ };
+ function roleClass(role){
+   document.body.classList.remove("role-management","role-officer","role-creditor");
+   document.body.classList.add("role-"+role);
+ }
+ function navText(el){return (el.textContent||"").replace(/\s+/g," ").trim()}
+ window.p38ApplyRBAC=function(role){
+   role=role||window.activeDemoRole||"management"; roleClass(role);
+   document.querySelectorAll(".nav-item").forEach(el=>{
+     let txt=navText(el), ok=role!=="creditor" && (LABEL_ALLOW[role]||[]).some(x=>txt.includes(x));
+     el.classList.toggle("role-hidden",!ok);
+   });
+   // Hide management-only top-level controls from non-management roles.
+   document.querySelectorAll('[onclick*="users"],[onclick*="audit"],[onclick*="settings"]').forEach(el=>{
+      if(role!=="management") el.classList.add("role-hidden"); else el.classList.remove("role-hidden");
+   });
+   if(role==="creditor"){
+     document.querySelectorAll(".sidebar").forEach(x=>x.style.display="none");
+     renderCreditor38();
+   }else{
+     document.querySelectorAll(".sidebar").forEach(x=>x.style.display="");
+   }
+ };
+ function creditorFiles(){
+   // In clean-start demo, creditor only receives files explicitly linked to creditor username/name.
+   const username=(document.getElementById("demoUsername")?.value||"creditor").toLowerCase();
+   return (DATA.files||[]).filter(f=>{
+     const fields=[f.creditorUser,f.creditorUsername,f.creditorEmail,f.creditorRef,f.creditor];
+     return fields.some(v=>String(v||"").toLowerCase()===username || String(v||"").toLowerCase().includes(username));
+   });
+ }
+ window.renderCreditor38=function(){
+   document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+   document.getElementById("creditorPremiumPage")?.classList.add("active");
+   const root=document.getElementById("cp38Root"); if(!root)return;
+   const fs=creditorFiles(), claim=fs.reduce((s,f)=>s+ +(f.claim||0),0), col=fs.reduce((s,f)=>s+ +(f.collected||0),0), out=Math.max(0,claim-col), rate=claim?Math.round(col/claim*100):0;
+   root.innerHTML=`<div class="cp38-hero"><div><h1>${currentLang==="ar"?"بوابة الدائن":"Creditor Portal"}</h1><p>${currentLang==="ar"?"متابعة واضحة وآمنة لملفاتكم ومبالغ التحصيل وآخر التحديثات المعتمدة.":"A clear, secure view of your files, recoveries and approved updates."}</p></div><div class="cp38-badge">ENFORZA · Private Enforcement</div></div>
+   <div class="cp38-kpis"><div class="cp38-kpi"><span>${currentLang==="ar"?"ملفاتي":"My Files"}</span><strong>${fs.length}</strong></div><div class="cp38-kpi"><span>${currentLang==="ar"?"إجمالي المطالبات":"Total Claims"}</span><strong>${money(claim)}</strong></div><div class="cp38-kpi"><span>${currentLang==="ar"?"تم تحصيله":"Recovered"}</span><strong>${money(col)}</strong></div><div class="cp38-kpi"><span>${currentLang==="ar"?"المتبقي":"Outstanding"}</span><strong>${money(out)}</strong></div></div>
+   <div class="cp38-grid"><div class="cp38-card"><h3>${currentLang==="ar"?"ملفات التنفيذ":"Enforcement Files"}</h3>${fs.length?fs.map(f=>{let r=+(f.claim||0)?Math.min(100,Math.round(+(f.collected||0)/+(f.claim||0)*100)):0;return `<div class="cp38-file"><div class="cp38-filetop"><strong>${f.id}</strong><b>${r}%</b></div><span>${currentLang==="ar"?"رقم القضية":"Case"}: ${f.caseNo||"—"}</span><span>${currentLang==="ar"?"المطالبة":"Claim"} ${money(+(f.claim||0))} · ${currentLang==="ar"?"المحصل":"Recovered"} ${money(+(f.collected||0))}</span><div class="cp38-progress"><i style="width:${r}%"></i></div></div>`}).join(""):`<div class="cp38-empty"><b>${currentLang==="ar"?"لا توجد ملفات مرتبطة بهذا الحساب":"No linked files yet"}</b>${currentLang==="ar"?"عند ربط ملف بهذا الدائن سيظهر هنا تلقائيًا.":"Once a file is linked to this creditor, it will appear here automatically."}</div>`}</div>
+   <div><div class="cp38-card cp38-ai"><h3>✦ ENFORZA AI</h3><p>${currentLang==="ar"?"يمكن للدائن الاستفسار عن حالة ملفه والتحديثات المسموح بعرضها فقط. لا تظهر الملاحظات الداخلية أو بيانات الإدارة أو الملفات الأخرى.":"Ask about your file status and approved updates only. Internal notes, management information and other creditors' files remain hidden."}</p><button class="cp38-btn" onclick="typeof openAI==='function'&&openAI()">${currentLang==="ar"?"اسأل ENFORZA":"Ask ENFORZA"}</button></div><div class="cp38-card" style="margin-top:13px"><h3>${currentLang==="ar"?"ملخص التحصيل":"Recovery Summary"}</h3><div class="cp38-update"><strong>${rate}%</strong><span>${currentLang==="ar"?"نسبة التحصيل الإجمالية":"Overall recovery rate"}</span></div><div class="cp38-update"><strong>${money(out)}</strong><span>${currentLang==="ar"?"الرصيد المتبقي":"Current outstanding balance"}</span></div></div></div></div>`;
+ };
+ const oldLogin=window.loginDemo;
+ window.loginDemo=function(){
+   let ok=oldLogin?oldLogin():false;
+   setTimeout(()=>p38ApplyRBAC(window.activeDemoRole||window.selectedDemoRole||"management"),60);
+   return ok;
+ };
+ const oldOpen=window.openPage;
+ window.openPage=function(p){
+   const role=window.activeDemoRole||"management";
+   if(role==="creditor"){renderCreditor38();return}
+   if(!(ROLE_ACCESS[role]||[]).includes(p)){
+     if(typeof showToast==="function")showToast(currentLang==="ar"?"ليس لديك صلاحية لعرض هذا القسم.":"You do not have permission to view this section.");
+     return;
+   }
+   return oldOpen?oldOpen(p):undefined;
+ };
+ setTimeout(()=>{if(window.activeDemoRole)p38ApplyRBAC(window.activeDemoRole)},150);
+})();
+</script>
 </body></html>`);w.document.close();
 }
 const p36OldSave=p35Save;
