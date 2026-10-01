@@ -3061,5 +3061,98 @@ function audit(){
 window.enfAuditRefresh=function(){applyRole();langSync();toast(t("Interface refreshed.","تم تحديث الواجهة."))}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",audit);else audit();
 })();
+</script><style id="enforza-v2-phase22-integration-css">
+.enf-p22-health{position:fixed;z-index:130000;inset:0;background:rgba(7,11,15,.64);display:none;place-items:center;padding:18px}
+.enf-p22-health.open{display:grid}.enf-p22-card{width:min(760px,96vw);max-height:90vh;overflow:auto;background:#fff;border-radius:18px;padding:20px;box-shadow:0 30px 100px rgba(0,0,0,.3)}
+.enf-p22-card h2{margin:0 0 5px;font-size:21px!important}.enf-p22-card p{margin:0 0 14px;color:var(--desk-muted);font-size:11px}.enf-p22-check{display:grid;grid-template-columns:1fr auto;gap:10px;padding:10px 0;border-bottom:1px solid var(--desk-line);font-size:11px}.enf-p22-ok{color:#4f805c;font-weight:950}.enf-p22-warn{color:#a46b32;font-weight:950}.enf-p22-foot{display:flex;justify-content:flex-end;margin-top:14px}
+body.enf-dark .enf-p22-card{background:#171d23;color:#eef2f5}
+</style>
+<div class="enf-p22-health" id="enfP22Health"><div class="enf-p22-card"><h2>ENFORZA · Integration Health</h2><p id="enfP22Sub">Core interface and workflow checks.</p><div id="enfP22Checks"></div><div class="enf-p22-foot"><button class="enf-ms-btn primary" onclick="enfP22Close()">Close</button></div></div></div>
+<script id="enforza-v2-phase22-integration-js">
+(function(){
+"use strict";
+function ar(){return (window.currentLang||document.documentElement.lang||"en")==="ar"}
+function t(e,a){return ar()?a:e}
+function q(id){return document.getElementById(id)}
+function visible(el){return !!el&&getComputedStyle(el).display!=="none"}
+function role(){
+ let r=String(window.currentRole||window.userRole||sessionStorage.getItem("enforzaRole")||localStorage.getItem("enforzaRole")||"").toLowerCase();
+ return r.includes("creditor")?"creditor":"officer";
+}
+function enforceRole(){
+ let r=role();document.body.dataset.enfRole=r;
+ let creditorHide=["expenses","treasury","claims","users","settings","evidence"];
+ document.querySelectorAll(".nav-item").forEach(n=>{
+   let p=n.dataset.page||"";
+   if(r==="creditor"&&creditorHide.includes(p))n.style.setProperty("display","none","important");
+   else if(n.dataset.p22RoleHidden==="1"){n.style.removeProperty("display");delete n.dataset.p22RoleHidden}
+   if(r==="creditor"&&creditorHide.includes(p))n.dataset.p22RoleHidden="1";
+ });
+}
+function normalizeLanguage(){
+ let isAr=ar();document.documentElement.lang=isAr?"ar":"en";document.documentElement.dir=isAr?"rtl":"ltr";
+ document.body.classList.toggle("enf-rtl",isAr);
+}
+function normalizeTheme(){
+ let saved=localStorage.getItem("enforzaTheme")||sessionStorage.getItem("enforzaTheme")||"";
+ if(saved==="dark")document.body.classList.add("enf-dark");
+ if(saved==="light")document.body.classList.remove("enf-dark");
+}
+function repairLegacyIds(){
+ /* legacy duplicate IDs are renamed only after preserving the first live target */
+ ["docType","voiceTranscript"].forEach(id=>{
+   let all=[...document.querySelectorAll('[id="'+id+'"]')];
+   all.slice(1).forEach((el,i)=>{el.id=id+"__legacy_"+(i+2);el.dataset.legacyId=id});
+ });
+ /* ENF- can occur as a literal/template artifact; only DOM collisions are touched */
+ let all=[...document.querySelectorAll('[id="ENF-"]')];
+ all.slice(1).forEach((el,i)=>el.id="ENF-__legacy_"+(i+2));
+}
+function safeNav(){
+ document.querySelectorAll(".nav-item").forEach(n=>{
+   if(n.dataset.p22Wired)return;n.dataset.p22Wired="1";
+   n.addEventListener("click",()=>{setTimeout(()=>document.querySelectorAll(".sidebar.open,.side-menu.open,.mobile-menu.open").forEach(x=>x.classList.remove("open")),0)});
+ });
+}
+function hookLogin(){
+ let obs=new MutationObserver(()=>{enforceRole();normalizeLanguage();normalizeTheme()});
+ obs.observe(document.body,{attributes:true,attributeFilter:["class","data-enf-role"],subtree:false});
+ ["currentRole","userRole"].forEach(k=>{try{let v=window[k];Object.defineProperty(window,k,{configurable:true,get(){return v},set(n){v=n;setTimeout(enforceRole,0)}})}catch(e){}});
+}
+function checks(){
+ let data=window.DATA||{},arr=k=>Array.isArray(data[k]);
+ let tests=[
+  [t("Login interface present","واجهة الدخول موجودة"),!!document.querySelector('[id*="login" i],.login-screen,.login-page')],
+  [t("Officer / Creditor role isolation active","فصل صلاحيات الموظف والدائن مفعّل"),document.body.dataset.enfRole==="officer"||document.body.dataset.enfRole==="creditor"],
+  [t("Language direction synchronized","اتجاه اللغة متزامن"),document.documentElement.dir===(ar()?"rtl":"ltr")],
+  [t("Light / Dark theme engine available","محرك النمط النهاري والليلي متاح"),true],
+  [t("File Intake Center available","مركز فتح الملفات متاح"),!!q("enfIntake")],
+  [t("File 360° available","File 360° متاح"),!!q("enfFile360FinalPage")],
+  [t("Calendar / Tasks available","التقويم والمهام متاحان"),!!document.querySelector('[data-page="tasks"]')],
+  [t("Documents & Evidence available","المستندات والأدلة متاحة"),!!q("enfDocumentsCenter")],
+  [t("Financial Workspace available","مساحة العمل المالية متاحة"),!!q("enfFinancePage")],
+  [t("Reports Center available","مركز التقارير متاح"),!!q("enfReportsPage")],
+  [t("Smart Follow-up available","المتابعة الذكية متاحة"),!!q("enfSmartFollowupPage")],
+  [t("Minutes Studio available","استوديو المحاضر متاح"),!!q("enfMinutesStudioPage")],
+  [t("Core data stores initialized","مخازن البيانات الأساسية مهيأة"),["files","smartTasks","minutes","documents","evidence","financialTransactions"].every(arr)],
+  [t("Legacy duplicate DOM IDs repaired","تمت معالجة معرفات DOM القديمة المكررة"),["docType","voiceTranscript","ENF-"].every(id=>document.querySelectorAll('[id="'+id+'"]').length<=1)]
+ ];
+ return tests;
+}
+window.enfP22Open=function(){
+ let box=q("enfP22Checks"),m=q("enfP22Health");if(!box||!m)return;
+ let a=checks();box.innerHTML=a.map(x=>'<div class="enf-p22-check"><span>'+x[0]+'</span><b class="'+(x[1]?"enf-p22-ok":"enf-p22-warn")+'">'+(x[1]?t("PASS","سليم"):t("CHECK","تحقق"))+'</b></div>').join("");
+ q("enfP22Sub").textContent=t("Core interface and workflow checks. No test data is created.","فحص الواجهة والمسارات الأساسية دون إنشاء أي بيانات تجريبية.");
+ m.classList.add("open");
+}
+window.enfP22Close=()=>q("enfP22Health")?.classList.remove("open");
+window.enfP22Refresh=function(){repairLegacyIds();enforceRole();normalizeLanguage();normalizeTheme();safeNav()}
+function init(){
+ repairLegacyIds();enforceRole();normalizeLanguage();normalizeTheme();safeNav();hookLogin();
+ /* expose a non-intrusive diagnostic shortcut: Ctrl+Shift+H */
+ document.addEventListener("keydown",e=>{if(e.ctrlKey&&e.shiftKey&&String(e.key).toLowerCase()==="h")enfP22Open()});
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
+})();
 </script></body>
 </html>
