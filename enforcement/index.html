@@ -384,6 +384,19 @@ html[dir="rtl"] .minutes-tools button{text-align:right}
 .amendment-box{margin-top:8px;padding:8px;border-left:3px solid #c9976e;background:#fffaf6;border-radius:0 7px 7px 0;font-size:7px;color:var(--muted)}
 @media(max-width:720px){.attendee-row{grid-template-columns:1fr 1fr auto}.signature-box canvas{height:130px}.approval-strip{display:block}.approval-strip button{margin-top:8px;width:100%}}
 
+
+/* ===== ENFORZA PHASE 15 — MINUTES TEMPLATES + SECTION VOICE ===== */
+.template-picker{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.template-card{border:1px solid var(--border);background:#fff;border-radius:9px;padding:10px;cursor:pointer}
+.template-card:hover,.template-card.active{border-color:#c9976e;background:#fff8f2}.template-card b{display:block;font-size:16px;color:var(--bronze)}
+.template-card strong{display:block;font-size:8px;color:var(--navy);margin-top:5px}.template-card span{display:block;font-size:7px;color:var(--muted);margin-top:3px}
+.minute-section-editor{border:1px solid var(--border);border-radius:9px;padding:10px;margin-top:9px;background:#fff}
+.minute-section-head{display:flex;justify-content:space-between;gap:8px;align-items:center}.minute-section-head strong{font-size:9px;color:var(--navy)}
+.minute-section-head button{border:1px solid #e1c8b2;background:#fff8f2;color:var(--bronze);border-radius:16px;padding:6px 8px;font-size:7px}
+.minute-section-editor textarea{width:100%;min-height:88px;border:0;border-top:1px solid #edf1f3;margin-top:8px;padding:9px 2px;font-size:9px;line-height:1.7;resize:vertical;outline:none}
+.template-ai-strip{display:flex;gap:7px;align-items:center;border:1px solid #ead7c6;background:#fffaf6;border-radius:8px;padding:9px;margin-top:10px}.template-ai-strip span{font-size:7px;color:var(--muted);line-height:1.5}.template-ai-strip button{margin-left:auto;white-space:nowrap;border:0;background:var(--bronze);color:#fff;border-radius:7px;padding:7px 9px;font-size:7px}
+@media(max-width:720px){.template-picker{grid-template-columns:1fr 1fr}.minute-section-editor textarea{min-height:105px}}
+
 </style>
 </head>
 <body>
@@ -394,7 +407,7 @@ html[dir="rtl"] .minutes-tools button{text-align:right}
  <div class="minutes-tools"><button class="active">✎ <span data-i18n="Draft">Draft</span></button><button onclick="focusMinuteText()">🎙 <span data-i18n="Voice Dictation">Voice Dictation</span></button><button onclick="document.getElementById('minuteImagesInput').click()">▧ <span data-i18n="Attach Images">Attach Images</span></button><button onclick="analyzeMinute()">✦ <span data-i18n="AI Suggestions">AI Suggestions</span></button></div></aside>
  <main class="minutes-main">
   <div class="minutes-head"><div><h2 data-i18n="Prepare Minutes">Prepare Minutes</h2><p data-i18n="All features in this screen are for interactive demo purposes.">All features in this screen are for interactive demo purposes.</p></div><button class="top-btn" onclick="closeMinutesModal()">×</button></div>
-  <div class="minutes-grid">
+  <div class="minutes-field full"><label data-i18n="Minutes Template">Minutes Template</label><div class="template-picker" id="minuteTemplatePicker"></div><div class="template-ai-strip"><span data-i18n="Template help">Choose a template to prepare structured sections. You can dictate separately into each section.</span><button onclick="compileMinuteSections()" data-i18n="Build Full Minutes">Build Full Minutes</button></div></div><div id="minuteStructuredSections"></div><div class="minutes-grid">
    <div class="minutes-field"><label data-i18n="Minutes Reference">Minutes Reference</label><input id="minuteRef" readonly></div>
    <div class="minutes-field"><label data-i18n="Related File">Related File</label><select id="minuteFile"></select></div>
    <div class="minutes-field"><label data-i18n="Date & Time">Date & Time</label><input id="minuteDate" type="datetime-local"></div>
@@ -1502,6 +1515,52 @@ function printMinute(id){
  w.document.write(`<!doctype html><html dir="${currentLang==="ar"?"rtl":"ltr"}"><head><meta charset="utf-8"><title>${m.id}</title><style>body{font-family:Arial,sans-serif;padding:35px;line-height:1.8;color:#17212b}h1{font-size:20px}table{width:100%;border-collapse:collapse;margin:15px 0}td,th{border:1px solid #ddd;padding:7px;font-size:12px}.meta{font-size:12px;color:#555}.text{white-space:pre-wrap;border-top:1px solid #ddd;padding-top:15px}.sig{max-width:260px;margin-top:20px}</style></head><body><h1>ENFORZA — ${t("Enforcement Minutes")}</h1><div class="meta">${m.id} · ${m.file} · ${m.date.replace("T"," ")} · ${m.location||""}</div><h2>${m.subject}</h2>${att?`<table><tr><th>${t("Name")}</th><th>${t("Capacity")}</th></tr>${att}</table>`:""}<div class="text">${m.text}</div>${imgs}${m.signature?`<h3>${t("Officer Signature")}</h3><img class="sig" src="${m.signature}">`:""}${(m.amendments||[]).map((a,i)=>`<h3>${t("Amendment")} ${i+1}</h3><div>${a.text}</div>`).join("")}<script>window.onload=()=>window.print()<\/script></body></html>`);w.document.close();
 }
 Object.assign(I18N.ar,{"Attendees & Capacities":"الحاضرون وصفاتهم","Add Attendee":"إضافة حاضر","Name":"الاسم","Capacity":"الصفة","Location / Site":"الموقع","Prepared By":"أعد المحضر","Officer Signature":"توقيع المنفذ","Sign using mouse or touch.":"وقع باستخدام الفأرة أو شاشة اللمس.","Clear Signature":"مسح التوقيع","Final Approval & Lock":"الاعتماد النهائي وقفل المحضر","Once approved, the original minutes are locked. Later changes are recorded as amendments.":"بعد الاعتماد يقفل أصل المحضر، وأي تعديل لاحق يسجل كملحق تعديل مستقل.","Approve & Lock":"اعتماد وقفل","Image":"صورة","Minutes Approved & Locked":"تم اعتماد وقفل المحضر","Minutes approved and locked.":"تم اعتماد المحضر وقفل النسخة الأصلية.","Enter the minutes text before approval.":"أدخل نص المحضر قبل الاعتماد.","Enter amendment / additional note":"أدخل ملحق التعديل أو الملاحظة الإضافية","Minutes Amendment Added":"تمت إضافة ملحق للمحضر","Amendment added without changing the approved original.":"تمت إضافة الملحق دون تغيير أصل المحضر المعتمد.","APPROVED":"معتمد","attendees":"حاضرين","amendments recorded":"ملحقات تعديل مسجلة","Add Amendment":"إضافة ملحق","Print":"طباعة","Enforcement Minutes":"محضر تنفيذ","Amendment":"ملحق تعديل"});
+
+
+const MINUTE_TEMPLATES={
+ visit:{icon:"⌖",name:"Field Visit",desc:"Visit and field observations",sections:["Purpose of Visit","Persons Present","Actions Performed","Observations","Statements Received","Result & Next Action"]},
+ inspection:{icon:"◫",name:"Asset Inspection",desc:"Inspection and asset condition",sections:["Inspection Purpose","Asset / Site Identification","Persons Present","Physical Observations","Images & Evidence","Result & Recommendation"]},
+ debtor:{icon:"☎",name:"Debtor Contact",desc:"Call or direct contact record",sections:["Contact Method","Identity Verification","Purpose of Contact","Debtor Statement","Payment / Settlement Discussion","Agreed Next Step"]},
+ meeting:{icon:"◎",name:"Meeting",desc:"Formal meeting record",sections:["Meeting Purpose","Attendees","Matters Discussed","Statements & Positions","Decisions","Actions & Deadlines"]},
+ service:{icon:"▧",name:"Delivery / Service",desc:"Delivery and service record",sections:["Document / Item Served","Recipient Identification","Time & Place","Method of Service","Recipient Response","Completion Result"]},
+ general:{icon:"✎",name:"General Record",desc:"Flexible enforcement record",sections:["Background","Event / Action","Persons Involved","Observations","Attachments","Conclusion & Next Action"]}
+};
+let activeMinuteTemplate="general",minuteSectionValues={},sectionRecognition=null,activeSectionKey=null;
+function renderMinuteTemplates(){
+ const e=document.getElementById("minuteTemplatePicker");if(!e)return;
+ e.innerHTML=Object.entries(MINUTE_TEMPLATES).map(([k,v])=>`<div class="template-card ${k===activeMinuteTemplate?"active":""}" onclick="selectMinuteTemplate('${k}')"><b>${v.icon}</b><strong>${t(v.name)}</strong><span>${t(v.desc)}</span></div>`).join("");
+ renderStructuredSections();
+}
+function selectMinuteTemplate(k){activeMinuteTemplate=k;minuteSectionValues={};renderMinuteTemplates();const type=document.getElementById("minuteType");if(type){const n=MINUTE_TEMPLATES[k].name;[...type.options].forEach(o=>{if(o.text===n)o.selected=true})}}
+function renderStructuredSections(){
+ const e=document.getElementById("minuteStructuredSections");if(!e)return;const tp=MINUTE_TEMPLATES[activeMinuteTemplate];
+ e.innerHTML=`<div style="margin-top:15px"><strong style="font-size:9px;color:var(--navy)">${t("Structured Minutes Sections")}</strong>${tp.sections.map((s,i)=>`<div class="minute-section-editor"><div class="minute-section-head"><strong>${i+1}. ${t(s)}</strong><button onclick="dictateMinuteSection('${i}')">🎙 ${t("Dictate Section")}</button></div><textarea id="minuteSection_${i}" oninput="minuteSectionValues['${i}']=this.value" placeholder="${t("Type or dictate this section...")}">${minuteSectionValues[i]||""}</textarea></div>`).join("")}</div>`;
+}
+function dictateMinuteSection(key){
+ const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){showToast(t("Voice recognition is not supported in this browser"));return}
+ if(sectionRecognition){try{sectionRecognition.stop()}catch(e){}}
+ activeSectionKey=key;const target=document.getElementById("minuteSection_"+key);sectionRecognition=new SR();sectionRecognition.lang=currentLang==="ar"?"ar-BH":"en-US";sectionRecognition.continuous=true;sectionRecognition.interimResults=false;
+ sectionRecognition.onstart=()=>showToast(t("Listening to this section..."));
+ sectionRecognition.onresult=e=>{for(let i=e.resultIndex;i<e.results.length;i++)if(e.results[i].isFinal){target.value+=(target.value?" ":"")+e.results[i][0].transcript;minuteSectionValues[key]=target.value}};
+ sectionRecognition.onend=()=>{sectionRecognition=null};sectionRecognition.start();
+}
+function compileMinuteSections(){
+ const tp=MINUTE_TEMPLATES[activeMinuteTemplate],parts=tp.sections.map((s,i)=>{const v=document.getElementById("minuteSection_"+i)?.value.trim();return v?`${t(s)}:\n${v}`:""}).filter(Boolean);
+ if(!parts.length){showToast(t("Complete at least one structured section first."));return}
+ document.getElementById("minuteText").value=parts.join("\n\n");minuteSuggestion("organize");showToast(t("Structured sections added to the minutes text."));
+}
+const _openMinutesP15=openMinutesModal;
+openMinutesModal=function(id=null){
+ const existing=id?DATA.minutes.find(x=>x.id===id):null;activeMinuteTemplate=existing?.template||"general";minuteSectionValues=existing?.sections?{...existing.sections}:{};
+ _openMinutesP15(id);setTimeout(renderMinuteTemplates,20);
+}
+const _saveMinutesP15=saveMinutes;
+saveMinutes=function(status){
+ _saveMinutesP15(status);const id=document.getElementById("minuteRef")?.value;const m=DATA.minutes.find(x=>x.id===id);if(m){m.template=activeMinuteTemplate;m.sections={...minuteSectionValues}}
+}
+Object.assign(I18N.ar,{
+"Minutes Template":"قالب المحضر","Template help":"اختر قالبًا لتجهيز أقسام منظمة، ويمكن الإملاء الصوتي داخل كل قسم بصورة مستقلة.","Build Full Minutes":"تجميع نص المحضر","Field Visit":"زيارة ميدانية","Visit and field observations":"زيارة وملاحظات ميدانية","Asset Inspection":"معاينة أصول","Inspection and asset condition":"المعاينة وحالة الأصل","Debtor Contact":"التواصل مع المدين","Call or direct contact record":"محضر اتصال أو تواصل مباشر","Meeting":"اجتماع","Formal meeting record":"محضر اجتماع رسمي","Delivery / Service":"تسليم أو إعلان","Delivery and service record":"محضر التسليم أو الإعلان","General Record":"محضر عام","Flexible enforcement record":"محضر تنفيذ مرن","Structured Minutes Sections":"أقسام المحضر المنظمة","Dictate Section":"إملاء القسم","Type or dictate this section...":"اكتب أو أمْلِ هذا القسم...","Listening to this section...":"جاري الاستماع لهذا القسم...","Complete at least one structured section first.":"أكمل قسمًا واحدًا على الأقل أولًا.","Structured sections added to the minutes text.":"تم تجميع الأقسام داخل نص المحضر.","Purpose of Visit":"غرض الزيارة","Persons Present":"الأشخاص الحاضرون","Actions Performed":"الإجراءات المنفذة","Observations":"الملاحظات","Statements Received":"الإفادات المستلمة","Result & Next Action":"النتيجة والإجراء التالي","Inspection Purpose":"غرض المعاينة","Asset / Site Identification":"تعريف الأصل أو الموقع","Physical Observations":"الملاحظات الميدانية","Images & Evidence":"الصور والأدلة","Result & Recommendation":"النتيجة والتوصية","Contact Method":"وسيلة التواصل","Identity Verification":"التحقق من الهوية","Purpose of Contact":"غرض التواصل","Debtor Statement":"إفادة المدين","Payment / Settlement Discussion":"مناقشة السداد أو التسوية","Agreed Next Step":"الخطوة التالية المتفق عليها","Meeting Purpose":"غرض الاجتماع","Attendees":"الحاضرون","Matters Discussed":"الموضوعات التي تمت مناقشتها","Statements & Positions":"الإفادات والمواقف","Decisions":"القرارات","Actions & Deadlines":"الإجراءات والمواعيد","Document / Item Served":"المستند أو الشيء المسلم","Recipient Identification":"بيانات المستلم","Time & Place":"الوقت والمكان","Method of Service":"طريقة التسليم","Recipient Response":"رد المستلم","Completion Result":"نتيجة الإجراء","Background":"الخلفية","Event / Action":"الواقعة أو الإجراء","Persons Involved":"الأشخاص ذوو الصلة","Attachments":"المرفقات","Conclusion & Next Action":"الخلاصة والإجراء التالي"
+});
 
 renderDashboard();renderUsers();renderAudit();renderPermissions();showReport("executive");applyLanguage();
 </script>
