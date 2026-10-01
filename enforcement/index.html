@@ -628,6 +628,17 @@ html[dir=rtl] .v2cal-event{border-left:0!important;border-right:3px solid #b77a3
 .v210-ai{background:linear-gradient(145deg,#151a20,#1d252d);color:#fff;border-color:#27313a}.v210-ai .v210-card-head h2{color:#fff}.v210-ai-state{padding:15px;border-radius:11px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08)}.v210-ai-state b{display:block;font-size:13px;margin-bottom:5px}.v210-ai-state p{margin:0;color:#b9c1c8;font-size:11px;line-height:1.6}.v210-ai-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}.v210-ai-actions button{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.055);color:#fff;border-radius:9px;padding:9px;font-size:10px;font-weight:900;cursor:pointer}
 .v210-bottom{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-top:13px}.v210-progress{height:7px;border-radius:999px;background:#eee9e3;overflow:hidden;margin-top:9px}.v210-progress i{display:block;height:100%;background:#b77a3e;border-radius:inherit}.v210-row{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--desk-line);font-size:11px}.v210-row:last-child{border-bottom:0}.v210-row span{color:var(--desk-muted)}.v210-row b{font-size:11px}
 @media(max-width:1050px){.v210-grid{grid-template-columns:1fr}.v210-kpis{grid-template-columns:repeat(2,1fr)}}@media(max-width:700px){.v210-hero{grid-template-columns:1fr}.v210-actions{justify-content:flex-start}.v210-kpis,.v210-bottom{grid-template-columns:1fr 1fr}.v210-task{grid-template-columns:48px 1fr}.v210-tag{display:none}}
+</style><style id="enforza-v2-phase11-desktop-qa-css">
+/* Phase 11 — desktop QA, language, theme, permissions and legacy cleanup */
+body.enf-dark{--desk-bg:#0f1419;--desk-card:#171d23;--desk-line:#2a333b;--desk-ink:#eef2f5;--desk-muted:#9ca7b0;--white:#171d23;--text:#eef2f5;--muted:#9ca7b0;--border:#2a333b;background:#0f1419!important;color:#eef2f5!important}
+body.enf-dark .topbar,body.enf-dark .v210-card,body.enf-dark .v210-kpi,body.enf-dark .v2files-body,body.enf-dark .v2files-kpi,body.enf-dark .v2360-main,body.enf-dark .v2360-side,body.enf-dark .v2cal-shell,body.enf-dark .v2cal-toolbar,body.enf-dark .v2task-panel,body.enf-dark .v2wizard-card{background:#171d23!important;color:#eef2f5!important;border-color:#2a333b!important}
+body.enf-dark .v210-empty,body.enf-dark .v2360-box,body.enf-dark .v2360-party-card,body.enf-dark .v2360-fin,body.enf-dark .v2cal-day,body.enf-dark .v2file-row:hover{background:#13191f!important}
+body.enf-dark input,body.enf-dark select,body.enf-dark textarea,body.enf-dark .v2cal-btn,body.enf-dark .v2360-qbtn{background:#11171c!important;color:#eef2f5!important;border-color:#303941!important}
+.enf-hidden-role{display:none!important}
+.enf-legacy-hidden{display:none!important}
+#enfRoleSwitcher{position:relative}.enf-role-menu{position:absolute;right:0;top:43px;width:220px;padding:7px;background:#fff;border:1px solid var(--desk-line);border-radius:12px;box-shadow:0 18px 50px rgba(0,0,0,.12);display:none;z-index:90000}html[dir=rtl] .enf-role-menu{right:auto;left:0}.enf-role-menu.open{display:block}.enf-role-option{width:100%;border:0;background:transparent;padding:10px;border-radius:8px;text-align:left;font-size:11px;font-weight:850;cursor:pointer}.enf-role-option:hover{background:#f4ece3}html[dir=rtl] .enf-role-option{text-align:right}
+body.enf-dark .enf-role-menu{background:#171d23;border-color:#2a333b}body.enf-dark .enf-role-option{color:#eef2f5}body.enf-dark .enf-role-option:hover{background:#222a31}
+.enf-qa-badge{position:fixed;right:18px;bottom:16px;z-index:45000;padding:7px 10px;border-radius:999px;background:#111820;color:#d7a16c;font-size:9px;font-weight:900;letter-spacing:.6px;opacity:.78}html[dir=rtl] .enf-qa-badge{right:auto;left:18px}
 </style></head>
 <body>
 
@@ -2471,6 +2482,57 @@ function render10(){
 window.v210Refresh=render10;
 function init10(){render10();document.addEventListener("click",function(e){if(e.target.closest('.nav-item[data-page="dashboard"]'))setTimeout(render10,10)},true)}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init10);else init10();
+})();
+</script><script id="enforza-v2-phase11-desktop-qa-js">
+(function(){
+"use strict";
+const ROLE_RULES={
+ "Enforcement Officer":["dashboard","files","tasks","followupBoard","claims","collections","expenses","settlements","treasury","minutes","evidence","documents","reports","audit"],
+ "Creditor":["dashboard","files","tasks","documents","reports"],
+ "Administrator":["*"]
+};
+function ar11(){return (window.currentLang||document.documentElement.lang||"en")==="ar"}
+function t11(en,ar){return ar11()?ar:en}
+function currentRole11(){return localStorage.getItem("enforza_v2_role")||"Enforcement Officer"}
+function setDir11(){
+ let ar=ar11();document.documentElement.lang=ar?"ar":"en";document.documentElement.dir=ar?"rtl":"ltr";
+ document.body.dir=ar?"rtl":"ltr";
+}
+function pageKey11(el){return el.dataset.page||el.getAttribute("data-page")||el.dataset.cleanPage||el.dataset.enfPage||""}
+function applyRole11(){
+ let role=currentRole11(),allowed=ROLE_RULES[role]||ROLE_RULES["Enforcement Officer"];
+ document.querySelectorAll(".nav-item").forEach(el=>{let p=pageKey11(el);if(!p)return;el.classList.toggle("enf-hidden-role",!(allowed.includes("*")||allowed.includes(p)))});
+ let chip=document.querySelector(".enf-role-chip");if(chip){chip.textContent=role==="Creditor"?t11("Creditor","الدائن"):role==="Administrator"?t11("Administrator","مدير النظام"):t11("Enforcement Officer","منفذ خاص")}
+ document.body.dataset.enforzaRole=role;
+}
+window.enfSetRole=function(role){if(!ROLE_RULES[role])return;localStorage.setItem("enforza_v2_role",role);applyRole11();let m=document.querySelector(".enf-role-menu");if(m)m.classList.remove("open");if(typeof v210Refresh==="function")v210Refresh()}
+function roleSwitcher11(){
+ let chip=document.querySelector(".enf-role-chip");if(!chip||chip.closest("#enfRoleSwitcher"))return;
+ let wrap=document.createElement("div");wrap.id="enfRoleSwitcher";chip.parentNode.insertBefore(wrap,chip);wrap.appendChild(chip);chip.style.cursor="pointer";
+ let menu=document.createElement("div");menu.className="enf-role-menu";menu.innerHTML=`<button class="enf-role-option" onclick="enfSetRole('Enforcement Officer')">${t11("Enforcement Officer","منفذ خاص")}</button><button class="enf-role-option" onclick="enfSetRole('Creditor')">${t11("Creditor","الدائن")}</button><button class="enf-role-option" onclick="enfSetRole('Administrator')">${t11("Administrator","مدير النظام")}</button>`;wrap.appendChild(menu);chip.onclick=()=>menu.classList.toggle("open");
+}
+window.toggleTheme=function(){let dark=!document.body.classList.contains("enf-dark");document.body.classList.toggle("enf-dark",dark);localStorage.setItem("enforza_v2_theme",dark?"dark":"light")}
+function theme11(){document.body.classList.toggle("enf-dark",localStorage.getItem("enforza_v2_theme")==="dark")}
+function cleanup11(){
+ /* keep only V2 workspaces visible when routed; suppress orphaned old dashboard fragments */
+ document.querySelectorAll("body > .card, body > .panel, body > .widget").forEach(x=>x.classList.add("enf-legacy-hidden"));
+ document.querySelectorAll(".page").forEach(p=>{if(!p.id)return;if(p.id!=="dashboardPage"&&getComputedStyle(p).display!=="none"&&!p.matches("#v2CalendarPage,#v2File360Page,#v2FilesWorkspace")){ /* legacy pages remain routeable */ }});
+}
+function translateShell11(){
+ setDir11();applyRole11();
+ document.querySelectorAll(".enf-nav-group-title").forEach(x=>{if(x.dataset.en&&x.dataset.ar)x.textContent=ar11()?x.dataset.ar:x.dataset.en});
+ let ml=document.querySelector(".enf-more-label");if(ml)ml.textContent=t11("More","المزيد");
+ if(typeof v210Refresh==="function")v210Refresh();
+}
+const previousSet11=window.setLanguage;
+window.setLanguage=function(lang){
+ window.currentLang=lang;
+ if(typeof previousSet11==="function")try{previousSet11(lang)}catch(e){}
+ setTimeout(translateShell11,0);
+};
+function badge11(){if(document.querySelector(".enf-qa-badge"))return;let b=document.createElement("div");b.className="enf-qa-badge";b.textContent="ENFORZA V2 · DESKTOP";document.body.appendChild(b)}
+function init11(){theme11();setDir11();cleanup11();roleSwitcher11();applyRole11();badge11()}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init11);else init11();
 })();
 </script></body>
 </html>
