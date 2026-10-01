@@ -882,50 +882,7 @@ body.enf-dark .enf360-actions button,body.enf-dark .enf360-tab,body.enf-dark .en
 </header>
 
 <section id="dashboardPage" class="page">
-<div class="content">
-  <div class="hero-row"><div><h2><span data-i18n="Good morning,">Good morning,</span> <span>Ahmed</span></h2><p data-i18n="Here is the current enforcement portfolio position.">Here is the current enforcement portfolio position.</p></div><div class="hero-actions"><button class="action-btn" onclick="startDemoTour()">▶ <span data-i18n="Start Demo Tour">Start Demo Tour</span></button><button class="action-btn primary" onclick="quickNewAction()">+ <span data-i18n="New Action">New Action</span></button></div></div>
-  <div class="kpi-grid">
-    <div class="kpi-card"><span class="kpi-label" data-i18n="Active Enforcement Files">Active Enforcement Files</span><strong class="kpi-value">86</strong><div class="kpi-note"><span class="positive">+7</span> <span data-i18n="this month">this month</span></div></div>
-    <div class="kpi-card"><span class="kpi-label" data-i18n="Total Claims">Total Claims</span><strong class="kpi-value">BHD 1.84M</strong><div class="kpi-note">112 <span data-i18n="open claims">open claims</span></div></div>
-    <div class="kpi-card"><span class="kpi-label" data-i18n="Collected">Collected</span><strong class="kpi-value">BHD 742,600</strong><div class="kpi-note"><span class="positive">40.4%</span> <span data-i18n="recovery rate">recovery rate</span></div></div>
-    <div class="kpi-card"><span class="kpi-label" data-i18n="Outstanding">Outstanding</span><strong class="kpi-value">BHD 1.10M</strong><div class="kpi-note"><span class="warning">BHD 214K</span> <span data-i18n="overdue">overdue</span></div></div>
-    <div class="kpi-card"><span class="kpi-label" data-i18n="Settlements">Settlements</span><strong class="kpi-value">18</strong><div class="kpi-note">BHD 196,000</div></div>
-    <div class="kpi-card"><span class="kpi-label" data-i18n="Collected This Month">Collected This Month</span><strong class="kpi-value">BHD 96,450</strong><div class="kpi-note"><span class="positive">↑ 12.8%</span></div></div>
-  </div>
-  <div class="morning-brief"><div class="ai-brief-head"><div><span class="ai-chip">AI MORNING BRIEF</span><h3 data-i18n="Morning Management Brief">Morning Management Brief</h3></div><button class="card-link" onclick="speakMorningBrief()" data-i18n="Read Aloud">Read Aloud</button></div><p data-i18n="Morning brief text">Today you have 9 actions due, 3 overdue follow-ups, 2 settlement installments approaching due date, and 2 high-value files requiring management attention.</p></div><div class="ai-brief"><div class="ai-brief-head"><div><span class="ai-chip">ENFORZA AI · DEMO</span><h3 data-i18n="AI Executive Brief">AI Executive Brief</h3></div><button class="card-link" onclick="openAI('executive')" data-i18n="Ask AI">Ask AI</button></div><p data-i18n="AI demo brief text">7 files require attention today. 3 settlement installments are approaching due date, 2 high-value files have had no movement for more than 14 days, and recovery performance is strongest in files assigned to Ali Hassan.</p></div><div class="alert-strip" id="smartAlerts">
-    <div class="alert-tile"><strong>7</strong><span data-i18n="Files without action">Files without action</span></div>
-    <div class="alert-tile"><strong>5</strong><span data-i18n="Installments due today">Installments due today</span></div>
-    <div class="alert-tile"><strong>3</strong><span data-i18n="Broken settlements">Broken settlements</span></div>
-    <div class="alert-tile"><strong>12</strong><span data-i18n="High priority actions">High priority actions</span></div>
-  </div>
-  <div class="dashboard-grid">
-    <section class="card">
-      <div class="card-head"><div><h3 data-i18n="Claims vs Collections">Claims vs Collections</h3><p data-i18n="Last 6 months portfolio movement">Last 6 months portfolio movement</p></div></div>
-      <div id="barChart" style="height:230px;display:flex;align-items:flex-end;gap:26px;padding:10px 18px 0;border-bottom:1px solid var(--border)"></div>
-      <div style="display:flex;gap:16px;margin-top:10px;font-size:8px;color:var(--muted)"><span>● <span data-i18n="Claims">Claims</span></span><span style="color:var(--bronze)">● <span data-i18n="Collections">Collections</span></span></div>
-    </section>
-    <section class="card">
-      <div class="card-head"><div><h3 data-i18n="Recovery Performance">Recovery Performance</h3><p data-i18n="Current enforcement portfolio">Current enforcement portfolio</p></div></div>
-      <div class="donut-wrap"><div class="donut"><div class="donut-center"><strong>40.4%</strong><span data-i18n="RECOVERED">RECOVERED</span></div></div></div>
-      <div class="list-row"><span data-i18n="Total Claims">Total Claims</span><strong>BHD 1.84M</strong></div>
-      <div class="list-row"><span data-i18n="Collected">Collected</span><strong>BHD 742.6K</strong></div>
-      <div class="list-row"><span data-i18n="Outstanding">Outstanding</span><strong>BHD 1.10M</strong></div>
-    </section>
-  </div>
-  <div class="dashboard-grid">
-    <section class="card"><div class="card-head"><div><h3 data-i18n="Priority Enforcement Files">Priority Enforcement Files</h3><p data-i18n="Files requiring immediate action">Files requiring immediate action</p></div><button class="card-link" onclick="openPage('files')" data-i18n="View All">View All</button></div><div class="table-wrap"><table><thead><tr><th data-i18n="File">File</th><th data-i18n="Creditor">Creditor</th><th data-i18n="Debtor">Debtor</th><th data-i18n="Claim">Claim</th><th data-i18n="Outstanding">Outstanding</th><th data-i18n="Next Action">Next Action</th><th data-i18n="Status">Status</th></tr></thead><tbody id="priorityFiles"></tbody></table></div></section>
-    <section class="card"><div class="card-head"><div><h3 data-i18n="Recovery by Officer">Recovery by Officer</h3><p data-i18n="Current month performance">Current month performance</p></div></div>
-      <div class="progress-row"><strong><button class="link-btn" onclick="openOfficer360('Ali Hassan')">Ali Hassan</button></strong><div class="progress-track"><div class="progress-fill" style="width:88%"></div></div><span>88%</span></div>
-      <div class="progress-row"><strong><button class="link-btn" onclick="openOfficer360('Maryam Yusuf')">Maryam Yusuf</button></strong><div class="progress-track"><div class="progress-fill" style="width:81%"></div></div><span>81%</span></div>
-      <div class="progress-row"><strong><button class="link-btn" onclick="openOfficer360('Khalid Salman')">Khalid Salman</button></strong><div class="progress-track"><div class="progress-fill" style="width:74%"></div></div><span>74%</span></div>
-      <div class="progress-row"><strong><button class="link-btn" onclick="openOfficer360('Noor Ahmed')">Noor Ahmed</button></strong><div class="progress-track"><div class="progress-fill" style="width:69%"></div></div><span>69%</span></div>
-    </section>
-  </div>
-  <div class="dashboard-grid equal">
-    <section class="card"><div class="card-head"><div><h3 data-i18n="Upcoming Actions">Upcoming Actions</h3><p data-i18n="Next enforcement activities">Next enforcement activities</p></div></div><div class="list" id="upcomingActions"></div></section>
-    <section class="card"><div class="card-head"><div><h3 data-i18n="Recent Financial Activity">Recent Financial Activity</h3><p data-i18n="Latest collections and expenses">Latest collections and expenses</p></div></div><div class="list" id="recentFinancial"></div></section>
-  </div>
-</div>
+<div id="enfExecutiveDashboardRoot"></div>
 </section>
 
 <section id="genericListPage" class="page hidden"><div class="content">
@@ -4116,6 +4073,83 @@ function wire(){
  let root=document.getElementById("enfFinRoot");if(root)new MutationObserver(()=>{clearTimeout(window.__enfFe2T);window.__enfFe2T=setTimeout(augmentFinance,30)}).observe(root,{childList:true,subtree:true});
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",wire);else wire()
+})();
+</script>
+
+<style id="enforza-executive-dashboard-css">
+.enf-ed{padding:18px}.enf-ed-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:13px}.enf-ed-head h2{margin:0 0 4px;font-size:25px}.enf-ed-head p{margin:0;color:var(--muted)}.enf-ed-actions{display:flex;gap:7px;flex-wrap:wrap}
+.enf-ed-kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:9px}.enf-ed-kpi{border:1px solid var(--line);border-radius:14px;padding:12px;background:var(--surface);cursor:pointer;transition:.15s}.enf-ed-kpi:hover{transform:translateY(-1px);border-color:var(--bronze)}.enf-ed-kpi small{display:block;color:var(--muted);font-size:7px;font-weight:900;letter-spacing:.05em}.enf-ed-kpi b{display:block;font-size:17px;margin:4px 0}.enf-ed-kpi span{font-size:7px;color:var(--muted)}
+.enf-ed-grid{display:grid;grid-template-columns:1.35fr .65fr;gap:10px;margin-top:10px}.enf-ed-card{border:1px solid var(--line);border-radius:15px;background:var(--surface);padding:13px}.enf-ed-card h3{margin:0 0 3px;font-size:13px}.enf-ed-card>p{margin:0 0 10px;color:var(--muted);font-size:8px}
+.enf-ed-alerts{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}.enf-ed-alert{border:1px solid var(--line);border-radius:12px;padding:10px;cursor:pointer}.enf-ed-alert:hover{border-color:var(--bronze)}.enf-ed-alert b{font-size:18px;display:block}.enf-ed-alert span{font-size:7px;color:var(--muted)}
+.enf-ed-list{display:grid;gap:6px}.enf-ed-row{display:grid;grid-template-columns:1fr auto;gap:8px;padding:9px;border-bottom:1px solid var(--line);cursor:pointer}.enf-ed-row:hover{background:rgba(178,122,67,.05)}.enf-ed-row b{font-size:9px;display:block}.enf-ed-row small{font-size:7px;color:var(--muted)}.enf-ed-row strong{font-size:9px}
+.enf-ed-bars{display:grid;gap:9px}.enf-ed-bar-head{display:flex;justify-content:space-between;font-size:8px;margin-bottom:4px}.enf-ed-track{height:7px;border-radius:99px;background:rgba(120,130,140,.14);overflow:hidden}.enf-ed-track i{display:block;height:100%;background:var(--bronze);border-radius:99px}
+.enf-ed-brief{border-inline-start:3px solid var(--bronze);padding:11px 12px;background:rgba(178,122,67,.06);border-radius:10px;margin-top:10px;font-size:9px;line-height:1.6}.enf-ed-table{width:100%;border-collapse:collapse}.enf-ed-table th,.enf-ed-table td{text-align:start;padding:8px;border-bottom:1px solid var(--line);font-size:8px}.enf-ed-table th{font-size:7px;color:var(--muted)}
+@media(max-width:1200px){.enf-ed-kpis{grid-template-columns:repeat(3,1fr)}.enf-ed-alerts{grid-template-columns:repeat(2,1fr)}}@media(max-width:800px){.enf-ed-grid{grid-template-columns:1fr}.enf-ed-kpis{grid-template-columns:1fr 1fr}.enf-ed-head{flex-direction:column}}
+</style>
+
+<script id="enforza-executive-dashboard-js">
+(function(){
+"use strict";
+function arD(){return (window.currentLang||document.documentElement.lang||"en").toLowerCase().startsWith("ar")}
+function TD(e,a){return arD()?a:e}
+function AD(n){return window.DATA&&Array.isArray(DATA[n])?DATA[n]:[]}
+function idD(f){return f.id||f.ref||""}
+function MD(v){return "BHD "+Number(v||0).toLocaleString("en-BH",{minimumFractionDigits:3,maximumFractionDigits:3})}
+function okD(x){return(x.status||"Posted")!=="Reversed"}
+function posD(f){if(typeof window.enfFinancialPosition==="function"){let p=window.enfFinancialPosition(idD(f));if(p)return p}let id=idD(f),tx=AD("financialTransactions").filter(x=>x.file===id&&okD(x)),claim=Number(f.amount||f.claimAmount||f.claim||0)+tx.filter(x=>x.type==="Claim Adjustment").reduce((a,x)=>a+Number(x.amount||0),0),col=tx.filter(x=>x.type==="Collection").reduce((a,x)=>a+Number(x.amount||0),0);return{claim,col,out:Math.max(0,claim-col)}}
+function dateOnlyD(){return new Date().toISOString().slice(0,10)}
+function monthD(){return dateOnlyD().slice(0,7)}
+function openFilesD(q){if(typeof window.enfFiles360Open==="function")window.enfFiles360Open();setTimeout(()=>{let e=document.getElementById("ef360Search");if(e&&q){e.value=q;enfFiles360Render()}},0)}
+function openTasksD(){if(typeof window.v210Go==="function")window.v210Go("tasks");else document.querySelector('.nav-item[data-page="tasks"]')?.click()}
+function openFinD(){if(typeof window.enfOpenFinance==="function")window.enfOpenFinance()}
+function metricsD(){
+ let fs=AD("files"),tx=AD("financialTransactions").filter(okD),tasks=AD("smartTasks"),today=dateOnlyD(),mon=monthD(),claim=0,col=0,out=0;
+ fs.forEach(f=>{let p=posD(f);claim+=p.claim;col+=p.col;out+=p.out});
+ let todayCol=tx.filter(x=>x.type==="Collection"&&x.date===today).reduce((a,x)=>a+Number(x.amount||0),0),monthCol=tx.filter(x=>x.type==="Collection"&&String(x.date||"").startsWith(mon)).reduce((a,x)=>a+Number(x.amount||0),0);
+ let overdue=tasks.filter(x=>!["Completed","Cancelled"].includes(x.status)&&String(x.due||x.date||"")<today),todayTasks=tasks.filter(x=>!["Completed","Cancelled"].includes(x.status)&&(x.due||x.date)===today);
+ let active=fs.filter(f=>!["Closed","Completed","Cancelled"].includes(f.status||f.stage||"Active"));
+ return{fs,tx,tasks,claim,col,out,todayCol,monthCol,overdue,todayTasks,active,recovery:claim?col/claim*100:0}
+}
+function officerD(m){
+ let map={};m.fs.forEach(f=>{let n=f.assignedOfficer||TD("Unassigned","غير معين");if(!map[n])map[n]={files:0,claim:0,col:0};let p=posD(f);map[n].files++;map[n].claim+=p.claim;map[n].col+=p.col});
+ return Object.entries(map).map(([name,v])=>({name,...v,pct:v.claim?v.col/v.claim*100:0})).sort((a,b)=>b.col-a.col)
+}
+function priorityD(m){
+ return m.fs.map(f=>{let p=posD(f),ts=m.tasks.filter(x=>x.file===idD(f)&&!["Completed","Cancelled"].includes(x.status)),over=ts.filter(x=>String(x.due||x.date||"")<dateOnlyD()).length,score=(p.out>=10000?3:0)+(over*2)+(ts.length===0?1:0);return{f,p,over,score,next:ts.sort((a,b)=>String(a.due||a.date||"").localeCompare(String(b.due||b.date||"")))[0]}}).sort((a,b)=>b.score-a.score).slice(0,6)
+}
+window.enfExecutiveDashboardRender=function(){
+ let r=document.getElementById("enfExecutiveDashboardRoot");if(!r)return;let m=metricsD(),off=officerD(m),pri=priorityD(m),noFollow=m.fs.filter(f=>!m.tasks.some(x=>x.file===idD(f)&&!["Completed","Cancelled"].includes(x.status))),high=pri.filter(x=>x.p.out>=10000),rec=m.recovery.toFixed(1);
+ let brief=m.overdue.length?TD(`${m.overdue.length} overdue follow-up(s) require attention. Recovery is ${rec}% and outstanding balances total ${MD(m.out)}.`,`${m.overdue.length} متابعة متأخرة تحتاج إلى إجراء. نسبة التحصيل ${rec}% وإجمالي الرصيد المتبقي ${MD(m.out)}.`):TD(`No overdue follow-ups are recorded. Recovery is ${rec}% with ${m.active.length} active file(s).`,`لا توجد متابعات متأخرة مسجلة. نسبة التحصيل ${rec}% ويوجد ${m.active.length} ملف نشط.`);
+ r.innerHTML=`<div class="enf-ed">
+ <div class="enf-ed-head"><div><h2>${TD("Executive Dashboard","لوحة الإدارة التنفيذية")}</h2><p>${TD("Live portfolio, collection and follow-up position from ENFORZA records.","المركز المباشر للملفات والتحصيل والمتابعة من بيانات ENFORZA.")}</p></div><div class="enf-ed-actions"><button class="action-btn" onclick="enfOpenFinance()">${TD("Financial Workspace","المركز المالي")}</button><button class="action-btn primary" onclick="enfIntakeOpen()">+ ${TD("New File","ملف جديد")}</button></div></div>
+ <div class="enf-ed-kpis">
+ ${[[TD("ACTIVE FILES","الملفات النشطة"),m.active.length,TD("Open portfolio","المحفظة المفتوحة"),"files"],[TD("TOTAL CLAIMS","إجمالي المطالبات"),MD(m.claim),m.fs.length+" "+TD("files","ملف"),"finance"],[TD("COLLECTED","المحصل"),MD(m.col),rec+"% "+TD("recovery","تحصيل"),"finance"],[TD("OUTSTANDING","المتبقي"),MD(m.out),TD("Current balance","الرصيد الحالي"),"files"],[TD("TODAY COLLECTIONS","تحصيل اليوم"),MD(m.todayCol),TD("Posted today","مقيد اليوم"),"finance"],[TD("THIS MONTH","تحصيل الشهر"),MD(m.monthCol),TD("Current month","الشهر الحالي"),"finance"]].map(x=>`<div class="enf-ed-kpi" onclick="${x[3]==="finance"?"enfOpenFinance()":"enfFiles360Open()"}"><small>${x[0]}</small><b>${x[1]}</b><span>${x[2]}</span></div>`).join("")}
+ </div>
+ <div class="enf-ed-alerts">
+  <div class="enf-ed-alert" onclick="enfDashOpenTasks()"><b>${m.overdue.length}</b><span>${TD("OVERDUE TASKS","المهام المتأخرة")}</span></div>
+  <div class="enf-ed-alert" onclick="enfDashOpenTasks()"><b>${m.todayTasks.length}</b><span>${TD("DUE TODAY","مستحق اليوم")}</span></div>
+  <div class="enf-ed-alert" onclick="enfFiles360Open()"><b>${noFollow.length}</b><span>${TD("FILES WITHOUT FOLLOW-UP","ملفات بدون متابعة")}</span></div>
+  <div class="enf-ed-alert" onclick="enfFiles360Open()"><b>${high.length}</b><span>${TD("HIGH-VALUE ATTENTION","ملفات عالية القيمة")}</span></div>
+ </div>
+ <div class="enf-ed-brief"><b>✦ ENFORZA ${TD("MANAGEMENT BRIEF","ملخص الإدارة")}</b><br>${brief}</div>
+ <div class="enf-ed-grid">
+  <div class="enf-ed-card"><h3>${TD("Priority Enforcement Files","ملفات التنفيذ ذات الأولوية")}</h3><p>${TD("Ranked from actual outstanding balances and overdue follow-ups.","مرتبة وفق الأرصدة القائمة والمتابعات المتأخرة الفعلية.")}</p>
+   <table class="enf-ed-table"><thead><tr><th>${TD("FILE","الملف")}</th><th>${TD("CLIENT","الموكل")}</th><th>${TD("OUTSTANDING","المتبقي")}</th><th>${TD("OVERDUE","متأخر")}</th><th>${TD("NEXT ACTION","الإجراء القادم")}</th></tr></thead><tbody>${pri.map(x=>`<tr onclick="openFile360('${idD(x.f)}')" style="cursor:pointer"><td><b>${idD(x.f)}</b></td><td>${x.f.clientName||x.f.creditor||"—"}</td><td>${MD(x.p.out)}</td><td>${x.over}</td><td>${x.next?(x.next.title||x.next.task||"")+" · "+(x.next.due||x.next.date||""):"—"}</td></tr>`).join("")||`<tr><td colspan="5">${TD("No files recorded.","لا توجد ملفات مسجلة.")}</td></tr>`}</tbody></table>
+  </div>
+  <div class="enf-ed-card"><h3>${TD("Recovery by Officer","التحصيل حسب المسؤول")}</h3><p>${TD("Based on assigned files and posted collections.","وفق الملفات المسندة والتحصيلات المقيدة.")}</p><div class="enf-ed-bars">${off.map(x=>`<div><div class="enf-ed-bar-head"><b>${x.name}</b><span>${x.pct.toFixed(1)}% · ${MD(x.col)}</span></div><div class="enf-ed-track"><i style="width:${Math.min(100,x.pct)}%"></i></div></div>`).join("")||TD("No officer data.","لا توجد بيانات مسؤولين.")}</div></div>
+ </div>
+ <div class="enf-ed-grid">
+  <div class="enf-ed-card"><h3>${TD("Upcoming & Overdue Follow-ups","المتابعات القادمة والمتأخرة")}</h3><p>${TD("Open tasks ordered by due date.","المهام المفتوحة مرتبة حسب تاريخ الاستحقاق.")}</p><div class="enf-ed-list">${m.tasks.filter(x=>!["Completed","Cancelled"].includes(x.status)).sort((a,b)=>String(a.due||a.date||"").localeCompare(String(b.due||b.date||""))).slice(0,7).map(x=>`<div class="enf-ed-row" onclick="v2OpenTask('', '${x.id}')"><div><b>${x.title||x.task||TD("Task","مهمة")}</b><small>${x.file||"—"} · ${x.due||x.date||"—"} · ${x.priority||"Normal"}</small></div><strong>${x.status||"Open"}</strong></div>`).join("")||TD("No open tasks.","لا توجد مهام مفتوحة.")}</div></div>
+  <div class="enf-ed-card"><h3>${TD("Recent Financial Activity","آخر الحركات المالية")}</h3><p>${TD("Latest posted collections and transactions.","أحدث التحصيلات والحركات المقيدة.")}</p><div class="enf-ed-list">${[...m.tx].sort((a,b)=>String(b.date||"").localeCompare(String(a.date||""))).slice(0,7).map(x=>`<div class="enf-ed-row" onclick="enfOpenFinance()"><div><b>${x.type} · ${x.file||"—"}</b><small>${x.date||"—"} · ${x.method||""} · ${x.reference||""}</small></div><strong>${MD(x.amount)}</strong></div>`).join("")||TD("No transactions.","لا توجد حركات.")}</div></div>
+ </div></div>`
+}
+window.enfDashOpenTasks=function(){openTasksD()}
+function wireD(){
+ document.querySelectorAll('.nav-item[data-page="dashboard"]').forEach(n=>{if(n.dataset.execDash)return;n.dataset.execDash="1";n.addEventListener("click",()=>setTimeout(enfExecutiveDashboardRender,0))});
+ let p=document.getElementById("dashboardPage");if(p)new MutationObserver(()=>{if(getComputedStyle(p).display!=="none")setTimeout(enfExecutiveDashboardRender,0)}).observe(p,{attributes:true,attributeFilter:["style","class"]});
+ enfExecutiveDashboardRender()
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",wireD);else wireD()
 })();
 </script>
 </body>
