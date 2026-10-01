@@ -750,7 +750,17 @@ body.enf-dark .enf-intake-card,body.enf-dark .enf-intake-type,body.enf-dark .enf
 .enf360-side-action{width:100%;border:1px solid var(--desk-line);background:#fff;border-radius:10px;padding:11px;text-align:left;font-size:10px;font-weight:900;margin-bottom:7px;cursor:pointer}html[dir=rtl] .enf360-side-action{text-align:right}
 body.enf-dark .enf360-actions button,body.enf-dark .enf360-tab,body.enf-dark .enf360-card,body.enf-dark .enf360-side-action{background:#171d23;color:#eef2f5;border-color:#2a333b}body.enf-dark .enf360-empty{background:#13191f}
 @media(max-width:900px){.enf360{padding:16px 12px}.enf360-grid{grid-template-columns:1fr}.enf360-top{flex-direction:column}.enf360-info{grid-template-columns:1fr 1fr}.enf360-kpis{grid-template-columns:1fr 1fr 1fr}}
-</style></head>
+</style>
+<style id="enforza-no-password-hard-override">
+#enfAuthV3 form,
+#enfAuthV3 .enf-auth-field,
+#enfAuthV3 input[type="password"],
+#enfAuthV3 input[autocomplete="username"],
+#enfAuthV3 #enfAuthSubmit,
+#enfAuthV3 #enfAuthError{display:none!important}
+#enfDemoRolePicker{display:block!important}
+</style>
+</head>
 <body>
 
 
@@ -3927,7 +3937,23 @@ document.addEventListener("keydown",e=>{if(e.ctrlKey&&e.shiftKey&&String(e.key).
 .enf-voice-confirm{position:fixed;inset:0;z-index:310000;background:rgba(7,11,15,.72);display:none;place-items:center;padding:18px}.enf-voice-confirm.open{display:grid}.enf-voice-confirm-card{width:min(560px,95vw);background:#fff;border-radius:18px;padding:20px;box-shadow:0 32px 100px rgba(0,0,0,.3)}.enf-voice-confirm-card h2{font-size:19px!important;margin:0 0 8px}.enf-voice-confirm-card p{font-size:10px;color:var(--desk-muted);line-height:1.6}.enf-voice-confirm-data{border:1px solid var(--desk-line);border-radius:11px;padding:11px;margin:12px 0;font-size:10px;line-height:1.7}.enf-voice-confirm-foot{display:flex;justify-content:flex-end;gap:7px}
 body.enf-dark .enf-auth-v3{background:#0e1318}body.enf-dark .enf-auth-card,body.enf-dark .enf-voice-confirm-card{background:#171d23;color:#eef2f5}
 </style>
-<div class="enf-auth-v3" id="enfAuthV3"><div class="enf-auth-card"><div class="enf-auth-brand"><div class="enf-auth-mark">E</div><h1>ENFORZA</h1><p id="enfAuthSubtitle">Enforcement Management Platform</p></div><form id="enfAuthForm"><div class="enf-auth-field"><label id="enfAuthUserLabel">USERNAME</label><input id="enfAuthUser" autocomplete="username"></div><div class="enf-auth-field"><label id="enfAuthPassLabel">PASSWORD</label><input id="enfAuthPass" type="password" autocomplete="current-password"></div><button class="enf-auth-submit" id="enfAuthSubmit" type="submit">Sign In</button><div class="enf-auth-error" id="enfAuthError"></div></form><div class="enf-auth-foot">ENFORZA V2 · Secure Role Access</div></div></div>
+<div class="enf-auth-v3" id="enfAuthV3"><div class="enf-auth-card"><div class="enf-auth-brand"><div class="enf-auth-mark">E</div><h1>ENFORZA</h1><p id="enfAuthSubtitle">Enforcement Management Platform</p></div><div id="enfDemoRolePicker">
+  <div class="enf-demo-role-intro">Choose a user to enter the demo. No password is required.</div>
+  <div class="enf-demo-role-grid">
+    <button type="button" class="enf-demo-role-card" onclick="enfDemoEnterRole('admin')">
+      <span class="enf-demo-role-icon">A</span><b>Administrator</b>
+      <small>Full demo access and user management</small><span class="enf-demo-badge">ADMIN</span>
+    </button>
+    <button type="button" class="enf-demo-role-card" onclick="enfDemoEnterRole('officer')">
+      <span class="enf-demo-role-icon">O</span><b>Enforcement Officer</b>
+      <small>Files, tasks, collections and operational work</small><span class="enf-demo-badge">OFFICER</span>
+    </button>
+    <button type="button" class="enf-demo-role-card" onclick="enfDemoEnterRole('creditor')">
+      <span class="enf-demo-role-icon">C</span><b>Creditor</b>
+      <small>Simplified creditor portal experience</small><span class="enf-demo-badge">CREDITOR</span>
+    </button>
+  </div>
+</div><div class="enf-auth-foot">ENFORZA V2 · DEMO ACCESS</div></div></div>
 <div class="enf-voice-confirm" id="enfVoiceConfirm"><div class="enf-voice-confirm-card"><h2 id="enfVoiceConfirmTitle">Confirm voice command</h2><p id="enfVoiceConfirmMsg"></p><div class="enf-voice-confirm-data" id="enfVoiceConfirmData"></div><div class="enf-voice-confirm-foot"><button class="enf-ms-btn" onclick="enfVoiceCancelCommand()">Cancel</button><button class="enf-ms-btn primary" onclick="enfVoiceConfirmCommand()">Confirm & Open</button></div></div></div>
 <script id="enforza-users-voice-final-js">
 (function(){
