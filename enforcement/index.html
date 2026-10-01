@@ -292,6 +292,17 @@ html[dir="rtl"] .ai-fab{right:auto;left:22px}html[dir="rtl"] .ai-panel{right:aut
  .footer{display:none}.ai-fab{bottom:70px}
 }
 
+
+/* ===== ENFORZA PHASE 8 — AI INTELLIGENCE LAYER ===== */
+.ai-intel-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:12px;margin-bottom:16px}
+.ai-score-card,.ai-rec-card{border:1px solid #ead7c6;background:linear-gradient(135deg,#fffaf6,#fff);border-radius:10px;padding:15px}
+.ai-score-row{display:flex;align-items:center;gap:15px}.ai-score-ring{width:86px;height:86px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--bronze) 0 72%,#edf0f2 72% 100%);position:relative}.ai-score-ring:after{content:"";position:absolute;width:64px;height:64px;border-radius:50%;background:#fff}.ai-score-ring strong{position:relative;z-index:1;font-size:20px;color:var(--navy)}.ai-score-meta h3,.ai-rec-card h3{font-size:11px;color:var(--navy)}.ai-score-meta p,.ai-rec-card p{font-size:8px;color:var(--muted);line-height:1.65;margin-top:5px}
+.ai-recommendation{border-left:3px solid var(--bronze);padding:9px 10px;background:#fff;border-radius:0 7px 7px 0;margin-top:8px}.ai-recommendation strong{display:block;font-size:9px;color:var(--navy)}.ai-recommendation span{display:block;font-size:7px;color:var(--muted);margin-top:3px}
+.ai-insight-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.ai-insight{border:1px solid var(--border);border-radius:9px;background:#fff;padding:13px}.ai-insight span{display:block;font-size:7px;color:var(--muted)}.ai-insight strong{display:block;font-size:14px;color:var(--navy);margin-top:6px}.ai-insight small{display:block;font-size:7px;color:var(--bronze);margin-top:5px}
+@media(max-width:720px){.ai-intel-grid{grid-template-columns:1fr}.ai-insight-grid{grid-template-columns:1fr 1fr}.ai-score-ring{width:74px;height:74px}.ai-score-ring:after{width:55px;height:55px}}
+@media(max-width:430px){.ai-insight-grid{grid-template-columns:1fr}}
+html[dir="rtl"] .ai-recommendation{border-left:1px solid #ead7c6;border-right:3px solid var(--bronze);border-radius:7px 0 0 7px}
+
 </style>
 </head>
 <body>
@@ -319,6 +330,7 @@ html[dir="rtl"] .ai-fab{right:auto;left:22px}html[dir="rtl"] .ai-panel{right:aut
     <div class="nav-label" data-i18n="MANAGEMENT">MANAGEMENT</div>
     <a class="nav-item" data-page="documents" href="#" onclick="openPage('documents');return false;"><span class="nav-icon">▤</span><span data-i18n="Document Center">Document Center</span></a>
     <a class="nav-item" data-page="creditorPortal" href="#" onclick="openPage('creditorPortal');return false;"><span class="nav-icon">◈</span><span data-i18n="Creditor Portal Preview">Creditor Portal Preview</span></a>
+    <a class="nav-item" data-page="aiInsights" href="#" onclick="openPage('aiInsights');return false;"><span class="nav-icon">✦</span><span data-i18n="AI Management Insights">AI Management Insights</span></a>
     <a class="nav-item" data-page="reports" href="#" onclick="openPage('reports');return false;"><span class="nav-icon">◩</span><span data-i18n="Reports & Analytics">Reports & Analytics</span></a>
     <a class="nav-item" data-page="users" href="#" onclick="openPage('users');return false;"><span class="nav-icon">♙</span><span data-i18n="Users & Permissions">Users & Permissions</span></a>
     <a class="nav-item" data-page="presentation" href="#" onclick="openPage('presentation');return false;"><span class="nav-icon">◉</span><span data-i18n="Demo Presentation Mode">Demo Presentation Mode</span></a>
@@ -402,8 +414,8 @@ html[dir="rtl"] .ai-fab{right:auto;left:22px}html[dir="rtl"] .ai-panel{right:aut
   <button class="action-btn" style="margin-bottom:14px" onclick="openPage(currentModule)">← <span data-i18n="Back">Back</span></button>
   <section class="detail-hero"><div class="detail-left"><div class="detail-mark" id="detailMark">§</div><div><h2 id="detailTitle"></h2><p id="detailMeta"></p><div class="tags"><span id="detailStatus" class="badge active"></span><span id="detailTag" class="badge info"></span></div></div></div><div class="actions"><button class="action-btn" onclick="demoAlert('edit')" data-i18n="Edit">Edit</button><button class="action-btn bronze" onclick="demoAlert('action')" data-i18n="New Action">New Action</button></div></section>
   <div id="detailSummary" class="summary-grid"></div>
-  <section class="card"><div class="tabs"><button class="tab-btn active" onclick="openTab('overview',this)" data-i18n="Overview">Overview</button><button class="tab-btn" onclick="openTab('workflow360',this)" data-i18n="Workflow">Workflow</button><button class="tab-btn" onclick="openTab('parties360',this)" data-i18n="Parties">Parties</button><button class="tab-btn" onclick="openTab('financial',this)" data-i18n="Financial Position">Financial Position</button><button class="tab-btn" onclick="openTab('actions360',this)" data-i18n="Execution Actions">Execution Actions</button><button class="tab-btn" onclick="openTab('collections360',this)" data-i18n="Collections">Collections</button><button class="tab-btn" onclick="openTab('expenses360',this)" data-i18n="Expenses">Expenses</button><button class="tab-btn" onclick="openTab('settlement360',this)" data-i18n="Settlement">Settlement</button><button class="tab-btn" onclick="openTab('documents',this)" data-i18n="Documents">Documents</button><button class="tab-btn" onclick="openTab('closing360',this)" data-i18n="Closing Statement">Closing Statement</button><button class="tab-btn" onclick="openTab('activity',this)" data-i18n="Activity Log">Activity Log</button></div>
-    <div id="tab-overview" class="tab-panel active"><div id="detailInfo" class="info-grid"></div></div><div id="tab-workflow360" class="tab-panel"><div id="detailWorkflow360"></div></div>
+  <section class="card"><div class="tabs"><button class="tab-btn active" onclick="openTab('overview',this)" data-i18n="Overview">Overview</button><button class="tab-btn" onclick="openTab('aiintel360',this)" data-i18n="AI Intelligence">AI Intelligence</button><button class="tab-btn" onclick="openTab('workflow360',this)" data-i18n="Workflow">Workflow</button><button class="tab-btn" onclick="openTab('parties360',this)" data-i18n="Parties">Parties</button><button class="tab-btn" onclick="openTab('financial',this)" data-i18n="Financial Position">Financial Position</button><button class="tab-btn" onclick="openTab('actions360',this)" data-i18n="Execution Actions">Execution Actions</button><button class="tab-btn" onclick="openTab('collections360',this)" data-i18n="Collections">Collections</button><button class="tab-btn" onclick="openTab('expenses360',this)" data-i18n="Expenses">Expenses</button><button class="tab-btn" onclick="openTab('settlement360',this)" data-i18n="Settlement">Settlement</button><button class="tab-btn" onclick="openTab('documents',this)" data-i18n="Documents">Documents</button><button class="tab-btn" onclick="openTab('closing360',this)" data-i18n="Closing Statement">Closing Statement</button><button class="tab-btn" onclick="openTab('activity',this)" data-i18n="Activity Log">Activity Log</button></div>
+    <div id="tab-overview" class="tab-panel active"><div id="detailInfo" class="info-grid"></div></div><div id="tab-aiintel360" class="tab-panel"><div id="detailAIIntel360"></div></div><div id="tab-workflow360" class="tab-panel"><div id="detailWorkflow360"></div></div>
     <div id="tab-parties360" class="tab-panel"><div id="detailParties360" class="info-grid"></div></div>
     <div id="tab-financial" class="tab-panel"><div id="detailFinancial" class="table-wrap"></div></div>
     <div id="tab-actions360" class="tab-panel"><div id="detailActions360" class="timeline"></div></div>
@@ -468,6 +480,16 @@ html[dir="rtl"] .ai-fab{right:auto;left:22px}html[dir="rtl"] .ai-panel{right:aut
     <section class="card"><div class="card-head"><div><h3 data-i18n="Latest Payments">Latest Payments</h3></div></div><div id="portalPayments" class="list"></div></section>
     <section class="card"><div class="card-head"><div><h3 data-i18n="Latest File Updates">Latest File Updates</h3></div></div><div id="portalUpdates" class="list"></div></section>
   </div>
+</div></section>
+
+
+<section id="aiInsightsPage" class="page hidden"><div class="content">
+ <div class="hero-row"><div><h2 data-i18n="AI Management Insights">AI Management Insights</h2><p data-i18n="Demo intelligence layer for portfolio risk, recovery and operational priorities.">Demo intelligence layer for portfolio risk, recovery and operational priorities.</p></div><button class="action-btn primary" onclick="openAI('executive')">✦ <span data-i18n="Ask ENFORZA AI">Ask ENFORZA AI</span></button></div>
+ <div class="ai-insight-grid"><div class="ai-insight"><span data-i18n="High Priority Files">High Priority Files</span><strong>12</strong><small>+3 this week</small></div><div class="ai-insight"><span data-i18n="AI Recovery Opportunity">AI Recovery Opportunity</span><strong>BHD 86K</strong><small>8 files identified</small></div><div class="ai-insight"><span data-i18n="Inactive High-Value Files">Inactive High-Value Files</span><strong>4</strong><small>14+ days</small></div><div class="ai-insight"><span data-i18n="Settlement Risk">Settlement Risk</span><strong>3</strong><small>Installments at risk</small></div></div>
+ <div class="dashboard-grid equal" style="margin-top:16px">
+  <section class="card"><div class="card-head"><div><h3 data-i18n="AI Priority Queue">AI Priority Queue</h3><p data-i18n="Files ranked by demo risk and recovery opportunity.">Files ranked by demo risk and recovery opportunity.</p></div></div><div id="aiPriorityQueue" class="list"></div></section>
+  <section class="card"><div class="card-head"><div><h3 data-i18n="AI Recommendations">AI Recommendations</h3></div></div><div class="ai-recommendation"><strong data-i18n="Accelerate bank-response reviews">Accelerate bank-response reviews</strong><span>3 high-value files are waiting for response analysis.</span></div><div class="ai-recommendation"><strong data-i18n="Prioritize settlement follow-up">Prioritize settlement follow-up</strong><span>BHD 31K in scheduled installments is due within the next 7 days.</span></div><div class="ai-recommendation"><strong data-i18n="Reassign inactive files">Reassign inactive files</strong><span>4 files have no movement for more than 14 days.</span></div></section>
+ </div>
 </div></section>
 
 <section id="reportsPage" class="page hidden"><div class="content">
@@ -1037,6 +1059,33 @@ function buildMobileFileCards(){
 const _renderModuleP7=renderModule;
 renderModule=function(m){_renderModuleP7(m);if(m==="files")setTimeout(buildMobileFileCards,0)}
 Object.assign(I18N.ar,{"More":"المزيد","Documents":"المستندات","Reports":"التقارير","Creditor Portal":"بوابة الدائن","Presentation":"العرض","Open File":"فتح الملف"});
+
+
+function aiRiskForFile(r){
+ let out=(r.claim||0)-(r.collected||0),score=35;
+ if(out>50000)score+=25;else if(out>20000)score+=15;
+ if(r.status==="Escalated")score+=20;if(r.status==="On Hold")score+=12;
+ if((r.collected||0)/(r.claim||1)<.2)score+=10;
+ return Math.min(96,score);
+}
+function buildAIIntelligence(r){
+ const el=document.getElementById("detailAIIntel360");if(!el)return;let score=aiRiskForFile(r),level=score>=75?t("High"):score>=55?t("Medium"):t("Low"),out=(r.claim||0)-(r.collected||0);
+ el.innerHTML=`<div class="ai-intel-grid"><div class="ai-score-card"><div class="ai-score-row"><div class="ai-score-ring" style="background:conic-gradient(var(--bronze) 0 ${score}%,#edf0f2 ${score}% 100%)"><strong>${score}</strong></div><div class="ai-score-meta"><span class="ai-chip">ENFORZA AI · DEMO</span><h3>${t("AI File Risk Score")} — ${level}</h3><p>${t("Risk score is a demo indicator based on outstanding value, recovery ratio, file status and follow-up activity.")}</p></div></div></div><div class="ai-rec-card"><h3>${t("AI Recommended Next Action")}</h3><p>${r.next}</p><div class="ai-recommendation"><strong>${t("Why this action?")}</strong><span>${t("The file has")} ${money(out)} ${t("outstanding and requires action within the current workflow window.")}</span></div></div></div>
+ <div class="ai-insight-grid"><div class="ai-insight"><span>${t("Recovery Probability")}</span><strong>${Math.max(38,92-score/2).toFixed(0)}%</strong><small>${t("Demo estimate")}</small></div><div class="ai-insight"><span>${t("Priority")}</span><strong>${score>=75?t("High"):t("Medium")}</strong><small>${t("AI ranked")}</small></div><div class="ai-insight"><span>${t("Outstanding")}</span><strong>${money(out)}</strong><small>${t("Financial exposure")}</small></div><div class="ai-insight"><span>${t("Suggested Review")}</span><strong>24h</strong><small>${t("Follow-up window")}</small></div></div>
+ <div class="note-box" style="margin-top:14px"><strong>${t("AI File Brief")}</strong><br>${r.id} — ${r.debtor}. ${t("The demo AI identifies this file as")} ${level.toLowerCase()} ${t("priority. Current recovery is")} ${((r.collected||0)/(r.claim||1)*100).toFixed(1)}%. ${t("Recommended focus")}: ${r.next}.</div>`;
+}
+const _enrichP8=enrichFile360;
+enrichFile360=function(m,r){_enrichP8(m,r);if(m==="files")buildAIIntelligence(r)}
+
+function renderAIManagement(){
+ const q=document.getElementById("aiPriorityQueue");if(!q)return;
+ q.innerHTML=(DATA.files||[]).map(r=>({...r,score:aiRiskForFile(r)})).sort((a,b)=>b.score-a.score).slice(0,5).map(r=>`<div class="list-row"><div class="list-left"><div class="list-icon">✦</div><div><strong><button class="link-btn" onclick="openDetail('files','${r.id}')">${r.id} · ${r.debtor}</button></strong><span>${money(r.claim-r.collected)} ${t("outstanding")} · ${r.next}</span></div></div><span class="badge ${r.score>=75?"escalated":"pending"}">${r.score}/100</span></div>`).join("");
+}
+const _openPageP8=openPage;
+openPage=function(page){if(page==="aiInsights"){hidePages();currentModule=page;document.querySelectorAll(".nav-item").forEach(el=>el.classList.toggle("active",el.dataset.page===page));document.getElementById("aiInsightsPage").classList.remove("hidden");setHeading("AI Management Insights","Demo intelligence layer for portfolio risk, recovery and operational priorities.");renderAIManagement();document.getElementById("sidebar").classList.remove("open");window.scrollTo(0,0);applyLanguage();return}_openPageP8(page)}
+Object.assign(I18N.ar,{
+"AI Intelligence":"ذكاء الملف","AI Management Insights":"رؤى الإدارة بالذكاء الاصطناعي","Demo intelligence layer for portfolio risk, recovery and operational priorities.":"طبقة ذكاء تجريبية لتحليل مخاطر المحفظة والتحصيل وأولويات العمل.","Ask ENFORZA AI":"اسأل ENFORZA AI","High Priority Files":"ملفات عالية الأولوية","AI Recovery Opportunity":"فرص التحصيل بالذكاء الاصطناعي","Inactive High-Value Files":"ملفات مرتفعة القيمة بلا حركة","Settlement Risk":"مخاطر التسويات","AI Priority Queue":"قائمة الأولويات الذكية","Files ranked by demo risk and recovery opportunity.":"ترتيب الملفات حسب المخاطر وفرص التحصيل التجريبية.","AI Recommendations":"توصيات الذكاء الاصطناعي","Accelerate bank-response reviews":"تسريع مراجعة ردود البنوك","Prioritize settlement follow-up":"إعطاء الأولوية لمتابعة التسويات","Reassign inactive files":"إعادة توزيع الملفات غير النشطة","AI File Risk Score":"درجة مخاطر الملف بالذكاء الاصطناعي","Risk score is a demo indicator based on outstanding value, recovery ratio, file status and follow-up activity.":"درجة تجريبية تعتمد على الرصيد القائم ونسبة التحصيل وحالة الملف ونشاط المتابعة.","AI Recommended Next Action":"الإجراء التالي المقترح بالذكاء الاصطناعي","Why this action?":"لماذا هذا الإجراء؟","The file has":"يوجد في الملف","outstanding and requires action within the current workflow window.":"كمبلغ قائم ويتطلب إجراء ضمن نافذة المتابعة الحالية.","Recovery Probability":"احتمالية التحصيل","Demo estimate":"تقدير تجريبي","AI ranked":"ترتيب ذكي","Financial exposure":"التعرض المالي","Suggested Review":"المراجعة المقترحة","Follow-up window":"نافذة المتابعة","AI File Brief":"موجز الملف بالذكاء الاصطناعي","The demo AI identifies this file as":"يصنف الذكاء الاصطناعي التجريبي هذا الملف كـ","priority. Current recovery is":"الأولوية. نسبة التحصيل الحالية","Recommended focus":"التركيز المقترح","High":"مرتفع","Medium":"متوسط","Low":"منخفض"
+});
 
 renderDashboard();renderUsers();renderAudit();renderPermissions();showReport("executive");applyLanguage();
 </script>
