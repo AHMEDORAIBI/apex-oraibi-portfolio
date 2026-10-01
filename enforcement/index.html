@@ -4430,5 +4430,36 @@ if(typeof old==="function")window.enfExecutiveDashboardRender=function(){let r=o
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>setTimeout(mount,0),{once:true});else setTimeout(mount,0)
 })();
 </script>
+
+<script id="enforza-demo-persistence-hardening-js">
+(function(){
+"use strict";
+const KEY="enforzaDemoDataV2";
+function saveNow(){
+ try{
+  localStorage.setItem(KEY,JSON.stringify(window.DATA||{}));
+  localStorage.setItem(KEY+"_savedAt",new Date().toISOString());
+  return true
+ }catch(e){console.error("[ENFORZA SAVE]",e);return false}
+}
+window.enfDemoSaveNow=saveNow;
+function wrap(name){
+ const f=window[name];if(typeof f!=="function"||f.__enfHardPersist)return;
+ const w=function(){const r=f.apply(this,arguments);setTimeout(saveNow,20);return r};
+ w.__enfHardPersist=true;window[name]=w
+}
+function install(){
+ // The intake wizard creates the file inside its private create() function, so save after its public final-step action.
+ ["enfIntakeNext","v2SaveTask","v2CompleteTask","v2DeleteTask","enfFinSave","enfFinClientTransfer","enfFinReverse","enfDeSave","enfMinutesSave"].forEach(wrap);
+ document.addEventListener("change",e=>{
+  if(e.target&&e.target.closest&&e.target.closest("#enfIntake,#enfFinModal,#v2TaskModal"))setTimeout(saveNow,50)
+ },true);
+ window.addEventListener("beforeunload",saveNow);
+ document.addEventListener("visibilitychange",()=>{if(document.hidden)saveNow()});
+ setInterval(saveNow,30000)
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",install,{once:true});else install()
+})();
+</script>
 </body>
 </html>
