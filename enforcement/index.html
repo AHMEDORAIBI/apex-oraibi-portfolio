@@ -3154,5 +3154,77 @@ function init(){
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
 })();
+</script><style id="enforza-v2-phase23-visual-polish-css">
+/* Phase 23 — Final Visual Polish */
+:root{
+ --enf-radius:16px;--enf-radius-sm:11px;--enf-shadow:0 12px 34px rgba(24,28,32,.055);
+ --enf-gold:#ad7440;--enf-ink:#12191f;--enf-soft:#f7f5f2;
+}
+body{background:#f6f5f2!important;color:#182027;-webkit-font-smoothing:antialiased}
+body.enf-dark{background:#0e1318!important;color:#edf1f4}
+.sidebar{box-shadow:12px 0 38px rgba(20,25,30,.045);border-right:1px solid rgba(100,100,100,.08)}
+html[dir=rtl] .sidebar{box-shadow:-12px 0 38px rgba(20,25,30,.045);border-right:0;border-left:1px solid rgba(100,100,100,.08)}
+.nav-item{border-radius:10px!important;margin:2px 8px!important;transition:background .16s ease,transform .16s ease}
+.nav-item:hover{transform:translateX(2px)}
+html[dir=rtl] .nav-item:hover{transform:translateX(-2px)}
+.nav-item.active{background:linear-gradient(90deg,rgba(173,116,64,.13),rgba(173,116,64,.035))!important;color:#8c5b2e!important}
+.topbar{backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);background:rgba(255,255,255,.88)!important;border-bottom:1px solid rgba(80,80,80,.08)!important}
+body.enf-dark .topbar{background:rgba(14,19,24,.88)!important}
+.v2-card,.desk-card,.enf-ms-card,.enf-de-shell,.enf-fin-card,.enf-rp-sheet,.enf-sf-card,.enf360-card{border-radius:var(--enf-radius)!important;box-shadow:var(--enf-shadow)!important}
+button,input,select,textarea{transition:border-color .15s ease,box-shadow .15s ease,background .15s ease}
+input:focus,select:focus,textarea:focus{outline:none!important;border-color:#c49161!important;box-shadow:0 0 0 3px rgba(173,116,64,.09)!important}
+.enf-ms-btn.primary,.enf360-actions button.primary{background:linear-gradient(145deg,#151d24,#222d36)!important;box-shadow:0 7px 18px rgba(15,22,28,.12)}
+.enf-role-shell{max-width:1540px;margin:0 auto;padding:28px 32px}
+.enf-role-hero{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;padding:24px;border-radius:19px;background:linear-gradient(145deg,#121920,#202b34);color:#fff;margin-bottom:13px;box-shadow:0 18px 45px rgba(17,24,32,.12)}
+.enf-role-hero h1{margin:4px 0 6px;font-size:29px!important}.enf-role-hero p{margin:0;color:#b9c3cb;font-size:11px}
+.enf-role-pill{padding:7px 10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);border-radius:999px;font-size:9px;font-weight:950;white-space:nowrap}
+.enf-creditor-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}.enf-creditor-card{background:#fff;border:1px solid var(--desk-line);border-radius:16px;padding:18px;box-shadow:var(--enf-shadow)}.enf-creditor-card small{display:block;color:var(--desk-muted);font-size:9px;font-weight:900}.enf-creditor-card b{display:block;font-size:19px;margin-top:6px}.enf-creditor-main{grid-column:span 2}.enf-creditor-main h2{font-size:19px!important;margin:0 0 11px}.enf-creditor-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:13px}
+body.enf-dark .enf-creditor-card{background:#171d23;color:#eef2f5;border-color:#2a333b}
+.enf-login-polish{background:
+ radial-gradient(circle at 15% 15%,rgba(173,116,64,.11),transparent 30%),
+ radial-gradient(circle at 85% 85%,rgba(51,74,91,.13),transparent 34%),
+ #f6f5f2!important}
+.enf-login-polish .login-card,.enf-login-polish [class*="login"][class*="card"]{border-radius:22px!important;box-shadow:0 28px 80px rgba(17,24,32,.14)!important;border:1px solid rgba(100,100,100,.09)!important}
+@media(max-width:900px){
+ .enf-role-shell{padding:16px 12px}.enf-role-hero{padding:19px;align-items:flex-start;flex-direction:column}.enf-creditor-grid{grid-template-columns:1fr 1fr}.enf-creditor-main{grid-column:1/-1}
+ .topbar{padding-left:12px!important;padding-right:12px!important}.nav-item{min-height:43px}
+}
+@media(max-width:560px){.enf-creditor-grid{grid-template-columns:1fr}.enf-creditor-main{grid-column:auto}}
+</style>
+<section class="page" id="enfCreditorPortal" style="display:none"><div class="enf-role-shell" id="enfCreditorRoot"></div></section>
+<script id="enforza-v2-phase23-visual-polish-js">
+(function(){
+"use strict";
+function ar(){return (window.currentLang||document.documentElement.lang||"en")==="ar"}
+function t(e,a){return ar()?a:e}
+function A(n){return window.DATA&&Array.isArray(DATA[n])?DATA[n]:[]}
+function money(v){return "BHD "+Number(v||0).toFixed(3)}
+function role(){let r=String(window.currentRole||window.userRole||sessionStorage.getItem("enforzaRole")||localStorage.getItem("enforzaRole")||"").toLowerCase();return r.includes("creditor")?"creditor":"officer"}
+function creditorFiles(){
+ let uid=String(window.currentUserId||sessionStorage.getItem("enforzaUserId")||"");
+ return A("files").filter(f=>!uid||!f.creditorUserId||String(f.creditorUserId)===uid);
+}
+function creditorPortal(){
+ let fs=creditorFiles(),ids=new Set(fs.map(f=>f.id||f.ref)),tx=A("financialTransactions").filter(x=>ids.has(x.file)),claim=fs.reduce((a,f)=>a+Number(f.amount||f.claimAmount||0),0),col=tx.filter(x=>x.type==="Collection").reduce((a,x)=>a+Number(x.amount||0),0),out=Math.max(0,claim-col);
+ let root=document.getElementById("enfCreditorRoot");if(!root)return;
+ root.innerHTML=`<div class="enf-role-hero"><div><div class="v2-kicker">${t("CREDITOR PORTAL","بوابة الدائن")}</div><h1>${t("Your Enforcement Portfolio","ملفات التنفيذ الخاصة بك")}</h1><p>${t("A simple view of your files, collections, outstanding balance and latest updates.","عرض مبسط لملفاتك والتحصيلات والرصيد المتبقي وآخر المستجدات.")}</p></div><span class="enf-role-pill">${t("CREDITOR ACCESS","صلاحية الدائن")}</span></div>
+ <div class="enf-creditor-grid"><div class="enf-creditor-card"><small>${t("ACTIVE FILES","الملفات النشطة")}</small><b>${fs.filter(f=>(f.status||"Active")!=="Closed").length}</b></div><div class="enf-creditor-card"><small>${t("COLLECTED","المحصل")}</small><b>${money(col)}</b></div><div class="enf-creditor-card"><small>${t("OUTSTANDING","المتبقي")}</small><b>${money(out)}</b></div>
+ <div class="enf-creditor-card enf-creditor-main"><h2>${t("Your Files","ملفاتك")}</h2>${fs.length?fs.map(f=>`<div class="enf360-item" onclick="openFile360('${f.id||f.ref}')"><b>${f.title||f.caseNumber||t("Enforcement File","ملف تنفيذ")}</b><small>${f.id||f.ref||""} · ${f.status||t("Active","نشط")} · ${money(f.amount||f.claimAmount||0)}</small></div>`).join(""):`<div class="enf360-empty">${t("No files are currently linked to this creditor account.","لا توجد ملفات مرتبطة بحساب الدائن حاليًا.")}</div>`}</div>
+ <div class="enf-creditor-card"><h2 style="font-size:19px;margin:0">${t("Quick Access","وصول سريع")}</h2><div class="enf-creditor-actions"><button class="enf-ms-btn" onclick="enfOpenReports()">${t("Reports","التقارير")}</button><button class="enf-ms-btn" onclick="enfOpenSmartFollowup()">${t("Updates","المستجدات")}</button></div></div></div>`;
+}
+window.enfOpenCreditorPortal=function(){document.querySelectorAll(".page").forEach(p=>p.style.display="none");document.getElementById("enfCreditorPortal").style.display="block";creditorPortal()}
+function polishLogin(){document.querySelectorAll(".login-screen,.login-page,[id*='login' i]").forEach(x=>{if(x.offsetWidth>300&&x.offsetHeight>250)x.classList.add("enf-login-polish")})}
+function roleHome(){
+ if(role()==="creditor"){
+   document.querySelectorAll('.nav-item[data-page="dashboard"]').forEach(n=>{if(n.dataset.p23)return;n.dataset.p23="1";n.addEventListener("click",e=>{e.preventDefault();e.stopImmediatePropagation();enfOpenCreditorPortal()},true)});
+ }
+}
+function polish(){
+ polishLogin();roleHome();
+ document.querySelectorAll(".page h1").forEach(h=>h.style.letterSpacing="-.025em");
+ document.querySelectorAll(".page").forEach(p=>p.style.animation="none");
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",polish);else polish();
+})();
 </script></body>
 </html>
