@@ -604,7 +604,17 @@ body.role-officer [data-page="users"],body.role-officer [data-page="settings"],b
 html[dir="rtl"] .p29-appearance{right:auto;left:18px}html[dir="rtl"] .p29-pop{right:auto;left:0}
 </style>
 
-</head>
+<style id="phase30-officer-workspace">
+/* PHASE 30 — ENFORCEMENT OFFICER COMMAND WORKSPACE */
+.p30{display:grid;gap:14px}.p30-hero{background:linear-gradient(135deg,#111923,#263440);color:#fff;border-radius:18px;padding:22px;display:flex;justify-content:space-between;align-items:center;gap:15px}.p30-hero h2{color:#fff!important;font-size:20px!important;margin:0}.p30-hero p{color:#cbd3d9;margin:6px 0 0}.p30-actions{display:flex;gap:7px;flex-wrap:wrap}.p30-actions button{border:1px solid rgba(255,255,255,.17);background:rgba(255,255,255,.08);color:#fff;border-radius:10px;padding:10px 12px;font-size:16px;font-weight:800}.p30-actions .primary{background:var(--p29-accent);border-color:var(--p29-accent)}
+.p30-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.p30-kpi{background:var(--white);border:1px solid var(--border);border-radius:13px;padding:14px}.p30-kpi span{display:block;color:var(--muted)}.p30-kpi strong{font-size:20px!important;display:block;margin-top:5px}
+.p30-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:13px}.p30-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:16px}.p30-card h3{font-size:20px!important;margin:0 0 12px}.p30-item{border:1px solid var(--border);border-radius:11px;padding:12px;margin-bottom:8px;cursor:pointer}.p30-item:last-child{margin-bottom:0}.p30-item-head{display:flex;justify-content:space-between;gap:10px}.p30-item span{display:block;color:var(--muted);margin-top:4px}.p30-chip{display:inline-flex!important;padding:4px 7px;border-radius:99px;background:var(--p29-accent-soft);color:var(--p29-accent)!important;font-weight:900;font-size:13px!important}
+.p30-quick{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.p30-quick button{min-height:86px;border:1px solid var(--border);background:var(--white);color:var(--text);border-radius:12px;font-size:16px;font-weight:900;padding:12px}.p30-quick b{font-size:22px;display:block;margin-bottom:6px}
+.p30-ai{background:linear-gradient(135deg,color-mix(in srgb,var(--p29-accent) 12%,var(--white)),var(--white));border:1px solid color-mix(in srgb,var(--p29-accent) 45%,var(--border));border-radius:14px;padding:16px}.p30-ai h3{font-size:20px!important;margin:0}.p30-ai p{color:var(--muted);line-height:1.65}.p30-ai button{border:0;background:#111923;color:#fff;border-radius:9px;padding:10px 12px;font-size:16px;font-weight:900}
+.p30-mobile-nav{display:none}
+@media(max-width:850px){.p30-grid{grid-template-columns:1fr}.p30-kpis{grid-template-columns:1fr 1fr}.p30-hero{display:block}.p30-actions{margin-top:14px}.p30-mobile-nav{display:grid;position:fixed;z-index:1250;bottom:0;left:0;right:0;grid-template-columns:repeat(5,1fr);background:var(--white);border-top:1px solid var(--border);padding:6px 5px calc(6px + env(safe-area-inset-bottom));box-shadow:0 -10px 30px rgba(0,0,0,.1)}.p30-mobile-nav button{border:0;background:transparent;color:var(--text);font-size:12px;font-weight:800;padding:5px 2px}.p30-mobile-nav b{display:block;font-size:20px;margin-bottom:2px}.role-officer .content{padding-bottom:82px!important}}
+@media(max-width:520px){.p30-kpis{grid-template-columns:1fr 1fr}.p30-quick{grid-template-columns:1fr 1fr}.p30-hero{padding:17px}.p30-actions button{flex:1;min-width:44%}}
+</style></head>
 <div class="exec-action-sheet" id="execActionSheet"><div class="exec-action-box"><div class="minutes-head"><div><h2>New Action</h2><p>Choose what you want to add to this enforcement file.</p></div><button class="top-btn" onclick="closeExecActionSheet()">×</button></div><div class="exec-action-grid">
 <div class="exec-action-card" onclick="execAction('task')"><b>✓</b><strong>Task</strong></div><div class="exec-action-card" onclick="execAction('minutes')"><b>✎</b><strong>Minutes</strong></div><div class="exec-action-card" onclick="execAction('collection')"><b>◉</b><strong>Collection</strong></div><div class="exec-action-card" onclick="execAction('document')"><b>▧</b><strong>Document</strong></div><div class="exec-action-card" onclick="execAction('camera')"><b>📷</b><strong>Camera / Evidence</strong></div><div class="exec-action-card" onclick="execAction('settlement')"><b>◇</b><strong>Settlement</strong></div></div></div></div>
 <button class="exec-ai-fab" onclick="openAI()">✦ AI</button><div class="p27-drawer" id="p27Drawer" onclick="if(event.target===this)closeP27Notifications()"><aside class="p27-panel"><div class="p27-head"><div class="p27-head-row"><div><h2 id="p27Title">Notifications</h2><p id="p27Subtitle">Important items that need your attention.</p></div><button onclick="closeP27Notifications()">×</button></div></div><div class="p27-filters" id="p27Filters"></div><div class="p27-list" id="p27List"></div><div class="p27-footer"><button onclick="p27MarkViewed()">✓ <span id="p27ViewedText">Mark Viewed</span></button><button onclick="openPage('smarttasks');closeP27Notifications()">▧ <span id="p27TasksText">Tasks</span></button></div></aside></div><body>
@@ -2164,7 +2174,51 @@ matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change",()=>{if((
 setTimeout(p29Init,50);
 </script>
 
-</body></html>`);w.document.close();
+<script id="phase30-officer-workspace-js">
+function p30OfficerFiles(){
+ let a=(DATA.files||[]),name="Ali Hassan";
+ let mine=a.filter(f=>(f.officer||"").toLowerCase().includes(name.toLowerCase()));
+ return mine.length?mine:a.slice(0,5);
+}
+function p30OfficerTasks(files){
+ let ids=new Set(files.map(f=>f.id)),a=(DATA.smartTasks||[]).filter(t=>ids.has(t.file)&&t.status!=="Completed");
+ return a.length?a:(DATA.smartTasks||[]).filter(t=>t.status!=="Completed").slice(0,6);
+}
+function p30Render(){
+ if(activeDemoRole!=="officer")return;
+ let page=document.getElementById("followupBoardPage");if(!page)return;
+ let host=page.querySelector(".content")||page,files=p30OfficerFiles(),tasks=p30OfficerTasks(files),over=tasks.filter(t=>typeof taskState==="function"&&taskState(t)==="overdue"),today=tasks.filter(t=>typeof taskState==="function"&&taskState(t)==="today");
+ let outstanding=files.reduce((s,f)=>s+Math.max(0,+(f.claim||0)-+(f.collected||0)),0);
+ host.innerHTML=`<div class="p30">
+ <div class="p30-hero"><div><h2>${currentLang==="ar"?"مساحة عمل المنفذ الخاص":"Enforcement Officer Workspace"}</h2><p>${currentLang==="ar"?"كل ما تحتاجه لعمل اليوم في شاشة واحدة.":"Everything you need for today in one operational screen."}</p></div><div class="p30-actions"><button onclick="p30Voice()">🎙 ${currentLang==="ar"?"أمر صوتي":"Voice"}</button><button onclick="p30Camera()">📷 ${currentLang==="ar"?"تصوير":"Camera"}</button><button class="primary" onclick="p30NewMinute()">＋ ${currentLang==="ar"?"محضر جديد":"New Minutes"}</button></div></div>
+ <div class="p30-kpis"><div class="p30-kpi"><span>${currentLang==="ar"?"ملفاتي":"My Files"}</span><strong>${files.length}</strong></div><div class="p30-kpi"><span>${currentLang==="ar"?"مهام اليوم":"Due Today"}</span><strong>${today.length}</strong></div><div class="p30-kpi"><span>${currentLang==="ar"?"متأخرة":"Overdue"}</span><strong>${over.length}</strong></div><div class="p30-kpi"><span>${currentLang==="ar"?"الرصيد القائم":"Outstanding"}</span><strong>${money(outstanding)}</strong></div></div>
+ <div class="p30-grid"><section class="p30-card"><h3>${currentLang==="ar"?"إجراءات اليوم":"My Day"}</h3>${tasks.slice(0,6).map(t=>`<div class="p30-item" onclick="openDetail('files','${t.file}')"><div class="p30-item-head"><strong>${t.title}</strong><span class="p30-chip">${typeof taskState==="function"?taskState(t):t.status}</span></div><span>${t.file} · ${t.due||"—"} · ${t.priority||""}</span></div>`).join("")||`<div class="empty">${currentLang==="ar"?"لا توجد مهام حالية":"No current tasks"}</div>`}</section>
+ <section class="p30-card"><h3>${currentLang==="ar"?"إجراء سريع":"Quick Action"}</h3><div class="p30-quick"><button onclick="p30Camera()"><b>📷</b>${currentLang==="ar"?"التقاط دليل":"Capture Evidence"}</button><button onclick="p30Voice()"><b>🎙</b>${currentLang==="ar"?"تحدث إلى ENFORZA":"Talk to ENFORZA"}</button><button onclick="p30NewMinute()"><b>📝</b>${currentLang==="ar"?"إعداد محضر":"Create Minutes"}</button><button onclick="openPage('files')"><b>📁</b>${currentLang==="ar"?"فتح ملف":"Open File"}</button></div></section></div>
+ <div class="p30-grid"><section class="p30-card"><h3>${currentLang==="ar"?"ملفاتي المكلف بها":"My Assigned Files"}</h3>${files.slice(0,5).map(f=>`<div class="p30-item" onclick="openDetail('files','${f.id}')"><div class="p30-item-head"><strong>${f.id} · ${f.debtor}</strong><span class="p30-chip">${f.status||"Active"}</span></div><span>${f.caseNo||"—"} · ${currentLang==="ar"?"المتبقي":"Outstanding"} ${money(Math.max(0,+(f.claim||0)-+(f.collected||0)))}</span></div>`).join("")}</section>
+ <section class="p30-ai"><h3>✦ ENFORZA AI</h3><p>${p30AISummary(files,tasks,over)}</p><button onclick="openAI()">${currentLang==="ar"?"اسأل ENFORZA AI":"Ask ENFORZA AI"}</button></section></div></div>
+ <nav class="p30-mobile-nav"><button onclick="openPage('followupBoard')"><b>⌂</b>${currentLang==="ar"?"اليوم":"Today"}</button><button onclick="openPage('files')"><b>▣</b>${currentLang==="ar"?"ملفاتي":"Files"}</button><button onclick="openPage('smarttasks')"><b>✓</b>${currentLang==="ar"?"المهام":"Tasks"}</button><button onclick="p30Camera()"><b>📷</b>${currentLang==="ar"?"تصوير":"Camera"}</button><button onclick="p30Voice()"><b>🎙</b>${currentLang==="ar"?"صوت":"Voice"}</button></nav>`;
+}
+function p30AISummary(files,tasks,over){
+ let next=[...tasks].sort((a,b)=>String(a.due||"9999").localeCompare(String(b.due||"9999")))[0];
+ return currentLang==="ar"?`لديك ${files.length} ملفات مكلف بها و${tasks.length} مهام مفتوحة، منها ${over.length} متأخرة.${next?" الإجراء الأقرب: "+next.title+" للملف "+next.file+".":""}`:`You have ${files.length} assigned files and ${tasks.length} open tasks, including ${over.length} overdue.${next?" Your next priority is "+next.title+" for "+next.file+".":""}`;
+}
+function p30Voice(){
+ if(typeof startVoiceCommand==="function")return startVoiceCommand();
+ if(typeof startVoice==="function")return startVoice();
+ if(typeof openAI==="function"){openAI();showToast(currentLang==="ar"?"اضغط الميكروفون للتحدث إلى ENFORZA AI.":"Use the microphone to speak to ENFORZA AI.");}
+}
+function p30Camera(){
+ if(typeof openEvidenceCapture==="function")return openEvidenceCapture();
+ if(typeof openAttachSheet==="function")return openAttachSheet("camera");
+ openPage("evidence");showToast(currentLang==="ar"?"اختر الكاميرا لالتقاط صورة مباشرة.":"Choose Camera to capture evidence.");
+}
+function p30NewMinute(){
+ if(typeof openMinuteModal==="function")return openMinuteModal();
+ openPage("minutes");setTimeout(()=>{if(typeof createMinute==="function")createMinute()},100);
+}
+const p30OldOpenPage=openPage;
+openPage=function(p){p30OldOpenPage(p);if(p==="followupBoard"&&activeDemoRole==="officer")setTimeout(p30Render,20)}
+</script></body></html>`);w.document.close();
 }
 if(typeof openPage==="function"){let p28old=openPage;openPage=function(p){p28old(p);if(p==="reports")setTimeout(renderP28Reports,10)}}
 </script></body></html>`);w.document.close();
