@@ -2997,5 +2997,69 @@ window.enfOpenFile360Final=function(id){current=id;tab="overview";document.query
 const oldOpen=window.openFile360;window.openFile360=function(id){enfOpenFile360Final(id)}
 if(document.readyState!=="loading"){ } 
 })();
+</script><style id="enforza-v2-phase21-final-audit-css">
+/* Phase 21 — Final System Audit & UX Cleanup */
+html,body{min-height:100%}
+body{overflow-x:hidden}
+.page{min-width:0}
+.sidebar{z-index:1200}
+.enf-audit-toast{position:fixed;right:18px;bottom:18px;z-index:120000;max-width:360px;padding:12px 14px;border-radius:12px;background:#111820;color:#fff;box-shadow:0 18px 55px rgba(0,0,0,.24);font-size:11px;font-weight:800;display:none}
+html[dir=rtl] .enf-audit-toast{right:auto;left:18px}
+.enf-audit-toast.show{display:block}
+.enf-coming-soon{max-width:1100px;margin:0 auto;padding:36px 32px}.enf-coming-card{min-height:420px;display:grid;place-items:center;text-align:center;background:#fff;border:1px solid var(--desk-line);border-radius:18px;box-shadow:0 8px 28px rgba(28,24,20,.035)}.enf-coming-card i{display:grid;place-items:center;width:58px;height:58px;margin:0 auto 14px;border-radius:16px;background:#f1e7dd;color:#9a6433;font-style:normal;font-size:24px}.enf-coming-card h1{font-size:28px!important;margin:0 0 8px}.enf-coming-card p{margin:0;color:var(--desk-muted);font-size:12px}
+body.enf-dark .enf-coming-card{background:#171d23;color:#eef2f5;border-color:#2a333b}
+@media(max-width:900px){.enf-coming-soon{padding:18px 12px}.main,.content,.page{max-width:100%!important}.sidebar.open{z-index:100000}}
+</style>
+<section class="page" id="enfComingSoonPage" style="display:none"><div class="enf-coming-soon"><div class="enf-coming-card"><div><i>◇</i><div class="v2-kicker">ENFORZA</div><h1 id="enfComingTitle">Coming Soon</h1><p id="enfComingText">This module is reserved for a future release.</p></div></div></div></section>
+<div class="enf-audit-toast" id="enfAuditToast"></div>
+<script id="enforza-v2-phase21-final-audit-js">
+(function(){
+"use strict";
+function ar(){return (window.currentLang||document.documentElement.lang||"en")==="ar"}
+function t(e,a){return ar()?a:e}
+function toast(msg){let x=document.getElementById("enfAuditToast");if(!x)return;x.textContent=msg;x.classList.add("show");clearTimeout(x._tm);x._tm=setTimeout(()=>x.classList.remove("show"),2400)}
+function hidePages(){document.querySelectorAll(".page").forEach(p=>p.style.display="none")}
+window.enfComingSoon=function(name){hidePages();let p=document.getElementById("enfComingSoonPage");p.style.display="block";document.getElementById("enfComingTitle").textContent=(name||t("Module","القسم"))+" · "+t("Coming Soon","قريبًا");document.getElementById("enfComingText").textContent=t("This module is reserved for a future release.","هذا القسم محجوز لإصدار قادم.");closeMobile()}
+function closeMobile(){document.querySelectorAll(".sidebar.open,.side-menu.open,.mobile-menu.open").forEach(x=>x.classList.remove("open"))}
+function role(){
+ let r=(window.currentRole||window.userRole||sessionStorage.getItem("enforzaRole")||"").toLowerCase();
+ if(r.includes("creditor"))return"creditor";return"officer"
+}
+function applyRole(){
+ let r=role();document.body.dataset.enfRole=r;
+ let restricted=["expenses","treasury","claims","users","settings","evidence"];
+ document.querySelectorAll(".nav-item").forEach(n=>{let p=n.dataset.page||"";if(r==="creditor"&&restricted.includes(p))n.style.display="none"});
+}
+function cleanDemo(){
+ if(!window.DATA)return;
+ ["files","smartTasks","minutes","documents","evidence","financialTransactions"].forEach(k=>{if(!Array.isArray(DATA[k]))DATA[k]=[]});
+ Object.keys(DATA).forEach(k=>{if(Array.isArray(DATA[k]))DATA[k]=DATA[k].filter(x=>!(x&&(x.demo===true||x.isDemo===true||x.seed===true||String(x.id||"").toLowerCase().startsWith("demo-"))))});
+}
+function langSync(){
+ let isAr=ar();document.documentElement.lang=isAr?"ar":"en";document.documentElement.dir=isAr?"rtl":"ltr";
+ let dict={
+  "Dashboard":["Dashboard","لوحة التحكم"],"Files":["Files","الملفات"],"Tasks":["Tasks","المهام"],"Reports":["Reports","التقارير"],
+  "Collections":["Collections","التحصيلات"],"Expenses":["Expenses","المصروفات"],"Claims":["Claims","المطالبات"],
+  "Documents":["Documents","المستندات"],"Evidence":["Evidence","الأدلة"],"Settings":["Settings","الإعدادات"],
+  "Human Resources":["Human Resources","الموارد البشرية"],"Accounting":["Accounting","المحاسبة"],"Tax":["Tax","الضريبة"]
+ };
+ document.querySelectorAll(".nav-item").forEach(n=>{let raw=(n.dataset.enLabel||n.textContent||"").trim().replace(/\s+/g," ");if(!n.dataset.enLabel)n.dataset.enLabel=raw;let hit=Object.entries(dict).find(([k])=>raw.toLowerCase().includes(k.toLowerCase()));if(hit){let txt=isAr?hit[1][1]:hit[1][0];let textNode=[...n.childNodes].find(x=>x.nodeType===3&&x.textContent.trim());if(textNode)textNode.textContent=" "+txt+" ";}});
+}
+function wireComing(){
+ let map={hr:t("Human Resources","الموارد البشرية"),humanResources:t("Human Resources","الموارد البشرية"),accounting:t("Accounting","المحاسبة"),tax:t("Tax","الضريبة")};
+ Object.entries(map).forEach(([p,nm])=>document.querySelectorAll(`.nav-item[data-page="${p}"]`).forEach(n=>n.addEventListener("click",e=>{e.preventDefault();e.stopImmediatePropagation();enfComingSoon(nm)},true)));
+}
+function navSafety(){
+ document.querySelectorAll(".nav-item").forEach(n=>n.addEventListener("click",()=>setTimeout(closeMobile,0)));
+ document.addEventListener("keydown",e=>{if(e.key==="Escape"){document.querySelectorAll(".enf-intake.open,.enf-de-modal.open,.enf-fin-modal.open").forEach(x=>x.classList.remove("open"));closeMobile()}});
+}
+function audit(){
+ cleanDemo();applyRole();langSync();wireComing();navSafety();
+ window.addEventListener("error",e=>{if(e&&e.message)console.warn("ENFORZA audit:",e.message)});
+ setTimeout(()=>{document.querySelectorAll("[style*='position: fixed']").forEach(x=>{if(x.getBoundingClientRect().top>window.innerHeight+200)x.style.bottom="18px"});},100);
+}
+window.enfAuditRefresh=function(){applyRole();langSync();toast(t("Interface refreshed.","تم تحديث الواجهة."))}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",audit);else audit();
+})();
 </script></body>
 </html>
