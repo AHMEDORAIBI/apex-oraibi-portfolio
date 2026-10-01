@@ -1658,9 +1658,13 @@ function renderSessionLog(){const e=document.getElementById("sessionLogBody");if
 function toggleSessionLog(){const e=document.getElementById("sessionLog");e.style.display=e.style.display==="block"?"none":"block";renderSessionLog()}
 function resetLiveDemo(){
  Object.keys(DATA).forEach(k=>delete DATA[k]);Object.assign(DATA,JSON.parse(JSON.stringify(DEMO_ORIGINAL)));DEMO_SESSION_LOG=[];renderSessionLog();renderDashboard();showToast(t("Demo data restored."));logDemo(t("Demo Reset"),t("Original demo dataset restored"));
- if(currentModule==="files")renderModule("files");
+ if(currentModule==="files"){if(typeof renderFiles7==="function")renderFiles7();else if(typeof loadGeneric==="function")loadGeneric("files");}
 }
-function liveRefresh(){renderDashboard();if(currentModule&&["files","collections","settlements","expenses","tasks"].includes(currentModule))renderModule(currentModule);if(currentModule==="actionsCenter")renderActionCenter();if(currentModule==="followupBoard")renderFollowups("today")}
+function liveRefresh(){renderDashboard();if(currentModule&&["files","collections","settlements","expenses","tasks"].includes(currentModule)){
+ if(currentModule==="files"&&typeof renderFiles7==="function")renderFiles7();
+ else if(currentModule==="tasks"&&typeof renderSmartTasks==="function")renderSmartTasks();
+ else if(typeof loadGeneric==="function"&&typeof CONFIG!=="undefined"&&CONFIG[currentModule])loadGeneric(currentModule);
+}if(currentModule==="actionsCenter")renderActionCenter();if(currentModule==="followupBoard")renderFollowups("today")}
 function nextDemoId(prefix,arr){return prefix+"-"+String((arr?.length||0)+1).padStart(4,"0")}
 function saveDemoModal(){
  const title=document.getElementById("quickModalTitle")?.textContent||"",inputs=[...document.querySelectorAll("#quickModalBody input,#quickModalBody select,#quickModalBody textarea")].map(x=>x.value);
