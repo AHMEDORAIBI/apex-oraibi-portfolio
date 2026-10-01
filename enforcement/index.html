@@ -516,6 +516,18 @@ html[dir="rtl"] .main{margin-left:0!important;margin-right:260px!important}.nav-
 .p25-footer{background:#fff;border-top:1px solid #e5ded6;padding:14px 22px;display:flex;justify-content:space-between;align-items:center;gap:10px}.p25-footer-left{color:#7b858e}.p25-footer-actions{display:flex;gap:8px}.p25-footer button{border:1px solid #ddd6cf;background:#fff;border-radius:9px;padding:10px 15px;font-size:16px;font-weight:900}.p25-footer .primary{background:#b78a5d;color:#fff;border-color:#b78a5d}
 .p25-save{font-size:14px!important;color:#7d8790}.p25-mobile-title{display:none}
 @media(max-width:720px){#wizardModal{padding:0!important}#wizardModal .wizard-box{width:100%!important;height:100vh!important;max-height:none!important;border-radius:0!important}.p25-wizard-head{padding:16px}.p25-wizard-head p{display:none}.p25-stepper{padding:10px;gap:4px}.p25-step{justify-content:center}.p25-step strong{display:none}.p25-body{padding:12px;max-height:calc(100vh - 190px)}.p25-grid,.p25-review{grid-template-columns:1fr}.p25-field.full{grid-column:auto}.p25-footer{padding:10px 12px}.p25-footer-left{display:none}.p25-footer-actions{width:100%}.p25-footer-actions button{flex:1}.p25-mobile-title{display:block;color:#8a633f;font-weight:900;margin-bottom:10px}}
+</style><style id="phase26-executive-case-workspace">
+/* PHASE 26 — EXECUTIVE CASE WORKSPACE */
+.p26-command{display:grid;gap:13px}
+.p26-statusbar{display:grid;grid-template-columns:1.25fr repeat(4,.7fr);gap:9px}.p26-status-main,.p26-stat{background:#fff;border:1px solid #e5ded6;border-radius:12px;padding:14px}.p26-status-main strong{display:block;color:#111923;font-size:20px!important}.p26-status-main span,.p26-stat span{display:block;color:var(--muted);margin-top:4px}.p26-stat strong{display:block;color:#111923;font-size:20px!important;margin-top:5px}
+.p26-progress{height:8px;background:#eee9e3;border-radius:99px;overflow:hidden;margin-top:10px}.p26-progress i{display:block;height:100%;background:#b78a5d;border-radius:99px}
+.p26-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:13px}.p26-panel{background:#fff;border:1px solid #e5ded6;border-radius:13px;padding:16px}.p26-panel-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}.p26-panel-head h3{margin:0}.p26-panel-head button{border:0;background:none;color:#a87448;font-weight:900}
+.p26-focus{border:1px solid #dbc3ad;background:linear-gradient(135deg,#fff9f3,#fff);border-radius:11px;padding:14px}.p26-focus strong{display:block;color:#111923}.p26-focus span{display:block;color:#68747e;margin-top:5px;line-height:1.5}
+.p26-item{padding:10px 0;border-bottom:1px solid #eee9e3}.p26-item:last-child{border-bottom:0}.p26-item strong{display:block;color:#111923}.p26-item span{display:block;color:#75808a;margin-top:4px}
+.p26-ai{background:linear-gradient(135deg,#111923,#263440);border-radius:13px;padding:17px;color:#fff}.p26-ai h3{color:#fff!important;margin:0}.p26-ai p{color:#d0d7dd;line-height:1.6}.p26-ai-actions{display:flex;gap:8px;flex-wrap:wrap}.p26-ai button{border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.08);color:#fff;border-radius:9px;padding:9px 11px;font-weight:800}.p26-ai button.primary{background:#b78a5d;border-color:#b78a5d}
+.p26-latest{display:grid;grid-template-columns:1fr 1fr;gap:10px}.p26-latest-card{border:1px solid #ebe5de;border-radius:11px;padding:13px}.p26-latest-card small{color:#a87448;font-weight:900}.p26-latest-card strong,.p26-latest-card span{display:block}.p26-latest-card strong{margin-top:5px;color:#111923}.p26-latest-card span{margin-top:4px;color:#75808a}
+@media(max-width:950px){.p26-statusbar{grid-template-columns:1fr 1fr}.p26-status-main{grid-column:1/-1}.p26-grid{grid-template-columns:1fr}}
+@media(max-width:560px){.p26-statusbar{grid-template-columns:1fr 1fr}.p26-latest{grid-template-columns:1fr}}
 </style></head>
 <div class="exec-action-sheet" id="execActionSheet"><div class="exec-action-box"><div class="minutes-head"><div><h2>New Action</h2><p>Choose what you want to add to this enforcement file.</p></div><button class="top-btn" onclick="closeExecActionSheet()">×</button></div><div class="exec-action-grid">
 <div class="exec-action-card" onclick="execAction('task')"><b>✓</b><strong>Task</strong></div><div class="exec-action-card" onclick="execAction('minutes')"><b>✎</b><strong>Minutes</strong></div><div class="exec-action-card" onclick="execAction('collection')"><b>◉</b><strong>Collection</strong></div><div class="exec-action-card" onclick="execAction('document')"><b>▧</b><strong>Document</strong></div><div class="exec-action-card" onclick="execAction('camera')"><b>📷</b><strong>Camera / Evidence</strong></div><div class="exec-action-card" onclick="execAction('settlement')"><b>◇</b><strong>Settlement</strong></div></div></div></div>
@@ -1854,6 +1866,58 @@ if(typeof openWizard==="function"){
 if(typeof commitWizardFile==="function"){
  let p25OldCommit=commitWizardFile;
  commitWizardFile=function(){p25OldCommit();p25ClearDraft()}
+}
+</script><script id="phase26-executive-case-workspace-js">
+function p26Date(v){let d=new Date(v||0);return isNaN(d)?new Date(0):d}
+function p26Latest(arr){return [...arr].sort((a,b)=>p26Date(b.date||b.created||b.captured)-p26Date(a.date||a.created||a.captured))[0]}
+function p26Workspace(f){
+ let host=document.getElementById("execWorkspacePanel");if(!host||!f)return;
+ let tasks=(DATA.smartTasks||[]).filter(x=>x.file===f.id),open=tasks.filter(x=>x.status!=="Completed"),over=open.filter(x=>typeof taskState==="function"&&taskState(x)==="overdue");
+ let mins=(DATA.minutes||[]).filter(x=>x.file===f.id),docs=(DATA.smartDocuments||[]).filter(x=>x.file===f.id),ev=(DATA.evidence||[]).filter(x=>x.file===f.id),cols=(DATA.collections||[]).filter(x=>x.file===f.id);
+ let claim=+(f.claim||f.judgmentAmount||0),collected=+(f.collected||0),out=Math.max(0,claim-collected),pct=claim?Math.min(100,Math.round(collected/claim*100)):0;
+ let lm=p26Latest(mins),ld=p26Latest(docs),le=p26Latest(ev),next=open.sort((a,b)=>p26Date(a.due)-p26Date(b.due))[0];
+ let recommendation=over.length?(currentLang==="ar"?`يوجد ${over.length} مهام متأخرة. الأولوية هي معالجة أقدم مهمة قبل إضافة إجراءات جديدة.`:`${over.length} overdue task(s). Resolve the oldest overdue task before adding new actions.`)
+ :next?(currentLang==="ar"?`الإجراء الأقرب هو "${next.title}" بتاريخ ${next.due}.`:`The nearest action is "${next.title}" due ${next.due}.`)
+ :(currentLang==="ar"?"لا توجد مهمة متابعة مفتوحة. يوصى بتحديد الإجراء التنفيذي التالي وإنشاء موعد له.":"No open follow-up task. Define the next enforcement action and schedule it.");
+ host.innerHTML=`<div class="p26-command">
+ <div class="p26-statusbar">
+  <div class="p26-status-main"><strong>${currentLang==="ar"?"حالة الملف التنفيذية":"Enforcement Position"}</strong><span>${f.next||recommendation}</span><div class="p26-progress"><i style="width:${pct}%"></i></div></div>
+  <div class="p26-stat"><span>${currentLang==="ar"?"المطالبة":"Claim"}</span><strong>${money(claim)}</strong></div>
+  <div class="p26-stat"><span>${currentLang==="ar"?"المحصل":"Collected"}</span><strong>${money(collected)}</strong></div>
+  <div class="p26-stat"><span>${currentLang==="ar"?"المتبقي":"Outstanding"}</span><strong>${money(out)}</strong></div>
+  <div class="p26-stat"><span>${currentLang==="ar"?"نسبة التحصيل":"Recovery"}</span><strong>${pct}%</strong></div>
+ </div>
+ <div class="p26-grid">
+  <section class="p26-panel"><div class="p26-panel-head"><h3>${currentLang==="ar"?"ما يحتاج انتباهك الآن":"What Needs Attention Now"}</h3><button onclick="openSmartTaskModal('${f.id}')">＋ ${currentLang==="ar"?"مهمة":"Task"}</button></div>
+   <div class="p26-focus"><strong>${over.length?(currentLang==="ar"?"مهام متأخرة":"Overdue Tasks"):(currentLang==="ar"?"الإجراء القادم":"Next Action")}</strong><span>${recommendation}</span></div>
+   ${open.slice(0,4).map(x=>`<div class="p26-item"><strong>${x.title}</strong><span>${x.due} · ${x.assignee} · ${x.priority}</span></div>`).join("")}
+  </section>
+  <section class="p26-ai"><h3>✦ ENFORZA AI</h3><p>${recommendation}</p><div class="p26-ai-actions"><button class="primary" onclick="openAI()">${currentLang==="ar"?"تحليل الملف":"Analyze File"}</button><button onclick="openSmartTaskModal('${f.id}')">${currentLang==="ar"?"إنشاء مهمة":"Create Task"}</button><button onclick="openVoiceLab()">🎙 ${currentLang==="ar"?"تحدث مع AI":"Talk to AI"}</button></div></section>
+ </div>
+ <div class="p26-grid">
+  <section class="p26-panel"><div class="p26-panel-head"><h3>${currentLang==="ar"?"آخر ما تم على الملف":"Latest File Activity"}</h3><button onclick="renderFileTimeline(DATA.files.find(x=>x.id==='${f.id}'));openTab('filetimeline',document.querySelector('[onclick*=filetimeline]'))">${currentLang==="ar"?"السجل الكامل":"Full Timeline"}</button></div>
+   <div class="p26-latest">
+    <div class="p26-latest-card"><small>${currentLang==="ar"?"آخر محضر":"LATEST MINUTES"}</small><strong>${lm?lm.subject:"—"}</strong><span>${lm?(lm.date||lm.created||""):""}</span></div>
+    <div class="p26-latest-card"><small>${currentLang==="ar"?"آخر مستند":"LATEST DOCUMENT"}</small><strong>${ld?ld.title:"—"}</strong><span>${ld?(ld.date||ld.type||""):""}</span></div>
+    <div class="p26-latest-card"><small>${currentLang==="ar"?"الأدلة الميدانية":"FIELD EVIDENCE"}</small><strong>${ev.length}</strong><span>${le?(le.description||le.captured||""):(currentLang==="ar"?"لا توجد أدلة":"No evidence")}</span></div>
+    <div class="p26-latest-card"><small>${currentLang==="ar"?"التحصيلات":"COLLECTIONS"}</small><strong>${cols.length}</strong><span>${currentLang==="ar"?"عمليات مسجلة على الملف":"recorded transactions"}</span></div>
+   </div>
+  </section>
+  <section class="p26-panel"><div class="p26-panel-head"><h3>${currentLang==="ar"?"بيانات القضية المختصرة":"Case Snapshot"}</h3></div>
+   <div class="p26-item"><strong>${currentLang==="ar"?"رقم القضية":"Case Number"}</strong><span>${f.caseNo||"—"} · ${f.court||"—"}</span></div>
+   <div class="p26-item"><strong>${currentLang==="ar"?"رقم ملف التنفيذ":"Enforcement Number"}</strong><span>${f.enforcementNo||"—"}</span></div>
+   <div class="p26-item"><strong>${currentLang==="ar"?"السند التنفيذي":"Instrument"}</strong><span>${f.instrument||"—"}</span></div>
+   <div class="p26-item"><strong>${currentLang==="ar"?"مصدر الملف":"Origin"}</strong><span>${f.origin||"New Direct File"}${f.source?" · "+f.source:""}</span></div>
+  </section>
+ </div></div>`;
+}
+if(typeof phase24RenderPanel==="function"){
+ let p26oldPanel=phase24RenderPanel;
+ phase24RenderPanel=function(f,type){if(type==="summary"){p26Workspace(f);return}p26oldPanel(f,type)}
+}
+if(typeof phase24Workspace==="function"){
+ let p26oldWorkspace=phase24Workspace;
+ phase24Workspace=function(f){p26oldWorkspace(f);setTimeout(()=>p26Workspace(f),20)}
 }
 </script></body></html>`);w.document.close();
 }
