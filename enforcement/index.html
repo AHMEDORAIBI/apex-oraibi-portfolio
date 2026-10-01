@@ -633,6 +633,25 @@ html[dir="rtl"] .p29-appearance{right:auto;left:18px}html[dir="rtl"] .p29-pop{ri
 .p32-ai{background:linear-gradient(135deg,color-mix(in srgb,var(--p29-accent) 12%,var(--white)),var(--white));border:1px solid color-mix(in srgb,var(--p29-accent) 42%,var(--border));border-radius:14px;padding:16px}.p32-ai h3{font-size:20px!important;margin:0}.p32-ai p{color:var(--muted);line-height:1.7}.p32-ai button{border:0;background:#111923;color:#fff;border-radius:9px;padding:10px 12px;font-size:16px;font-weight:900}
 .p32-quick{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.p32-quick button{border:1px solid var(--border);background:var(--white);color:var(--text);border-radius:11px;padding:13px 8px;font-size:15px;font-weight:900}.p32-quick b{display:block;font-size:22px;margin-bottom:5px}
 @media(max-width:1000px){.p32-kpis{grid-template-columns:repeat(2,1fr)}.p32-grid{grid-template-columns:1fr}.p32-quick{grid-template-columns:1fr 1fr}}@media(max-width:600px){.p32-hero{display:block}.p32-actions{margin-top:13px}.p32-kpis{grid-template-columns:1fr 1fr}}
+</style><style id="phase33-mobile-clean-start">
+/* PHASE 33 — MOBILE APP EXPERIENCE + CLEAN START */
+.p33-empty{background:var(--white);border:1px dashed var(--border);border-radius:14px;padding:28px 18px;text-align:center;color:var(--muted)}
+.p33-empty b{display:block;color:var(--text);font-size:20px;margin-bottom:7px}
+.p33-empty button{margin-top:12px;border:0;background:var(--p29-accent);color:#fff;border-radius:10px;padding:11px 15px;font-size:16px;font-weight:900}
+.p33-fab{display:none}
+@media(max-width:850px){
+ body{font-size:16px}
+ .sidebar{position:fixed!important;z-index:1500;transform:translateX(-110%);transition:.22s ease}
+ html[dir="rtl"] .sidebar{transform:translateX(110%)}
+ .sidebar.mobile-open{transform:translateX(0)}
+ .topbar{position:sticky!important;top:0;z-index:1000;backdrop-filter:blur(12px)}
+ .content{padding:12px!important}
+ .card,.p32-card,.p31-card,.p30-card,.p28-panel,.p26-panel{border-radius:14px!important}
+ button,input,select,textarea{min-height:44px}
+ .p33-fab{display:grid;position:fixed;right:16px;bottom:86px;z-index:1240;width:56px;height:56px;border:0;border-radius:50%;place-items:center;background:var(--p29-accent);color:#fff;font-size:25px;box-shadow:0 12px 30px rgba(0,0,0,.24)}
+ html[dir="rtl"] .p33-fab{right:auto;left:16px}
+ .table-wrap{overflow:auto;-webkit-overflow-scrolling:touch}
+}
 </style></head>
 <div class="exec-action-sheet" id="execActionSheet"><div class="exec-action-box"><div class="minutes-head"><div><h2>New Action</h2><p>Choose what you want to add to this enforcement file.</p></div><button class="top-btn" onclick="closeExecActionSheet()">×</button></div><div class="exec-action-grid">
 <div class="exec-action-card" onclick="execAction('task')"><b>✓</b><strong>Task</strong></div><div class="exec-action-card" onclick="execAction('minutes')"><b>✎</b><strong>Minutes</strong></div><div class="exec-action-card" onclick="execAction('collection')"><b>◉</b><strong>Collection</strong></div><div class="exec-action-card" onclick="execAction('document')"><b>▧</b><strong>Document</strong></div><div class="exec-action-card" onclick="execAction('camera')"><b>📷</b><strong>Camera / Evidence</strong></div><div class="exec-action-card" onclick="execAction('settlement')"><b>◇</b><strong>Settlement</strong></div></div></div></div>
@@ -1051,41 +1070,13 @@ html[dir="rtl"] .p29-appearance{right:auto;left:18px}html[dir="rtl"] .p29-pop{ri
 
 <script>
 const DATA={
-files:[
-{id:"ENF-260184",creditor:"Gulf Finance W.L.L.",debtor:"Al Noor Trading",claim:18500,collected:4200,status:"Escalated",officer:"Ali Hassan",next:"Bank attachment review",court:"Execution Court",opened:"03 Aug 2026"},
-{id:"ENF-260191",creditor:"Prime Services",debtor:"Modern Workshop",claim:9750,collected:2500,status:"Active",officer:"Maryam Yusuf",next:"Payment follow-up",court:"Execution Court",opened:"05 Aug 2026"},
-{id:"ENF-260203",creditor:"Bahrain Leasing",debtor:"Eastern Market",claim:22300,collected:0,status:"Review",officer:"Khalid Salman",next:"Asset inquiry",court:"Execution Court",opened:"10 Aug 2026"},
-{id:"ENF-260211",creditor:"Apex Contracting",debtor:"Yusuf Ahmed",claim:36200,collected:12000,status:"Active",officer:"Noor Ahmed",next:"Installment review",court:"Execution Court",opened:"12 Aug 2026"},
-{id:"ENF-260219",creditor:"Manama Holdings",debtor:"Blue Coast W.L.L.",claim:61800,collected:21800,status:"Settlement",officer:"Ali Hassan",next:"Settlement approval",court:"Execution Court",opened:"15 Aug 2026"}],
-parties:[
-{id:"PTY-260045",name:"Gulf Finance W.L.L.",type:"Creditor",ref:"CR 88421",mobile:"+973 1700 2200",status:"Active",files:12,balance:248000},
-{id:"PTY-260087",name:"Al Noor Trading",type:"Debtor",ref:"CR 77219",mobile:"+973 3990 1182",status:"Active",files:2,balance:18500},
-{id:"PTY-260102",name:"Prime Services",type:"Creditor",ref:"CR 90812",mobile:"+973 1755 0044",status:"Active",files:8,balance:132400},
-{id:"PTY-260119",name:"Modern Workshop",type:"Debtor",ref:"CR 66192",mobile:"+973 3660 1188",status:"Active",files:1,balance:9750}],
-claims:[
-{id:"CLM-260184",file:"ENF-260184",party:"Al Noor Trading",type:"Principal",amount:18500,paid:4200,status:"Partial",due:"31 Aug 2026"},
-{id:"CLM-260191",file:"ENF-260191",party:"Modern Workshop",type:"Principal",amount:9750,paid:2500,status:"Partial",due:"28 Aug 2026"},
-{id:"CLM-260203",file:"ENF-260203",party:"Eastern Market",type:"Principal",amount:22300,paid:0,status:"Unpaid",due:"26 Aug 2026"},
-{id:"CLM-260211",file:"ENF-260211",party:"Yusuf Ahmed",type:"Principal",amount:36200,paid:12000,status:"Partial",due:"10 Sep 2026"}],
-tasks:[
-{id:"TSK-260812",title:"Bank attachment review",file:"ENF-260184",officer:"Ali Hassan",due:"24 Aug 2026",priority:"High",status:"Pending"},
-{id:"TSK-260814",title:"Debtor payment follow-up",file:"ENF-260191",officer:"Maryam Yusuf",due:"24 Aug 2026",priority:"Medium",status:"Pending"},
-{id:"TSK-260819",title:"Asset inquiry",file:"ENF-260203",officer:"Khalid Salman",due:"25 Aug 2026",priority:"High",status:"Pending"},
-{id:"TSK-260823",title:"Settlement approval",file:"ENF-260219",officer:"Ali Hassan",due:"26 Aug 2026",priority:"High",status:"Pending"}],
-collections:[
-{id:"RC-260823-015",date:"23 Aug 2026",file:"ENF-260211",debtor:"Yusuf Ahmed",method:"Bank Transfer",amount:5000,status:"Allocated"},
-{id:"RC-260822-011",date:"22 Aug 2026",file:"ENF-260184",debtor:"Al Noor Trading",method:"BenefitPay",amount:2200,status:"Allocated"},
-{id:"RC-260821-008",date:"21 Aug 2026",file:"ENF-260191",debtor:"Modern Workshop",method:"Cheque",amount:2500,status:"Allocated"},
-{id:"RC-260820-004",date:"20 Aug 2026",file:"ENF-260219",debtor:"Blue Coast W.L.L.",method:"Bank Transfer",amount:9800,status:"Allocated"}],
-expenses:[
-{id:"EXP-260823-006",date:"23 Aug 2026",file:"ENF-260184",category:"Court Fee",description:"Execution filing fee",amount:42,status:"Posted"},
-{id:"EXP-260822-004",date:"22 Aug 2026",file:"ENF-260203",category:"External Search",description:"Asset inquiry fee",amount:65,status:"Posted"},
-{id:"EXP-260821-002",date:"21 Aug 2026",file:"ENF-260211",category:"Courier",description:"Document delivery",amount:18.5,status:"Posted"},
-{id:"EXP-260819-009",date:"19 Aug 2026",file:"ENF-260219",category:"Legal Notice",description:"Notice publication",amount:120,status:"Posted"}],
-settlements:[
-{id:"SET-260031",file:"ENF-260219",debtor:"Blue Coast W.L.L.",outstanding:40000,proposed:32000,status:"Pending",valid:"31 Aug 2026"},
-{id:"SET-260028",file:"ENF-260211",debtor:"Yusuf Ahmed",outstanding:24200,proposed:22000,status:"Approved",valid:"15 Sep 2026"},
-{id:"SET-260024",file:"ENF-260191",debtor:"Modern Workshop",outstanding:7250,proposed:6500,status:"Completed",valid:"28 Aug 2026"}],
+files:[],
+parties:[],
+claims:[],
+tasks:[],
+collections:[],
+expenses:[],
+settlements:[],
 treasury:[
 {id:"TRX-260823-019",date:"23 Aug 2026",type:"Collection",source:"RC-260823-015",inflow:5000,outflow:0,account:"Collection Bank"},
 {id:"TRX-260823-018",date:"23 Aug 2026",type:"Expense",source:"EXP-260823-006",inflow:0,outflow:42,account:"Operating Bank"},
@@ -2067,7 +2058,7 @@ function p27RenderList(){
  let a=p27Notifications();if(p27Filter!=="all")a=a.filter(x=>x.type===p27Filter);
  document.getElementById("p27List").innerHTML=a.length?a.map(x=>`<div class="p27-note ${x.level}" onclick="p27Open('${x.id}')"><div class="p27-note-head"><div><span class="p27-type">${p27TypeName(x.type)}</span><strong>${x.title}</strong></div>${!p27Viewed.has(x.id)?'<span style="color:#a94b45">●</span>':""}</div><span>${x.detail}</span>${x.file?`<button>${currentLang==="ar"?"فتح الملف":"Open File"} →</button>`:""}</div>`).join(""):`<div class="p27-empty">${currentLang==="ar"?"لا توجد إشعارات ضمن هذا التصنيف.":"No notifications in this category."}</div>`;
 }
-function p27TypeName(x){let a={task:["Task","مهمة"],settlement:["Settlement","تسوية"],file:["File","ملف"],minutes:["Minutes","محضر"],document:["Document","مستند"]};return a[x]?(currentLang==="ar"?a[x][1]:a[x][0]):x}
+function p27TypeName(x){let a={task:["Task","مهمة"],settlement:["Settlement","تسوية"],file:["File","ملف"],minutes:[],document:["Document","مستند"]};return a[x]?(currentLang==="ar"?a[x][1]:a[x][0]):x}
 function p27Open(id){let x=p27Notifications().find(a=>a.id===id);if(!x)return;p27Viewed.add(id);p27UpdateBadge();closeP27Notifications();if(x.file)openDetail("files",x.file);else if(x.type==="task")openPage("smarttasks")}
 function p27MarkViewed(){p27Notifications().forEach(x=>p27Viewed.add(x.id));p27UpdateBadge();p27RenderList()}
 function p27InstallBell(){
@@ -2303,6 +2294,30 @@ function p32Officer(name){
 }
 const p32OldOpenPage=openPage;
 openPage=function(p){p32OldOpenPage(p);if(p==="dashboard"&&activeDemoRole==="management")setTimeout(p32Management,20)}
+</script><script id="phase33-mobile-clean-start-js">
+function p33Empty(title,desc,action,label){
+ return `<div class="p33-empty"><b>${title}</b><span>${desc}</span>${action?`<br><button onclick="${action}">${label}</button>`:""}</div>`;
+}
+function p33CleanEmptyStates(){
+ if((DATA.files||[]).length===0){
+   const f=document.getElementById("filesPage");
+   if(f){let c=f.querySelector(".content")||f;c.innerHTML=p33Empty(currentLang==="ar"?"لا توجد ملفات بعد":"No files yet",currentLang==="ar"?"ابدأ بإضافة أول ملف تنفيذ، وستظهر البيانات هنا تلقائيًا.":"Create your first enforcement file and its data will appear here automatically.","openWizard()",currentLang==="ar"?"فتح ملف جديد":"Open New File");}
+ }
+}
+function p33MobileQuick(){
+ if(activeDemoRole==="management"){openWizard();return}
+ if(activeDemoRole==="officer"){if(typeof p30Camera==="function")p30Camera();return}
+ if(activeDemoRole==="creditor"){if(typeof p31Ask==="function")p31Ask();return}
+}
+function p33Init(){
+ p33CleanEmptyStates();
+ if(!document.getElementById("p33Fab")){
+   let b=document.createElement("button");b.id="p33Fab";b.className="p33-fab";b.innerHTML="＋";b.onclick=p33MobileQuick;document.body.appendChild(b);
+ }
+}
+setTimeout(p33Init,120);
+const p33OldOpenPage=openPage;
+openPage=function(p){p33OldOpenPage(p);setTimeout(p33CleanEmptyStates,25)}
 </script></body></html>`);w.document.close();
 }
 if(typeof openPage==="function"){let p28old=openPage;openPage=function(p){p28old(p);if(p==="reports")setTimeout(renderP28Reports,10)}}
