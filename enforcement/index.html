@@ -4342,5 +4342,65 @@ function bind(){
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind,{once:true});else bind();
 })();
 </script>
+
+<style id="enforza-demo-ops-qa-css">
+.enf-opsqa{position:fixed;right:18px;bottom:18px;z-index:9997}
+html[dir="rtl"] .enf-opsqa{right:auto;left:18px}
+.enf-opsqa-btn{border:1px solid var(--line);background:var(--surface);color:inherit;border-radius:999px;padding:9px 13px;box-shadow:0 8px 24px rgba(0,0,0,.08);cursor:pointer;font-size:8px;font-weight:900}
+.enf-opsqa-panel{display:none;position:absolute;right:0;bottom:42px;width:310px;max-height:65vh;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px;box-shadow:0 18px 45px rgba(0,0,0,.14)}
+html[dir="rtl"] .enf-opsqa-panel{right:auto;left:0}
+.enf-opsqa.open .enf-opsqa-panel{display:block}.enf-opsqa-row{display:grid;grid-template-columns:1fr auto;gap:8px;padding:7px 0;border-bottom:1px solid var(--line);font-size:8px}.enf-opsqa-ok{font-weight:900}.enf-opsqa-note{font-size:7px;color:var(--muted);margin-top:8px}
+</style>
+<script id="enforza-demo-ops-qa-js">
+(function(){
+"use strict";
+function has(id){return !!document.getElementById(id)}
+function fn(n){return typeof window[n]==="function"}
+function tr(e,a){return ((window.currentLang||"en").toLowerCase().startsWith("ar"))?a:e}
+function checks(){
+ return [
+  ["Dashboard navigation",has("dashboardPage")&&fn("enfExecutiveDashboardRender")],
+  ["Files 360",has("enfFilesClient360Page")&&fn("enfFiles360Open")],
+  ["Open File 360",fn("openFile360")],
+  ["Client 360",has("enfClient360Panel")&&fn("enfClient360Open")],
+  ["Add File",fn("enfIntakeOpen")||fn("openFileWizard")||fn("openQuickAdd")],
+  ["Financial workspace",has("enfFinRoot")&&fn("enfOpenFinance")],
+  ["Add financial transaction",fn("enfFinSave")],
+  ["Client transfer",fn("enfFinClientTransfer")],
+  ["Tasks",fn("v210Go")&&fn("v2OpenTask")],
+  ["Calendar",fn("v210Go")&&has("v2CalendarPage")],
+  ["Reports",has("reportsPage")&&fn("enfReportsV2Render")],
+  ["CSV export",fn("enfReportsCSV")],
+  ["Voice engine",fn("enfVoiceToggle")||fn("enfVoiceOpen")],
+  ["Voice commands",fn("enfRunVoiceCommand")],
+  ["Direct demo access",!has("loginGate")&&!has("enfAuthV3")]
+ ]
+}
+window.enfOperationalQA=function(){
+ let a=checks(),pass=a.filter(x=>x[1]).length;
+ window.ENFORZA_OPERATIONAL_QA={passed:pass,total:a.length,checks:a,checkedAt:new Date().toISOString()};
+ return window.ENFORZA_OPERATIONAL_QA
+}
+window.enfOpsQAToggle=function(){
+ let w=document.getElementById("enfOpsQA");if(!w)return;w.classList.toggle("open");
+ if(w.classList.contains("open"))render()
+}
+function render(){
+ let q=window.enfOperationalQA(),b=document.getElementById("enfOpsQABody");if(!b)return;
+ b.innerHTML=`<b>${tr("Demo Operations Check","فحص عمليات الديمو")}: ${q.passed}/${q.total}</b>`+
+ q.checks.map(x=>`<div class="enf-opsqa-row"><span>${x[0]}</span><span class="enf-opsqa-ok">${x[1]?"✓":"✕"}</span></div>`).join("")+
+ `<div class="enf-opsqa-note">${tr("This checks that the live controls and target screens/functions are connected in this build.","يفحص هذا الاختبار ارتباط أدوات التشغيل بالشاشات والدوال الموجودة في هذه النسخة.")}</div>`
+}
+function boot(){
+ if(!document.getElementById("enfOpsQA")){
+  let d=document.createElement("div");d.id="enfOpsQA";d.className="enf-opsqa";
+  d.innerHTML=`<button type="button" class="enf-opsqa-btn" onclick="enfOpsQAToggle()">✓ DEMO QA</button><div class="enf-opsqa-panel"><div id="enfOpsQABody"></div></div>`;
+  document.body.appendChild(d)
+ }
+ window.enfOperationalQA()
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});else boot()
+})();
+</script>
 </body>
 </html>
