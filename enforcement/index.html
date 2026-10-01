@@ -599,6 +599,22 @@ input,select,textarea,button{font-family:inherit}
 .v2360-timeline{position:relative;padding-left:23px}.v2360-timeline:before{content:"";position:absolute;left:7px;top:8px;bottom:8px;width:1px;background:var(--desk-line)}html[dir=rtl] .v2360-timeline{padding-left:0;padding-right:23px}html[dir=rtl] .v2360-timeline:before{left:auto;right:7px}.v2360-timeitem{position:relative;padding:0 0 17px}.v2360-timeitem:before{content:"";position:absolute;left:-20px;top:5px;width:9px;height:9px;border-radius:50%;background:#b77a3e;border:2px solid #fff;box-shadow:0 0 0 1px #d9c5b1}html[dir=rtl] .v2360-timeitem:before{left:auto;right:-20px}.v2360-timeitem b{font-size:12px}.v2360-timeitem small{display:block;color:var(--desk-muted);margin-top:3px}
 .v2360-smart-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:12px}.v2360-smart-actions button{border:1px solid var(--desk-line);background:#fff;border-radius:9px;padding:9px;font-size:11px;font-weight:900;cursor:pointer}
 @media(max-width:850px){.v2360-overview-grid{grid-template-columns:1fr}.v2360-detail-grid{grid-template-columns:1fr}.v2360-finbar{grid-template-columns:1fr}.v2360-party{grid-template-columns:1fr}.v2360-arrow{transform:rotate(90deg);text-align:center}}
+</style><style id="enforza-v2-phase9-calendar-refined-css">
+/* Phase 9 — professional desktop calendar */
+.v2cal{max-width:1540px!important;margin:0 auto!important;padding:30px 32px!important}
+.v2cal-top{align-items:center!important}.v2cal-top h1{font-size:30px!important}
+.v2cal-dashboard{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:13px}
+.v2cal-mini{background:#fff;border:1px solid var(--desk-line);border-radius:13px;padding:13px 14px}.v2cal-mini small{display:block;color:var(--desk-muted);font-size:10px;font-weight:850}.v2cal-mini b{display:block;font-size:20px;margin-top:5px}
+.v2cal-toolbar{min-height:58px!important;padding:10px 12px!important}.v2cal-period{min-width:190px;text-align:center;font-size:17px!important}
+.v2cal-switch{padding:3px;background:#f5f2ed;border-radius:10px}.v2cal-switch .v2cal-btn{border:0!important;background:transparent!important}.v2cal-switch .v2cal-btn.active{background:#fff!important;color:#111820!important;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.v2cal-shell{border-radius:15px!important}.v2cal-weekdays div{height:39px;display:grid;place-items:center}.v2cal-day{min-height:132px!important;transition:.12s}.v2cal-day:hover{background:#fdfaf6!important}.v2cal-num{font-size:11px!important}
+.v2cal-event{padding:7px 8px!important;border-left:3px solid #b77a3e!important;border-radius:7px!important;background:#f6eee5!important}.v2cal-event.priority-High{border-left-color:#d18a2f!important;background:#fff3e3!important}.v2cal-event.priority-Critical{border-left-color:#b94a4a!important;background:#fff0f0!important}
+html[dir=rtl] .v2cal-event{border-left:0!important;border-right:3px solid #b77a3e!important}
+.v2week{display:grid;grid-template-columns:70px repeat(7,1fr);min-width:900px}.v2week-head{padding:11px 5px;text-align:center;border-bottom:1px solid var(--desk-line);border-right:1px solid var(--desk-line);font-size:10px;font-weight:900;color:var(--desk-muted)}.v2week-time{height:58px;padding:7px;border-right:1px solid var(--desk-line);border-bottom:1px solid var(--desk-line);font-size:9px;color:var(--desk-muted)}.v2week-cell{height:58px;border-right:1px solid var(--desk-line);border-bottom:1px solid var(--desk-line);padding:4px;cursor:pointer}.v2week-cell:hover{background:#fbf7f2}.v2week-event{font-size:9px;font-weight:850;background:#f1e7dd;color:#80562f;border-radius:6px;padding:4px;overflow:hidden}
+.v2day{display:grid;grid-template-columns:80px 1fr}.v2day-time{min-height:66px;border-bottom:1px solid var(--desk-line);padding:9px;color:var(--desk-muted);font-size:10px}.v2day-slot{min-height:66px;border-left:1px solid var(--desk-line);border-bottom:1px solid var(--desk-line);padding:6px;cursor:pointer}.v2day-slot:hover{background:#fbf7f2}
+.v2agenda-date{font-size:11px;font-weight:950;color:#b77a3e;padding:12px 2px 7px}.v2agenda-item{display:grid;grid-template-columns:80px 1fr auto;gap:12px;align-items:center;padding:13px;border:1px solid var(--desk-line);border-radius:11px;margin-bottom:7px}.v2agenda-time{font-weight:950}.v2agenda-item small{display:block;color:var(--desk-muted);margin-top:3px}.v2agenda-status{font-size:9px;font-weight:900;padding:5px 8px;border-radius:999px;background:#f1e7dd;color:#80562f}
+.v2task-panel{width:min(560px,100%)!important}.v2task-head{padding-bottom:13px;border-bottom:1px solid var(--desk-line)}.v2task-grid{margin-top:16px}.v2task-save{margin-top:4px!important}
+@media(max-width:900px){.v2cal-dashboard{grid-template-columns:repeat(2,1fr)}}
 </style></head>
 <body>
 
@@ -2364,6 +2380,47 @@ function enhance8(){
  let side=root.querySelector(".v2360-side");if(side&&!side.querySelector(".v2360-smart-actions"))side.insertAdjacentHTML("beforeend",`<div class="v2360-smart-actions"><button onclick="v2OpenTask('',null)">${t8("New Task","مهمة جديدة")}</button><button onclick="v2360Tab('timeline')">${t8("Timeline","التسلسل")}</button></div>`);
 }
 document.addEventListener("click",e=>{if(e.target.closest(".v2file-row:not(.head)"))setTimeout(enhance8,30)},true);
+})();
+</script><script id="enforza-v2-phase9-calendar-refined-js">
+(function(){
+"use strict";
+function ar9(){return (window.currentLang||document.documentElement.lang||"en")==="ar"}
+function t9(en,ar){return ar9()?ar:en}
+function tasks9(){return window.DATA&&Array.isArray(DATA.smartTasks)?DATA.smartTasks:[]}
+function iso9(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function parseDate9(x){let d=new Date(x+"T12:00:00");return isNaN(d)?new Date():d}
+function getCalendarDate(){let p=document.getElementById("v2calPeriod");let active=tasks9()[0];return window.calDate instanceof Date?window.calDate:new Date()}
+function addStats9(){
+ let top=document.querySelector("#v2CalendarPage .v2cal-top");if(!top)return;
+ let old=document.querySelector(".v2cal-dashboard");if(old)old.remove();
+ let today=iso9(new Date()),a=tasks9(),todayN=a.filter(x=>(x.due||x.date)===today&&x.status!=="Completed").length,over=a.filter(x=>(x.due||x.date)<today&&x.status!=="Completed").length,up=a.filter(x=>(x.due||x.date)>today&&x.status!=="Completed").length,done=a.filter(x=>x.status==="Completed").length;
+ top.insertAdjacentHTML("afterend",`<div class="v2cal-dashboard"><div class="v2cal-mini"><small>${t9("TODAY","اليوم")}</small><b>${todayN}</b></div><div class="v2cal-mini"><small>${t9("OVERDUE","متأخرة")}</small><b>${over}</b></div><div class="v2cal-mini"><small>${t9("UPCOMING","قادمة")}</small><b>${up}</b></div><div class="v2cal-mini"><small>${t9("COMPLETED","مكتملة")}</small><b>${done}</b></div></div>`);
+}
+function weekStart9(d){let x=new Date(d);x.setDate(x.getDate()-x.getDay());return x}
+function renderWeek9(){
+ let shell=document.getElementById("v2calShell");if(!shell)return;let base=new Date(),start=weekStart9(base),days=[];for(let i=0;i<7;i++){let d=new Date(start);d.setDate(start.getDate()+i);days.push(d)}
+ let hrs=[];for(let h=7;h<=20;h++)hrs.push(h);
+ let html='<div style="overflow:auto"><div class="v2week"><div class="v2week-head"></div>'+days.map(d=>`<div class="v2week-head">${d.toLocaleDateString(ar9()?"ar-BH":"en-US",{weekday:"short",day:"numeric"})}</div>`).join("");
+ hrs.forEach(h=>{html+=`<div class="v2week-time">${String(h).padStart(2,"0")}:00</div>`;days.forEach(d=>{let di=iso9(d),ev=tasks9().filter(x=>(x.due||x.date)===di&&Number((x.time||"00").split(":")[0])===h);html+=`<div class="v2week-cell" onclick="v2OpenTask('${di}')">${ev.map(x=>`<div class="v2week-event">${x.time||""} ${x.title||x.task||""}</div>`).join("")}</div>`});});html+="</div></div>";shell.innerHTML=html;document.getElementById("v2calPeriod").textContent=start.toLocaleDateString(ar9()?"ar-BH":"en-US",{month:"long",day:"numeric"})+" — "+days[6].toLocaleDateString(ar9()?"ar-BH":"en-US",{month:"short",day:"numeric"})
+}
+function renderDay9(){
+ let shell=document.getElementById("v2calShell");if(!shell)return;
+ let d=new Date(),di=iso9(d),html='<div class="v2day">';
+ for(let h=7;h<=21;h++){let ev=tasks9().filter(x=>(x.due||x.date)===di&&Number((x.time||"00").split(":")[0])===h);html+=`<div class="v2day-time">${String(h).padStart(2,"0")}:00</div><div class="v2day-slot" onclick="v2OpenTask('${di}')">${ev.map(x=>`<div class="v2cal-event">${x.time||""} ${x.title||x.task||""}</div>`).join("")}</div>`}html+="</div>";shell.innerHTML=html;document.getElementById("v2calPeriod").textContent=d.toLocaleDateString(ar9()?"ar-BH":"en-US",{dateStyle:"full"})
+}
+function renderAgenda9(){
+ let shell=document.getElementById("v2calShell");if(!shell)return;
+ let a=[...tasks9()].sort((x,y)=>String(x.due||x.date||"").localeCompare(String(y.due||y.date||"")));
+ if(!a.length){shell.innerHTML=`<div class="v2cal-agenda-empty"><div><b>${t9("No tasks scheduled","لا توجد مهام مجدولة")}</b>${t9("Your agenda will build as you add tasks.","سيتم بناء جدول الأعمال عند إضافة المهام.")}</div></div>`;return}
+ let last="",html='<div class="v2cal-agenda">';a.forEach(x=>{let d=x.due||x.date||"";if(d!==last){html+=`<div class="v2agenda-date">${d}</div>`;last=d}html+=`<div class="v2agenda-item" onclick="v2OpenTask('', '${x.id}')"><div class="v2agenda-time">${x.time||"—"}</div><div><b>${x.title||x.task||""}</b><small>${x.file||t9("No file linked","غير مرتبط بملف")} · ${x.priority||"Normal"}</small></div><span class="v2agenda-status">${x.status||"Open"}</span></div>`});shell.innerHTML=html+"</div>"
+}
+const oldSet9=window.v2SetView;
+window.v2SetView=function(v,b){document.querySelectorAll(".v2cal-switch .v2cal-btn").forEach(x=>x.classList.remove("active"));if(b)b.classList.add("active");if(v==="week")renderWeek9();else if(v==="day")renderDay9();else if(v==="agenda")renderAgenda9();else if(oldSet9)oldSet9(v,b);addStats9()}
+const oldSave9=window.v2SaveTask;window.v2SaveTask=function(){if(oldSave9)oldSave9();setTimeout(addStats9,20)}
+const oldComp9=window.v2CompleteTask;window.v2CompleteTask=function(){if(oldComp9)oldComp9();setTimeout(addStats9,20)}
+const oldDel9=window.v2DeleteTask;window.v2DeleteTask=function(){if(oldDel9)oldDel9();setTimeout(addStats9,20)}
+function init9(){addStats9();let sw=document.querySelector(".v2cal-switch");if(sw){let labels=ar9()?["شهر","أسبوع","يوم","جدول الأعمال"]:["Month","Week","Day","Agenda"];sw.querySelectorAll("button").forEach((b,i)=>{if(labels[i])b.textContent=labels[i]})}}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init9);else init9();
 })();
 </script></body>
 </html>
