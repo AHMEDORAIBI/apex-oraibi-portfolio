@@ -357,10 +357,47 @@ body.role-officer .admin-only{display:none!important}
 .ai-wizard-tip{margin-top:14px;border:1px solid #ead7c6;background:#fffaf6;border-radius:9px;padding:12px;font-size:8px;color:var(--navy);line-height:1.7}
 @media(max-width:720px){.file-wizard{padding:0}.file-wizard-shell{display:block;width:100%;height:100vh;max-height:none;border-radius:0;overflow:auto}.wizard-side{padding:16px}.wizard-side p{display:none}.wizard-steps{display:flex;overflow:auto;margin-top:12px}.wizard-step{white-space:nowrap;padding:8px}.wizard-main{padding:17px;max-height:none}.wizard-grid,.wizard-review{grid-template-columns:1fr}.wizard-field.full{grid-column:auto}}
 
+
+/* ===== ENFORZA PHASE 13 — SMART MINUTES / محضر ذكي ===== */
+.minutes-modal{position:fixed;inset:0;background:rgba(12,18,23,.6);backdrop-filter:blur(5px);z-index:1120;display:none;place-items:center;padding:16px}
+.minutes-shell{width:min(1050px,100%);max-height:94vh;overflow:hidden;background:#fff;border-radius:15px;box-shadow:0 30px 90px rgba(0,0,0,.34);display:grid;grid-template-columns:250px 1fr}
+.minutes-side{background:linear-gradient(160deg,#17120f,#2d2119);color:#fff;padding:24px 18px;overflow:auto}.minutes-side h3{font-size:15px}.minutes-side p{font-size:8px;color:#cdb9a7;line-height:1.7;margin-top:6px}
+.minutes-tools{display:grid;gap:8px;margin-top:20px}.minutes-tools button{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:#fff;border-radius:9px;padding:11px;text-align:left;font-size:8px;font-weight:800}.minutes-tools button.active{border-color:#c9976e;background:rgba(201,151,110,.13)}
+.minutes-main{padding:22px;overflow:auto;max-height:94vh}.minutes-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.minutes-head h2{font-size:18px;color:var(--navy)}.minutes-head p{font-size:8px;color:var(--muted);margin-top:5px}
+.minutes-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:17px}.minutes-field label{display:block;font-size:8px;font-weight:800;color:var(--muted);margin-bottom:5px}.minutes-field input,.minutes-field select,.minutes-field textarea{width:100%;border:1px solid var(--border);border-radius:8px;padding:10px;font-size:9px}.minutes-field.full{grid-column:1/-1}.minutes-field textarea{min-height:210px;line-height:1.8;resize:vertical}
+.dictation-bar{display:flex;align-items:center;gap:8px;padding:10px;border:1px solid #ead7c6;background:#fffaf6;border-radius:9px;margin-top:12px}.dictation-bar button{border:0;background:var(--bronze);color:#fff;border-radius:50%;width:38px;height:38px;font-size:16px}.dictation-bar button.listening{animation:voicePulse 1s infinite}.dictation-bar strong{display:block;font-size:9px;color:var(--navy)}.dictation-bar span{display:block;font-size:7px;color:var(--muted);margin-top:3px}
+.minute-images{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}.minute-image{position:relative;border:1px solid var(--border);border-radius:8px;overflow:hidden;aspect-ratio:4/3;background:#f6f7f8}.minute-image img{width:100%;height:100%;object-fit:cover}.minute-image button{position:absolute;right:5px;top:5px;border:0;border-radius:50%;width:22px;height:22px;background:rgba(0,0,0,.65);color:#fff}
+.minutes-actions{display:flex;gap:7px;justify-content:flex-end;margin-top:15px;flex-wrap:wrap}.minutes-actions button{border:1px solid var(--border);background:#fff;border-radius:8px;padding:9px 12px;font-size:8px;font-weight:900;color:var(--navy)}.minutes-actions .primary{background:var(--bronze);border-color:var(--bronze);color:#fff}
+.ai-minute-box{border:1px solid #ead7c6;background:linear-gradient(135deg,#fffaf6,#fff);border-radius:9px;padding:13px;margin-top:12px}.ai-minute-box h4{font-size:10px;color:var(--navy)}.ai-minute-box p{font-size:8px;color:var(--muted);line-height:1.7;margin-top:6px}.ai-minute-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}.ai-minute-actions button{border:1px solid #e1c8b2;background:#fff;color:var(--bronze);border-radius:16px;padding:6px 8px;font-size:7px;font-weight:800}
+.minutes-list-card{border:1px solid var(--border);background:#fff;border-radius:9px;padding:12px;margin-bottom:8px}.minutes-list-card strong{font-size:9px;color:var(--navy)}.minutes-list-card span{display:block;font-size:7px;color:var(--muted);margin-top:4px}
+@media(max-width:720px){.minutes-modal{padding:0}.minutes-shell{display:block;width:100%;height:100vh;max-height:none;border-radius:0;overflow:auto}.minutes-side{padding:14px}.minutes-side>p{display:none}.minutes-tools{display:flex;overflow:auto;margin-top:10px}.minutes-tools button{white-space:nowrap;padding:8px}.minutes-main{padding:16px;max-height:none}.minutes-grid{grid-template-columns:1fr}.minutes-field.full{grid-column:auto}.minute-images{grid-template-columns:1fr 1fr}.minutes-actions{position:sticky;bottom:0;background:#fff;padding:9px 0}}
+html[dir="rtl"] .minutes-tools button{text-align:right}
+
 </style>
 </head>
 <body>
 
+
+<div class="minutes-modal" id="minutesModal"><div class="minutes-shell">
+ <aside class="minutes-side"><h3 data-i18n="Smart Minutes">Smart Minutes</h3><p data-i18n="Prepare a professional record using typing, voice dictation, images and AI-assisted suggestions.">Prepare a professional record using typing, voice dictation, images and AI-assisted suggestions.</p>
+ <div class="minutes-tools"><button class="active">✎ <span data-i18n="Draft">Draft</span></button><button onclick="focusMinuteText()">🎙 <span data-i18n="Voice Dictation">Voice Dictation</span></button><button onclick="document.getElementById('minuteImagesInput').click()">▧ <span data-i18n="Attach Images">Attach Images</span></button><button onclick="analyzeMinute()">✦ <span data-i18n="AI Suggestions">AI Suggestions</span></button></div></aside>
+ <main class="minutes-main">
+  <div class="minutes-head"><div><h2 data-i18n="Prepare Minutes">Prepare Minutes</h2><p data-i18n="All features in this screen are for interactive demo purposes.">All features in this screen are for interactive demo purposes.</p></div><button class="top-btn" onclick="closeMinutesModal()">×</button></div>
+  <div class="minutes-grid">
+   <div class="minutes-field"><label data-i18n="Minutes Reference">Minutes Reference</label><input id="minuteRef" readonly></div>
+   <div class="minutes-field"><label data-i18n="Related File">Related File</label><select id="minuteFile"></select></div>
+   <div class="minutes-field"><label data-i18n="Date & Time">Date & Time</label><input id="minuteDate" type="datetime-local"></div>
+   <div class="minutes-field"><label data-i18n="Minutes Type">Minutes Type</label><select id="minuteType"><option>Field Visit</option><option>Meeting</option><option>Debtor Contact</option><option>Asset Inspection</option><option>Delivery / Service</option><option>General Record</option></select></div>
+   <div class="minutes-field full"><label data-i18n="Subject">Subject</label><input id="minuteSubject" placeholder="Subject / عنوان المحضر"></div>
+   <div class="minutes-field full"><label data-i18n="Minutes Text">Minutes Text</label><textarea id="minuteText" placeholder="Type here or use voice dictation..."></textarea>
+    <div class="dictation-bar"><button id="minuteMic" onclick="toggleMinuteDictation()">🎙</button><div><strong id="minuteVoiceStatus" data-i18n="Voice dictation ready">Voice dictation ready</strong><span data-i18n="Speak naturally. Your words will be inserted into the minutes text.">Speak naturally. Your words will be inserted into the minutes text.</span></div></div>
+   </div>
+   <div class="minutes-field full"><label data-i18n="Images & Attachments">Images & Attachments</label><input id="minuteImagesInput" type="file" accept="image/*" multiple capture="environment" onchange="handleMinuteImages(this.files)" style="display:none"><button class="action-btn" onclick="document.getElementById('minuteImagesInput').click()">＋ <span data-i18n="Add Images">Add Images</span></button><div class="minute-images" id="minuteImages"></div></div>
+  </div>
+  <div class="ai-minute-box"><h4>✦ ENFORZA AI — <span data-i18n="Drafting Assistant">Drafting Assistant</span></h4><p id="minuteAIText" data-i18n="AI minutes help text">I can improve wording, organize the record, suggest missing information and prepare a concise summary without changing the factual content entered in the demo.</p><div class="ai-minute-actions"><button onclick="minuteSuggestion('improve')" data-i18n="Improve Wording">Improve Wording</button><button onclick="minuteSuggestion('organize')" data-i18n="Organize">Organize</button><button onclick="minuteSuggestion('missing')" data-i18n="Suggest Missing Items">Suggest Missing Items</button><button onclick="minuteSuggestion('summary')" data-i18n="Create Summary">Create Summary</button></div></div>
+  <div class="minutes-actions"><button onclick="closeMinutesModal()" data-i18n="Cancel">Cancel</button><button onclick="saveMinutes('Draft')" data-i18n="Save Draft">Save Draft</button><button class="primary" onclick="saveMinutes('Final')" data-i18n="Save Minutes">Save Minutes</button></div>
+ </main>
+</div></div>
 <div class="file-wizard" id="fileWizard"><div class="file-wizard-shell">
  <aside class="wizard-side"><h3 data-i18n="New Enforcement File">New Enforcement File</h3><p data-i18n="Guided demo file creation">Guided creation with parties, financials, workflow and AI review.</p><div class="wizard-steps">
   <div class="wizard-step active" data-wstep="1">1 · <span data-i18n="File Details">File Details</span></div><div class="wizard-step" data-wstep="2">2 · <span data-i18n="Parties">Parties</span></div><div class="wizard-step" data-wstep="3">3 · <span data-i18n="Financials">Financials</span></div><div class="wizard-step" data-wstep="4">4 · <span data-i18n="Workflow">Workflow</span></div><div class="wizard-step" data-wstep="5">5 · <span data-i18n="AI Review">AI Review</span></div>
@@ -413,6 +450,7 @@ body.role-officer .admin-only{display:none!important}
   </div>
   <div class="nav-section">
     <div class="nav-label" data-i18n="MANAGEMENT">MANAGEMENT</div>
+    <a class="nav-item" data-page="minutes" href="#" onclick="openPage('minutes');return false;"><span class="nav-icon">✎</span><span data-i18n="Minutes">Minutes</span></a>
     <a class="nav-item" data-page="documents" href="#" onclick="openPage('documents');return false;"><span class="nav-icon">▤</span><span data-i18n="Document Center">Document Center</span></a>
     <a class="nav-item" data-page="creditorPortal" href="#" onclick="openPage('creditorPortal');return false;"><span class="nav-icon">◈</span><span data-i18n="Creditor Portal Preview">Creditor Portal Preview</span></a>
     <a class="nav-item" data-page="aiInsights" href="#" onclick="openPage('aiInsights');return false;"><span class="nav-icon">✦</span><span data-i18n="AI Management Insights">AI Management Insights</span></a>
@@ -577,6 +615,11 @@ body.role-officer .admin-only{display:none!important}
  </div>
 </div></section>
 
+
+<section id="minutesPage" class="page hidden"><div class="content">
+ <div class="hero-row"><div><h2 data-i18n="Minutes & Field Records">Minutes & Field Records</h2><p data-i18n="Create, dictate, edit and attach images to enforcement minutes.">Create, dictate, edit and attach images to enforcement minutes.</p></div><button class="action-btn primary" onclick="openMinutesModal()">＋ <span data-i18n="New Minutes">New Minutes</span></button></div>
+ <div id="minutesList"></div>
+</div></section>
 <section id="reportsPage" class="page hidden"><div class="content">
   <div class="hero-row"><div><h2 data-i18n="Reports & Analytics">Reports & Analytics</h2><p data-i18n="Executive, enforcement and financial intelligence.">Executive, enforcement and financial intelligence.</p></div><div class="hero-actions"><button class="action-btn">PDF</button><button class="action-btn primary" onclick="window.print()" data-i18n="Print">Print</button></div></div>
   <div class="kpi-grid"><div class="kpi-card"><span class="kpi-label" data-i18n="Total Claims">Total Claims</span><strong class="kpi-value">BHD 1.84M</strong></div><div class="kpi-card"><span class="kpi-label" data-i18n="Collections">Collections</span><strong class="kpi-value">BHD 742.6K</strong></div><div class="kpi-card"><span class="kpi-label" data-i18n="Expenses">Expenses</span><strong class="kpi-value">BHD 38.4K</strong></div><div class="kpi-card"><span class="kpi-label" data-i18n="Net Recovery">Net Recovery</span><strong class="kpi-value">BHD 704.2K</strong></div><div class="kpi-card"><span class="kpi-label" data-i18n="Recovery Rate">Recovery Rate</span><strong class="kpi-value">40.4%</strong></div><div class="kpi-card"><span class="kpi-label" data-i18n="Settled Files">Settled Files</span><strong class="kpi-value">18</strong></div></div>
@@ -1342,6 +1385,56 @@ const _demoAlertP12=demoAlert;
 demoAlert=function(type){if(type==="add"&&currentModule==="files")return openFileWizard();return _demoAlertP12(type)}
 Object.assign(I18N.ar,{
 "New Enforcement File":"ملف تنفيذ جديد","Guided demo file creation":"إنشاء موجه يشمل الأطراف والبيانات المالية ومسار العمل ومراجعة الذكاء الاصطناعي.","File Details":"بيانات الملف","Parties":"الأطراف","Financials":"البيانات المالية","Workflow":"مسار العمل","AI Review":"مراجعة الذكاء الاصطناعي","Complete the demo information below.":"أكمل بيانات الديمو أدناه.","Reference":"المرجع","Opened Date":"تاريخ الفتح","Case Type":"نوع الملف","Assigned Officer":"المنفذ المسؤول","Creditor Name":"اسم الدائن","Debtor Name":"اسم المدين","Creditor Contact":"تواصل الدائن","Debtor Contact":"تواصل المدين","Claim Amount":"مبلغ المطالبة","Opening Collection":"تحصيل افتتاحي","Currency":"العملة","Priority":"الأولوية","Initial Status":"الحالة الأولية","Next Action":"الإجراء التالي","Internal Note":"ملاحظة داخلية","Back":"السابق","Cancel":"إلغاء","Next":"التالي","Create File":"إنشاء الملف","ENFORZA AI Review":"مراجعة ENFORZA AI","Estimated demo risk score":"درجة المخاطر التجريبية المقدرة","Recommended first action":"الإجراء الأول المقترح","The file will be added to the live demo dashboard and AI priority engine.":"سيضاف الملف إلى لوحة الديمو المباشرة ومحرك الأولويات الذكي.","File created successfully and added to AI monitoring.":"تم إنشاء الملف وإضافته إلى مراقبة الذكاء الاصطناعي."
+});
+
+
+DATA.minutes=DATA.minutes||[];
+let minuteImagesData=[],minuteRecognition=null,minuteListening=false,editingMinuteId=null;
+function openMinutesModal(id=null){
+ editingMinuteId=id;minuteImagesData=[];
+ const sel=document.getElementById("minuteFile");sel.innerHTML=(DATA.files||[]).map(f=>`<option value="${f.id}">${f.id} · ${f.debtor}</option>`).join("");
+ const now=new Date();now.setMinutes(now.getMinutes()-now.getTimezoneOffset());document.getElementById("minuteDate").value=now.toISOString().slice(0,16);
+ document.getElementById("minuteRef").value="MIN-"+String(260001+DATA.minutes.length);
+ document.getElementById("minuteSubject").value="";document.getElementById("minuteText").value="";
+ if(id){const m=DATA.minutes.find(x=>x.id===id);if(m){document.getElementById("minuteRef").value=m.id;sel.value=m.file;document.getElementById("minuteType").value=m.type;document.getElementById("minuteSubject").value=m.subject;document.getElementById("minuteText").value=m.text;minuteImagesData=[...(m.images||[])];}}
+ renderMinuteImages();document.getElementById("minutesModal").style.display="grid";
+}
+function closeMinutesModal(){if(minuteRecognition&&minuteListening)minuteRecognition.stop();document.getElementById("minutesModal").style.display="none"}
+function focusMinuteText(){document.getElementById("minuteText").focus();toggleMinuteDictation()}
+function toggleMinuteDictation(){
+ if(minuteListening){minuteRecognition.stop();return}
+ const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){document.getElementById("minuteVoiceStatus").textContent=t("Voice recognition is not supported in this browser");return}
+ minuteRecognition=new SR();minuteRecognition.lang=currentLang==="ar"?"ar-BH":"en-US";minuteRecognition.continuous=true;minuteRecognition.interimResults=true;
+ minuteRecognition.onstart=()=>{minuteListening=true;document.getElementById("minuteMic").classList.add("listening");document.getElementById("minuteVoiceStatus").textContent=t("Listening and typing...")};
+ minuteRecognition.onresult=e=>{let finalText="";for(let i=e.resultIndex;i<e.results.length;i++)if(e.results[i].isFinal)finalText+=e.results[i][0].transcript+" ";if(finalText){const a=document.getElementById("minuteText");a.value+=(a.value&& !a.value.endsWith(" ")?" ":"")+finalText}};
+ minuteRecognition.onend=()=>{minuteListening=false;document.getElementById("minuteMic").classList.remove("listening");document.getElementById("minuteVoiceStatus").textContent=t("Voice dictation ready")};minuteRecognition.start();
+}
+function handleMinuteImages(files){
+ [...files].slice(0,8-minuteImagesData.length).forEach(file=>{const r=new FileReader();r.onload=e=>{minuteImagesData.push({name:file.name,data:e.target.result});renderMinuteImages()};r.readAsDataURL(file)});
+}
+function renderMinuteImages(){const e=document.getElementById("minuteImages");e.innerHTML=minuteImagesData.map((x,i)=>`<div class="minute-image"><img src="${x.data}" alt=""><button onclick="minuteImagesData.splice(${i},1);renderMinuteImages()">×</button></div>`).join("")}
+function analyzeMinute(){minuteSuggestion("missing")}
+function minuteSuggestion(type){
+ const txt=document.getElementById("minuteText").value.trim(),box=document.getElementById("minuteAIText");
+ if(!txt){box.textContent=t("Enter or dictate the minutes first, then ENFORZA AI can provide drafting suggestions.");return}
+ if(type==="improve")box.textContent=t("Suggestion: keep the record factual and chronological, identify the persons present, state the action taken, and separate observations from statements made by parties.");
+ else if(type==="organize")box.textContent=t("Suggested structure: date and location, persons present, purpose, actions performed, observations, statements received, attachments, and closing result.");
+ else if(type==="missing")box.textContent=t("Possible missing items to verify: exact location, names and capacities of attendees, time of arrival/departure, identifiers of attached images, and the next required action.");
+ else box.textContent=t("Demo summary: the entered minutes record the event and observations described by the officer. Review names, dates, amounts and attachments before final approval.");
+}
+function saveMinutes(status){
+ const id=document.getElementById("minuteRef").value,m={id,file:document.getElementById("minuteFile").value,date:document.getElementById("minuteDate").value,type:document.getElementById("minuteType").value,subject:document.getElementById("minuteSubject").value||"Enforcement Minutes",text:document.getElementById("minuteText").value,images:[...minuteImagesData],status};
+ const idx=DATA.minutes.findIndex(x=>x.id===id);if(idx>=0)DATA.minutes[idx]=m;else DATA.minutes.unshift(m);
+ logDemo(idx>=0?t("Minutes Updated"):t("Minutes Created"),`${id} · ${m.file} · ${m.images.length} ${t("images")}`);closeMinutesModal();renderMinutesPage();showToast(t("Minutes saved successfully."));
+}
+function renderMinutesPage(){
+ const e=document.getElementById("minutesList");if(!e)return;
+ e.innerHTML=DATA.minutes.length?DATA.minutes.map(m=>`<div class="minutes-list-card"><div style="display:flex;justify-content:space-between;gap:8px"><div><strong>${m.id} · ${m.subject}</strong><span>${m.file} · ${m.type} · ${m.date.replace("T"," ")}</span><span>${m.images.length} ${t("images")} · ${m.status}</span></div><div><button class="card-link" onclick="openMinutesModal('${m.id}')">${t("Edit")}</button></div></div></div>`).join(""):`<div class="empty-state"><strong>${t("No minutes created yet.")}</strong></div>`;
+}
+const _openPageP13=openPage;
+openPage=function(page){if(page==="minutes"){hidePages();currentModule=page;document.querySelectorAll(".nav-item").forEach(el=>el.classList.toggle("active",el.dataset.page===page));document.getElementById("minutesPage").classList.remove("hidden");setHeading("Minutes & Field Records","Create, dictate, edit and attach images to enforcement minutes.");renderMinutesPage();document.getElementById("sidebar").classList.remove("open");window.scrollTo(0,0);applyLanguage();return}_openPageP13(page)}
+Object.assign(I18N.ar,{
+"Minutes":"المحاضر","Minutes & Field Records":"المحاضر والسجلات الميدانية","Create, dictate, edit and attach images to enforcement minutes.":"إنشاء المحاضر وإملاؤها صوتيًا وتعديلها وإرفاق الصور بها.","New Minutes":"محضر جديد","Smart Minutes":"المحضر الذكي","Prepare a professional record using typing, voice dictation, images and AI-assisted suggestions.":"إعداد محضر مهني باستخدام الكتابة والإملاء الصوتي والصور ومقترحات الذكاء الاصطناعي.","Draft":"مسودة","Voice Dictation":"إملاء صوتي","Attach Images":"إرفاق صور","AI Suggestions":"مقترحات الذكاء الاصطناعي","Prepare Minutes":"إعداد المحضر","All features in this screen are for interactive demo purposes.":"جميع خصائص هذه الشاشة مخصصة للديمو التفاعلي.","Minutes Reference":"رقم المحضر","Related File":"الملف المرتبط","Date & Time":"التاريخ والوقت","Minutes Type":"نوع المحضر","Subject":"الموضوع","Minutes Text":"نص المحضر","Voice dictation ready":"الإملاء الصوتي جاهز","Speak naturally. Your words will be inserted into the minutes text.":"تحدث بصورة طبيعية وسيتم إدراج كلامك في نص المحضر.","Images & Attachments":"الصور والمرفقات","Add Images":"إضافة صور","Drafting Assistant":"مساعد الصياغة","AI minutes help text":"يمكنني تحسين الصياغة وتنظيم المحضر واقتراح البيانات الناقصة وإعداد ملخص دون تغيير الوقائع المدخلة في الديمو.","Improve Wording":"تحسين الصياغة","Organize":"تنظيم المحضر","Suggest Missing Items":"اقتراح النواقص","Create Summary":"إعداد ملخص","Save Draft":"حفظ كمسودة","Save Minutes":"حفظ المحضر","Listening and typing...":"جاري الاستماع والكتابة...","Enter or dictate the minutes first, then ENFORZA AI can provide drafting suggestions.":"أدخل أو أمْلِ نص المحضر أولًا ثم يمكن لـ ENFORZA AI تقديم مقترحات الصياغة.","Suggestion: keep the record factual and chronological, identify the persons present, state the action taken, and separate observations from statements made by parties.":"المقترح: المحافظة على تسلسل الوقائع زمنيًا وتحديد الحاضرين وصفاتهم وبيان الإجراء المتخذ والفصل بين الملاحظات وأقوال الأطراف.","Suggested structure: date and location, persons present, purpose, actions performed, observations, statements received, attachments, and closing result.":"الهيكل المقترح: التاريخ والمكان، الحاضرون، الغرض، الإجراءات المنفذة، الملاحظات، الإفادات المستلمة، المرفقات، والنتيجة الختامية.","Possible missing items to verify: exact location, names and capacities of attendees, time of arrival/departure, identifiers of attached images, and the next required action.":"بيانات مقترح التحقق منها: الموقع، أسماء الحاضرين وصفاتهم، وقت الوصول والمغادرة، تعريف الصور المرفقة، والإجراء التالي المطلوب.","Demo summary: the entered minutes record the event and observations described by the officer. Review names, dates, amounts and attachments before final approval.":"ملخص الديمو: يوثق المحضر الواقعة والملاحظات المدخلة بواسطة المنفذ. يرجى مراجعة الأسماء والتواريخ والمبالغ والمرفقات قبل الاعتماد النهائي.","Minutes Updated":"تم تعديل المحضر","Minutes Created":"تم إنشاء المحضر","images":"صور","Minutes saved successfully.":"تم حفظ المحضر بنجاح.","Edit":"تعديل","No minutes created yet.":"لا توجد محاضر منشأة حتى الآن."
 });
 
 renderDashboard();renderUsers();renderAudit();renderPermissions();showReport("executive");applyLanguage();
