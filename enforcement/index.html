@@ -260,6 +260,21 @@ html[dir="rtl"] .notify-dot{margin-right:0;margin-left:6px}
  .app{display:block!important}.main{display:block!important}.content{padding:0!important}.card,.detail-hero,.kpi-card{box-shadow:none!important;break-inside:avoid}
 }
 
+
+/* ENFORZA PHASE 6 — AI + MOBILE */
+.ai-fab{position:fixed;right:22px;bottom:22px;z-index:870;border:0;border-radius:999px;background:linear-gradient(135deg,var(--bronze),#9f6740);color:#fff;padding:13px 16px;box-shadow:0 14px 34px rgba(157,103,64,.28);font-size:9px;font-weight:900;cursor:pointer}
+.ai-panel{position:fixed;right:22px;bottom:78px;width:min(420px,calc(100vw - 28px));height:min(650px,calc(100vh - 105px));background:#fff;border:1px solid #d9c1aa;border-radius:12px;box-shadow:0 24px 70px rgba(0,0,0,.25);z-index:960;display:none;overflow:hidden}
+.ai-head{padding:15px;background:linear-gradient(135deg,#17120f,#2d2119);color:#fff;display:flex;justify-content:space-between;gap:10px}.ai-head h3{font-size:13px}.ai-head p{font-size:8px;color:#cdb9a7;margin-top:4px}
+.ai-body{height:calc(100% - 145px);overflow:auto;padding:14px;background:#fbfcfc}.ai-msg{max-width:88%;padding:10px 11px;border-radius:10px;margin-bottom:9px;font-size:9px;line-height:1.65}.ai-msg.bot{background:#fff;border:1px solid var(--border);color:var(--navy)}.ai-msg.user{background:var(--navy);color:#fff;margin-left:auto}
+.ai-quick{display:flex;gap:6px;overflow:auto;padding:10px 14px;border-top:1px solid var(--border);background:#fff}.ai-quick button{white-space:nowrap;border:1px solid var(--border);background:#fff;border-radius:20px;padding:7px 9px;font-size:7px;font-weight:800;color:var(--bronze)}
+.ai-input{display:flex;gap:7px;padding:10px 14px;border-top:1px solid var(--border);background:#fff}.ai-input input{flex:1;border:1px solid var(--border);border-radius:8px;padding:10px;font-size:9px}.ai-input button{border:0;background:var(--bronze);color:#fff;border-radius:8px;padding:0 13px;font-weight:900}
+.ai-brief{background:linear-gradient(135deg,#fffaf6,#fff);border:1px solid #ead7c6;border-radius:9px;padding:15px;margin-bottom:16px}.ai-brief h3{font-size:11px;color:var(--navy)}.ai-brief p{font-size:8px;color:var(--muted);line-height:1.7;margin-top:7px}.ai-brief-head{display:flex;justify-content:space-between;gap:10px;align-items:center}.ai-chip{display:inline-flex;padding:4px 7px;border-radius:20px;background:var(--bronze-soft);color:var(--bronze);font-size:7px;font-weight:900}
+.capture-toolbar{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:970;background:#12171d;color:#fff;border-radius:999px;padding:7px;display:none;gap:5px}.capture-toolbar button{border:0;border-radius:999px;padding:8px 11px;background:#242b32;color:#fff;font-size:8px}.capture-toolbar button.primary{background:var(--bronze)}
+body.capture-mode .sidebar,body.capture-mode .topbar,body.capture-mode .footer,body.capture-mode .mobile-bottom-nav,body.capture-mode .ai-fab{display:none!important}body.capture-mode .app{display:block}body.capture-mode .main{width:100%;margin:0}body.capture-mode .content{max-width:1440px;margin:auto;padding:24px}
+@media(max-width:720px){.ai-fab{right:12px;bottom:68px;padding:11px 13px}.ai-panel{right:7px;left:7px;bottom:62px;width:auto;height:calc(100vh - 76px)}.dashboard-grid,.dashboard-grid.equal{grid-template-columns:1fr!important}.kpi-grid{grid-template-columns:1fr 1fr!important}.content{padding:10px}.tabs{overflow-x:auto;display:flex;flex-wrap:nowrap}.tab-btn{white-space:nowrap}.report-grid{grid-template-columns:1fr!important}}
+@media(max-width:430px){.kpi-grid,.info-grid{grid-template-columns:1fr!important}}
+html[dir="rtl"] .ai-fab{right:auto;left:22px}html[dir="rtl"] .ai-panel{right:auto;left:22px}
+
 </style>
 </head>
 <body>
@@ -324,7 +339,7 @@ html[dir="rtl"] .notify-dot{margin-right:0;margin-left:6px}
     <div class="kpi-card"><span class="kpi-label" data-i18n="Settlements">Settlements</span><strong class="kpi-value">18</strong><div class="kpi-note">BHD 196,000</div></div>
     <div class="kpi-card"><span class="kpi-label" data-i18n="Collected This Month">Collected This Month</span><strong class="kpi-value">BHD 96,450</strong><div class="kpi-note"><span class="positive">↑ 12.8%</span></div></div>
   </div>
-  <div class="alert-strip" id="smartAlerts">
+  <div class="ai-brief"><div class="ai-brief-head"><div><span class="ai-chip">ENFORZA AI · DEMO</span><h3 data-i18n="AI Executive Brief">AI Executive Brief</h3></div><button class="card-link" onclick="openAI('executive')" data-i18n="Ask AI">Ask AI</button></div><p data-i18n="AI demo brief text">7 files require attention today. 3 settlement installments are approaching due date, 2 high-value files have had no movement for more than 14 days, and recovery performance is strongest in files assigned to Ali Hassan.</p></div><div class="alert-strip" id="smartAlerts">
     <div class="alert-tile"><strong>7</strong><span data-i18n="Files without action">Files without action</span></div>
     <div class="alert-tile"><strong>5</strong><span data-i18n="Installments due today">Installments due today</span></div>
     <div class="alert-tile"><strong>3</strong><span data-i18n="Broken settlements">Broken settlements</span></div>
@@ -472,7 +487,7 @@ html[dir="rtl"] .notify-dot{margin-right:0;margin-left:6px}
 
 
 <section id="presentationPage" class="page hidden"><div class="content">
-  <div class="hero-row"><div><h2 data-i18n="Demo Presentation Mode">Demo Presentation Mode</h2><p data-i18n="A concise executive view for client presentations.">A concise executive view for client presentations.</p></div><div class="hero-actions"><button class="action-btn" onclick="window.print()" data-i18n="Print">Print</button><button class="action-btn primary" onclick="startDemoTour()" data-i18n="Start Demo Tour">Start Demo Tour</button></div></div>
+  <div class="hero-row"><div><h2 data-i18n="Demo Presentation Mode">Demo Presentation Mode</h2><p data-i18n="A concise executive view for client presentations.">A concise executive view for client presentations.</p></div><div class="hero-actions"><button class="action-btn" onclick="enterCaptureMode()" data-i18n="Screenshot Mode">Screenshot Mode</button><button class="action-btn" onclick="window.print()" data-i18n="Print">Print</button><button class="action-btn primary" onclick="startFullDemo()" data-i18n="Run Full Demo">Run Full Demo</button></div></div>
   <div class="demo-summary">
     <div class="demo-summary-card"><span data-i18n="Active Enforcement Files">Active Enforcement Files</span><strong>86</strong></div>
     <div class="demo-summary-card"><span data-i18n="Total Claims">Total Claims</span><strong>BHD 1.84M</strong></div>
@@ -523,6 +538,10 @@ html[dir="rtl"] .notify-dot{margin-right:0;margin-left:6px}
   <button onclick="openPage('reports')"><b>◩</b><span data-i18n="Reports">Reports</span></button>
 </div>
 
+
+<button class="ai-fab" onclick="openAI()">✦ ENFORZA AI</button>
+<div class="ai-panel" id="aiPanel"><div class="ai-head"><div><h3>✦ ENFORZA AI Assistant</h3><p>AI Demo Simulation · Context-aware enforcement copilot</p></div><button class="top-btn" onclick="closeAI()">×</button></div><div class="ai-body" id="aiBody"><div class="ai-msg bot">Welcome. I can summarize files, highlight risks, suggest next actions and analyze recovery using demo data.</div></div><div class="ai-quick"><button onclick="askAI('summary')">Summarize file</button><button onclick="askAI('today')">Attention today</button><button onclick="askAI('recovery')">Analyze recovery</button><button onclick="askAI('next')">Next action</button></div><div class="ai-input"><input id="aiInput" placeholder="Ask ENFORZA AI..." onkeydown="if(event.key==='Enter')sendAIInput()"><button onclick="sendAIInput()">→</button></div></div>
+<div class="capture-toolbar" id="captureToolbar"><button onclick="exitCaptureMode()">Exit</button><button class="primary" onclick="window.print()">Print / Save PDF</button></div>
 <footer class="footer"><span>ENFORZA — Private Enforcement Management System</span><span><span data-i18n="Designed & Developed by">Designed & Developed by</span> <strong style="color:var(--bronze)">APEX ORAIBI</strong></span></footer>
 
 <div class="modal-backdrop" id="modalBackdrop" onclick="closeQuickModal()"></div>
@@ -966,6 +985,26 @@ Object.assign(I18N.ar,{
  "Single operational view for file, parties, finance, actions and documents.":"عرض تشغيلي موحد للملف والأطراف والمالية والإجراءات والمستندات.","Daily priorities, overdue actions and files without movement.":"الأولويات اليومية والإجراءات المتأخرة والملفات دون حركة.","Client-safe portfolio visibility without internal office notes.":"عرض آمن للعميل دون الملاحظات الداخلية.","Collections & Settlements":"التحصيلات والتسويات","Payment allocation, settlement schedules and recovery tracking.":"تخصيص الدفعات وجداول التسوية ومتابعة التحصيل.","Recovery, aging, officer, expense and treasury analytics.":"تحليلات التحصيل والأعمار والمنفذين والمصروفات والخزينة.","Arabic & English":"العربية والإنجليزية","Full LTR and RTL interface support.":"دعم كامل لاتجاهي LTR وRTL.","Executive Demo Summary":"ملخص الديمو التنفيذي","ENFORZA is a private enforcement management demo designed to centralize case follow-up, collections, settlements, treasury, documents, reporting and client visibility in one interface.":"ENFORZA هو نموذج تجريبي لإدارة أعمال التنفيذ الخاص يجمع متابعة الملفات والتحصيلات والتسويات والخزينة والمستندات والتقارير وواجهة العميل في نظام واحد.",
  "Notifications":"الإشعارات","Settlement payment due":"دفعة تسوية مستحقة","Bank response received":"تم استلام رد البنك","File inactive alert":"تنبيه ملف بلا حركة","Overdue follow-up":"متابعة متأخرة","Files":"الملفات","Follow-up":"المتابعة","Reports":"التقارير"
 });
+
+
+let currentFileForAI=null;
+const _openDetailP6=openDetail;
+openDetail=function(m,id){_openDetailP6(m,id);if(m==="files")currentFileForAI=(DATA.files||[]).find(x=>x.id===id)||null}
+function openAI(mode){document.getElementById("aiPanel").style.display="block";if(mode==="executive")askAI("executive")}
+function closeAI(){document.getElementById("aiPanel").style.display="none"}
+function aiAdd(role,html){const b=document.getElementById("aiBody"),d=document.createElement("div");d.className="ai-msg "+role;d.innerHTML=html;b.appendChild(d);b.scrollTop=b.scrollHeight}
+function askAI(kind){let r=currentFileForAI||DATA.files[0],msg="";
+if(kind==="summary")msg=`<strong>${r.id}</strong><br>Claim ${money(r.claim)} · Collected ${money(r.collected)} · Outstanding ${money(r.claim-r.collected)}.<br>Status: ${r.status}. Recommended focus: ${r.next}.`;
+else if(kind==="today")msg="<strong>Today’s priorities</strong><br>1. ENF-260184 — review bank response.<br>2. ENF-260203 — overdue asset inquiry.<br>3. ENF-260219 — settlement follow-up.<br>4. ENF-260211 — inactive file alert.";
+else if(kind==="recovery")msg="<strong>Recovery analysis</strong><br>Portfolio recovery is 40.4%. Demo analysis indicates stronger recovery on files with recent follow-up activity and active settlement schedules.";
+else if(kind==="next")msg=`<strong>Next best action</strong><br>${r.id}: ${r.next}. The file has a material outstanding balance and is within the current follow-up window.`;
+else msg="<strong>Executive AI Brief</strong><br>Seven files require management attention. Three settlement installments are approaching due date and two high-value files show inactivity beyond 14 days.";
+aiAdd("bot",msg)}
+function sendAIInput(){const i=document.getElementById("aiInput"),q=i.value.trim();if(!q)return;aiAdd("user",q);i.value="";const l=q.toLowerCase();setTimeout(()=>{if(l.includes("today")||l.includes("اليوم"))askAI("today");else if(l.includes("recover")||l.includes("تحصيل"))askAI("recovery");else if(l.includes("next")||l.includes("إجراء"))askAI("next");else askAI("summary")},150)}
+function enterCaptureMode(){document.body.classList.add("capture-mode");document.getElementById("captureToolbar").style.display="flex";closeAI();window.scrollTo(0,0)}
+function exitCaptureMode(){document.body.classList.remove("capture-mode");document.getElementById("captureToolbar").style.display="none"}
+function startFullDemo(){openPage("dashboard");showToast("Full demo started");setTimeout(()=>openAI("executive"),350);setTimeout(()=>{closeAI();openPage("files");openDetail("files","ENF-260184")},2500);setTimeout(()=>{openAI();askAI("next")},4800)}
+Object.assign(I18N.ar,{"AI Executive Brief":"الموجز التنفيذي بالذكاء الاصطناعي","Ask AI":"اسأل الذكاء الاصطناعي","AI demo brief text":"7 ملفات تحتاج إلى متابعة اليوم. توجد 3 دفعات تسوية تقترب من الاستحقاق وملفان مرتفعا القيمة بلا حركة لأكثر من 14 يومًا.","Screenshot Mode":"وضع التصوير","Run Full Demo":"تشغيل الديمو الكامل"});
 
 renderDashboard();renderUsers();renderAudit();renderPermissions();showReport("executive");applyLanguage();
 </script>
