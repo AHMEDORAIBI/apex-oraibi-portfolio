@@ -3918,5 +3918,67 @@ window.enfOpsReadyOpen=function(){let a=tests();document.getElementById("enfOpsR
 window.enfOpsReadyClose=()=>document.getElementById("enfOpsReady")?.classList.remove("open");
 document.addEventListener("keydown",e=>{if(e.ctrlKey&&e.shiftKey&&String(e.key).toLowerCase()==="o"){e.preventDefault();enfOpsReadyOpen()}});
 })();
+</script><style id="enforza-users-voice-final-css">
+/* Login + Users + Executable Voice Commands */
+.enf-auth-v3{position:fixed;inset:0;z-index:300000;display:none;background:radial-gradient(circle at 12% 15%,rgba(174,117,65,.14),transparent 30%),linear-gradient(145deg,#f8f7f4,#eceff1);place-items:center;padding:22px}
+.enf-auth-v3.open{display:grid}.enf-auth-card{width:min(460px,95vw);background:rgba(255,255,255,.96);border:1px solid rgba(70,75,80,.1);border-radius:24px;padding:28px;box-shadow:0 32px 100px rgba(17,24,32,.17)}
+.enf-auth-brand{text-align:center;margin-bottom:22px}.enf-auth-mark{width:58px;height:58px;border-radius:17px;background:linear-gradient(145deg,#111920,#293640);color:#d8a16c;display:grid;place-items:center;margin:0 auto 12px;font-size:19px;font-weight:950}.enf-auth-brand h1{font-size:25px!important;margin:0}.enf-auth-brand p{font-size:10px;color:#7b858d;margin:6px 0 0}.enf-auth-field{margin-top:11px}.enf-auth-field label{display:block;font-size:9px;font-weight:900;color:#68737b;margin-bottom:5px}.enf-auth-field input{width:100%;border:1px solid #d9dcde;border-radius:11px;padding:12px;background:#fff}.enf-auth-submit{width:100%;margin-top:16px;border:0;border-radius:11px;padding:12px;background:#151e25;color:#fff;font-weight:950;cursor:pointer}.enf-auth-error{min-height:18px;color:#a23e3e;font-size:9px;margin-top:8px;text-align:center}.enf-auth-foot{text-align:center;color:#90989e;font-size:8px;margin-top:14px}
+.enf-user-role{display:inline-flex;padding:5px 8px;border-radius:999px;background:#f1e7dd;color:#80562f;font-size:8px;font-weight:950}
+.enf-voice-confirm{position:fixed;inset:0;z-index:310000;background:rgba(7,11,15,.72);display:none;place-items:center;padding:18px}.enf-voice-confirm.open{display:grid}.enf-voice-confirm-card{width:min(560px,95vw);background:#fff;border-radius:18px;padding:20px;box-shadow:0 32px 100px rgba(0,0,0,.3)}.enf-voice-confirm-card h2{font-size:19px!important;margin:0 0 8px}.enf-voice-confirm-card p{font-size:10px;color:var(--desk-muted);line-height:1.6}.enf-voice-confirm-data{border:1px solid var(--desk-line);border-radius:11px;padding:11px;margin:12px 0;font-size:10px;line-height:1.7}.enf-voice-confirm-foot{display:flex;justify-content:flex-end;gap:7px}
+body.enf-dark .enf-auth-v3{background:#0e1318}body.enf-dark .enf-auth-card,body.enf-dark .enf-voice-confirm-card{background:#171d23;color:#eef2f5}
+</style>
+<div class="enf-auth-v3" id="enfAuthV3"><div class="enf-auth-card"><div class="enf-auth-brand"><div class="enf-auth-mark">E</div><h1>ENFORZA</h1><p id="enfAuthSubtitle">Enforcement Management Platform</p></div><form id="enfAuthForm"><div class="enf-auth-field"><label id="enfAuthUserLabel">USERNAME</label><input id="enfAuthUser" autocomplete="username"></div><div class="enf-auth-field"><label id="enfAuthPassLabel">PASSWORD</label><input id="enfAuthPass" type="password" autocomplete="current-password"></div><button class="enf-auth-submit" id="enfAuthSubmit" type="submit">Sign In</button><div class="enf-auth-error" id="enfAuthError"></div></form><div class="enf-auth-foot">ENFORZA V2 · Secure Role Access</div></div></div>
+<div class="enf-voice-confirm" id="enfVoiceConfirm"><div class="enf-voice-confirm-card"><h2 id="enfVoiceConfirmTitle">Confirm voice command</h2><p id="enfVoiceConfirmMsg"></p><div class="enf-voice-confirm-data" id="enfVoiceConfirmData"></div><div class="enf-voice-confirm-foot"><button class="enf-ms-btn" onclick="enfVoiceCancelCommand()">Cancel</button><button class="enf-ms-btn primary" onclick="enfVoiceConfirmCommand()">Confirm & Open</button></div></div></div>
+<script id="enforza-users-voice-final-js">
+(function(){
+"use strict";
+const USERS_KEY="enforzaUsersV2", SESSION_KEY="enforzaSessionV2";
+let pendingVoice=null;
+function ar(){return (window.currentLang||document.documentElement.lang||"en").toLowerCase().startsWith("ar")}function t(e,a){return ar()?a:e}
+function defaultUsers(){return[
+ {id:"USR-ADMIN",username:"admin",password:"admin123",name:"System Administrator",role:"admin",active:true},
+ {id:"USR-OFFICER",username:"officer",password:"officer123",name:"Enforcement Officer",role:"officer",active:true},
+ {id:"USR-CREDITOR",username:"creditor",password:"creditor123",name:"Creditor",role:"creditor",active:true}
+]}
+function users(){try{let u=JSON.parse(localStorage.getItem(USERS_KEY)||"null");if(Array.isArray(u)&&u.length)return u}catch(e){}let u=defaultUsers();localStorage.setItem(USERS_KEY,JSON.stringify(u));return u}
+function session(){try{return JSON.parse(sessionStorage.getItem(SESSION_KEY)||"null")}catch(e){return null}}
+function setSession(u){let x={id:u.id,username:u.username,name:u.name,role:u.role};sessionStorage.setItem(SESSION_KEY,JSON.stringify(x));sessionStorage.setItem("enforzaRole",u.role);sessionStorage.setItem("enforzaUserId",u.id);window.currentRole=u.role;window.userRole=u.role;window.currentUserId=u.id;window.currentUser=x}
+function showLogin(){let x=document.getElementById("enfAuthV3");if(x)x.classList.add("open")}
+function hideLogin(){document.getElementById("enfAuthV3")?.classList.remove("open")}
+function roleApply(){
+ let u=session();if(!u)return;let r=u.role;
+ document.body.dataset.enfRole=r;
+ let officerOnly=new Set(["expenses","treasury","claims","users","settings","evidence","collections"]);
+ document.querySelectorAll(".nav-item").forEach(n=>{let p=n.dataset.page||"";let hide=r==="creditor"&&officerOnly.has(p);n.style.display=hide?"none":""});
+ if(r==="creditor"&&typeof window.enfOpenCreditorPortal==="function")setTimeout(()=>window.enfOpenCreditorPortal(),50);
+}
+window.enfLogout=function(){sessionStorage.removeItem(SESSION_KEY);sessionStorage.removeItem("enforzaRole");sessionStorage.removeItem("enforzaUserId");showLogin()}
+window.enfUserCreate=function(o){let u=users();if(!o||!o.username||!o.password||!o.role)return{ok:false,error:"Missing fields"};if(u.some(x=>x.username.toLowerCase()===o.username.toLowerCase()))return{ok:false,error:"Username exists"};let x={id:"USR-"+Date.now(),username:o.username,password:o.password,name:o.name||o.username,role:o.role,active:o.active!==false,creditorId:o.creditorId||""};u.push(x);localStorage.setItem(USERS_KEY,JSON.stringify(u));return{ok:true,user:x}}
+window.enfUserUpdate=function(id,changes){let u=users(),i=u.findIndex(x=>x.id===id);if(i<0)return{ok:false};u[i]=Object.assign({},u[i],changes||{});localStorage.setItem(USERS_KEY,JSON.stringify(u));return{ok:true,user:u[i]}}
+window.enfUserDisable=function(id){return window.enfUserUpdate(id,{active:false})}
+function authText(){document.getElementById("enfAuthSubtitle").textContent=t("Enforcement Management Platform","منصة إدارة التنفيذ");document.getElementById("enfAuthUserLabel").textContent=t("USERNAME","اسم المستخدم");document.getElementById("enfAuthPassLabel").textContent=t("PASSWORD","كلمة المرور");document.getElementById("enfAuthSubmit").textContent=t("Sign In","تسجيل الدخول")}
+function bindLogin(){let f=document.getElementById("enfAuthForm");if(!f)return;f.addEventListener("submit",e=>{e.preventDefault();let un=document.getElementById("enfAuthUser").value.trim(),pw=document.getElementById("enfAuthPass").value,u=users().find(x=>x.active!==false&&x.username.toLowerCase()===un.toLowerCase()&&x.password===pw);if(!u){document.getElementById("enfAuthError").textContent=t("Invalid username or password.","اسم المستخدم أو كلمة المرور غير صحيحة.");return}document.getElementById("enfAuthError").textContent="";setSession(u);hideLogin();roleApply()})}
+function parseVoice(raw){
+ let n=String(raw||"").replace(/[إأآ]/g,"ا").replace(/ى/g,"ي").replace(/ة/g,"ه").toLowerCase(),intent="",amount="",method="";
+ if(/(اضف|سجل|انشئ).*(مهمه|متابعه|موعد)|ذكرني/.test(n))intent="task";
+ else if(/(تحصيل|دفع|سدد|سداد|استلم)/.test(n))intent="collection";
+ else if(/(اضف|ارفق|سجل).*(مستند|وثيقه|دليل)/.test(n))intent="document";
+ else if(/(محضر|سجل الاجتماع|سجل الجلسه)/.test(n))intent="minute";
+ else if(/(افتح|روح).*(ملف)/.test(n))intent="openfile";
+ let m=raw.match(/(?:BHD|د\.?ب|دينار(?:\s+بحريني)?)\s*([0-9٠-٩,.]+)|([0-9٠-٩,.]+)\s*(?:BHD|د\.?ب|دينار(?:\s+بحريني)?)/i);if(m)amount=(m[1]||m[2]||"").replace(/[٠-٩]/g,d=>"٠١٢٣٤٥٦٧٨٩".indexOf(d));
+ if(/بنفت|benefit/i.test(raw))method="BenefitPay";else if(/تحويل|transfer/i.test(raw))method="Bank Transfer";else if(/نقد|cash/i.test(raw))method="Cash";else if(/شيك|cheque/i.test(raw))method="Cheque";
+ return{intent,amount,method,raw}
+}
+window.enfVoiceExecute=function(){
+ let raw=document.getElementById("enfVoiceOriginal")?.value||"",p=parseVoice(raw);if(!p.intent){document.getElementById("enfVoiceStatus").textContent=t("No executable command detected.","لم يتم التعرف على أمر قابل للتنفيذ.");return}
+ let r=(session()||{}).role||"officer";if(r==="creditor"&&["collection","document","minute"].includes(p.intent)){document.getElementById("enfVoiceStatus").textContent=t("This command is not permitted for Creditor access.","هذا الأمر غير مسموح لصلاحية الدائن.");return}
+ pendingVoice=p;document.getElementById("enfVoiceConfirmTitle").textContent=t("Confirm voice command","تأكيد الأمر الصوتي");document.getElementById("enfVoiceConfirmMsg").textContent=t("ENFORZA understood the following action. Nothing will be saved until you review the form and confirm it.","فهم ENFORZA الإجراء التالي. لن يتم حفظ أي شيء حتى تراجع النموذج وتؤكده.");document.getElementById("enfVoiceConfirmData").innerHTML="<b>"+p.intent+"</b>"+(p.amount?"<br>"+t("Amount: ","المبلغ: ")+"BHD "+p.amount:"")+(p.method?"<br>"+t("Method: ","الطريقة: ")+p.method:"")+"<br>"+p.raw;document.getElementById("enfVoiceConfirm").classList.add("open")
+}
+window.enfVoiceCancelCommand=function(){pendingVoice=null;document.getElementById("enfVoiceConfirm")?.classList.remove("open")}
+window.enfVoiceConfirmCommand=function(){let p=pendingVoice;if(!p)return;document.getElementById("enfVoiceConfirm")?.classList.remove("open");if(p.intent==="task"&&typeof window.v2OpenTask==="function")window.v2OpenTask(new Date().toISOString().slice(0,10));else if(p.intent==="collection"&&typeof window.enfFinOpen==="function"){window.enfFinOpen("Collection");setTimeout(()=>{let a=document.querySelector('#enfFinancePage input[type="number"],#enfFinAmount');if(a&&p.amount)a.value=p.amount},60)}else if(p.intent==="document"&&typeof window.enfDeOpen==="function")window.enfDeOpen("Document");else if(p.intent==="minute"&&typeof window.enfOpenMinutesStudio==="function")window.enfOpenMinutesStudio("");else if(p.intent==="openfile"){let fs=window.DATA&&Array.isArray(DATA.files)?DATA.files:[];if(fs.length===1&&typeof window.openFile360==="function")window.openFile360(fs[0].id||fs[0].ref)}pendingVoice=null}
+function addVoiceButton(){let foot=document.querySelector("#enfVoiceAI .enf-voice-foot div");if(foot&&!document.getElementById("enfVoiceExecuteBtn")){let b=document.createElement("button");b.id="enfVoiceExecuteBtn";b.className="enf-ms-btn primary";b.textContent=t("Understand & Execute","فهم وتنفيذ الأمر");b.onclick=window.enfVoiceExecute;foot.appendChild(b)}}
+function init(){authText();bindLogin();addVoiceButton();let u=session();if(u){window.currentRole=u.role;window.userRole=u.role;window.currentUserId=u.id;window.currentUser=u;hideLogin();roleApply()}else showLogin()}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
+})();
 </script></body>
 </html>
