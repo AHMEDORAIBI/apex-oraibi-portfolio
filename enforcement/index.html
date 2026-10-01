@@ -652,6 +652,23 @@ html[dir="rtl"] .p29-appearance{right:auto;left:18px}html[dir="rtl"] .p29-pop{ri
  html[dir="rtl"] .p33-fab{right:auto;left:16px}
  .table-wrap{overflow:auto;-webkit-overflow-scrolling:touch}
 }
+</style><style id="phase34-real-data-flow">
+/* PHASE 34 — REAL DATA ENTRY FLOW */
+.p34-linkbar{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}
+.p34-link{background:var(--white);border:1px solid var(--border);border-radius:11px;padding:11px}
+.p34-link span{display:block;color:var(--muted);font-size:13px}.p34-link strong{display:block;margin-top:4px}
+.p34-success{background:linear-gradient(135deg,color-mix(in srgb,var(--p29-accent) 10%,var(--white)),var(--white));border:1px solid color-mix(in srgb,var(--p29-accent) 40%,var(--border));border-radius:14px;padding:16px;margin-top:12px}
+.p34-success h3{margin:0 0 7px;font-size:20px!important}.p34-success p{color:var(--muted);line-height:1.6}
+.p34-actions{display:flex;gap:7px;flex-wrap:wrap}.p34-actions button{border:1px solid var(--border);background:var(--white);color:var(--text);border-radius:9px;padding:9px 11px;font-weight:900}
+.p34-actions .primary{background:var(--p29-accent);border-color:var(--p29-accent);color:#fff}
+@media(max-width:700px){.p34-linkbar{grid-template-columns:1fr 1fr}.p34-actions button{flex:1;min-width:42%}}
+</style><style id="phase35-file-action-hub">
+/* PHASE 35 — FILE ACTION HUB */
+.p35-hub{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:15px;margin:12px 0}
+.p35-head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:11px}.p35-head h3{font-size:20px!important;margin:0}.p35-head span{color:var(--muted)}
+.p35-actions{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}.p35-action{border:1px solid var(--border);background:var(--white);color:var(--text);border-radius:11px;padding:12px 7px;font-size:15px;font-weight:900;cursor:pointer}.p35-action b{display:block;font-size:22px;margin-bottom:5px}.p35-action.primary{background:var(--p29-accent);border-color:var(--p29-accent);color:#fff}
+.p35-modal{position:fixed;inset:0;z-index:1800;background:rgba(7,12,17,.48);display:none;place-items:center;padding:14px}.p35-modal.open{display:grid}.p35-box{width:min(650px,96vw);max-height:92vh;overflow:auto;background:var(--white);border:1px solid var(--border);border-radius:16px;box-shadow:0 25px 80px rgba(0,0,0,.25)}.p35-title{background:linear-gradient(135deg,#111923,#263440);color:#fff;padding:17px;display:flex;justify-content:space-between;align-items:center}.p35-title h3{color:#fff!important;margin:0}.p35-title button{border:0;background:transparent;color:#fff;font-size:22px}.p35-body{padding:16px}.p35-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.p35-field.full{grid-column:1/-1}.p35-field label{display:block;font-weight:800;margin-bottom:5px}.p35-field input,.p35-field select,.p35-field textarea{width:100%;border:1px solid var(--border);background:var(--white);color:var(--text);border-radius:9px;padding:10px;font-size:16px}.p35-field textarea{min-height:105px}.p35-footer{padding:12px 16px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px}.p35-footer button{border:1px solid var(--border);background:var(--white);color:var(--text);border-radius:9px;padding:10px 13px;font-weight:900}.p35-footer .save{background:var(--p29-accent);border-color:var(--p29-accent);color:#fff}
+@media(max-width:800px){.p35-actions{grid-template-columns:repeat(3,1fr)}}@media(max-width:520px){.p35-actions{grid-template-columns:repeat(2,1fr)}.p35-grid{grid-template-columns:1fr}.p35-field.full{grid-column:auto}.p35-modal{padding:0}.p35-box{width:100%;height:100%;max-height:none;border-radius:0}}
 </style></head>
 <div class="exec-action-sheet" id="execActionSheet"><div class="exec-action-box"><div class="minutes-head"><div><h2>New Action</h2><p>Choose what you want to add to this enforcement file.</p></div><button class="top-btn" onclick="closeExecActionSheet()">×</button></div><div class="exec-action-grid">
 <div class="exec-action-card" onclick="execAction('task')"><b>✓</b><strong>Task</strong></div><div class="exec-action-card" onclick="execAction('minutes')"><b>✎</b><strong>Minutes</strong></div><div class="exec-action-card" onclick="execAction('collection')"><b>◉</b><strong>Collection</strong></div><div class="exec-action-card" onclick="execAction('document')"><b>▧</b><strong>Document</strong></div><div class="exec-action-card" onclick="execAction('camera')"><b>📷</b><strong>Camera / Evidence</strong></div><div class="exec-action-card" onclick="execAction('settlement')"><b>◇</b><strong>Settlement</strong></div></div></div></div>
@@ -2318,6 +2335,127 @@ function p33Init(){
 setTimeout(p33Init,120);
 const p33OldOpenPage=openPage;
 openPage=function(p){p33OldOpenPage(p);setTimeout(p33CleanEmptyStates,25)}
+</script><script id="phase34-real-data-flow-js">
+const P34_STORE="ENFORZA_REAL_DATA_V34";
+function p34Persist(){
+ try{
+  localStorage.setItem(P34_STORE,JSON.stringify({
+   files:DATA.files||[],parties:DATA.parties||[],claims:DATA.claims||[],
+   smartTasks:DATA.smartTasks||[],collections:DATA.collections||[],
+   minutes:DATA.minutes||[],smartDocuments:DATA.smartDocuments||[],evidence:DATA.evidence||[]
+  }));
+ }catch(e){}
+}
+function p34Restore(){
+ try{
+  let d=JSON.parse(localStorage.getItem(P34_STORE)||"null");if(!d)return;
+  Object.keys(d).forEach(k=>{if(Array.isArray(d[k]))DATA[k]=d[k]});
+ }catch(e){}
+}
+function p34Id(prefix){return prefix+"-"+Date.now().toString(36).toUpperCase()}
+function p34EnsureParty(name,type,idno){
+ if(!name)return null;
+ let p=(DATA.parties||[]).find(x=>String(x.name||"").trim().toLowerCase()===String(name).trim().toLowerCase());
+ if(!p){p={id:p34Id("PTY"),name,type,idNo:idno||"",created:new Date().toISOString()};DATA.parties=DATA.parties||[];DATA.parties.push(p)}
+ return p;
+}
+function p34BuildFileFromWizard(){
+ let ref=p25Val("wfRef"),creditor=p25Val("wfCreditor"),debtor=p25Val("wfDebtor");
+ if(!ref||!creditor||!debtor)return null;
+ let cp=p34EnsureParty(creditor,"Creditor",p25Val("wfCreditorID")),dp=p34EnsureParty(debtor,"Debtor",p25Val("wfDebtorID"));
+ let claim=+(p25Val("wfClaim")||p25Val("wfJudgmentAmount")||0),prev=+(p25Val("wfPreviousCollection")||0);
+ let f={id:ref,origin:p25Val("wfOrigin"),source:p25Val("wfSource"),externalRef:p25Val("wfExternalRef"),
+ caseNo:p25Val("wfCaseNo"),court:p25Val("wfCourt"),creditor,creditorPartyId:cp?.id||"",debtor,debtorPartyId:dp?.id||"",
+ lawFirm:p25Val("wfLawFirm"),officer:p25Val("wfOfficer"),enforcementNo:p25Val("wfEnforcementNo"),instrument:p25Val("wfInstrument"),
+ judgmentDate:p25Val("wfJudgmentDate"),judgmentAmount:+(p25Val("wfJudgmentAmount")||0),claim,fees:+(p25Val("wfFees")||0),
+ collected:prev,status:"Active",note:p25Val("wfNote"),opened:new Date().toISOString().slice(0,10),
+ next:currentLang==="ar"?"مراجعة الملف وتحديد أول إجراء تنفيذي":"Review file and define first enforcement action"};
+ return f;
+}
+function p34Commit(){
+ let f=p34BuildFileFromWizard();if(!f)return false;
+ DATA.files=DATA.files||[];
+ let existing=DATA.files.findIndex(x=>x.id===f.id);if(existing>=0)DATA.files[existing]=f;else DATA.files.push(f);
+ DATA.claims=DATA.claims||[];
+ if(!DATA.claims.some(x=>x.file===f.id))DATA.claims.push({id:p34Id("CLM"),file:f.id,amount:f.claim,status:"Open",created:f.opened});
+ DATA.smartTasks=DATA.smartTasks||[];
+ if(!DATA.smartTasks.some(x=>x.file===f.id))DATA.smartTasks.push({id:p34Id("TSK"),file:f.id,title:currentLang==="ar"?"مراجعة الملف وتحديد أول إجراء تنفيذي":"Review file and define first enforcement action",status:"Open",priority:"High",assignee:f.officer||"Unassigned",due:f.opened,created:f.opened});
+ if(f.collected>0){DATA.collections=DATA.collections||[];if(!DATA.collections.some(x=>x.file===f.id))DATA.collections.push({id:p34Id("COL"),file:f.id,date:f.opened,amount:f.collected,note:"Opening / previous collection"})}
+ p34Persist();p25ClearDraft();closeWizard();p34AfterCreate(f);return true;
+}
+function p34AfterCreate(f){
+ showToast(currentLang==="ar"?"تم إنشاء الملف وربط بياناته الأساسية.":"File created and core data linked.");
+ openDetail("files",f.id);
+ setTimeout(()=>{
+  let host=document.getElementById("execWorkspacePanel");if(!host)return;
+  let box=document.createElement("div");box.className="p34-success";
+  box.innerHTML=`<h3>${currentLang==="ar"?"تم ربط الملف تلقائيًا":"File Linked Automatically"}</h3>
+  <p>${currentLang==="ar"?"تم إنشاء الأطراف والمطالبة ومهمة البداية وربطها بهذا الملف. من الآن لا تحتاج إلى إعادة كتابة بيانات القضية والأطراف في كل قسم.":"Parties, claim and the initial task were created and linked to this file. You do not need to re-enter core case information in every section."}</p>
+  <div class="p34-linkbar"><div class="p34-link"><span>${currentLang==="ar"?"الدائن":"Creditor"}</span><strong>${f.creditor}</strong></div><div class="p34-link"><span>${currentLang==="ar"?"المدين":"Debtor"}</span><strong>${f.debtor}</strong></div><div class="p34-link"><span>${currentLang==="ar"?"القضية":"Case"}</span><strong>${f.caseNo||"—"}</strong></div><div class="p34-link"><span>${currentLang==="ar"?"المطالبة":"Claim"}</span><strong>${money(f.claim)}</strong></div></div>
+  <div class="p34-actions"><button class="primary" onclick="openSmartTaskModal('${f.id}')">＋ ${currentLang==="ar"?"مهمة":"Task"}</button><button onclick="openPage('minutes')">📝 ${currentLang==="ar"?"محضر":"Minutes"}</button><button onclick="openPage('documents')">📎 ${currentLang==="ar"?"مستند":"Document"}</button><button onclick="openPage('evidence')">📷 ${currentLang==="ar"?"صورة / دليل":"Photo / Evidence"}</button></div>`;
+  host.prepend(box);
+ },80);
+}
+function p34Install(){
+ p34Restore();
+ /* Override wizard save with real linked-data creation. */
+ window.p25CreateFile=function(){if(!p34Commit())showToast(currentLang==="ar"?"أكمل بيانات الملف الأساسية.":"Complete the essential file details.")};
+ p33CleanEmptyStates?.();
+}
+setTimeout(p34Install,70);
+</script><div class="p35-modal" id="p35Modal"><div class="p35-box"><div class="p35-title"><h3 id="p35Title">Action</h3><button onclick="p35Close()">×</button></div><div class="p35-body" id="p35Body"></div><div class="p35-footer"><button onclick="p35Close()" id="p35Cancel">Cancel</button><button class="save" onclick="p35Save()" id="p35Save">Save</button></div></div></div><script id="phase35-file-action-hub-js">
+let p35FileId=null,p35Type=null;
+function p35Hub(f){
+ let host=document.getElementById("execWorkspacePanel");if(!host||!f)return;
+ let old=document.getElementById("p35Hub");if(old)old.remove();
+ let h=document.createElement("div");h.id="p35Hub";h.className="p35-hub";
+ h.innerHTML=`<div class="p35-head"><div><h3>${currentLang==="ar"?"إجراءات الملف":"File Actions"}</h3><span>${f.id} · ${f.debtor||""}</span></div></div><div class="p35-actions">
+ <button class="p35-action primary" onclick="p35Open('${f.id}','collection')"><b>💰</b>${currentLang==="ar"?"تحصيل":"Collection"}</button>
+ <button class="p35-action" onclick="p35Open('${f.id}','task')"><b>✓</b>${currentLang==="ar"?"مهمة":"Task"}</button>
+ <button class="p35-action" onclick="p35Open('${f.id}','minute')"><b>🎙</b>${currentLang==="ar"?"محضر / صوت":"Minutes / Voice"}</button>
+ <button class="p35-action" onclick="p35Open('${f.id}','evidence')"><b>📷</b>${currentLang==="ar"?"صورة / دليل":"Photo / Evidence"}</button>
+ <button class="p35-action" onclick="p35Open('${f.id}','document')"><b>📎</b>${currentLang==="ar"?"مستند":"Document"}</button>
+ <button class="p35-action" onclick="p35Open('${f.id}','action')"><b>⚖</b>${currentLang==="ar"?"إجراء تنفيذي":"Enforcement Action"}</button></div>`;
+ host.prepend(h);
+}
+function p35Field(label,id,type="text",full=false){
+ if(type==="textarea")return `<div class="p35-field ${full?"full":""}"><label>${label}</label><textarea id="${id}"></textarea></div>`;
+ return `<div class="p35-field ${full?"full":""}"><label>${label}</label><input id="${id}" type="${type}" ${type==="number"?'step="0.001"':""}></div>`;
+}
+function p35Open(file,type){
+ p35FileId=file;p35Type=type;let f=(DATA.files||[]).find(x=>x.id===file);if(!f)return;
+ let titles={collection:["Record Collection","تسجيل تحصيل"],task:["New Task","مهمة جديدة"],minute:["Minutes & Voice","محضر وصوت"],evidence:["Photo / Evidence","صورة أو دليل"],document:["Attach Document","إرفاق مستند"],action:["Enforcement Action","إجراء تنفيذي"]};
+ document.getElementById("p35Title").textContent=currentLang==="ar"?titles[type][1]:titles[type][0];
+ document.getElementById("p35Cancel").textContent=currentLang==="ar"?"إلغاء":"Cancel";document.getElementById("p35Save").textContent=currentLang==="ar"?"حفظ":"Save";
+ let b=document.getElementById("p35Body"),today=new Date().toISOString().slice(0,10);
+ if(type==="collection")b.innerHTML=`<div class="p35-grid">${p35Field(currentLang==="ar"?"التاريخ":"Date","p35Date","date")}${p35Field(currentLang==="ar"?"المبلغ":"Amount","p35Amount","number")}${p35Field(currentLang==="ar"?"طريقة التحصيل":"Method","p35Method")}${p35Field(currentLang==="ar"?"المرجع":"Reference","p35Ref")}${p35Field(currentLang==="ar"?"ملاحظات":"Notes","p35Notes","textarea",true)}</div>`;
+ if(type==="task")b.innerHTML=`<div class="p35-grid">${p35Field(currentLang==="ar"?"المهمة":"Task","p35Task")}${p35Field(currentLang==="ar"?"تاريخ الاستحقاق":"Due Date","p35Due","date")}${p35Field(currentLang==="ar"?"المسؤول":"Officer","p35Officer")}${p35Field(currentLang==="ar"?"الأولوية":"Priority","p35Priority")}${p35Field(currentLang==="ar"?"ملاحظات":"Notes","p35Notes","textarea",true)}</div>`;
+ if(type==="minute")b.innerHTML=`<div class="p35-grid">${p35Field(currentLang==="ar"?"موضوع المحضر":"Subject","p35Subject")}${p35Field(currentLang==="ar"?"التاريخ":"Date","p35Date","date")}<div class="p35-field full"><label>${currentLang==="ar"?"نص المحضر":"Minutes Text"}</label><textarea id="p35Text"></textarea><button type="button" style="margin-top:7px" onclick="p35Voice()">🎙 ${currentLang==="ar"?"ابدأ الإملاء الصوتي":"Start Voice Dictation"}</button></div></div>`;
+ if(type==="evidence")b.innerHTML=`<div class="p35-grid"><div class="p35-field full"><label>${currentLang==="ar"?"التقاط أو إرفاق صورة":"Capture or Attach Photo"}</label><input id="p35File" type="file" accept="image/*" capture="environment"></div>${p35Field(currentLang==="ar"?"الوصف":"Description","p35Notes","textarea",true)}</div>`;
+ if(type==="document")b.innerHTML=`<div class="p35-grid">${p35Field(currentLang==="ar"?"اسم المستند":"Document Title","p35TitleInput")}<div class="p35-field"><label>${currentLang==="ar"?"الملف":"File"}</label><input id="p35File" type="file"></div>${p35Field(currentLang==="ar"?"ملاحظات":"Notes","p35Notes","textarea",true)}</div>`;
+ if(type==="action")b.innerHTML=`<div class="p35-grid">${p35Field(currentLang==="ar"?"الإجراء":"Action","p35Action")}${p35Field(currentLang==="ar"?"التاريخ":"Date","p35Date","date")}${p35Field(currentLang==="ar"?"النتيجة / الحالة":"Result / Status","p35Result")}${p35Field(currentLang==="ar"?"الإجراء التالي":"Next Action","p35Next")}${p35Field(currentLang==="ar"?"ملاحظات":"Notes","p35Notes","textarea",true)}</div>`;
+ ["p35Date","p35Due"].forEach(id=>{let e=document.getElementById(id);if(e)e.value=today});let o=document.getElementById("p35Officer");if(o)o.value=f.officer||"";
+ document.getElementById("p35Modal").classList.add("open");
+}
+function p35Close(){document.getElementById("p35Modal").classList.remove("open")}
+function p35v(id){return document.getElementById(id)?.value||""}
+function p35Save(){
+ let f=(DATA.files||[]).find(x=>x.id===p35FileId);if(!f)return;
+ if(p35Type==="collection"){let a=+p35v("p35Amount");if(!a)return showToast(currentLang==="ar"?"أدخل مبلغ التحصيل":"Enter collection amount");DATA.collections=DATA.collections||[];DATA.collections.push({id:p34Id("COL"),file:f.id,date:p35v("p35Date"),amount:a,method:p35v("p35Method"),reference:p35v("p35Ref"),note:p35v("p35Notes")});f.collected=+(f.collected||0)+a}
+ if(p35Type==="task"){DATA.smartTasks=DATA.smartTasks||[];DATA.smartTasks.push({id:p34Id("TSK"),file:f.id,title:p35v("p35Task"),due:p35v("p35Due"),assignee:p35v("p35Officer"),priority:p35v("p35Priority")||"Normal",status:"Open",note:p35v("p35Notes"),created:new Date().toISOString().slice(0,10)})}
+ if(p35Type==="minute"){DATA.minutes=DATA.minutes||[];DATA.minutes.push({id:p34Id("MIN"),file:f.id,subject:p35v("p35Subject"),date:p35v("p35Date"),text:p35v("p35Text"),status:"Draft",created:new Date().toISOString()})}
+ if(p35Type==="evidence"){let fi=document.getElementById("p35File")?.files?.[0];DATA.evidence=DATA.evidence||[];DATA.evidence.push({id:p34Id("EVD"),file:f.id,description:p35v("p35Notes"),fileName:fi?.name||"",captured:new Date().toISOString()})}
+ if(p35Type==="document"){let fi=document.getElementById("p35File")?.files?.[0];DATA.smartDocuments=DATA.smartDocuments||[];DATA.smartDocuments.push({id:p34Id("DOC"),file:f.id,title:p35v("p35TitleInput")||fi?.name||"Document",fileName:fi?.name||"",date:new Date().toISOString().slice(0,10),note:p35v("p35Notes")})}
+ if(p35Type==="action"){DATA.actions=DATA.actions||[];DATA.actions.push({id:p34Id("ACT"),file:f.id,title:p35v("p35Action"),date:p35v("p35Date"),result:p35v("p35Result"),next:p35v("p35Next"),note:p35v("p35Notes")});if(p35v("p35Next"))f.next=p35v("p35Next")}
+ p34Persist();p35Close();showToast(currentLang==="ar"?"تم الحفظ وربط العملية بالملف.":"Saved and linked to the file.");openDetail("files",f.id);setTimeout(()=>p35Hub(f),80);
+}
+function p35Voice(){
+ let ta=document.getElementById("p35Text");if(!ta)return;
+ let SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){showToast(currentLang==="ar"?"الإملاء الصوتي غير مدعوم في هذا المتصفح.":"Voice dictation is not supported in this browser.");return}
+ let r=new SR();r.lang=currentLang==="ar"?"ar-BH":"en-US";r.continuous=true;r.interimResults=true;
+ r.onresult=e=>{let s="";for(let i=e.resultIndex;i<e.results.length;i++)s+=e.results[i][0].transcript+" ";ta.value=(ta.value+" "+s).trim()};r.start();showToast(currentLang==="ar"?"بدأ الإملاء الصوتي.":"Voice dictation started.");
+}
+if(typeof p26Workspace==="function"){let p35old=p26Workspace;p26Workspace=function(f){p35old(f);setTimeout(()=>p35Hub(f),25)}}
 </script></body></html>`);w.document.close();
 }
 if(typeof openPage==="function"){let p28old=openPage;openPage=function(p){p28old(p);if(p==="reports")setTimeout(renderP28Reports,10)}}
