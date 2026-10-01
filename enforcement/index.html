@@ -820,22 +820,7 @@ body.enf-dark .enf360-actions button,body.enf-dark .enf360-tab,body.enf-dark .en
   <div class="wizard-actions"><button id="wizardBack" onclick="wizardMove(-1)" data-i18n="Back">Back</button><div><button onclick="closeFileWizard()" data-i18n="Cancel">Cancel</button> <button class="primary" id="wizardNext" onclick="wizardMove(1)" data-i18n="Next">Next</button></div></div>
  </main>
 </div></div>
-<div class="login-gate" id="loginGate">
- <div class="login-shell">
-  <section class="login-brand">
-   <div><div class="mark">E</div><h1>ENFORZA<span>PRIVATE ENFORCEMENT</span></h1><p data-i18n="Login brand text">Interactive enforcement management demo with workflow, collections, settlements, smart notifications, mobile access and ENFORZA AI.</p>
-   <div class="login-feature"><div>✦ ENFORZA AI</div><div>🎙 Voice Command</div><div>◷ Smart Follow-up</div><div>◈ Creditor Portal</div></div></div>
-   <div class="login-credit">APEX ORAIBI — SYSTEM DESIGN & DEVELOPMENT</div>
-  </section>
-  <section class="login-form-side">
-   <h2 data-i18n="Welcome to ENFORZA">Welcome to ENFORZA</h2><p data-i18n="Choose a demo role to experience the system.">Choose a demo role to experience the system.</p>
-   <div class="role-picker"><div class="role-option active" data-role="management" onclick="selectDemoRole('management',this)"><b>◆</b><strong data-i18n="Management">Management</strong></div><div class="role-option" data-role="officer" onclick="selectDemoRole('officer',this)"><b>⚑</b><strong data-i18n="Enforcement Officer">Enforcement Officer</strong></div><div class="role-option" data-role="creditor" onclick="selectDemoRole('creditor',this)"><b>◈</b><strong data-i18n="Creditor">Creditor</strong></div></div>
-   <div class="login-fields"><label data-i18n="Username">Username<input id="demoUsername" value="admin"></label><label data-i18n="Password">Password<input id="demoPassword" type="password" value="demo123"></label></div>
-   <button class="login-submit" onclick="loginDemo()" data-i18n="Enter Demo">Enter Demo</button>
-   <div class="login-demo-note" data-i18n="Demo login note">Demo only. Select any role and enter. No real authentication or client data is used.</div>
-  </section>
- </div>
-</div>
+
 
 <div class="app">
 <aside class="sidebar" id="sidebar">
@@ -890,7 +875,7 @@ body.enf-dark .enf360-actions button,body.enf-dark .enf360-tab,body.enf-dark .en
 <input id="globalSearch" class="search" data-i18n-placeholder="Search file, party or reference..." placeholder="Search file, party or reference..." oninput="runGlobalSearch()" onfocus="runGlobalSearch()">
 <div id="globalSearchResults" class="global-search-results"></div>
 </div>
-    <button class="top-btn" onclick="logoutDemo()" title="Logout">⇥</button><div class="lang-switch"><button id="langEn" class="active" onclick="setLanguage('en')">EN</button><button id="langAr" onclick="setLanguage('ar')">عربي</button></div>
+    <button class="top-btn" onclick="openPage('dashboard')" title="Dashboard">⌂</button><div class="lang-switch"><button id="langEn" class="active" onclick="setLanguage('en')">EN</button><button id="langAr" onclick="setLanguage('ar')">عربي</button></div>
     <button class="top-btn" onclick="toggleSmartNotifications()" title="Notifications" style="position:relative"><span>●</span><span class="notify-badge" id="notifyBadge">4</span></button>
     <div class="profile"><div class="avatar">AO</div><div><strong>Ahmed Oraibi</strong><span data-i18n="Administrator">Administrator</span></div></div>
   </div>
@@ -1665,10 +1650,7 @@ Object.assign(I18N.ar,{"Morning Management Brief":"الموجز الصباحي �
 
 
 let selectedDemoRole="management",activeDemoRole="management";
-function selectDemoRole(role,el){
- selectedDemoRole=role;document.querySelectorAll(".role-option").forEach(x=>x.classList.remove("active"));if(el)el.classList.add("active");
- const u=document.getElementById("demoUsername");if(u)u.value=role==="management"?"admin":role==="officer"?"officer":"creditor";
-}
+
 function applyRoleAccess(role){
  activeDemoRole=role;document.body.classList.remove("role-management","role-officer","role-creditor");document.body.classList.add("role-"+role);
  const pill=document.getElementById("activeRolePill");if(pill)pill.textContent=role==="management"?t("Management"):role==="officer"?t("Enforcement Officer"):t("Creditor");
@@ -1685,12 +1667,8 @@ function applyRoleAccess(role){
    document.querySelectorAll(".nav-item").forEach(n=>{n.style.display=(n.classList.contains("admin-only"))?"none":""});
  } else document.querySelectorAll(".nav-item").forEach(n=>n.style.display="");
 }
-function loginDemo(){
- const gate=document.getElementById("loginGate");gate.style.display="none";applyRoleAccess(selectedDemoRole);
- if(selectedDemoRole==="creditor")openPage("creditorPortal");else if(selectedDemoRole==="officer")openPage("followupBoard");else openPage("dashboard");
- showToast(t("Demo session started"));
-}
-function logoutDemo(){closeAI();closeVoice();document.getElementById("loginGate").style.display="grid";document.getElementById("smartNotifyPanel").style.display="none"}
+
+
 Object.assign(I18N.ar,{
 "Login brand text":"ديمو تفاعلي لإدارة التنفيذ يشمل مسار العمل والتحصيلات والتسويات والإشعارات الذكية واستخدام الهاتف وENFORZA AI.","Welcome to ENFORZA":"مرحبًا بك في ENFORZA","Choose a demo role to experience the system.":"اختر صفة الدخول لتجربة النظام.","Management":"الإدارة","Enforcement Officer":"منفذ خاص","Creditor":"الدائن","Username":"اسم المستخدم","Password":"كلمة المرور","Enter Demo":"دخول الديمو","Demo login note":"نسخة تجريبية فقط. اختر أي صفة ثم ادخل. لا تستخدم بيانات عملاء حقيقية أو مصادقة فعلية.","Demo session started":"تم بدء جلسة الديمو"
 });
@@ -1876,27 +1854,7 @@ function printMinute(id){
  const m=DATA.minutes.find(x=>x.id===id);if(!m)return;
  const w=window.open("","_blank");const imgs=(m.images||[]).map((x,i)=>`<div style="margin:12px 0"><b>${t("Image")} ${i+1}</b><br><img src="${x.data}" style="max-width:100%;max-height:420px"></div>`).join("");
  const att=(m.attendees||[]).filter(x=>x.name).map(x=>`<tr><td>${x.name}</td><td>${x.capacity}</td></tr>`).join("");
- w.document.write(`<!doctype html><html dir="${currentLang==="ar"?"rtl":"ltr"}"><head><meta charset="utf-8"><title>${m.id}</title><style>body{font-family:Arial,sans-serif;padding:35px;line-height:1.8;color:#17212b}h1{font-size:20px}table{width:100%;border-collapse:collapse;margin:15px 0}td,th{border:1px solid #ddd;padding:7px;font-size:12px}.meta{font-size:12px;color:#555}.text{white-space:pre-wrap;border-top:1px solid #ddd;padding-top:15px}.sig{max-width:260px;margin-top:20px}</style></head><body><h1>ENFORZA — ${t("Enforcement Minutes")}</h1><div class="meta">${m.id} · ${m.file} · ${m.date.replace("T"," ")} · ${m.location||""}</div><h2>${m.subject}</h2>${att?`<table><tr><th>${t("Name")}</th><th>${t("Capacity")}</th></tr>${att}</table>`:""}<div class="text">${m.text}</div>${imgs}${m.signature?`<h3>${t("Officer Signature")}</h3><img class="sig" src="${m.signature}">`:""}${(m.amendments||[]).map((a,i)=>`<h3>${t("Amendment")} ${i+1}</h3><div>${a.text}</div>`).join("")}<style id="enforza-direct-access-css">
-#enfAuthV3{display:none!important;visibility:hidden!important;pointer-events:none!important}
-</style>
-<script id="enforza-direct-access-js">
-(function(){
- "use strict";
- function direct(){
-  const u={id:"USR-ADMIN",username:"admin",name:"System Administrator",role:"admin"};
-  const x={id:u.id,username:u.username,name:u.name,role:u.role};
-  try{sessionStorage.setItem("enforzaSessionV2",JSON.stringify(x));sessionStorage.setItem("enforzaRole","admin");sessionStorage.setItem("enforzaUserId",u.id)}catch(e){}
-  window.currentRole="admin";window.userRole="admin";window.currentUserId=u.id;window.currentUser=x;
-  if(document.body)document.body.dataset.enfRole="admin";
-  const a=document.getElementById("enfAuthV3");if(a){a.classList.remove("open");a.style.display="none"}
-  document.querySelectorAll(".nav-item").forEach(n=>n.style.removeProperty("display"));
-  setTimeout(function(){if(typeof window.v2ShowPage==="function")window.v2ShowPage("dashboard");else document.querySelector('.nav-item[data-page="dashboard"]')?.click()},60);
- }
- window.enfLogout=function(){direct()};
- if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",direct,{once:true});else direct();
-})();
-</script>
-</body></html>`);w.document.close();
+ w.document.write(`<!doctype html><html dir="${currentLang==="ar"?"rtl":"ltr"}"><head><meta charset="utf-8"><title>${m.id}</title><style>body{font-family:Arial,sans-serif;padding:35px;line-height:1.8;color:#17212b}h1{font-size:20px}table{width:100%;border-collapse:collapse;margin:15px 0}td,th{border:1px solid #ddd;padding:7px;font-size:12px}.meta{font-size:12px;color:#555}.text{white-space:pre-wrap;border-top:1px solid #ddd;padding-top:15px}.sig{max-width:260px;margin-top:20px}</style></head><body><h1>ENFORZA — ${t("Enforcement Minutes")}</h1><div class="meta">${m.id} · ${m.file} · ${m.date.replace("T"," ")} · ${m.location||""}</div><h2>${m.subject}</h2>${att?`<table><tr><th>${t("Name")}</th><th>${t("Capacity")}</th></tr>${att}</table>`:""}<div class="text">${m.text}</div>${imgs}${m.signature?`<h3>${t("Officer Signature")}</h3><img class="sig" src="${m.signature}">`:""}${(m.amendments||[]).map((a,i)=>`<h3>${t("Amendment")} ${i+1}</h3><div>${a.text}</div>`).join("")}</body></html>`);w.document.close();
 }
 Object.assign(I18N.ar,{"Attendees & Capacities":"الحاضرون وصفاتهم","Add Attendee":"إضافة حاضر","Name":"الاسم","Capacity":"الصفة","Location / Site":"الموقع","Prepared By":"أعد المحضر","Officer Signature":"توقيع المنفذ","Sign using mouse or touch.":"وقع باستخدام الفأرة أو شاشة اللمس.","Clear Signature":"مسح التوقيع","Final Approval & Lock":"الاعتماد النهائي وقفل المحضر","Once approved, the original minutes are locked. Later changes are recorded as amendments.":"بعد الاعتماد يقفل أصل المحضر، وأي تعديل لاحق يسجل كملحق تعديل مستقل.","Approve & Lock":"اعتماد وقفل","Image":"صورة","Minutes Approved & Locked":"تم اعتماد وقفل المحضر","Minutes approved and locked.":"تم اعتماد المحضر وقفل النسخة الأصلية.","Enter the minutes text before approval.":"أدخل نص المحضر قبل الاعتماد.","Enter amendment / additional note":"أدخل ملحق التعديل أو الملاحظة الإضافية","Minutes Amendment Added":"تمت إضافة ملحق للمحضر","Amendment added without changing the approved original.":"تمت إضافة الملحق دون تغيير أصل المحضر المعتمد.","APPROVED":"معتمد","attendees":"حاضرين","amendments recorded":"ملحقات تعديل مسجلة","Add Amendment":"إضافة ملحق","Print":"طباعة","Enforcement Minutes":"محضر تنفيذ","Amendment":"ملحق تعديل"});
 
@@ -2008,27 +1966,7 @@ function renderEvidenceGallery(){
  const e=document.getElementById("evidenceGallery");if(!e)return;e.innerHTML=DATA.evidence.length?DATA.evidence.map((x,i)=>`<div class="gallery-card"><img src="${x.data}"><div><strong>${t("Evidence")} ${DATA.evidence.length-i}</strong><span>${x.file}${x.minute?" · "+x.minute:""}</span><span>${x.description||t("No description")}</span></div></div>`).join(""):`<div class="empty-state"><strong>${t("No field evidence captured yet.")}</strong></div>`;
 }
 function printEvidenceReport(){
- if(!DATA.evidence.length){showToast(t("No evidence available for report."));return}const w=window.open("","_blank"),rows=DATA.evidence.map((x,i)=>`<section style="page-break-inside:avoid;margin:20px 0"><h3>${t("Evidence")} ${i+1} — ${x.file}</h3><p>${x.captured}${x.minute?" · "+x.minute:""}</p><img src="${x.data}" style="max-width:100%;max-height:520px"><p>${x.description||""}</p></section>`).join("");w.document.write(`<!doctype html><html dir="${currentLang==="ar"?"rtl":"ltr"}"><head><meta charset="utf-8"><title>Field Evidence Report</title><style>body{font-family:Arial;padding:35px;font-size:16px;color:#17212b}h1,h2,h3{font-size:20px}</style></head><body><h1>ENFORZA — ${t("Field Evidence Report")}</h1>${rows}<style id="enforza-direct-access-css">
-#enfAuthV3{display:none!important;visibility:hidden!important;pointer-events:none!important}
-</style>
-<script id="enforza-direct-access-js">
-(function(){
- "use strict";
- function direct(){
-  const u={id:"USR-ADMIN",username:"admin",name:"System Administrator",role:"admin"};
-  const x={id:u.id,username:u.username,name:u.name,role:u.role};
-  try{sessionStorage.setItem("enforzaSessionV2",JSON.stringify(x));sessionStorage.setItem("enforzaRole","admin");sessionStorage.setItem("enforzaUserId",u.id)}catch(e){}
-  window.currentRole="admin";window.userRole="admin";window.currentUserId=u.id;window.currentUser=x;
-  if(document.body)document.body.dataset.enfRole="admin";
-  const a=document.getElementById("enfAuthV3");if(a){a.classList.remove("open");a.style.display="none"}
-  document.querySelectorAll(".nav-item").forEach(n=>n.style.removeProperty("display"));
-  setTimeout(function(){if(typeof window.v2ShowPage==="function")window.v2ShowPage("dashboard");else document.querySelector('.nav-item[data-page="dashboard"]')?.click()},60);
- }
- window.enfLogout=function(){direct()};
- if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",direct,{once:true});else direct();
-})();
-</script>
-</body></html>`);w.document.close();
+ if(!DATA.evidence.length){showToast(t("No evidence available for report."));return}const w=window.open("","_blank"),rows=DATA.evidence.map((x,i)=>`<section style="page-break-inside:avoid;margin:20px 0"><h3>${t("Evidence")} ${i+1} — ${x.file}</h3><p>${x.captured}${x.minute?" · "+x.minute:""}</p><img src="${x.data}" style="max-width:100%;max-height:520px"><p>${x.description||""}</p></section>`).join("");w.document.write(`<!doctype html><html dir="${currentLang==="ar"?"rtl":"ltr"}"><head><meta charset="utf-8"><title>Field Evidence Report</title><style>body{font-family:Arial;padding:35px;font-size:16px;color:#17212b}h1,h2,h3{font-size:20px}</style></head><body><h1>ENFORZA — ${t("Field Evidence Report")}</h1>${rows}</body></html>`);w.document.close();
 }
 const _openPageP17=openPage;
 openPage=function(page){if(page==="evidence"){hidePages();currentModule=page;document.querySelectorAll(".nav-item").forEach(el=>el.classList.toggle("active",el.dataset.page===page));document.getElementById("evidencePage").classList.remove("hidden");setHeading("Field Evidence Gallery","Capture and organize field images with voice descriptions and file linkage.");renderEvidenceGallery();const h=document.querySelector("#evidencePage .hero-row");if(h&&!h.querySelector(".report-evidence-btn"))h.insertAdjacentHTML("beforeend",`<button class="action-btn report-evidence-btn" onclick="printEvidenceReport()">▧ ${t("Field Evidence Report")}</button>`);document.getElementById("sidebar").classList.remove("open");window.scrollTo(0,0);applyLanguage();return}_openPageP17(page)}
@@ -2077,27 +2015,7 @@ function renderFileTimeline(f,filter="All"){
 function printFileTimeline(id){
  const f=DATA.files.find(x=>x.id===id);if(!f)return;const events=buildFileTimeline(f),w=window.open("","_blank");
  const rows=events.map(x=>`<tr><td>${x.date||"—"}</td><td>${t(x.type)}</td><td><b>${x.title}</b><br>${x.detail}</td></tr>`).join("");
- w.document.write(`<!doctype html><html dir="${currentLang==="ar"?"rtl":"ltr"}"><head><meta charset="utf-8"><title>${id} Timeline</title><style>body{font-family:Arial;padding:35px;font-size:16px;color:#17212b}h1,h2{font-size:20px}table{width:100%;border-collapse:collapse;margin-top:20px}td,th{border:1px solid #ddd;padding:10px;text-align:start;vertical-align:top}</style></head><body><h1>ENFORZA — ${t("File Timeline")}</h1><h2>${id} · ${f.creditor} → ${f.debtor}</h2><table><tr><th>${t("Date")}</th><th>${t("Type")}</th><th>${t("Event")}</th></tr>${rows}</table><style id="enforza-direct-access-css">
-#enfAuthV3{display:none!important;visibility:hidden!important;pointer-events:none!important}
-</style>
-<script id="enforza-direct-access-js">
-(function(){
- "use strict";
- function direct(){
-  const u={id:"USR-ADMIN",username:"admin",name:"System Administrator",role:"admin"};
-  const x={id:u.id,username:u.username,name:u.name,role:u.role};
-  try{sessionStorage.setItem("enforzaSessionV2",JSON.stringify(x));sessionStorage.setItem("enforzaRole","admin");sessionStorage.setItem("enforzaUserId",u.id)}catch(e){}
-  window.currentRole="admin";window.userRole="admin";window.currentUserId=u.id;window.currentUser=x;
-  if(document.body)document.body.dataset.enfRole="admin";
-  const a=document.getElementById("enfAuthV3");if(a){a.classList.remove("open");a.style.display="none"}
-  document.querySelectorAll(".nav-item").forEach(n=>n.style.removeProperty("display"));
-  setTimeout(function(){if(typeof window.v2ShowPage==="function")window.v2ShowPage("dashboard");else document.querySelector('.nav-item[data-page="dashboard"]')?.click()},60);
- }
- window.enfLogout=function(){direct()};
- if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",direct,{once:true});else direct();
-})();
-</script>
-</body></html>`);w.document.close();
+ w.document.write(`<!doctype html><html dir="${currentLang==="ar"?"rtl":"ltr"}"><head><meta charset="utf-8"><title>${id} Timeline</title><style>body{font-family:Arial;padding:35px;font-size:16px;color:#17212b}h1,h2{font-size:20px}table{width:100%;border-collapse:collapse;margin-top:20px}td,th{border:1px solid #ddd;padding:10px;text-align:start;vertical-align:top}</style></head><body><h1>ENFORZA — ${t("File Timeline")}</h1><h2>${id} · ${f.creditor} → ${f.debtor}</h2><table><tr><th>${t("Date")}</th><th>${t("Type")}</th><th>${t("Event")}</th></tr>${rows}</table></body></html>`);w.document.close();
 }
 const _enrichP19=enrichFile360;
 enrichFile360=function(m,r){_enrichP19(m,r);if(m==="files")setTimeout(()=>renderFileTimeline(r),25)}
@@ -2118,27 +2036,7 @@ function aiTaskAssistant(){const open=DATA.smartTasks.filter(x=>x.status!=="Comp
 function printTaskReport(){
  const a=DATA.smartTasks,w=window.open("","_blank");
  const rows=a.map(x=>`<tr><td>${x.id}</td><td>${x.file}</td><td>${x.title}</td><td>${x.assignee}</td><td>${x.due}</td><td>${t(x.priority)}</td><td>${t(x.status)}</td><td>${x.reminder}</td></tr>`).join("");
- w.document.write(`<!doctype html><html dir="${currentLang==="ar"?"rtl":"ltr"}"><head><meta charset="utf-8"><title>${t("Task Report")}</title><style>body{font-family:Arial;padding:35px;font-size:16px}h1{font-size:20px}table{width:100%;border-collapse:collapse}td,th{border:1px solid #ddd;padding:8px;text-align:start}</style></head><body><h1>ENFORZA — ${t("Task Report")}</h1><table><tr><th>ID</th><th>${t("File")}</th><th>${t("Task")}</th><th>${t("Assigned To")}</th><th>${t("Due Date")}</th><th>${t("Priority")}</th><th>${t("Status")}</th><th>${t("Reminder")}</th></tr>${rows}</table><style id="enforza-direct-access-css">
-#enfAuthV3{display:none!important;visibility:hidden!important;pointer-events:none!important}
-</style>
-<script id="enforza-direct-access-js">
-(function(){
- "use strict";
- function direct(){
-  const u={id:"USR-ADMIN",username:"admin",name:"System Administrator",role:"admin"};
-  const x={id:u.id,username:u.username,name:u.name,role:u.role};
-  try{sessionStorage.setItem("enforzaSessionV2",JSON.stringify(x));sessionStorage.setItem("enforzaRole","admin");sessionStorage.setItem("enforzaUserId",u.id)}catch(e){}
-  window.currentRole="admin";window.userRole="admin";window.currentUserId=u.id;window.currentUser=x;
-  if(document.body)document.body.dataset.enfRole="admin";
-  const a=document.getElementById("enfAuthV3");if(a){a.classList.remove("open");a.style.display="none"}
-  document.querySelectorAll(".nav-item").forEach(n=>n.style.removeProperty("display"));
-  setTimeout(function(){if(typeof window.v2ShowPage==="function")window.v2ShowPage("dashboard");else document.querySelector('.nav-item[data-page="dashboard"]')?.click()},60);
- }
- window.enfLogout=function(){direct()};
- if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",direct,{once:true});else direct();
-})();
-</script>
-</body></html>`);
+ w.document.write(`<!doctype html><html dir="${currentLang==="ar"?"rtl":"ltr"}"><head><meta charset="utf-8"><title>${t("Task Report")}</title><style>body{font-family:Arial;padding:35px;font-size:16px}h1{font-size:20px}table{width:100%;border-collapse:collapse}td,th{border:1px solid #ddd;padding:8px;text-align:start}</style></head><body><h1>ENFORZA — ${t("Task Report")}</h1><table><tr><th>ID</th><th>${t("File")}</th><th>${t("Task")}</th><th>${t("Assigned To")}</th><th>${t("Due Date")}</th><th>${t("Priority")}</th><th>${t("Status")}</th><th>${t("Reminder")}</th></tr>${rows}</table></body></html>`);
  w.document.close();w.focus();setTimeout(()=>w.print(),250);
 }
 const _commitP20=commitWizardFile;
@@ -4007,37 +3905,14 @@ document.addEventListener("keydown",e=>{if(e.ctrlKey&&e.shiftKey&&String(e.key).
 .enf-voice-confirm{position:fixed;inset:0;z-index:310000;background:rgba(7,11,15,.72);display:none;place-items:center;padding:18px}.enf-voice-confirm.open{display:grid}.enf-voice-confirm-card{width:min(560px,95vw);background:#fff;border-radius:18px;padding:20px;box-shadow:0 32px 100px rgba(0,0,0,.3)}.enf-voice-confirm-card h2{font-size:19px!important;margin:0 0 8px}.enf-voice-confirm-card p{font-size:10px;color:var(--desk-muted);line-height:1.6}.enf-voice-confirm-data{border:1px solid var(--desk-line);border-radius:11px;padding:11px;margin:12px 0;font-size:10px;line-height:1.7}.enf-voice-confirm-foot{display:flex;justify-content:flex-end;gap:7px}
 body.enf-dark .enf-auth-v3{background:#0e1318}body.enf-dark .enf-auth-card,body.enf-dark .enf-voice-confirm-card{background:#171d23;color:#eef2f5}
 </style>
-<div class="enf-auth-v3" id="enfAuthV3"><div class="enf-auth-card"><div class="enf-auth-brand"><div class="enf-auth-mark">E</div><h1>ENFORZA</h1><p id="enfAuthSubtitle">Enforcement Management Platform</p></div><form id="enfAuthForm"><div class="enf-auth-field"><label id="enfAuthUserLabel">USERNAME</label><input id="enfAuthUser" autocomplete="username"></div><div class="enf-auth-field"><label id="enfAuthPassLabel">PASSWORD</label><input id="enfAuthPass" type="password" autocomplete="current-password"></div><button class="enf-auth-submit" id="enfAuthSubmit" type="submit">Sign In</button><div class="enf-auth-error" id="enfAuthError"></div></form><div class="enf-auth-foot">ENFORZA V2 · Secure Role Access</div></div></div>
+
 <div class="enf-voice-confirm" id="enfVoiceConfirm"><div class="enf-voice-confirm-card"><h2 id="enfVoiceConfirmTitle">Confirm voice command</h2><p id="enfVoiceConfirmMsg"></p><div class="enf-voice-confirm-data" id="enfVoiceConfirmData"></div><div class="enf-voice-confirm-foot"><button class="enf-ms-btn" onclick="enfVoiceCancelCommand()">Cancel</button><button class="enf-ms-btn primary" onclick="enfVoiceConfirmCommand()">Confirm & Open</button></div></div></div>
 <script id="enforza-users-voice-final-js">
 (function(){
 "use strict";
-const USERS_KEY="enforzaUsersV2", SESSION_KEY="enforzaSessionV2";
 let pendingVoice=null;
-function ar(){return (window.currentLang||document.documentElement.lang||"en").toLowerCase().startsWith("ar")}function t(e,a){return ar()?a:e}
-function defaultUsers(){return[
- {id:"USR-ADMIN",username:"admin",password:"admin123",name:"System Administrator",role:"admin",active:true},
- {id:"USR-OFFICER",username:"officer",password:"officer123",name:"Enforcement Officer",role:"officer",active:true},
- {id:"USR-CREDITOR",username:"creditor",password:"creditor123",name:"Creditor",role:"creditor",active:true}
-]}
-function users(){try{let u=JSON.parse(localStorage.getItem(USERS_KEY)||"null");if(Array.isArray(u)&&u.length)return u}catch(e){}let u=defaultUsers();localStorage.setItem(USERS_KEY,JSON.stringify(u));return u}
-function session(){try{return JSON.parse(sessionStorage.getItem(SESSION_KEY)||"null")}catch(e){return null}}
-function setSession(u){let x={id:u.id,username:u.username,name:u.name,role:u.role};sessionStorage.setItem(SESSION_KEY,JSON.stringify(x));sessionStorage.setItem("enforzaRole",u.role);sessionStorage.setItem("enforzaUserId",u.id);window.currentRole=u.role;window.userRole=u.role;window.currentUserId=u.id;window.currentUser=x}
-function showLogin(){let x=document.getElementById("enfAuthV3");if(x)x.classList.add("open")}
-function hideLogin(){document.getElementById("enfAuthV3")?.classList.remove("open")}
-function roleApply(){
- let u=session();if(!u)return;let r=u.role;
- document.body.dataset.enfRole=r;
- let officerOnly=new Set(["expenses","treasury","claims","users","settings","evidence","collections"]);
- document.querySelectorAll(".nav-item").forEach(n=>{let p=n.dataset.page||"";let hide=r==="creditor"&&officerOnly.has(p);n.style.display=hide?"none":""});
- if(r==="creditor"&&typeof window.enfOpenCreditorPortal==="function")setTimeout(()=>window.enfOpenCreditorPortal(),50);
-}
-window.enfLogout=function(){sessionStorage.removeItem(SESSION_KEY);sessionStorage.removeItem("enforzaRole");sessionStorage.removeItem("enforzaUserId");showLogin()}
-window.enfUserCreate=function(o){let u=users();if(!o||!o.username||!o.password||!o.role)return{ok:false,error:"Missing fields"};if(u.some(x=>x.username.toLowerCase()===o.username.toLowerCase()))return{ok:false,error:"Username exists"};let x={id:"USR-"+Date.now(),username:o.username,password:o.password,name:o.name||o.username,role:o.role,active:o.active!==false,creditorId:o.creditorId||""};u.push(x);localStorage.setItem(USERS_KEY,JSON.stringify(u));return{ok:true,user:x}}
-window.enfUserUpdate=function(id,changes){let u=users(),i=u.findIndex(x=>x.id===id);if(i<0)return{ok:false};u[i]=Object.assign({},u[i],changes||{});localStorage.setItem(USERS_KEY,JSON.stringify(u));return{ok:true,user:u[i]}}
-window.enfUserDisable=function(id){return window.enfUserUpdate(id,{active:false})}
-function authText(){document.getElementById("enfAuthSubtitle").textContent=t("Enforcement Management Platform","منصة إدارة التنفيذ");document.getElementById("enfAuthUserLabel").textContent=t("USERNAME","اسم المستخدم");document.getElementById("enfAuthPassLabel").textContent=t("PASSWORD","كلمة المرور");document.getElementById("enfAuthSubmit").textContent=t("Sign In","تسجيل الدخول")}
-function bindLogin(){let f=document.getElementById("enfAuthForm");if(!f)return;f.addEventListener("submit",e=>{e.preventDefault();let un=document.getElementById("enfAuthUser").value.trim(),pw=document.getElementById("enfAuthPass").value,u=users().find(x=>x.active!==false&&x.username.toLowerCase()===un.toLowerCase()&&x.password===pw);if(!u){document.getElementById("enfAuthError").textContent=t("Invalid username or password.","اسم المستخدم أو كلمة المرور غير صحيحة.");return}document.getElementById("enfAuthError").textContent="";setSession(u);hideLogin();roleApply()})}
+function ar(){return (window.currentLang||document.documentElement.lang||"en").toLowerCase().startsWith("ar")}
+function t(e,a){return ar()?a:e}
 function parseVoice(raw){
  let n=String(raw||"").replace(/[إأآ]/g,"ا").replace(/ى/g,"ي").replace(/ة/g,"ه").toLowerCase(),intent="",amount="",method="";
  if(/(اضف|سجل|انشئ).*(مهمه|متابعه|موعد)|ذكرني/.test(n))intent="task";
@@ -4051,13 +3926,13 @@ function parseVoice(raw){
 }
 window.enfVoiceExecute=function(){
  let raw=document.getElementById("enfVoiceOriginal")?.value||"",p=parseVoice(raw);if(!p.intent){document.getElementById("enfVoiceStatus").textContent=t("No executable command detected.","لم يتم التعرف على أمر قابل للتنفيذ.");return}
- let r=(session()||{}).role||"officer";if(r==="creditor"&&["collection","document","minute"].includes(p.intent)){document.getElementById("enfVoiceStatus").textContent=t("This command is not permitted for Creditor access.","هذا الأمر غير مسموح لصلاحية الدائن.");return}
+ let r="admin";
  pendingVoice=p;document.getElementById("enfVoiceConfirmTitle").textContent=t("Confirm voice command","تأكيد الأمر الصوتي");document.getElementById("enfVoiceConfirmMsg").textContent=t("ENFORZA understood the following action. Nothing will be saved until you review the form and confirm it.","فهم ENFORZA الإجراء التالي. لن يتم حفظ أي شيء حتى تراجع النموذج وتؤكده.");document.getElementById("enfVoiceConfirmData").innerHTML="<b>"+p.intent+"</b>"+(p.amount?"<br>"+t("Amount: ","المبلغ: ")+"BHD "+p.amount:"")+(p.method?"<br>"+t("Method: ","الطريقة: ")+p.method:"")+"<br>"+p.raw;document.getElementById("enfVoiceConfirm").classList.add("open")
 }
 window.enfVoiceCancelCommand=function(){pendingVoice=null;document.getElementById("enfVoiceConfirm")?.classList.remove("open")}
 window.enfVoiceConfirmCommand=function(){let p=pendingVoice;if(!p)return;document.getElementById("enfVoiceConfirm")?.classList.remove("open");if(p.intent==="task"&&typeof window.v2OpenTask==="function")window.v2OpenTask(new Date().toISOString().slice(0,10));else if(p.intent==="collection"&&typeof window.enfFinOpen==="function"){window.enfFinOpen("Collection");setTimeout(()=>{let a=document.querySelector('#enfFinancePage input[type="number"],#enfFinAmount');if(a&&p.amount)a.value=p.amount},60)}else if(p.intent==="document"&&typeof window.enfDeOpen==="function")window.enfDeOpen("Document");else if(p.intent==="minute"&&typeof window.enfOpenMinutesStudio==="function")window.enfOpenMinutesStudio("");else if(p.intent==="openfile"){let fs=window.DATA&&Array.isArray(DATA.files)?DATA.files:[];if(fs.length===1&&typeof window.openFile360==="function")window.openFile360(fs[0].id||fs[0].ref)}pendingVoice=null}
 function addVoiceButton(){let foot=document.querySelector("#enfVoiceAI .enf-voice-foot div");if(foot&&!document.getElementById("enfVoiceExecuteBtn")){let b=document.createElement("button");b.id="enfVoiceExecuteBtn";b.className="enf-ms-btn primary";b.textContent=t("Understand & Execute","فهم وتنفيذ الأمر");b.onclick=window.enfVoiceExecute;foot.appendChild(b)}}
-function init(){authText();bindLogin();addVoiceButton();let u=session();if(u){window.currentRole=u.role;window.userRole=u.role;window.currentUserId=u.id;window.currentUser=u;hideLogin();roleApply()}else showLogin()}
+function init(){addVoiceButton()}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
 })();
 </script><style id="enforza-demo-operations-css">
@@ -4272,78 +4147,32 @@ function render(id){
 }
 function text(){document.getElementById("cxBrandSub").textContent=t("Creditor Access","بوابة الدائن");document.getElementById("cxHello").textContent=t("Your enforcement files","ملفات التنفيذ الخاصة بك");document.getElementById("cxIntro").textContent=t("A clear view of your claims, collections and latest case activity.","عرض واضح للمطالبات والتحصيلات وآخر تطورات ملفات التنفيذ.");document.getElementById("cxFileTitle").textContent=t("File overview","نظرة عامة على الملف");document.getElementById("cxTimelineTitle").textContent=t("Latest activity","آخر الإجراءات");document.getElementById("cxDocsTitle").textContent=t("Documents","المستندات");document.getElementById("cxUpdateTitle").textContent=t("Current position","الموقف الحالي");document.getElementById("cxExit").textContent=t("Sign Out","تسجيل الخروج")}
 window.enfOpenCreditorExperience=function(){text();let fs=creditorFiles(),sel=document.getElementById("cxFileSelect");sel.innerHTML=fs.length?fs.map(f=>`<option value="${fid(f)}">${fid(f)} · ${f.debtorName||f.debtor||f.title||t("Enforcement File","ملف تنفيذ")}</option>`).join(""):`<option>${t("No linked files","لا توجد ملفات مرتبطة")}</option>`;document.getElementById("enfCreditorExperience").classList.add("open");render(sel.value)}
-window.enfCreditorExit=function(){document.getElementById("enfCreditorExperience")?.classList.remove("open");if(typeof window.enfLogout==="function")window.enfLogout()}
+window.enfCreditorExit=function(){document.getElementById("enfCreditorExperience")?.classList.remove("open");if(typeof window.openPage==="function")window.openPage("dashboard")}
 function init(){document.getElementById("cxFileSelect")?.addEventListener("change",e=>render(e.target.value));let u=sess();if(u?.role==="creditor")setTimeout(()=>window.enfOpenCreditorExperience(),180)}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
 })();
-</script><style id="enforza-fast-login-css">
-/* DEMO ROLE SELECTOR — no password */
-#enfAuthForm .enf-auth-field,#enfAuthSubmit{display:none!important}
-.enf-demo-role-title{font-size:12px;font-weight:800;letter-spacing:.12em;opacity:.62;margin:8px 0 12px}
-.enf-demo-role-grid{display:grid;grid-template-columns:1fr;gap:10px}
-.enf-demo-role-btn{width:100%;border:1px solid rgba(183,125,72,.28);background:#fff;border-radius:14px;padding:14px 16px;text-align:left;cursor:pointer;font:inherit;transition:.15s ease;box-shadow:0 8px 24px rgba(0,0,0,.04)}
-.enf-demo-role-btn:hover{transform:translateY(-1px);border-color:#b77d48;box-shadow:0 12px 28px rgba(0,0,0,.08)}
-.enf-demo-role-btn b{display:block;font-size:15px}.enf-demo-role-btn small{display:block;margin-top:3px;opacity:.62}
-html[dir=rtl] .enf-demo-role-btn{text-align:right}
-#enfAuthV3.enf-auth-leaving{opacity:0;pointer-events:none;transition:opacity .12s ease}
-</style>
-<script id="enforza-fast-login-js">
+</script>
+
+<script id="enforza-direct-development-access">
 (function(){
 "use strict";
-const SESSION="enforzaSessionV2";
-const DEMO_USERS=[
- {id:"USR-ADMIN",username:"admin",name:"System Administrator",role:"admin"},
- {id:"USR-OFFICER",username:"officer",name:"Enforcement Officer",role:"officer"},
- {id:"USR-CREDITOR",username:"creditor",name:"Creditor",role:"creditor"}
-];
-function ar(){return (window.currentLang||document.documentElement.lang||"en").toLowerCase().startsWith("ar")}
-function t(e,a){return ar()?a:e}
-function setSession(user){
- const x={id:user.id,username:user.username,name:user.name,role:user.role,creditorId:user.creditorId||""};
- window.currentRole=user.role;window.userRole=user.role;window.currentUserId=user.id;window.currentUser=x;
- sessionStorage.setItem(SESSION,JSON.stringify(x));sessionStorage.setItem("enforzaRole",user.role);sessionStorage.setItem("enforzaUserId",user.id);
- document.body.dataset.enfRole=user.role;
-}
-function applyRole(user){
- const creditor=user.role==="creditor",admin=user.role==="admin";
- document.querySelectorAll(".nav-item").forEach(n=>{const p=n.dataset.page||"";n.style.display=(!admin&&p==="users")||(creditor&&["expenses","treasury","claims","users","settings","evidence","collections"].includes(p))?"none":""});
-}
-function route(user){
- if(user.role==="creditor"){if(typeof window.enfOpenCreditorExperience==="function")return window.enfOpenCreditorExperience();if(typeof window.enfOpenCreditorPortal==="function")return window.enfOpenCreditorPortal()}
- if(typeof window.v2ShowPage==="function")return window.v2ShowPage("dashboard");
- document.querySelector('.nav-item[data-page="dashboard"]')?.click();
-}
-function enter(user){
- setSession(user);applyRole(user);const auth=document.getElementById("enfAuthV3");if(auth){auth.classList.add("enf-auth-leaving");requestAnimationFrame(()=>auth.classList.remove("open"))}
- requestAnimationFrame(()=>requestAnimationFrame(()=>route(user)));
-}
-function build(){
- const form=document.getElementById("enfAuthForm");if(!form||form.dataset.demoRoles==="1")return;form.dataset.demoRoles="1";
- form.addEventListener("submit",e=>{e.preventDefault();e.stopImmediatePropagation()},true);
- const box=document.createElement("div");box.id="enfDemoRolePicker";
- function paint(){box.innerHTML='<div class="enf-demo-role-title">'+t("DEMO ACCESS — SELECT ROLE","الدخول التجريبي — اختر الصلاحية")+'</div><div class="enf-demo-role-grid">'+DEMO_USERS.map((u,i)=>'<button type="button" class="enf-demo-role-btn" data-i="'+i+'"><b>'+t(u.role==="admin"?"Administrator":u.role==="officer"?"Officer":"Creditor",u.role==="admin"?"مدير النظام":u.role==="officer"?"موظف التنفيذ":"الدائن")+'</b><small>'+t(u.role==="admin"?"Full system access":u.role==="officer"?"Operational enforcement access":"Creditor portal access",u.role==="admin"?"صلاحية كاملة للنظام":u.role==="officer"?"صلاحيات أعمال التنفيذ":"الدخول إلى بوابة الدائن")+'</small></button>').join('')+'</div>';box.querySelectorAll("button").forEach(b=>b.onclick=()=>enter(DEMO_USERS[+b.dataset.i]))}
- paint();form.appendChild(box);
-}
-if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",build,{once:true});else build();
-})();
-</script><style id="enforza-direct-access-css">
-#enfAuthV3{display:none!important;visibility:hidden!important;pointer-events:none!important}
-</style>
-<script id="enforza-direct-access-js">
-(function(){
- "use strict";
- function direct(){
-  const u={id:"USR-ADMIN",username:"admin",name:"System Administrator",role:"admin"};
-  const x={id:u.id,username:u.username,name:u.name,role:u.role};
-  try{sessionStorage.setItem("enforzaSessionV2",JSON.stringify(x));sessionStorage.setItem("enforzaRole","admin");sessionStorage.setItem("enforzaUserId",u.id)}catch(e){}
-  window.currentRole="admin";window.userRole="admin";window.currentUserId=u.id;window.currentUser=x;
+function startENFORZA(){
+  window.currentRole="admin";
+  window.userRole="admin";
+  window.currentUserId="DIRECT-ADMIN";
+  window.currentUser={id:"DIRECT-ADMIN",username:"admin",name:"Administrator",role:"admin"};
   if(document.body)document.body.dataset.enfRole="admin";
-  const a=document.getElementById("enfAuthV3");if(a){a.classList.remove("open");a.style.display="none"}
-  document.querySelectorAll(".nav-item").forEach(n=>n.style.removeProperty("display"));
-  setTimeout(function(){if(typeof window.v2ShowPage==="function")window.v2ShowPage("dashboard");else document.querySelector('.nav-item[data-page="dashboard"]')?.click()},60);
- }
- window.enfLogout=function(){direct()};
- if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",direct,{once:true});else direct();
+  try{
+    sessionStorage.removeItem("enforzaSessionV2");
+    sessionStorage.removeItem("enforzaRole");
+    sessionStorage.removeItem("enforzaUserId");
+  }catch(e){}
+  if(typeof window.applyRoleAccess==="function")window.applyRoleAccess("management");
+  document.querySelectorAll(".nav-item").forEach(function(n){n.style.removeProperty("display")});
+  if(typeof window.openPage==="function")window.openPage("dashboard");
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",startENFORZA,{once:true});
+else startENFORZA();
 })();
 </script>
 </body>
