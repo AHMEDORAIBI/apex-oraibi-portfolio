@@ -724,6 +724,20 @@ body.enf-dark .enf-fin-kpi,body.enf-dark .enf-fin-card,body.enf-dark .enf-fin-se
 body.enf-dark .enf-rp-filter,body.enf-dark .enf-rp-filter select,body.enf-dark .enf-rp-filter input,body.enf-dark .enf-rp-kpi,body.enf-dark .enf-rp-sheet{background:#171d23;color:#eef2f5;border-color:#2a333b}
 @media(max-width:900px){.enf-rp{padding:17px 12px}.enf-rp-head{align-items:flex-start;flex-direction:column}.enf-rp-filter{grid-template-columns:1fr 1fr}.enf-rp-kpis{grid-template-columns:1fr 1fr}.enf-rp-sheet{overflow:auto}.enf-rp-table{min-width:700px}}
 @media print{body *{visibility:hidden!important}#enfReportsPage,#enfReportsPage *{visibility:visible!important}#enfReportsPage{position:absolute!important;left:0;top:0;width:100%!important}.sidebar,.topbar,.enf-mobile-bar,.enf-rp-head,.enf-rp-filter{display:none!important}.enf-rp{padding:0!important}.enf-rp-sheet{border:0!important;box-shadow:none!important}.enf-rp-kpis{break-inside:avoid}}
+</style><style id="enforza-v2-phase19-intake-css">
+/* Phase 19 — File Opening & Intake Center */
+.enf-intake{position:fixed;inset:0;z-index:99000;background:rgba(7,11,15,.62);display:none;place-items:center;padding:18px}.enf-intake.open{display:grid}
+.enf-intake-card{width:min(980px,97vw);max-height:94vh;overflow:auto;background:#fff;border-radius:20px;box-shadow:0 30px 100px rgba(0,0,0,.28)}
+.enf-intake-head{display:flex;justify-content:space-between;gap:20px;padding:21px 23px 16px;border-bottom:1px solid var(--desk-line)}.enf-intake-head h2{font-size:23px!important;margin:3px 0}.enf-intake-head p{margin:0;color:var(--desk-muted);font-size:11px}.enf-intake-step{font-size:10px;font-weight:900;color:#9a6433;white-space:nowrap}
+.enf-intake-progress{height:4px;background:#eee9e3}.enf-intake-progress i{display:block;height:100%;background:#b77a3e;transition:.2s}
+.enf-intake-body{padding:20px 23px}.enf-intake-pane{display:none}.enf-intake-pane.active{display:block}.enf-intake-title{font-size:17px;font-weight:950;margin-bottom:13px}
+.enf-intake-types{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.enf-intake-type{border:1px solid var(--desk-line);border-radius:14px;padding:17px;background:#fff;text-align:left;cursor:pointer}.enf-intake-type.active{border-color:#b77a3e;background:#fbf4ed;box-shadow:inset 0 0 0 1px #b77a3e}.enf-intake-type i{display:grid;place-items:center;width:37px;height:37px;border-radius:10px;background:#f1e7dd;color:#9a6433;font-style:normal;margin-bottom:10px}.enf-intake-type b{display:block;font-size:12px}.enf-intake-type small{display:block;color:var(--desk-muted);font-size:10px;line-height:1.5;margin-top:5px}html[dir=rtl] .enf-intake-type{text-align:right}
+.enf-intake-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.enf-intake-field.full{grid-column:1/-1}.enf-intake-field label{display:block;font-size:10px;color:var(--desk-muted);font-weight:900;margin-bottom:5px}.enf-intake-field input,.enf-intake-field select,.enf-intake-field textarea{width:100%;border:1px solid var(--desk-line);border-radius:10px;padding:10px 11px;background:#fff;font-size:12px}.enf-intake-field textarea{min-height:75px}
+.enf-intake-docs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.enf-intake-doc{border:1px dashed #d8cfc5;border-radius:11px;padding:14px;background:#fbfaf8;text-align:center;font-size:10px;font-weight:900;cursor:pointer}.enf-intake-doc i{display:block;font-style:normal;font-size:20px;color:#9a6433;margin-bottom:5px}.enf-intake-selected{margin-top:10px;font-size:10px;color:var(--desk-muted);line-height:1.6}
+.enf-intake-review{display:grid;grid-template-columns:1fr 1fr;gap:9px}.enf-intake-review div{padding:11px;border:1px solid var(--desk-line);border-radius:10px}.enf-intake-review small{display:block;color:var(--desk-muted);font-size:9px}.enf-intake-review b{display:block;font-size:11px;margin-top:4px}
+.enf-intake-foot{display:flex;justify-content:space-between;gap:8px;padding:14px 23px;border-top:1px solid var(--desk-line)}
+body.enf-dark .enf-intake-card,body.enf-dark .enf-intake-type,body.enf-dark .enf-intake-field input,body.enf-dark .enf-intake-field select,body.enf-dark .enf-intake-field textarea{background:#171d23;color:#eef2f5;border-color:#2a333b}
+@media(max-width:760px){.enf-intake{padding:0}.enf-intake-card{width:100%;height:100%;max-height:none;border-radius:0}.enf-intake-types,.enf-intake-grid,.enf-intake-review{grid-template-columns:1fr}.enf-intake-docs{grid-template-columns:1fr 1fr 1fr}.enf-intake-body{padding:17px 14px}.enf-intake-head,.enf-intake-foot{padding-left:14px;padding-right:14px}}
 </style></head>
 <body>
 
@@ -2884,6 +2898,54 @@ function open(){document.querySelectorAll(".page").forEach(p=>p.style.display="n
 function wire(){document.querySelectorAll('.nav-item[data-page="reports"]').forEach(n=>n.addEventListener("click",e=>{e.preventDefault();e.stopImmediatePropagation();open()},true))}
 window.enfOpenReports=open;
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>{wire();render()});else{wire();render()}
+})();
+</script><div class="enf-intake" id="enfIntake"><div class="enf-intake-card">
+<div class="enf-intake-head"><div><div class="v2-kicker">FILE INTAKE</div><h2 id="enfIntakeH">Open Enforcement File</h2><p id="enfIntakeSub">Create the file with its source, case information and parties from the beginning.</p></div><span class="enf-intake-step" id="enfIntakeStep">1 / 5</span></div><div class="enf-intake-progress"><i id="enfIntakeProgress" style="width:20%"></i></div>
+<div class="enf-intake-body">
+<div class="enf-intake-pane active" data-step="1"><div class="enf-intake-title">How did this file originate?</div><div class="enf-intake-types">
+<button class="enf-intake-type" data-type="Law Firm Transfer" onclick="enfIntakeType(this)"><i>§</i><b>Law Firm Transfer</b><small>File referred by a law office for private enforcement.</small></button>
+<button class="enf-intake-type" data-type="Collection Transfer" onclick="enfIntakeType(this)"><i>↗</i><b>Collection Transfer</b><small>Existing collection matter transferred for enforcement action.</small></button>
+<button class="enf-intake-type" data-type="New Direct File" onclick="enfIntakeType(this)"><i>＋</i><b>New Direct File</b><small>New matter opened directly with ENFORZA.</small></button></div></div>
+<div class="enf-intake-pane" data-step="2"><div class="enf-intake-title">Case & Source Information</div><div class="enf-intake-grid">
+<div class="enf-intake-field"><label>Case Number</label><input id="eiCase"></div><div class="enf-intake-field"><label>Court / Authority</label><input id="eiCourt"></div><div class="enf-intake-field"><label>Case Type</label><input id="eiCaseType"></div><div class="enf-intake-field"><label>Judgment / Instrument Reference</label><input id="eiJudgment"></div>
+<div class="enf-intake-field" id="eiLawFirmWrap"><label>Referring Law Firm</label><input id="eiLawFirm"></div><div class="enf-intake-field"><label>External Reference</label><input id="eiExternalRef"></div>
+<div class="enf-intake-field full"><label>Source Notes</label><textarea id="eiSourceNotes"></textarea></div></div></div>
+<div class="enf-intake-pane" data-step="3"><div class="enf-intake-title">Parties & Financial Position</div><div class="enf-intake-grid">
+<div class="enf-intake-field"><label>Creditor</label><input id="eiCreditor"></div><div class="enf-intake-field"><label>Creditor ID / CR</label><input id="eiCreditorId"></div><div class="enf-intake-field"><label>Debtor</label><input id="eiDebtor"></div><div class="enf-intake-field"><label>Debtor ID / CR</label><input id="eiDebtorId"></div><div class="enf-intake-field"><label>Claim Amount (BHD)</label><input type="number" min="0" step="0.001" id="eiAmount"></div><div class="enf-intake-field"><label>Assigned Officer</label><input id="eiOfficer"></div><div class="enf-intake-field full"><label>File Summary</label><textarea id="eiSummary"></textarea></div></div></div>
+<div class="enf-intake-pane" data-step="4"><div class="enf-intake-title">Initial Documents</div><div class="enf-intake-docs"><button class="enf-intake-doc" onclick="document.getElementById('eiUpload').click()"><i>↑</i>Computer / Device</button><button class="enf-intake-doc" onclick="document.getElementById('eiCamera').click()"><i>◉</i>Camera</button><button class="enf-intake-doc" onclick="enfIntakeDrive()"><i>◇</i>Google Drive</button></div><div class="enf-intake-selected" id="eiSelected">No documents selected.</div><input type="file" id="eiUpload" hidden multiple><input type="file" id="eiCamera" accept="image/*" capture="environment" hidden multiple></div>
+<div class="enf-intake-pane" data-step="5"><div class="enf-intake-title">Review & Create</div><div class="enf-intake-review" id="eiReview"></div></div>
+</div>
+<div class="enf-intake-foot"><button class="enf-ms-btn" onclick="enfIntakeClose()">Cancel</button><div><button class="enf-ms-btn" id="eiBack" onclick="enfIntakeBack()" style="display:none">Back</button> <button class="enf-ms-btn primary" id="eiNext" onclick="enfIntakeNext()">Next</button></div></div>
+</div></div><script id="enforza-v2-phase19-intake-js">
+(function(){
+"use strict";let step=1,type="",attachments=[];
+function ar(){return (window.currentLang||document.documentElement.lang||"en")==="ar"}function t(e,a){return ar()?a:e}
+function files(){if(!window.DATA)return[];if(!Array.isArray(DATA.files))DATA.files=[];return DATA.files}
+function val(id){return (document.getElementById(id)?.value||"").trim()}
+function show(){
+ document.querySelectorAll(".enf-intake-pane").forEach(p=>p.classList.toggle("active",Number(p.dataset.step)===step));document.getElementById("enfIntakeStep").textContent=step+" / 5";document.getElementById("enfIntakeProgress").style.width=(step*20)+"%";document.getElementById("eiBack").style.display=step>1?"inline-block":"none";document.getElementById("eiNext").textContent=step===5?t("Create File","إنشاء الملف"):t("Next","التالي");if(step===5)review()
+}
+window.enfIntakeType=function(b){type=b.dataset.type;document.querySelectorAll(".enf-intake-type").forEach(x=>x.classList.remove("active"));b.classList.add("active")}
+window.enfIntakeOpen=function(){step=1;type="";attachments=[];document.querySelectorAll(".enf-intake-type").forEach(x=>x.classList.remove("active"));document.querySelectorAll("#enfIntake input:not([type=file]),#enfIntake textarea").forEach(x=>x.value="");document.getElementById("eiSelected").textContent=t("No documents selected.","لم يتم اختيار مستندات.");document.getElementById("enfIntake").classList.add("open");show()}
+window.enfIntakeClose=()=>document.getElementById("enfIntake").classList.remove("open")
+window.enfIntakeBack=()=>{if(step>1){step--;show()}}
+window.enfIntakeNext=function(){if(step===1&&!type){return}if(step<5){step++;show()}else create()}
+window.enfIntakeDrive=function(){document.getElementById("eiSelected").textContent=t("Google Drive is ready for connector/API integration at deployment.","Google Drive جاهز للربط عند مرحلة النشر.")}
+function pick(inp){attachments=[...(inp.files||[])].map(f=>({name:f.name,type:f.type,size:f.size}));document.getElementById("eiSelected").textContent=attachments.length?attachments.map(x=>x.name).join(", "):t("No documents selected.","لم يتم اختيار مستندات.")}
+function review(){let a=[[t("Intake Type","نوع فتح الملف"),type],[t("Case Number","رقم القضية"),val("eiCase")||"—"],[t("Court / Authority","المحكمة / الجهة"),val("eiCourt")||"—"],[t("Creditor","الدائن"),val("eiCreditor")||"—"],[t("Debtor","المدين"),val("eiDebtor")||"—"],[t("Claim","المطالبة"),"BHD "+Number(val("eiAmount")||0).toFixed(3)],[t("Assigned Officer","المسؤول"),val("eiOfficer")||"—"],[t("Attachments","المرفقات"),String(attachments.length)]];document.getElementById("eiReview").innerHTML=a.map(x=>`<div><small>${x[0]}</small><b>${x[1]}</b></div>`).join("")}
+function create(){
+ let n=files().length+1,id="ENF-"+String(n).padStart(5,"0"),title=val("eiCase")?t("Case ","قضية ")+val("eiCase"):t("Enforcement File ","ملف تنفيذ ")+id;
+ let f={id,title,status:"Active",intakeType:type,caseNumber:val("eiCase"),court:val("eiCourt"),caseType:val("eiCaseType"),judgmentRef:val("eiJudgment"),lawFirm:val("eiLawFirm"),externalRef:val("eiExternalRef"),sourceNotes:val("eiSourceNotes"),creditor:val("eiCreditor"),creditorId:val("eiCreditorId"),debtor:val("eiDebtor"),debtorId:val("eiDebtorId"),amount:Number(val("eiAmount")||0),assignedOfficer:val("eiOfficer"),summary:val("eiSummary"),attachments:[...attachments],openedDate:new Date().toISOString().slice(0,10)};
+ files().push(f);
+ if(window.DATA&&Array.isArray(DATA.documents))attachments.forEach((a,i)=>DATA.documents.push({id:"DOC-"+String(DATA.documents.length+1).padStart(4,"0"),file:id,title:a.name,recordType:"Initial Document",date:f.openedDate,origin:type,source:"Intake",attachments:[a],status:"Recorded"}));
+ enfIntakeClose();if(typeof v210Refresh==="function")v210Refresh();if(typeof openFile360==="function")setTimeout(()=>openFile360(id),50)
+}
+function wire(){
+ document.getElementById("eiUpload")?.addEventListener("change",function(){pick(this)});document.getElementById("eiCamera")?.addEventListener("change",function(){pick(this)});
+ window.v2OpenFileWizard=window.enfIntakeOpen;
+ document.querySelectorAll("[onclick*='v2OpenFileWizard']").forEach(b=>b.setAttribute("onclick","enfIntakeOpen()"));
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",wire);else wire()
 })();
 </script></body>
 </html>
