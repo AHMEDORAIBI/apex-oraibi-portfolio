@@ -547,7 +547,64 @@ html[dir="rtl"] .p27-panel{right:auto;left:0;box-shadow:25px 0 70px rgba(17,25,3
 .p28-bar{height:7px;background:#eee9e3;border-radius:99px;overflow:hidden;margin-top:7px}.p28-bar i{display:block;height:100%;background:#b78a5d}
 .p28-ai{background:linear-gradient(135deg,#fff9f3,#fff);border:1px solid #dbc3ad;border-radius:13px;padding:16px}.p28-ai h3{margin:0;color:#111923}.p28-ai p{line-height:1.7;color:#65717c}.p28-ai button{border:0;background:#111923;color:#fff;border-radius:9px;padding:9px 12px;font-weight:900}
 @media(max-width:1000px){.p28-kpis{grid-template-columns:repeat(2,1fr)}.p28-grid{grid-template-columns:1fr}.p28-filter{grid-template-columns:1fr 1fr}}@media(max-width:600px){.p28-hero{display:block}.p28-hero-actions{margin-top:13px}.p28-filter{grid-template-columns:1fr}.p28-kpis{grid-template-columns:1fr 1fr}}
-</style></head>
+</style>
+<style id="phase29-role-theme-engine">
+:root{
+  --p29-accent:#b47b45;
+  --p29-accent-soft:#f7eee6;
+}
+body{--bronze:var(--p29-accent)}
+body[data-theme="dark"]{
+  --bg:#11171d;--white:#182129;--text:#eef3f6;--muted:#9eabb5;--border:#34404a;
+  --sidebar:#0b1015;--navy:#f3f6f8;--mint:#1d2a2d;
+  background:#11171d;color:#eef3f6;
+}
+body[data-theme="dark"] .card,
+body[data-theme="dark"] .topbar,
+body[data-theme="dark"] .content,
+body[data-theme="dark"] .login-form-side,
+body[data-theme="dark"] .demo-modal,
+body[data-theme="dark"] .file-wizard main,
+body[data-theme="dark"] .p26-panel,
+body[data-theme="dark"] .p26-stat,
+body[data-theme="dark"] .p26-status-main,
+body[data-theme="dark"] .p27-note,
+body[data-theme="dark"] .p28-panel,
+body[data-theme="dark"] .p28-kpi,
+body[data-theme="dark"] .p28-filter{background:#182129!important;color:#eef3f6}
+body[data-theme="dark"] input,body[data-theme="dark"] select,body[data-theme="dark"] textarea{
+ background:#111920!important;color:#eef3f6!important;border-color:#394650!important
+}
+body[data-theme="dark"] table,body[data-theme="dark"] th,body[data-theme="dark"] td{color:#e7edf1;border-color:#34404a}
+body[data-theme="dark"] .login-demo-note{background:#111920;color:#aab5bd}
+body[data-theme="dark"] .role-option{background:#151e25;border-color:#394650;color:#eef3f6}
+body[data-theme="dark"] .role-option.active{border-color:var(--p29-accent);background:color-mix(in srgb,var(--p29-accent) 14%,#151e25)}
+body[data-theme="dark"] .page{background:#11171d}
+body[data-theme="dark"] h1,body[data-theme="dark"] h2,body[data-theme="dark"] h3,body[data-theme="dark"] h4,
+body[data-theme="dark"] strong{color:#f3f6f8}
+
+.p29-appearance{position:fixed;right:18px;bottom:18px;z-index:1350}
+.p29-appearance-btn{width:48px;height:48px;border-radius:50%;border:1px solid var(--border);background:var(--white);color:var(--text);box-shadow:0 12px 32px rgba(0,0,0,.18);font-size:19px;cursor:pointer}
+.p29-pop{position:absolute;right:0;bottom:58px;width:280px;background:var(--white);border:1px solid var(--border);border-radius:14px;padding:14px;box-shadow:0 18px 55px rgba(0,0,0,.22);display:none}
+.p29-pop.open{display:block}.p29-pop h4{font-size:16px!important;margin:0 0 10px}
+.p29-modes{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.p29-modes button{padding:9px 5px;border:1px solid var(--border);background:var(--white);color:var(--text);border-radius:8px;font-weight:800}
+.p29-modes button.active{background:var(--p29-accent);border-color:var(--p29-accent);color:#fff}
+.p29-colors{display:flex;gap:10px;margin-top:13px;flex-wrap:wrap}
+.p29-swatch{width:30px;height:30px;border-radius:50%;border:3px solid var(--white);box-shadow:0 0 0 1px var(--border);cursor:pointer}
+.p29-swatch.active{box-shadow:0 0 0 2px var(--text)}
+.p29-role-banner{display:none;margin-bottom:14px;border-radius:14px;padding:16px;background:linear-gradient(135deg,#111923,#27343e);color:#fff}
+.p29-role-banner h2{color:#fff!important;margin:0;font-size:20px!important}.p29-role-banner p{color:#cbd3d9;margin:5px 0 0}
+body.role-officer .p29-role-banner.officer,body.role-creditor .p29-role-banner.creditor{display:block}
+body.role-creditor .sidebar .nav-section{display:none}
+body.role-creditor .sidebar .nav-section:first-of-type{display:block}
+body.role-creditor .demo-engine-bar{display:none!important}
+body.role-officer [data-page="users"],body.role-officer [data-page="settings"],body.role-officer [data-page="audit"]{display:none!important}
+@media(max-width:720px){.p29-appearance{right:12px;bottom:78px}.p29-pop{width:min(280px,calc(100vw - 24px))}}
+html[dir="rtl"] .p29-appearance{right:auto;left:18px}html[dir="rtl"] .p29-pop{right:auto;left:0}
+</style>
+
+</head>
 <div class="exec-action-sheet" id="execActionSheet"><div class="exec-action-box"><div class="minutes-head"><div><h2>New Action</h2><p>Choose what you want to add to this enforcement file.</p></div><button class="top-btn" onclick="closeExecActionSheet()">×</button></div><div class="exec-action-grid">
 <div class="exec-action-card" onclick="execAction('task')"><b>✓</b><strong>Task</strong></div><div class="exec-action-card" onclick="execAction('minutes')"><b>✎</b><strong>Minutes</strong></div><div class="exec-action-card" onclick="execAction('collection')"><b>◉</b><strong>Collection</strong></div><div class="exec-action-card" onclick="execAction('document')"><b>▧</b><strong>Document</strong></div><div class="exec-action-card" onclick="execAction('camera')"><b>📷</b><strong>Camera / Evidence</strong></div><div class="exec-action-card" onclick="execAction('settlement')"><b>◇</b><strong>Settlement</strong></div></div></div></div>
 <button class="exec-ai-fab" onclick="openAI()">✦ AI</button><div class="p27-drawer" id="p27Drawer" onclick="if(event.target===this)closeP27Notifications()"><aside class="p27-panel"><div class="p27-head"><div class="p27-head-row"><div><h2 id="p27Title">Notifications</h2><p id="p27Subtitle">Important items that need your attention.</p></div><button onclick="closeP27Notifications()">×</button></div></div><div class="p27-filters" id="p27Filters"></div><div class="p27-list" id="p27List"></div><div class="p27-footer"><button onclick="p27MarkViewed()">✓ <span id="p27ViewedText">Mark Viewed</span></button><button onclick="openPage('smarttasks');closeP27Notifications()">▧ <span id="p27TasksText">Tasks</span></button></div></aside></div><body>
@@ -637,6 +694,10 @@ html[dir="rtl"] .p27-panel{right:auto;left:0;box-shadow:25px 0 70px rgba(17,25,3
 </div>
 
 <div class="app">
+
+<div class="p29-role-banner officer" id="p29OfficerBanner"><h2>Enforcement Officer Workspace</h2><p>My assigned files, today’s actions, field minutes, evidence capture and follow-up.</p></div>
+<div class="p29-role-banner creditor" id="p29CreditorBanner"><h2>Creditor Portal</h2><p>Secure demo view of your enforcement portfolio, collections, balances and approved updates.</p></div>
+
 <aside class="sidebar" id="sidebar">
   <div class="brand"><div class="brand-mark">E</div><div><strong>ENFORZA</strong><span>PRIVATE ENFORCEMENT</span></div></div>
   <div class="nav-section">
@@ -2022,7 +2083,88 @@ function renderP28Reports(){
 function p28Print(){
  let fs=p28FilteredFiles(),m=p28Metrics(fs),w=window.open("","_blank");
  let rows=fs.map(f=>`<tr><td>${f.id}</td><td>${f.caseNo||"—"}</td><td>${f.creditor}</td><td>${f.debtor}</td><td>${f.origin||"New Direct File"}</td><td>${f.officer||"—"}</td><td>${money(f.claim||0)}</td><td>${money(f.collected||0)}</td><td>${money((f.claim||0)-(f.collected||0))}</td></tr>`).join("");
- w.document.write(`<!doctype html><html dir="${currentLang==="ar"?"rtl":"ltr"}"><head><meta charset="utf-8"><title>ENFORZA Executive Report</title><style>body{font-family:Arial;padding:32px;font-size:14px;color:#17212b}h1{font-size:22px}h2{font-size:18px}.summary{padding:12px;border:1px solid #ddd;margin:14px 0}table{width:100%;border-collapse:collapse}th,td{border:1px solid #ddd;padding:7px;text-align:start}</style></head><body><h1>ENFORZA — ${currentLang==="ar"?"التقرير التنفيذي":"Executive Report"}</h1><div class="summary">${p28AISummary(fs,m)}</div><table><tr><th>File</th><th>Case</th><th>Creditor</th><th>Debtor</th><th>Origin</th><th>Officer</th><th>Claim</th><th>Collected</th><th>Outstanding</th></tr>${rows}</table><script>window.onload=()=>window.print()<\/script></body></html>`);w.document.close();
+ w.document.write(`<!doctype html><html dir="${currentLang==="ar"?"rtl":"ltr"}"><head><meta charset="utf-8"><title>ENFORZA Executive Report</title><style>body{font-family:Arial;padding:32px;font-size:14px;color:#17212b}h1{font-size:22px}h2{font-size:18px}.summary{padding:12px;border:1px solid #ddd;margin:14px 0}table{width:100%;border-collapse:collapse}th,td{border:1px solid #ddd;padding:7px;text-align:start}</style></head><body><h1>ENFORZA — ${currentLang==="ar"?"التقرير التنفيذي":"Executive Report"}</h1><div class="summary">${p28AISummary(fs,m)}</div><table><tr><th>File</th><th>Case</th><th>Creditor</th><th>Debtor</th><th>Origin</th><th>Officer</th><th>Claim</th><th>Collected</th><th>Outstanding</th></tr>${rows}</table><script>window.onload=()=>window.print()<\/script>
+<div class="p29-appearance" id="p29Appearance">
+ <button class="p29-appearance-btn" onclick="p29ToggleAppearance()" title="Appearance">◐</button>
+ <div class="p29-pop" id="p29AppearancePop">
+  <h4 id="p29AppearanceTitle">Appearance</h4>
+  <div class="p29-modes">
+   <button data-mode="light" onclick="p29SetMode('light',this)">☀ Light</button>
+   <button data-mode="dark" onclick="p29SetMode('dark',this)">☾ Dark</button>
+   <button data-mode="system" onclick="p29SetMode('system',this)">◐ System</button>
+  </div>
+  <div class="p29-colors" id="p29Colors"></div>
+ </div>
+</div>
+
+
+<script id="phase29-role-theme-js">
+const P29_DEMO_USERS={
+ management:{username:"admin",password:"demo123",landing:"dashboard"},
+ officer:{username:"officer",password:"demo123",landing:"followupBoard"},
+ creditor:{username:"creditor",password:"demo123",landing:"creditorPortal"}
+};
+const P29_COLORS=[
+ ["Bronze","#b47b45"],["Navy","#355b7a"],["Emerald","#39765f"],["Burgundy","#874c55"],["Graphite","#59636d"]
+];
+
+function p29ApplyRoleLabels(role){
+ const ob=document.getElementById("p29OfficerBanner"),cb=document.getElementById("p29CreditorBanner");
+ if(ob){ob.querySelector("h2").textContent=currentLang==="ar"?"مساحة عمل المنفذ الخاص":"Enforcement Officer Workspace";ob.querySelector("p").textContent=currentLang==="ar"?"ملفاتي المكلف بها، إجراءات اليوم، المحاضر الميدانية، التصوير والمتابعة.":"My assigned files, today’s actions, field minutes, evidence capture and follow-up."}
+ if(cb){cb.querySelector("h2").textContent=currentLang==="ar"?"بوابة الدائن":"Creditor Portal";cb.querySelector("p").textContent=currentLang==="ar"?"عرض مبسط لملفات التنفيذ والتحصيلات والأرصدة والتحديثات المسموح بها.":"Secure demo view of your enforcement portfolio, collections, balances and approved updates."}
+}
+function selectDemoRole(role,el){
+ selectedDemoRole=role;
+ document.querySelectorAll(".role-option").forEach(x=>x.classList.remove("active"));if(el)el.classList.add("active");
+ const d=P29_DEMO_USERS[role],u=document.getElementById("demoUsername"),p=document.getElementById("demoPassword");
+ if(u)u.value=d.username;if(p)p.value=d.password;
+}
+function loginDemo(){
+ const d=P29_DEMO_USERS[selectedDemoRole],u=(document.getElementById("demoUsername")?.value||"").trim(),p=document.getElementById("demoPassword")?.value||"";
+ if(u!==d.username||p!==d.password){showToast(currentLang==="ar"?"بيانات الدخول لا تطابق الدور المختار.":"Login details do not match the selected role.");return}
+ document.getElementById("loginGate").style.display="none";
+ applyRoleAccess(selectedDemoRole);p29ApplyRoleLabels(selectedDemoRole);
+ openPage(d.landing);showToast(t("Demo session started"));
+}
+function applyRoleAccess(role){
+ activeDemoRole=role;document.body.classList.remove("role-management","role-officer","role-creditor");document.body.classList.add("role-"+role);
+ const pill=document.getElementById("activeRolePill");if(pill)pill.textContent=role==="management"?t("Management"):role==="officer"?t("Enforcement Officer"):t("Creditor");
+ const managementOnly=["users","settings","audit","permissions","presentation","aiInsights","treasury"];
+ const creditorAllowed=["creditorPortal","documents","reports"];
+ const officerAllowed=["dashboard","files","parties","claims","tasks","actionsCenter","followupBoard","collections","settlements","documents","minutes","evidence","reports"];
+ document.querySelectorAll(".nav-item").forEach(n=>{
+   const p=n.dataset.page||"";
+   if(role==="management") n.style.display="";
+   else if(role==="officer") n.style.display=officerAllowed.includes(p)?"":"none";
+   else n.style.display=creditorAllowed.includes(p)?"":"none";
+ });
+}
+function p29ToggleAppearance(){document.getElementById("p29AppearancePop")?.classList.toggle("open")}
+function p29EffectiveMode(mode){return mode==="system"?(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"):mode}
+function p29SetMode(mode,btn){
+ localStorage.setItem("enforza-theme-mode",mode);document.body.dataset.theme=p29EffectiveMode(mode);
+ document.querySelectorAll(".p29-modes button").forEach(x=>x.classList.toggle("active",x.dataset.mode===mode));
+}
+function p29SetColor(name,color){
+ localStorage.setItem("enforza-accent-name",name);localStorage.setItem("enforza-accent",color);
+ document.documentElement.style.setProperty("--p29-accent",color);
+ document.querySelectorAll(".p29-swatch").forEach(x=>x.classList.toggle("active",x.dataset.name===name));
+}
+function p29RenderColors(){
+ const host=document.getElementById("p29Colors");if(!host)return;
+ host.innerHTML=P29_COLORS.map(([n,c])=>`<button class="p29-swatch" data-name="${n}" title="${n}" style="background:${c}" onclick="p29SetColor('${n}','${c}')"></button>`).join("");
+ let n=localStorage.getItem("enforza-accent-name")||"Bronze",c=localStorage.getItem("enforza-accent")||"#b47b45";p29SetColor(n,c);
+}
+function p29Init(){
+ let mode=localStorage.getItem("enforza-theme-mode")||"system";p29SetMode(mode);p29RenderColors();
+ const title=document.getElementById("p29AppearanceTitle");if(title)title.textContent=currentLang==="ar"?"المظهر والألوان":"Appearance & Colors";
+ selectDemoRole("management",document.querySelector('.role-option[data-role="management"]'));
+}
+matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change",()=>{if((localStorage.getItem("enforza-theme-mode")||"system")==="system")p29SetMode("system")});
+setTimeout(p29Init,50);
+</script>
+
+</body></html>`);w.document.close();
 }
 if(typeof openPage==="function"){let p28old=openPage;openPage=function(p){p28old(p);if(p==="reports")setTimeout(renderP28Reports,10)}}
 </script></body></html>`);w.document.close();
