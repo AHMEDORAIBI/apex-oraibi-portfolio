@@ -3107,5 +3107,350 @@ Object.assign(I18N.ar,{"Add Attachment":"إضافة مرفق","Choose where you 
 
 renderDashboard();renderUsers();renderAudit();renderPermissions();showReport("executive");applyLanguage();
 </script>
+
+<!-- PHASE 39 STABILITY RECOVERY -->
+<section class="page" id="creditorPremiumPage">
+  <div class="cp38" id="cp38Root"></div>
+</section>
+
+<script id="phase37-document-evidence-js-recovered">
+
+let p37Files=[];
+function p37DocForm(isEvidence=false){
+ return `<div class="p35-grid">
+ ${isEvidence?"":p35Field(currentLang==="ar"?"اسم / عنوان المستند":"Document Title","p35TitleInput")}
+ <div class="p35-field ${isEvidence?"full":""}"><label>${currentLang==="ar"?"التصنيف":"Category"}</label><select id="p37Category"><option>Judgment</option><option>Execution Order</option><option>Correspondence</option><option>Payment Evidence</option><option>Settlement</option><option>Identification</option><option>Field Evidence</option><option>Other</option></select></div>
+ <div class="p35-field full"><label>${currentLang==="ar"?"مصدر الإرفاق":"Attachment Source"}</label><div class="p37-source">
+ <button type="button" onclick="p37Pick('camera')"><b>📷</b>${currentLang==="ar"?"الكاميرا":"Camera"}</button>
+ <button type="button" onclick="p37Pick('gallery')"><b>🖼</b>${currentLang==="ar"?"الصور":"Gallery"}</button>
+ <button type="button" onclick="p37Pick('device')"><b>📁</b>${currentLang==="ar"?"الجهاز":"Device"}</button>
+ <button type="button" onclick="p37Drive()"><b>☁</b>${currentLang==="ar"?"Drive":"Drive"}</button></div>
+ <input id="p37Camera" type="file" accept="image/*" capture="environment" multiple hidden onchange="p37Selected(this)">
+ <input id="p37Gallery" type="file" accept="image/*" multiple hidden onchange="p37Selected(this)">
+ <input id="p37Device" type="file" multiple hidden onchange="p37Selected(this)">
+ <div class="p37-files" id="p37Files"></div></div>
+ ${p35Field(currentLang==="ar"?"الوصف / الملاحظات":"Description / Notes","p35Notes","textarea",true)}
+ <div class="p35-field full"><div class="p37-ai"><strong>✦ ENFORZA AI Document Reader</strong><p id="p37AIText">${currentLang==="ar"?"بعد اختيار المستند، يستطيع ENFORZA تجهيز ملخص واقتراح الإجراء أو المهمة التالية.":"After selecting a document, ENFORZA can prepare a summary and suggest the next task or action."}</p><button type="button" onclick="p37Analyze()">${currentLang==="ar"?"تحليل المستند":"Analyze Document"}</button></div></div></div>`;
+}
+const p37OldOpen=p35Open;
+p35Open=function(file,type){
+ p37OldOpen(file,type);
+ if(type==="document"||type==="evidence"){p37Files=[];document.getElementById("p35Body").innerHTML=p37DocForm(type==="evidence")}
+}
+function p37Pick(t){let id=t==="camera"?"p37Camera":t==="gallery"?"p37Gallery":"p37Device";document.getElementById(id)?.click()}
+function p37Selected(inp){
+ let fs=[...(inp.files||[])];p37Files.push(...fs.map(f=>({name:f.name,size:f.size,type:f.type,source:inp.id})));
+ document.getElementById("p37Files").innerHTML=p37Files.map((f,i)=>`<div class="p37-file"><div><strong>${f.name}</strong><span>${f.type||"file"} · ${Math.max(1,Math.round(f.size/1024))} KB</span></div><button type="button" onclick="p37Remove(${i})">×</button></div>`).join("");
+}
+function p37Remove(i){p37Files.splice(i,1);let h=document.getElementById("p37Files");if(h)h.innerHTML=p37Files.map((f,j)=>`<div class="p37-file"><div><strong>${f.name}</strong><span>${f.type||"file"}</span></div><button type="button" onclick="p37Remove(${j})">×</button></div>`).join("")}
+function p37Drive(){
+ showToast(currentLang==="ar"?"في نسخة الديمو استخدم اختيار الجهاز. ربط Google Drive الفعلي سيكون عند توصيل التخزين السحابي.":"For this demo, use Device. Live Google Drive selection will activate when cloud storage is connected.");
+}
+function p37Analyze(){
+ let e=document.getElementById("p37AIText"),cat=document.getElementById("p37Category")?.value||"Document";
+ if(!p37Files.length){showToast(currentLang==="ar"?"اختر مستندًا أولًا.":"Select a document first.");return}
+ e.textContent=currentLang==="ar"?`تم التعرف على ${p37Files.length} مرفق ضمن تصنيف ${cat}. في النسخة التشغيلية سيقرأ ENFORZA محتوى المستند ويستخرج الأطراف والمبالغ والتواريخ ويقترح مهمة أو إجراء، مع إبقاء القرار للمستخدم.`:`${p37Files.length} attachment(s) identified under ${cat}. In the live version ENFORZA will read the document, extract parties, amounts and dates, and suggest a task or action for user approval.`;
+}
+const p37OldSave=p35Save;
+p35Save=function(){
+ if(p35Type!=="document"&&p35Type!=="evidence")return p37OldSave();
+ let f=(DATA.files||[]).find(x=>x.id===p35FileId);if(!f)return;
+ if(!p37Files.length){showToast(currentLang==="ar"?"أرفق ملفًا أو صورة أولًا.":"Attach a file or photo first.");return}
+ let cat=document.getElementById("p37Category")?.value||"Other",note=p35v("p35Notes");
+ if(p35Type==="document"){DATA.smartDocuments=DATA.smartDocuments||[];p37Files.forEach((x,i)=>DATA.smartDocuments.push({id:p34Id("DOC"),file:f.id,title:p35v("p35TitleInput")||x.name,fileName:x.name,fileType:x.type,size:x.size,category:cat,date:new Date().toISOString().slice(0,10),note,status:"Active"}))}
+ else{DATA.evidence=DATA.evidence||[];p37Files.forEach(x=>DATA.evidence.push({id:p34Id("EVD"),file:f.id,description:note,fileName:x.name,fileType:x.type,size:x.size,category:cat,captured:new Date().toISOString()}))}
+ p34Persist();p35Close();showToast(currentLang==="ar"?"تم حفظ المرفقات وربطها بالملف.":"Attachments saved and linked to the file.");openDetail("files",f.id);
+}
+
+</script>
+
+<script id="phase37-login-hotfix-recovered">
+
+/* LOGIN HOTFIX — authoritative controller */
+(function(){
+  const USERS = {
+    management:{username:"admin",password:"demo123",landing:"dashboard"},
+    officer:{username:"officer",password:"demo123",landing:"followupBoard"},
+    creditor:{username:"creditor",password:"demo123",landing:"creditorPortal"}
+  };
+
+  window.selectDemoRole = function(role, el){
+    if(!USERS[role]) role="management";
+    window.selectedDemoRole=role;
+    document.querySelectorAll(".role-option").forEach(x=>x.classList.remove("active"));
+    if(el) el.classList.add("active");
+    else document.querySelector('.role-option[data-role="'+role+'"]')?.classList.add("active");
+    const u=document.getElementById("demoUsername");
+    const p=document.getElementById("demoPassword");
+    if(u) u.value=USERS[role].username;
+    if(p) p.value=USERS[role].password;
+  };
+
+  window.loginDemo = function(){
+    const role=window.selectedDemoRole||"management";
+    const d=USERS[role];
+    const u=(document.getElementById("demoUsername")?.value||"").trim();
+    const p=document.getElementById("demoPassword")?.value||"";
+
+    if(u!==d.username || p!==d.password){
+      if(typeof showToast==="function") showToast(
+        (typeof currentLang!=="undefined" && currentLang==="ar")
+        ?"بيانات الدخول لا تطابق الدور المختار."
+        :"Login details do not match the selected role."
+      );
+      return false;
+    }
+
+    window.activeDemoRole=role;
+    const gate=document.getElementById("loginGate");
+    if(gate) gate.style.display="none";
+
+    try{ if(typeof applyRoleAccess==="function") applyRoleAccess(role); }catch(e){console.warn(e)}
+    try{ if(typeof p29ApplyRoleLabels==="function") p29ApplyRoleLabels(role); }catch(e){console.warn(e)}
+
+    const pill=document.getElementById("activeRolePill");
+    if(pill) pill.textContent=role==="management"?"Management":role==="officer"?"Enforcement Officer":"Creditor";
+
+    try{
+      if(typeof openPage==="function") openPage(d.landing);
+    }catch(e){
+      console.error(e);
+      const pg=document.getElementById(d.landing+"Page");
+      if(pg){
+        document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+        pg.classList.add("active");
+      }
+    }
+
+    try{
+      if(role==="management" && typeof p32Management==="function") setTimeout(p32Management,40);
+      if(role==="officer" && typeof p30Render==="function") setTimeout(p30Render,40);
+      if(role==="creditor" && typeof p31Render==="function") setTimeout(p31Render,40);
+    }catch(e){console.warn(e)}
+
+    if(typeof showToast==="function") showToast(
+      (typeof currentLang!=="undefined" && currentLang==="ar")
+      ?"تم تسجيل الدخول بنجاح."
+      :"Login successful."
+    );
+    return false;
+  };
+
+  function wire(){
+    const gate=document.getElementById("loginGate");
+    if(!gate) return;
+
+    document.querySelectorAll(".role-option").forEach(el=>{
+      el.onclick=function(){ selectDemoRole(this.dataset.role||"management",this); };
+    });
+
+    const btn=[...gate.querySelectorAll("button")].find(b=>{
+      const s=(b.getAttribute("onclick")||"");
+      return s.includes("loginDemo");
+    });
+    if(btn){
+      btn.type="button";
+      btn.onclick=function(e){e.preventDefault();loginDemo();};
+    }
+
+    const form=gate.querySelector("form");
+    if(form) form.onsubmit=function(e){e.preventDefault();loginDemo();return false;};
+
+    ["demoUsername","demoPassword"].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el) el.addEventListener("keydown",e=>{
+        if(e.key==="Enter"){e.preventDefault();loginDemo();}
+      });
+    });
+
+    selectDemoRole("management",document.querySelector('.role-option[data-role="management"]'));
+  }
+
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",wire);
+  else setTimeout(wire,0);
+})();
+
+</script>
+
+<script id="phase38-rbac-creditor-recovered">
+
+(function(){
+ const ROLE_ACCESS={
+  management:["dashboard","files","parties","claims","tasks","smarttasks","collections","expenses","settlements","treasury","reports","users","settings","audit","minutes","evidence","documents","notifications"],
+  officer:["dashboard","files","parties","tasks","smarttasks","collections","settlements","minutes","evidence","documents","notifications"],
+  creditor:["creditorPremium"]
+ };
+ const LABEL_ALLOW={
+  management:["Dashboard","Enforcement Files","Parties","Financial Claims","Tasks & Follow-ups","Collections","Expenses","Settlements","Banking & Treasury","Reports & Analytics","Users & Permissions","Settings","Audit Log","Minutes","Smart Tasks","Field Evidence","Document Center"],
+  officer:["Dashboard","Enforcement Files","Parties","Tasks & Follow-ups","Collections","Settlements","Minutes","Smart Tasks","Field Evidence","Document Center"]
+ };
+ function roleClass(role){
+   document.body.classList.remove("role-management","role-officer","role-creditor");
+   document.body.classList.add("role-"+role);
+ }
+ function navText(el){return (el.textContent||"").replace(/\s+/g," ").trim()}
+ window.p38ApplyRBAC=function(role){
+   role=role||window.activeDemoRole||"management"; roleClass(role);
+   document.querySelectorAll(".nav-item").forEach(el=>{
+     let txt=navText(el), ok=role!=="creditor" && (LABEL_ALLOW[role]||[]).some(x=>txt.includes(x));
+     el.classList.toggle("role-hidden",!ok);
+   });
+   // Hide management-only top-level controls from non-management roles.
+   document.querySelectorAll('[onclick*="users"],[onclick*="audit"],[onclick*="settings"]').forEach(el=>{
+      if(role!=="management") el.classList.add("role-hidden"); else el.classList.remove("role-hidden");
+   });
+   if(role==="creditor"){
+     document.querySelectorAll(".sidebar").forEach(x=>x.style.display="none");
+     renderCreditor38();
+   }else{
+     document.querySelectorAll(".sidebar").forEach(x=>x.style.display="");
+   }
+ };
+ function creditorFiles(){
+   // In clean-start demo, creditor only receives files explicitly linked to creditor username/name.
+   const username=(document.getElementById("demoUsername")?.value||"creditor").toLowerCase();
+   return (DATA.files||[]).filter(f=>{
+     const fields=[f.creditorUser,f.creditorUsername,f.creditorEmail,f.creditorRef,f.creditor];
+     return fields.some(v=>String(v||"").toLowerCase()===username || String(v||"").toLowerCase().includes(username));
+   });
+ }
+ window.renderCreditor38=function(){
+   document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+   document.getElementById("creditorPremiumPage")?.classList.add("active");
+   const root=document.getElementById("cp38Root"); if(!root)return;
+   const fs=creditorFiles(), claim=fs.reduce((s,f)=>s+ +(f.claim||0),0), col=fs.reduce((s,f)=>s+ +(f.collected||0),0), out=Math.max(0,claim-col), rate=claim?Math.round(col/claim*100):0;
+   root.innerHTML=`<div class="cp38-hero"><div><h1>${currentLang==="ar"?"بوابة الدائن":"Creditor Portal"}</h1><p>${currentLang==="ar"?"متابعة واضحة وآمنة لملفاتكم ومبالغ التحصيل وآخر التحديثات المعتمدة.":"A clear, secure view of your files, recoveries and approved updates."}</p></div><div class="cp38-badge">ENFORZA · Private Enforcement</div></div>
+   <div class="cp38-kpis"><div class="cp38-kpi"><span>${currentLang==="ar"?"ملفاتي":"My Files"}</span><strong>${fs.length}</strong></div><div class="cp38-kpi"><span>${currentLang==="ar"?"إجمالي المطالبات":"Total Claims"}</span><strong>${money(claim)}</strong></div><div class="cp38-kpi"><span>${currentLang==="ar"?"تم تحصيله":"Recovered"}</span><strong>${money(col)}</strong></div><div class="cp38-kpi"><span>${currentLang==="ar"?"المتبقي":"Outstanding"}</span><strong>${money(out)}</strong></div></div>
+   <div class="cp38-grid"><div class="cp38-card"><h3>${currentLang==="ar"?"ملفات التنفيذ":"Enforcement Files"}</h3>${fs.length?fs.map(f=>{let r=+(f.claim||0)?Math.min(100,Math.round(+(f.collected||0)/+(f.claim||0)*100)):0;return `<div class="cp38-file"><div class="cp38-filetop"><strong>${f.id}</strong><b>${r}%</b></div><span>${currentLang==="ar"?"رقم القضية":"Case"}: ${f.caseNo||"—"}</span><span>${currentLang==="ar"?"المطالبة":"Claim"} ${money(+(f.claim||0))} · ${currentLang==="ar"?"المحصل":"Recovered"} ${money(+(f.collected||0))}</span><div class="cp38-progress"><i style="width:${r}%"></i></div></div>`}).join(""):`<div class="cp38-empty"><b>${currentLang==="ar"?"لا توجد ملفات مرتبطة بهذا الحساب":"No linked files yet"}</b>${currentLang==="ar"?"عند ربط ملف بهذا الدائن سيظهر هنا تلقائيًا.":"Once a file is linked to this creditor, it will appear here automatically."}</div>`}</div>
+   <div><div class="cp38-card cp38-ai"><h3>✦ ENFORZA AI</h3><p>${currentLang==="ar"?"يمكن للدائن الاستفسار عن حالة ملفه والتحديثات المسموح بعرضها فقط. لا تظهر الملاحظات الداخلية أو بيانات الإدارة أو الملفات الأخرى.":"Ask about your file status and approved updates only. Internal notes, management information and other creditors' files remain hidden."}</p><button class="cp38-btn" onclick="typeof openAI==='function'&&openAI()">${currentLang==="ar"?"اسأل ENFORZA":"Ask ENFORZA"}</button></div><div class="cp38-card" style="margin-top:13px"><h3>${currentLang==="ar"?"ملخص التحصيل":"Recovery Summary"}</h3><div class="cp38-update"><strong>${rate}%</strong><span>${currentLang==="ar"?"نسبة التحصيل الإجمالية":"Overall recovery rate"}</span></div><div class="cp38-update"><strong>${money(out)}</strong><span>${currentLang==="ar"?"الرصيد المتبقي":"Current outstanding balance"}</span></div></div></div></div>`;
+ };
+ const oldLogin=window.loginDemo;
+ window.loginDemo=function(){
+   let ok=oldLogin?oldLogin():false;
+   setTimeout(()=>p38ApplyRBAC(window.activeDemoRole||window.selectedDemoRole||"management"),60);
+   return ok;
+ };
+ const oldOpen=window.openPage;
+ window.openPage=function(p){
+   const role=window.activeDemoRole||"management";
+   if(role==="creditor"){renderCreditor38();return}
+   if(!(ROLE_ACCESS[role]||[]).includes(p)){
+     if(typeof showToast==="function")showToast(currentLang==="ar"?"ليس لديك صلاحية لعرض هذا القسم.":"You do not have permission to view this section.");
+     return;
+   }
+   return oldOpen?oldOpen(p):undefined;
+ };
+ setTimeout(()=>{if(window.activeDemoRole)p38ApplyRBAC(window.activeDemoRole)},150);
+})();
+
+</script>
+
+<script id="phase39-smart-workflow-js-recovered">
+
+const P39_STEPS=[
+ {id:"received",en:"File Received",ar:"استلام الملف",nextEn:"Review the enforcement instrument and core file data.",nextAr:"مراجعة السند التنفيذي والبيانات الأساسية للملف."},
+ {id:"review",en:"Instrument Review",ar:"مراجعة السند",nextEn:"Confirm readiness and prepare/open the enforcement proceeding.",nextAr:"التأكد من الجاهزية والبدء في إجراءات فتح التنفيذ."},
+ {id:"opened",en:"Execution Opened",ar:"فتح التنفيذ",nextEn:"Record the first enforcement action and required service.",nextAr:"تسجيل أول إجراء تنفيذي ومتطلبات التبليغ."},
+ {id:"service",en:"Service / Notice",ar:"التبليغ",nextEn:"Follow service outcome and determine attachment or recovery action.",nextAr:"متابعة نتيجة التبليغ وتحديد إجراء الحجز أو التحصيل."},
+ {id:"recovery",en:"Attachment / Recovery",ar:"الحجز / التحصيل",nextEn:"Continue recovery or prepare settlement where appropriate.",nextAr:"استكمال التحصيل أو إعداد التسوية عند الحاجة."},
+ {id:"settlement",en:"Settlement",ar:"التسوية",nextEn:"Verify all obligations, collections and documents before closure.",nextAr:"مراجعة الالتزامات والتحصيل والمستندات قبل الإقفال."},
+ {id:"closed",en:"Closure",ar:"الإقفال",nextEn:"File workflow completed.",nextAr:"اكتمل مسار الملف."}
+];
+function p39State(f){
+ let s=f.workflowStage||"received",idx=P39_STEPS.findIndex(x=>x.id===s);return idx<0?0:idx;
+}
+function p39Render(f){
+ if(!f||activeDemoRole==="creditor")return;
+ let host=document.getElementById("execWorkspacePanel");if(!host)return;
+ document.getElementById("p39Workflow")?.remove();
+ let idx=p39State(f),cur=P39_STEPS[idx];
+ let box=document.createElement("div");box.id="p39Workflow";box.className="p39-wrap";
+ box.innerHTML=`<div class="p39-head"><div><h3>${currentLang==="ar"?"مسار التنفيذ الذكي":"Smart Enforcement Workflow"}</h3><span>${f.id} · ${currentLang==="ar"?"المرحلة الحالية":"Current stage"}: ${currentLang==="ar"?cur.ar:cur.en}</span></div></div>
+ <div class="p39-flow">${P39_STEPS.map((s,i)=>`<div class="p39-step ${i<idx?"done":i===idx?"current":""}" onclick="p39Select('${f.id}',${i})"><b>${i<idx?"✓":i+1}</b><strong>${currentLang==="ar"?s.ar:s.en}</strong><span>${i<idx?(currentLang==="ar"?"مكتمل":"Completed"):i===idx?(currentLang==="ar"?"حالي":"Current"):(currentLang==="ar"?"قادم":"Upcoming")}</span></div>`).join("")}</div>
+ <div class="p39-bottom"><div class="p39-next"><h4>${currentLang==="ar"?"الإجراء التالي":"Next Recommended Action"}</h4><p>${currentLang==="ar"?cur.nextAr:cur.nextEn}</p><div class="p39-buttons"><button class="primary" onclick="p39Advance('${f.id}')">${idx===P39_STEPS.length-1?(currentLang==="ar"?"مكتمل":"Completed"):(currentLang==="ar"?"إكمال المرحلة والانتقال":"Complete & Advance")}</button><button onclick="p35Open('${f.id}','task')">＋ ${currentLang==="ar"?"مهمة":"Task"}</button><button onclick="p35Open('${f.id}','minute')">📝 ${currentLang==="ar"?"محضر":"Minutes"}</button></div></div>
+ <div class="p39-ai"><h4>✦ ENFORZA AI Workflow</h4><p>${p39AISuggestion(f,idx)}</p><div class="p39-buttons"><button onclick="p39AITask('${f.id}')">${currentLang==="ar"?"إنشاء مهمة مقترحة":"Create Suggested Task"}</button></div></div></div>`;
+ host.prepend(box);
+}
+function p39AISuggestion(f,idx){
+ let s=P39_STEPS[idx],out=Math.max(0,+(f.claim||0)-+(f.collected||0));
+ if(currentLang==="ar")return `الملف في مرحلة «${s.ar}». الرصيد القائم ${money(out)}. يقترح النظام: ${s.nextAr} الاقتراح للمساعدة فقط ويظل اعتماد الإجراء بيد المستخدم.`;
+ return `The file is at “${s.en}”. Outstanding balance is ${money(out)}. Suggested next step: ${s.nextEn} This is decision support only; the user remains responsible for approval.`;
+}
+function p39Select(id,idx){
+ let f=(DATA.files||[]).find(x=>x.id===id);if(!f||activeDemoRole!=="management")return showToast(currentLang==="ar"?"تغيير المرحلة يدويًا متاح للإدارة فقط.":"Manual stage change is available to Management only.");
+ f.workflowStage=P39_STEPS[idx].id;f.next=currentLang==="ar"?P39_STEPS[idx].nextAr:P39_STEPS[idx].nextEn;p34Persist();p39Render(f);showToast(currentLang==="ar"?"تم تحديث مرحلة الملف.":"Workflow stage updated.");
+}
+function p39Advance(id){
+ let f=(DATA.files||[]).find(x=>x.id===id);if(!f)return;let idx=p39State(f);if(idx>=P39_STEPS.length-1)return;
+ f.workflowStage=P39_STEPS[idx+1].id;f.next=currentLang==="ar"?P39_STEPS[idx+1].nextAr:P39_STEPS[idx+1].nextEn;
+ DATA.smartTasks=DATA.smartTasks||[];DATA.smartTasks.push({id:p34Id("TSK"),file:f.id,title:f.next,status:"Open",priority:"Normal",assignee:f.officer||"Unassigned",due:new Date().toISOString().slice(0,10),created:new Date().toISOString().slice(0,10),source:"Workflow"});
+ p34Persist();p39Render(f);showToast(currentLang==="ar"?"اكتملت المرحلة وتم إنشاء مهمة للخطوة التالية.":"Stage completed and a next-step task was created.");
+}
+function p39AITask(id){
+ let f=(DATA.files||[]).find(x=>x.id===id);if(!f)return,idx=p39State(f),s=P39_STEPS[idx];
+ DATA.smartTasks=DATA.smartTasks||[];DATA.smartTasks.push({id:p34Id("TSK"),file:f.id,title:currentLang==="ar"?s.nextAr:s.nextEn,status:"Open",priority:"High",assignee:f.officer||"Unassigned",due:new Date().toISOString().slice(0,10),created:new Date().toISOString().slice(0,10),source:"ENFORZA AI Suggestion"});
+ p34Persist();showToast(currentLang==="ar"?"تم إنشاء المهمة المقترحة.":"Suggested task created.");
+}
+if(typeof p26Workspace==="function"){const p39old=p26Workspace;p26Workspace=function(f){p39old(f);setTimeout(()=>p39Render(f),40)}}
+
+</script>
+
+<script id="phase39-critical-render-hotfix">
+(function(){
+  /* CLEAN START: preserve real locally entered data, otherwise remove old seeded demo records */
+  try{
+    const saved=localStorage.getItem("ENFORZA_REAL_DATA_V34");
+    if(saved){
+      const d=JSON.parse(saved);
+      ["files","parties","claims","smartTasks","collections","minutes","smartDocuments","evidence"].forEach(k=>{
+        if(Array.isArray(d[k])) DATA[k]=d[k];
+      });
+    }else{
+      ["files","parties","claims","tasks","smartTasks","collections","expenses","settlements","minutes","smartDocuments","evidence","actions"].forEach(k=>{
+        if(Array.isArray(DATA[k])) DATA[k]=[];
+      });
+    }
+  }catch(e){console.warn("Clean-start restore",e)}
+
+  /* Remove accidental JavaScript/template text rendered into the visual page. */
+  function cleanRenderedCode(){
+    const bad=[
+      "p36OldSave","MINUTE_TEMPLATES","minuteSectionValues",
+      "renderMinuteTemplates","Object.assign(I18N.ar",
+      "${v.icon}","${t(v.name)}","p36SigData"
+    ];
+    const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
+    const doomed=[];
+    while(walker.nextNode()){
+      const n=walker.currentNode, t=n.nodeValue||"";
+      if(bad.some(x=>t.includes(x))) doomed.push(n);
+    }
+    doomed.forEach(n=>n.remove());
+
+    document.querySelectorAll("body div,body section,body p,body span,body pre").forEach(el=>{
+      if(el.closest("script,style")) return;
+      const t=(el.textContent||"").trim();
+      if(t && (t.includes("${v.icon}")||t.includes("${minuteSectionValues")||t.includes("p36OldSave="))){
+        el.style.display="none";
+      }
+    });
+  }
+
+  function refreshRole(){
+    try{
+      if(typeof p38ApplyRBAC==="function" && window.activeDemoRole) p38ApplyRBAC(window.activeDemoRole);
+      if(window.activeDemoRole==="management" && typeof p32Management==="function") p32Management();
+      if(window.activeDemoRole==="creditor" && typeof renderCreditor38==="function") renderCreditor38();
+    }catch(e){console.warn(e)}
+  }
+
+  if(document.readyState==="loading"){
+    document.addEventListener("DOMContentLoaded",()=>{cleanRenderedCode();setTimeout(cleanRenderedCode,150);setTimeout(refreshRole,180)});
+  }else{
+    cleanRenderedCode();setTimeout(cleanRenderedCode,150);setTimeout(refreshRole,180);
+  }
+  new MutationObserver(()=>cleanRenderedCode()).observe(document.body,{childList:true,subtree:true});
+})();
+</script>
 </body>
 </html>
