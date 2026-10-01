@@ -4196,5 +4196,73 @@ window.enfCreditorExit=function(){document.getElementById("enfCreditorExperience
 function init(){document.getElementById("cxFileSelect")?.addEventListener("change",e=>render(e.target.value));let u=sess();if(u?.role==="creditor")setTimeout(()=>window.enfOpenCreditorExperience(),180)}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
 })();
+</script><style id="enforza-fast-login-css">
+/* FAST LOGIN — instant visual transition */
+#enfAuthV3.enf-auth-leaving{opacity:0;pointer-events:none;transition:opacity .12s ease}
+.enf-login-progress{height:2px;position:absolute;left:0;right:0;top:0;overflow:hidden;border-radius:24px 24px 0 0}
+.enf-login-progress:after{content:"";display:block;width:45%;height:100%;background:#b77d48;transform:translateX(-110%);animation:enfFastLogin .45s ease infinite}
+@keyframes enfFastLogin{to{transform:translateX(260%)}}
+</style>
+<script id="enforza-fast-login-js">
+(function(){
+"use strict";
+const SESSION="enforzaSessionV2", USERS="enforzaUsersV2";
+function ar(){return (window.currentLang||document.documentElement.lang||"en").toLowerCase().startsWith("ar")}
+function t(e,a){return ar()?a:e}
+function readUsers(){try{return JSON.parse(localStorage.getItem(USERS)||"[]")}catch(e){return[]}}
+function showAppImmediately(user){
+  window.currentRole=user.role;window.userRole=user.role;window.currentUserId=user.id;
+  window.currentUser={id:user.id,username:user.username,name:user.name,role:user.role,creditorId:user.creditorId||""};
+  sessionStorage.setItem(SESSION,JSON.stringify(window.currentUser));
+  sessionStorage.setItem("enforzaRole",user.role);
+  sessionStorage.setItem("enforzaUserId",user.id);
+  const auth=document.getElementById("enfAuthV3");
+  if(auth){auth.classList.add("enf-auth-leaving");requestAnimationFrame(()=>auth.classList.remove("open"))}
+  document.body.dataset.enfRole=user.role;
+}
+function applyRoleLight(user){
+  const creditor=user.role==="creditor", admin=user.role==="admin";
+  document.querySelectorAll(".nav-item").forEach(n=>{
+    const p=n.dataset.page||"";
+    if(p==="users") n.style.display=admin?"":"none";
+    else if(creditor && ["expenses","treasury","claims","users","settings","evidence","collections"].includes(p)) n.style.display="none";
+  });
+}
+function route(user){
+  if(user.role==="creditor" && typeof window.enfOpenCreditorExperience==="function"){
+    window.enfOpenCreditorExperience(); return;
+  }
+  if(typeof window.v2ShowPage==="function"){window.v2ShowPage("dashboard");return}
+  const nav=document.querySelector('.nav-item[data-page="dashboard"]'); if(nav)nav.click();
+}
+function deferHeavy(){
+  // Allow first paint before optional demo modules do any work.
+  setTimeout(()=>{
+    try{if(typeof window.enfDemoOpsRefresh==="function")window.enfDemoOpsRefresh()}catch(e){}
+  },250);
+}
+function install(){
+ const form=document.getElementById("enfAuthForm"); if(!form||form.dataset.fastLogin==="1")return;
+ form.dataset.fastLogin="1";
+ // Capture phase prevents the older accumulated login handler from doing duplicate routing.
+ form.addEventListener("submit",function(e){
+   e.preventDefault();e.stopImmediatePropagation();
+   const un=(document.getElementById("enfAuthUser")?.value||"").trim();
+   const pw=document.getElementById("enfAuthPass")?.value||"";
+   const err=document.getElementById("enfAuthError");
+   const btn=document.getElementById("enfAuthSubmit");
+   const u=readUsers().find(x=>x.active!==false&&String(x.username||"").toLowerCase()===un.toLowerCase()&&x.password===pw);
+   if(!u){if(err)err.textContent=t("Invalid username or password.","اسم المستخدم أو كلمة المرور غير صحيحة.");return}
+   if(err)err.textContent="";
+   if(btn){btn.disabled=true;btn.textContent=t("Opening…","جاري الفتح…")}
+   showAppImmediately(u);
+   applyRoleLight(u);
+   requestAnimationFrame(()=>requestAnimationFrame(()=>route(u)));
+   deferHeavy();
+   setTimeout(()=>{if(btn){btn.disabled=false;btn.textContent=t("Sign In","تسجيل الدخول")}},350);
+ },true);
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",install,{once:true});else install();
+})();
 </script></body>
 </html>
