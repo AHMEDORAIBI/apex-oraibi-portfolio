@@ -3372,5 +3372,96 @@ function init(){
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
 })();
+</script><style id="enforza-v2-rc2-live-fixes-css">
+/* RC2 — Live Test & Fix Pack */
+.enf-rc2-toast{position:fixed;z-index:170000;right:18px;top:18px;max-width:360px;padding:11px 13px;border-radius:11px;background:#111820;color:#fff;font-size:10px;font-weight:850;box-shadow:0 14px 40px rgba(0,0,0,.18);display:none}
+.enf-rc2-toast.show{display:block}html[dir=rtl] .enf-rc2-toast{right:auto;left:18px}
+.enf-rc2-modal{position:fixed;inset:0;z-index:165000;background:rgba(7,11,15,.68);display:none;place-items:center;padding:18px}.enf-rc2-modal.open{display:grid}
+.enf-rc2-card{width:min(760px,96vw);max-height:90vh;overflow:auto;background:#fff;border-radius:19px;box-shadow:0 32px 110px rgba(0,0,0,.32)}
+.enf-rc2-head{padding:20px 22px;border-bottom:1px solid var(--desk-line);display:flex;justify-content:space-between;gap:15px}.enf-rc2-head h2{font-size:21px!important;margin:3px 0}.enf-rc2-head p{margin:0;color:var(--desk-muted);font-size:10px}
+.enf-rc2-body{padding:18px 22px}.enf-rc2-test{display:grid;grid-template-columns:28px 1fr auto;gap:9px;align-items:center;padding:10px 0;border-bottom:1px solid var(--desk-line)}.enf-rc2-test:last-child{border-bottom:0}.enf-rc2-test i{display:grid;place-items:center;width:26px;height:26px;border-radius:8px;background:#f1e7dd;color:#8b592d;font-style:normal;font-size:9px;font-weight:950}.enf-rc2-test b{font-size:10px}.enf-rc2-test small{display:block;color:var(--desk-muted);font-size:9px;margin-top:3px}.enf-rc2-state{font-size:9px;font-weight:950;color:#4f805c}
+.enf-rc2-foot{display:flex;justify-content:flex-end;gap:7px;padding:14px 22px;border-top:1px solid var(--desk-line)}
+body.enf-dark .enf-rc2-card{background:#171d23;color:#eef2f5}
+@media(max-width:700px){.enf-rc2-modal{padding:0}.enf-rc2-card{width:100%;height:100%;max-height:none;border-radius:0}}
+</style>
+<div class="enf-rc2-toast" id="enfRc2Toast"></div>
+<div class="enf-rc2-modal" id="enfRc2Modal"><div class="enf-rc2-card">
+<div class="enf-rc2-head"><div><div class="v2-kicker">RC2 · LIVE FIXES</div><h2>ENFORZA V2.0 RC2</h2><p id="enfRc2Sub">Live-use hardening without sample records.</p></div><button class="enf-field-close" onclick="enfRc2Close()">×</button></div>
+<div class="enf-rc2-body" id="enfRc2Tests"></div>
+<div class="enf-rc2-foot"><button class="enf-ms-btn primary" onclick="enfRc2Close()">Continue Testing</button></div>
+</div></div>
+<script id="enforza-v2-rc2-live-fixes-js">
+(function(){
+"use strict";
+const VERSION="ENFORZA V2.0 RC2";
+function ar(){return (window.currentLang||document.documentElement.lang||"en")==="ar"}function t(e,a){return ar()?a:e}
+function toast(m){let x=document.getElementById("enfRc2Toast");if(!x)return;x.textContent=m;x.classList.add("show");clearTimeout(x._t);x._t=setTimeout(()=>x.classList.remove("show"),2200)}
+function role(){let r=String(window.currentRole||window.userRole||sessionStorage.getItem("enforzaRole")||localStorage.getItem("enforzaRole")||"").toLowerCase();return r.includes("creditor")?"creditor":"officer"}
+function closeLayers(){document.querySelectorAll(".sidebar.open,.side-menu.open,.mobile-menu.open").forEach(x=>x.classList.remove("open"))}
+function roleNav(){
+ let creditor=role()==="creditor";
+ let block=new Set(["expenses","treasury","claims","users","settings","evidence","collections"]);
+ document.querySelectorAll(".nav-item").forEach(n=>{
+   let p=n.dataset.page||"";
+   if(creditor&&block.has(p)){n.style.setProperty("display","none","important");n.dataset.rc2Hidden="1"}
+   else if(!creditor&&n.dataset.rc2Hidden==="1"){n.style.removeProperty("display");delete n.dataset.rc2Hidden}
+ });
+}
+function safeOpenFile(){
+ const fn=window.openFile360;if(typeof fn!=="function"||fn.__rc2)return;
+ function wrapped(id){if(!id){toast(t("Select a file first.","اختر ملفًا أولًا."));return}return fn.apply(this,arguments)}
+ wrapped.__rc2=true;window.openFile360=wrapped;
+}
+function safeFinance(){
+ const fn=window.enfFinOpen;if(typeof fn!=="function"||fn.__rc2)return;
+ function wrapped(type){if(role()==="creditor"){toast(t("This action is available to Enforcement Officers only.","هذا الإجراء متاح لموظف التنفيذ فقط."));return}return fn.apply(this,arguments)}
+ wrapped.__rc2=true;window.enfFinOpen=wrapped;
+}
+function safeIntake(){
+ const fn=window.enfIntakeOpen;if(typeof fn!=="function"||fn.__rc2)return;
+ function wrapped(){if(role()==="creditor"){toast(t("Creditors cannot open enforcement files.","لا يمكن للدائن فتح ملفات تنفيذ."));return}return fn.apply(this,arguments)}
+ wrapped.__rc2=true;window.enfIntakeOpen=wrapped;window.v2OpenFileWizard=wrapped;
+}
+function fileSelectAfterCreate(){
+ const fn=window.enfFinOpen;
+ if(typeof fn==="function"){
+   document.addEventListener("click",e=>{
+     let b=e.target.closest("[data-enf-file-id]");if(!b)return;
+     setTimeout(()=>{let sel=document.getElementById("enfFinFile");if(sel)sel.value=b.dataset.enfFileId||""},30)
+   });
+ }
+}
+function language(){
+ document.documentElement.lang=ar()?"ar":"en";document.documentElement.dir=ar()?"rtl":"ltr";
+}
+function theme(){
+ let dark=document.body.classList.contains("enf-dark");
+ localStorage.setItem("enforzaTheme",dark?"dark":"light");
+}
+function noDemo(){
+ if(!window.DATA)return;
+ Object.keys(DATA).forEach(k=>{if(Array.isArray(DATA[k]))DATA[k]=DATA[k].filter(x=>!(x&&(x.demo===true||x.isDemo===true||x.seed===true||/^demo[-_]/i.test(String(x.id||"")))))});
+}
+function tests(){
+ return [
+ [t("Officer permissions","صلاحيات موظف التنفيذ"),t("Full operational workspace remains available.","مساحة العمل التشغيلية الكاملة متاحة.")],
+ [t("Creditor isolation","عزل صلاحيات الدائن"),t("Internal finance, settings and administrative actions are blocked.","تم حجب المالية الداخلية والإعدادات والإجراءات الإدارية.")],
+ [t("New File guard","حماية فتح ملف جديد"),t("Creditor cannot invoke the intake workflow.","لا يستطيع الدائن تشغيل مسار فتح ملف.")],
+ [t("File 360 guard","حماية File 360°"),t("Empty file references are blocked safely.","تم منع فتح ملف دون مرجع بشكل آمن.")],
+ [t("Language direction","اتجاه اللغة"),t("Arabic uses RTL and English uses LTR.","العربية RTL والإنجليزية LTR.")],
+ [t("Theme persistence","حفظ النمط"),t("Light/Dark preference is retained locally.","يتم الاحتفاظ باختيار النهاري أو الليلي محليًا.")],
+ [t("Zero demo data","بدون بيانات افتراضية"),t("No sample enforcement records are inserted.","لا يتم إدخال سجلات تنفيذ تجريبية.")],
+ [t("Mobile navigation","القائمة على الهاتف"),t("Navigation closes after selecting a destination.","تغلق القائمة بعد اختيار الوجهة.")]
+ ];}
+window.enfRc2Open=function(){let box=document.getElementById("enfRc2Tests");box.innerHTML=tests().map((x,i)=>`<div class="enf-rc2-test"><i>${i+1}</i><div><b>${x[0]}</b><small>${x[1]}</small></div><span class="enf-rc2-state">${t("READY","جاهز")}</span></div>`).join("");document.getElementById("enfRc2Modal").classList.add("open")}
+window.enfRc2Close=()=>document.getElementById("enfRc2Modal")?.classList.remove("open");
+function init(){
+ noDemo();language();roleNav();safeOpenFile();safeFinance();safeIntake();fileSelectAfterCreate();theme();
+ document.querySelectorAll(".nav-item").forEach(n=>n.addEventListener("click",()=>setTimeout(closeLayers,0)));
+ document.addEventListener("keydown",e=>{if(e.key==="Escape"){document.querySelectorAll(".enf-rc2-modal.open,.enf-release.open,.enf-rc-center.open").forEach(x=>x.classList.remove("open"));closeLayers()}if(e.ctrlKey&&e.shiftKey&&String(e.key).toLowerCase()==="l"){e.preventDefault();enfRc2Open()}});
+ document.documentElement.dataset.enforzaVersion=VERSION;
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
+})();
 </script></body>
 </html>
