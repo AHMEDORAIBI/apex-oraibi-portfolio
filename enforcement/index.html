@@ -588,6 +588,17 @@ input,select,textarea,button{font-family:inherit}
 .v2wizard-source{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.v2source{border:1px solid var(--desk-line);border-radius:11px;padding:12px;background:#fff;cursor:pointer;text-align:center;font-size:12px;font-weight:850}.v2source.active{border-color:#b77a3e;background:#fbf4ed;color:#80562f}.v2wizard-foot{display:flex;justify-content:flex-end;gap:8px;padding:16px 22px;border-top:1px solid var(--desk-line)}
 @media(max-width:1100px){.v2files-grid{grid-template-columns:repeat(2,1fr)}.v2file-row{grid-template-columns:120px 1.4fr 1fr 110px}.v2file-row>*:nth-child(4),.v2file-row>*:nth-child(5){display:none}}
 @media(max-width:700px){.v2files{padding:18px 13px}.v2files-head{align-items:flex-start;flex-direction:column}.v2files-search{min-width:0;width:100%}.v2files-grid{grid-template-columns:1fr 1fr}.v2file-row{grid-template-columns:100px 1fr 90px}.v2file-row>*:nth-child(3){display:none}.v2wizard{padding:8px}.v2wizard-grid{grid-template-columns:1fr}.v2wizard-field.full{grid-column:auto}.v2wizard-source{grid-template-columns:1fr}}
+</style><style id="enforza-v2-phase8-file360-css">
+/* Phase 8 — File 360 operational workspace */
+.v2360-quickbar{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}.v2360-qbtn{border:1px solid var(--desk-line);background:#fff;border-radius:10px;padding:10px 12px;font-size:12px;font-weight:900;cursor:pointer}.v2360-qbtn.primary{background:#111820;color:#fff;border-color:#111820}
+.v2360-overview-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:13px}.v2360-box{border:1px solid var(--desk-line);border-radius:13px;padding:15px;background:#fff}.v2360-box h3{font-size:16px!important;margin:0 0 12px}
+.v2360-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}.v2360-detail{padding:10px 0;border-bottom:1px solid var(--desk-line)}.v2360-detail small{display:block;color:var(--desk-muted);font-size:10px;margin-bottom:4px}.v2360-detail b{font-size:13px}
+.v2360-party{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center}.v2360-party-card{padding:14px;border-radius:12px;background:#fbfaf8;border:1px solid var(--desk-line)}.v2360-party-card small{display:block;color:var(--desk-muted);font-size:10px;margin-bottom:5px}.v2360-party-card b{font-size:14px}.v2360-arrow{color:#b77a3e;font-weight:950}
+.v2360-finbar{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:13px}.v2360-fin{padding:13px;border-radius:11px;background:#fbfaf8;border:1px solid var(--desk-line)}.v2360-fin small{display:block;color:var(--desk-muted);font-size:10px}.v2360-fin b{display:block;font-size:17px;margin-top:5px}
+.v2360-record{display:flex;justify-content:space-between;gap:15px;align-items:center;padding:13px;border:1px solid var(--desk-line);border-radius:11px;margin-bottom:8px;background:#fff}.v2360-record b{display:block;font-size:13px}.v2360-record small{color:var(--desk-muted);font-size:11px}.v2360-record-tag{font-size:9px;font-weight:900;padding:5px 8px;border-radius:999px;background:#f1e7dd;color:#80562f;white-space:nowrap}
+.v2360-timeline{position:relative;padding-left:23px}.v2360-timeline:before{content:"";position:absolute;left:7px;top:8px;bottom:8px;width:1px;background:var(--desk-line)}html[dir=rtl] .v2360-timeline{padding-left:0;padding-right:23px}html[dir=rtl] .v2360-timeline:before{left:auto;right:7px}.v2360-timeitem{position:relative;padding:0 0 17px}.v2360-timeitem:before{content:"";position:absolute;left:-20px;top:5px;width:9px;height:9px;border-radius:50%;background:#b77a3e;border:2px solid #fff;box-shadow:0 0 0 1px #d9c5b1}html[dir=rtl] .v2360-timeitem:before{left:auto;right:-20px}.v2360-timeitem b{font-size:12px}.v2360-timeitem small{display:block;color:var(--desk-muted);margin-top:3px}
+.v2360-smart-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:12px}.v2360-smart-actions button{border:1px solid var(--desk-line);background:#fff;border-radius:9px;padding:9px;font-size:11px;font-weight:900;cursor:pointer}
+@media(max-width:850px){.v2360-overview-grid{grid-template-columns:1fr}.v2360-detail-grid{grid-template-columns:1fr}.v2360-finbar{grid-template-columns:1fr}.v2360-party{grid-template-columns:1fr}.v2360-arrow{transform:rotate(90deg);text-align:center}}
 </style></head>
 <body>
 
@@ -2313,6 +2324,46 @@ function openWorkspace7(){document.querySelectorAll(".page").forEach(p=>p.style.
 function wire7(){let nav=[...document.querySelectorAll(".nav-item")].find(x=>{let p=x.dataset.page||x.getAttribute("data-page")||"";return p==="files"});if(nav&&!nav.dataset.v2files){nav.dataset.v2files="1";nav.addEventListener("click",function(e){e.preventDefault();e.stopImmediatePropagation();openWorkspace7()},true)}}
 window.openQuickAdd=(function(old){return function(type){if(type==="files"){v2OpenFileWizard();return}if(old)return old.apply(this,arguments)}})(window.openQuickAdd);
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>{wire7();renderFiles7()});else{wire7();renderFiles7()}
+})();
+</script><script id="enforza-v2-phase8-file360-js">
+(function(){
+"use strict";
+function ar8(){return (window.currentLang||document.documentElement.lang||"en")==="ar"}
+function t8(en,ar){return ar8()?ar:en}
+function m8(v){return "BHD "+Number(v||0).toFixed(3)}
+function id8(f){return f&&(f.id||f.ref||f.fileNo)||""}
+function rel8(name,id){return window.DATA&&Array.isArray(DATA[name])?DATA[name].filter(x=>(x.file||x.fileId||x.ref)===id):[]}
+function blank8(text){return `<div class="v2360-blank">${text}</div>`}
+function records8(arr,empty){if(!arr.length)return blank8(empty);return arr.map(x=>`<div class="v2360-record"><div><b>${x.title||x.type||x.id||t8("Record","سجل")}</b><small>${x.date||x.due||""}${x.notes?" · "+x.notes:""}</small></div><span class="v2360-record-tag">${x.status||x.type||t8("Recorded","مسجل")}</span></div>`).join("")}
+window.v2360EnhancedBody=function(f,tab){
+ let id=id8(f),tasks=rel8("smartTasks",id),minutes=rel8("minutes",id),docs=rel8("documents",id),ev=rel8("evidence",id),acts=rel8("activities",id),claims=rel8("claims",id),cols=rel8("collections",id);
+ if(tab==="overview"){
+  let amount=Number(f.amount||f.outstanding||0),col=Number(f.collected||0);
+  return `<div class="v2360-quickbar"><button class="v2360-qbtn primary" onclick="v2OpenTask('',null)">+ ${t8("Task","مهمة")}</button><button class="v2360-qbtn" onclick="v2360Tab('actions')">+ ${t8("Action","إجراء")}</button><button class="v2360-qbtn" onclick="v2360Tab('minutes')">+ ${t8("Minute","محضر")}</button><button class="v2360-qbtn" onclick="v2360Tab('documents')">+ ${t8("Document","مستند")}</button><button class="v2360-qbtn" onclick="v2360Tab('evidence')">+ ${t8("Evidence","دليل")}</button></div>
+  <div class="v2360-overview-grid"><div class="v2360-box"><h3>${t8("Case & Assignment","القضية والتكليف")}</h3><div class="v2360-detail-grid"><div class="v2360-detail"><small>${t8("File Reference","رقم الملف")}</small><b>${id||"—"}</b></div><div class="v2360-detail"><small>${t8("Case Number","رقم القضية")}</small><b>${f.caseNo||"—"}</b></div><div class="v2360-detail"><small>${t8("File Source","مصدر الملف")}</small><b>${f.source||"—"}</b></div><div class="v2360-detail"><small>${t8("Assigned Officer","الموظف المسؤول")}</small><b>${f.officer||"—"}</b></div></div></div>
+  <div class="v2360-box"><h3>${t8("Parties","الأطراف")}</h3><div class="v2360-party"><div class="v2360-party-card"><small>${t8("CREDITOR","الدائن")}</small><b>${f.creditor||"—"}</b></div><div class="v2360-arrow">→</div><div class="v2360-party-card"><small>${t8("DEBTOR","المدين")}</small><b>${f.debtor||"—"}</b></div></div></div></div>
+  <div class="v2360-finbar"><div class="v2360-fin"><small>${t8("Claim Amount","مبلغ المطالبة")}</small><b>${m8(amount)}</b></div><div class="v2360-fin"><small>${t8("Collected","المحصل")}</small><b>${m8(col)}</b></div><div class="v2360-fin"><small>${t8("Outstanding","القائم")}</small><b>${m8(amount-col)}</b></div></div>
+  <div class="v2360-section"><h3>${t8("Recent Activity","آخر النشاطات")}</h3>${records8(acts.slice(-4).reverse(),t8("No actions recorded yet.","لم يتم تسجيل إجراءات حتى الآن."))}</div>`;
+ }
+ if(tab==="actions")return `<h3>${t8("Actions & Enforcement Steps","الإجراءات وخطوات التنفيذ")}</h3>${records8(acts,t8("No enforcement actions have been recorded yet.","لم يتم تسجيل أي إجراءات تنفيذ حتى الآن."))}`;
+ if(tab==="financial")return `<div class="v2360-finbar"><div class="v2360-fin"><small>${t8("Claims","المطالبات")}</small><b>${claims.length}</b></div><div class="v2360-fin"><small>${t8("Collections","التحصيلات")}</small><b>${cols.length}</b></div><div class="v2360-fin"><small>${t8("Outstanding","القائم")}</small><b>${m8(Number(f.amount||0)-Number(f.collected||0))}</b></div></div><div class="v2360-section">${records8([...claims,...cols],t8("No financial movements have been recorded yet.","لم يتم تسجيل حركات مالية حتى الآن."))}</div>`;
+ if(tab==="tasks")return `<h3>${t8("Tasks & Follow-up","المهام والمتابعة")}</h3>${records8(tasks,t8("No tasks linked to this file yet.","لا توجد مهام مرتبطة بهذا الملف حتى الآن."))}`;
+ if(tab==="minutes")return `<h3>${t8("Minutes","المحاضر")}</h3>${records8(minutes,t8("No minutes have been prepared for this file yet.","لم يتم إعداد محاضر لهذا الملف حتى الآن."))}`;
+ if(tab==="documents")return `<h3>${t8("Documents","المستندات")}</h3>${records8(docs,t8("No documents attached yet.","لا توجد مستندات مرفقة حتى الآن."))}`;
+ if(tab==="evidence")return `<h3>${t8("Evidence","الأدلة")}</h3>${records8(ev,t8("No evidence added yet.","لم تتم إضافة أدلة حتى الآن."))}`;
+ if(tab==="timeline"){let all=[...acts,...tasks,...minutes,...docs,...ev].sort((a,b)=>String(b.date||b.due||"").localeCompare(String(a.date||a.due||"")));return `<h3>${t8("Complete Timeline","التسلسل الزمني الكامل")}</h3>${all.length?`<div class="v2360-timeline">${all.map(x=>`<div class="v2360-timeitem"><b>${x.title||x.type||x.id||t8("Activity","نشاط")}</b><small>${x.date||x.due||"—"} · ${x.status||""}</small></div>`).join("")}</div>`:blank8(t8("The timeline will build automatically as you work on this file.","سيتم بناء التسلسل الزمني تلقائيًا أثناء العمل على الملف."))}`;}
+ return "";
+}
+const oldRender8=window.v2360Tab;
+window.v2360Tab=function(tab){if(oldRender8)oldRender8(tab);setTimeout(enhance8,0)}
+function enhance8(){
+ let root=document.getElementById("v2360Root");if(!root||!root.querySelector(".v2360-main"))return;
+ let ref=root.querySelector(".v2360-ref");if(!ref)return;let id=ref.textContent.trim(),f=(window.DATA&&DATA.files||[]).find(x=>id8(x)===id);if(!f)return;
+ let active=root.querySelector(".v2360-tab.active"),tab="overview";if(active){let oc=active.getAttribute("onclick")||"";let m=oc.match(/v2360Tab\('([^']+)'\)/);if(m)tab=m[1]}
+ let content=root.querySelector(".v2360-content");if(content)content.innerHTML=window.v2360EnhancedBody(f,tab);
+ let side=root.querySelector(".v2360-side");if(side&&!side.querySelector(".v2360-smart-actions"))side.insertAdjacentHTML("beforeend",`<div class="v2360-smart-actions"><button onclick="v2OpenTask('',null)">${t8("New Task","مهمة جديدة")}</button><button onclick="v2360Tab('timeline')">${t8("Timeline","التسلسل")}</button></div>`);
+}
+document.addEventListener("click",e=>{if(e.target.closest(".v2file-row:not(.head)"))setTimeout(enhance8,30)},true);
 })();
 </script></body>
 </html>
