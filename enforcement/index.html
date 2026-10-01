@@ -719,6 +719,12 @@ body.role-management .sidebar .nav-item{transition:.15s ease}
 .p39-flow{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;margin-top:14px}.p39-step{position:relative;border:1px solid var(--border);border-radius:12px;padding:12px 8px;min-height:92px;background:var(--white);cursor:pointer}.p39-step b{display:grid;width:28px;height:28px;border-radius:50%;place-items:center;background:color-mix(in srgb,var(--border) 70%,transparent);margin-bottom:7px}.p39-step strong{display:block;font-size:14px}.p39-step span{display:block;color:var(--muted);font-size:12px;margin-top:4px}.p39-step.done{border-color:color-mix(in srgb,#3b8b65 50%,var(--border));background:color-mix(in srgb,#3b8b65 5%,var(--white))}.p39-step.done b{background:#3b8b65;color:#fff}.p39-step.current{border:2px solid var(--p29-accent);box-shadow:0 8px 22px color-mix(in srgb,var(--p29-accent) 12%,transparent)}.p39-step.current b{background:var(--p29-accent);color:#fff}
 .p39-bottom{display:grid;grid-template-columns:1fr .9fr;gap:10px;margin-top:11px}.p39-next,.p39-ai{border:1px solid var(--border);border-radius:12px;padding:13px}.p39-ai{background:color-mix(in srgb,var(--p29-accent) 6%,var(--white));border-color:color-mix(in srgb,var(--p29-accent) 35%,var(--border))}.p39-next h4,.p39-ai h4{margin:0 0 6px;font-size:17px}.p39-next p,.p39-ai p{margin:0;color:var(--muted);line-height:1.55}.p39-buttons{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.p39-buttons button{border:1px solid var(--border);background:var(--white);color:var(--text);border-radius:9px;padding:9px 11px;font-weight:900}.p39-buttons .primary{background:var(--p29-accent);border-color:var(--p29-accent);color:#fff}
 @media(max-width:1050px){.p39-flow{grid-template-columns:repeat(4,1fr)}}@media(max-width:700px){.p39-flow{grid-template-columns:1fr 1fr}.p39-bottom{grid-template-columns:1fr}.p39-step{min-height:82px}}
+</style><style id="phase40-navigation-language-fix">
+/* PHASE 40 — NAVIGATION + TRUE AR/EN UI */
+body[dir="rtl"] .main,body[dir="rtl"] .main-content{direction:rtl}
+body[dir="rtl"] .sidebar{direction:rtl}
+.p40-lang{font-weight:900}
+.role-hidden{display:none!important}
 </style></head>
 <div class="exec-action-sheet" id="execActionSheet"><div class="exec-action-box"><div class="minutes-head"><div><h2>New Action</h2><p>Choose what you want to add to this enforcement file.</p></div><button class="top-btn" onclick="closeExecActionSheet()">×</button></div><div class="exec-action-grid">
 <div class="exec-action-card" onclick="execAction('task')"><b>✓</b><strong>Task</strong></div><div class="exec-action-card" onclick="execAction('minutes')"><b>✎</b><strong>Minutes</strong></div><div class="exec-action-card" onclick="execAction('collection')"><b>◉</b><strong>Collection</strong></div><div class="exec-action-card" onclick="execAction('document')"><b>▧</b><strong>Document</strong></div><div class="exec-action-card" onclick="execAction('camera')"><b>📷</b><strong>Camera / Evidence</strong></div><div class="exec-action-card" onclick="execAction('settlement')"><b>◇</b><strong>Settlement</strong></div></div></div></div>
@@ -2824,6 +2830,110 @@ function p39AITask(id){
  p34Persist();showToast(currentLang==="ar"?"تم إنشاء المهمة المقترحة.":"Suggested task created.");
 }
 if(typeof p26Workspace==="function"){const p39old=p26Workspace;p26Workspace=function(f){p39old(f);setTimeout(()=>p39Render(f),40)}}
+</script><script id="phase40-navigation-language-fix-js">
+(function(){
+const TR={
+"Dashboard":"لوحة التحكم","Enforcement Files":"ملفات التنفيذ","Parties":"الأطراف","Financial Claims":"المطالبات المالية",
+"Tasks & Follow-ups":"المهام والمتابعات","Collections":"التحصيلات","Expenses":"المصروفات","Settlements":"التسويات",
+"Banking & Treasury":"البنوك والخزينة","Reports & Analytics":"التقارير والتحليلات","Users & Permissions":"المستخدمون والصلاحيات",
+"Settings":"الإعدادات","Audit Log":"سجل التدقيق","Minutes":"المحاضر","Smart Tasks":"المهام الذكية",
+"Field Evidence":"الأدلة الميدانية","Document Center":"مركز المستندات","Management":"الإدارة","Financial":"المالية",
+"Workspace":"مساحة العمل","Executive Dashboard":"لوحة التحكم التنفيذية","Search file, party or reference...":"ابحث عن ملف أو طرف أو مرجع...",
+"Active Enforcement Files":"ملفات التنفيذ النشطة","Total Claims":"إجمالي المطالبات","Collected":"المحصل","Outstanding":"المتبقي",
+"Settlements":"التسويات","Collected This Month":"المحصل هذا الشهر","Claims vs Collections":"المطالبات مقابل التحصيلات",
+"Recovery Performance":"أداء التحصيل","Priority Enforcement Files":"ملفات التنفيذ ذات الأولوية","Recovery by Officer":"التحصيل حسب المنفذ",
+"Upcoming Actions":"الإجراءات القادمة","Recent Financial Activity":"النشاط المالي الأخير","View All":"عرض الكل",
+"Creditor":"الدائن","Debtor":"المدين","Claim":"المطالبة","Next Action":"الإجراء التالي","Status":"الحالة",
+"Current month performance":"أداء الشهر الحالي","Files requiring immediate action":"ملفات تتطلب إجراءً فوريًا",
+"Next enforcement activities":"إجراءات التنفيذ القادمة","Latest collections and expenses":"أحدث التحصيلات والمصروفات",
+"Designed & Developed by":"تصميم وتطوير","DEMO ENVIRONMENT":"بيئة تجريبية","Administrator":"مدير النظام"
+};
+const REV=Object.fromEntries(Object.entries(TR).map(([e,a])=>[a,e]));
+const NAVMAP={
+"Dashboard":"dashboard","لوحة التحكم":"dashboard",
+"Enforcement Files":"files","ملفات التنفيذ":"files",
+"Parties":"parties","الأطراف":"parties",
+"Financial Claims":"claims","المطالبات المالية":"claims",
+"Tasks & Follow-ups":"tasks","المهام والمتابعات":"tasks",
+"Collections":"collections","التحصيلات":"collections",
+"Expenses":"expenses","المصروفات":"expenses",
+"Settlements":"settlements","التسويات":"settlements",
+"Banking & Treasury":"treasury","البنوك والخزينة":"treasury",
+"Reports & Analytics":"reports","التقارير والتحليلات":"reports",
+"Users & Permissions":"users","المستخدمون والصلاحيات":"users",
+"Settings":"settings","الإعدادات":"settings",
+"Audit Log":"audit","سجل التدقيق":"audit",
+"Minutes":"minutes","المحاضر":"minutes",
+"Smart Tasks":"smarttasks","المهام الذكية":"smarttasks",
+"Field Evidence":"evidence","الأدلة الميدانية":"evidence",
+"Document Center":"documents","مركز المستندات":"documents"
+};
+function leafTranslate(root,toAr){
+ const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
+ let nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);
+ nodes.forEach(n=>{
+   if(n.parentElement?.closest("script,style"))return;
+   let raw=n.nodeValue,trim=raw.trim();if(!trim)return;
+   let dict=toAr?TR:REV;
+   if(dict[trim]) n.nodeValue=raw.replace(trim,dict[trim]);
+ });
+ root.querySelectorAll('input[placeholder],textarea[placeholder]').forEach(el=>{
+   let p=el.placeholder,dict=toAr?TR:REV;if(dict[p])el.placeholder=dict[p];
+ });
+}
+window.p40ApplyLanguage=function(lang){
+ window.currentLang=lang==="ar"?"ar":"en";
+ const ar=currentLang==="ar";
+ document.documentElement.lang=currentLang;
+ document.documentElement.dir=ar?"rtl":"ltr";
+ document.body.dir=ar?"rtl":"ltr";
+ leafTranslate(document.body,ar);
+ document.querySelectorAll("[data-p40-en]").forEach(el=>el.textContent=ar?el.dataset.p40Ar:el.dataset.p40En);
+ try{localStorage.setItem("ENFORZA_LANG",currentLang)}catch(e){}
+ try{
+   if(activeDemoRole==="management"&&typeof p32Management==="function")p32Management();
+   if(activeDemoRole==="creditor"&&typeof renderCreditor38==="function")renderCreditor38();
+ }catch(e){}
+ setTimeout(()=>leafTranslate(document.body,ar),40);
+};
+function wireLanguage(){
+ const candidates=[...document.querySelectorAll("button,a")];
+ candidates.forEach(el=>{
+   let t=(el.textContent||"").trim();
+   if(t==="EN"||t==="English"){el.onclick=e=>{e.preventDefault();p40ApplyLanguage("en")}}
+   if(t==="عربي"||t==="AR"||t==="العربية"){el.onclick=e=>{e.preventDefault();p40ApplyLanguage("ar")}}
+ });
+}
+function cleanNavText(el){
+ let clone=el.cloneNode(true);clone.querySelectorAll("svg,i,.icon,b").forEach(x=>x.remove());
+ return (clone.textContent||"").replace(/\s+/g," ").trim();
+}
+function wireNavigation(){
+ document.querySelectorAll(".sidebar .nav-item,.sidebar a,.sidebar button").forEach(el=>{
+   let txt=cleanNavText(el),key=Object.keys(NAVMAP).find(k=>txt.includes(k));
+   if(!key)return;
+   el.style.cursor="pointer";
+   el.onclick=function(e){
+     e.preventDefault();e.stopPropagation();
+     let page=NAVMAP[key];
+     try{openPage(page)}catch(err){console.error("Navigation",page,err)}
+     document.querySelectorAll(".sidebar .nav-item").forEach(x=>x.classList.remove("active"));
+     el.classList.add("active");
+     if(window.innerWidth<850)document.querySelector(".sidebar")?.classList.remove("mobile-open");
+   };
+ });
+}
+function stabilize(){
+ wireNavigation();wireLanguage();
+ let lang="en";try{lang=localStorage.getItem("ENFORZA_LANG")||"en"}catch(e){}
+ p40ApplyLanguage(lang);
+ try{if(typeof p38ApplyRBAC==="function"&&activeDemoRole)p38ApplyRBAC(activeDemoRole)}catch(e){}
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>setTimeout(stabilize,120));
+else setTimeout(stabilize,120);
+const obs=new MutationObserver(()=>{wireNavigation();wireLanguage()});
+obs.observe(document.body,{childList:true,subtree:true});
+})();
 </script></body></html>`);w.document.close();
 }
 const p36OldSave=p35Save;
