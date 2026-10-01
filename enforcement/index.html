@@ -2188,7 +2188,7 @@ function refresh(){zeroRuntime();render();if(typeof applyLanguage==="function")a
 function init(){clearLegacyDemoStorage();refresh()}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
 const oldSet=window.setLanguage;
-if(typeof oldSet==="function"){window.setLanguage=function(lang){oldSet(lang);setTimeout(render,0)}}
+if(typeof oldSet==="function"){}
 })();
 </script>
 
@@ -2210,110 +2210,7 @@ if(typeof oldSet==="function"){window.setLanguage=function(lang){oldSet(lang);se
 <div class="v2task-field"><label id="v2lblFile">Enforcement file</label><select id="v2taskFile"><option value="">—</option></select></div><div class="v2task-field"><label id="v2lblPriority">Priority</label><select id="v2taskPriority"><option>Normal</option><option>High</option><option>Critical</option></select></div>
 <div class="v2task-field"><label id="v2lblType">Task type</label><select id="v2taskType"><option>Follow-up</option><option>Collection</option><option>Hearing</option><option>Service</option><option>Field Action</option><option>Document</option></select></div><div class="v2task-field"><label id="v2lblReminder">Reminder</label><select id="v2taskReminder"><option>None</option><option>30 minutes before</option><option>1 hour before</option><option>1 day before</option></select></div>
 <div class="v2task-field full"><label id="v2lblNotes">Notes</label><textarea id="v2taskNotes"></textarea></div></div><button class="v2task-save" id="v2taskSave" onclick="v2SaveTask()">Save Task</button><div class="v2task-actions" id="v2taskEditActions" style="display:none"><button class="v2task-action complete" onclick="v2CompleteTask()">Complete</button><button class="v2task-action delete" onclick="v2DeleteTask()">Delete</button></div>
-<div class="v2-ai-assist"><b>✦ ENFORZA AI Calendar Assistant</b><p id="v2aiHint">Describe a task naturally and ENFORZA will prepare its fields.</p><div class="v2-ai-row"><input id="v2aiTaskPrompt" placeholder="Follow up file EF-... tomorrow at 10:00"><button onclick="v2AIParseTask()">Prepare</button></div></div></aside></div><script id="enforza-v2-calendar-js">
-(function(){
-"use strict";
-let calDate=new Date(),calView="month";
-function A(){return (window.currentLang||document.documentElement.lang||"en")==="ar"}
-function X(en,ar){return A()?ar:en}
-function tasks(){if(!window.DATA)return[];if(!Array.isArray(DATA.smartTasks))DATA.smartTasks=[];return DATA.smartTasks}
-function pad(n){return String(n).padStart(2,"0")}function iso(d){return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())}
-function monthName(d){return d.toLocaleDateString(A()?"ar-BH":"en-US",{month:"long",year:"numeric"})}
-function renderMonth(){
- const y=calDate.getFullYear(),m=calDate.getMonth(),first=new Date(y,m,1),start=new Date(y,m,1-first.getDay()),today=iso(new Date());
- let days="",wd=A()?["الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"]:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
- for(let i=0;i<42;i++){let d=new Date(start);d.setDate(start.getDate()+i);let di=iso(d),ev=tasks().filter(t=>t.due===di||t.date===di);days+=`<div class="v2cal-day ${d.getMonth()!==m?"muted":""} ${di===today?"today":""}" onclick="v2OpenTask('${di}')"><div class="v2cal-num">${d.getDate()}</div>${ev.length?ev.map(t=>`<span class="v2cal-event">${t.time||""} ${t.title||t.task||""}</span>`).join(""):`<div class="v2cal-empty">${X("No tasks","لا توجد مهام")}</div>`}</div>`}
- document.getElementById("v2calShell").innerHTML=`<div class="v2cal-weekdays">${wd.map(x=>`<div>${x}</div>`).join("")}</div><div class="v2cal-month">${days}</div>`;document.getElementById("v2calPeriod").textContent=monthName(calDate)
-}
-function renderAgenda(){
- let a=[...tasks()].sort((x,y)=>(x.due||x.date||"").localeCompare(y.due||y.date||""));
- document.getElementById("v2calPeriod").textContent=calView==="agenda"?X("Agenda","جدول الأعمال"):calDate.toLocaleDateString(A()?"ar-BH":"en-US",{dateStyle:"full"});
- if(!a.length){document.getElementById("v2calShell").innerHTML=`<div class="v2cal-agenda-empty"><div><b>${X("No tasks scheduled","لا توجد مهام مجدولة")}</b>${X("Create your first task to start building the enforcement calendar.","أنشئ أول مهمة لبدء بناء تقويم التنفيذ.")}</div></div>`;return}
- document.getElementById("v2calShell").innerHTML=`<div class="v2cal-agenda">${a.map(t=>`<div class="v2-card" style="padding:14px;margin-bottom:9px"><b>${t.title||t.task}</b><div style="color:var(--muted);font-size:12px;margin-top:4px">${t.due||t.date||""} ${t.time||""} · ${t.file||"—"} · ${t.priority||"Normal"}</div></div>`).join("")}</div>`
-}
-window.v2SetView=function(v,b){calView=v;document.querySelectorAll(".v2cal-switch .v2cal-btn").forEach(x=>x.classList.remove("active"));b.classList.add("active");v==="month"?renderMonth():renderAgenda()}
-window.v2CalMove=function(n){if(calView==="month")calDate.setMonth(calDate.getMonth()+n);else calDate.setDate(calDate.getDate()+n);calView==="month"?renderMonth():renderAgenda()}
-window.v2CalToday=function(){calDate=new Date();calView==="month"?renderMonth():renderAgenda()}
-window.v2BrowseFiles=function(){let nav=[...document.querySelectorAll(".nav-item")].find(x=>(x.dataset.page||x.getAttribute("data-page"))==="files");if(nav){nav.click();return}if(typeof v210Go==="function")v210Go("files")}
-window.v2OpenTask=function(date,id,mode){document.getElementById("v2taskDate").value=date||iso(new Date());let sel=document.getElementById("v2taskFile");sel.innerHTML='<option value="">—</option>'+((window.DATA&&DATA.files)||[]).map(f=>`<option value="${f.id||f.ref||""}">${f.id||f.ref||""} · ${f.clientName||f.creditor||f.debtor||""}</option>`).join("");let kind=document.getElementById("v2taskRecordKind");if(kind)kind.value=mode==="calendar"?"Calendar":"Task";let st=document.getElementById("v2taskStatus");if(st)st.value=mode==="calendar"?"Scheduled":"Open";document.getElementById("v2taskHead").textContent=mode==="calendar"?(window.currentLang==="ar"?"إضافة في التقويم":"Add to Calendar"):(window.currentLang==="ar"?"مهمة جديدة":"New Task");document.getElementById("v2TaskDrawer").classList.add("open")}
-window.v2CloseTask=function(){document.getElementById("v2TaskDrawer").classList.remove("open")}
-window.v2SaveTask=function(){let title=document.getElementById("v2taskTitle").value.trim(),date=document.getElementById("v2taskDate").value;if(!title||!date)return;tasks().push({id:"TSK-"+String(tasks().length+1).padStart(4,"0"),title:title,due:date,time:document.getElementById("v2taskTime").value,file:document.getElementById("v2taskFile").value,priority:document.getElementById("v2taskPriority").value,type:document.getElementById("v2taskType").value,recordKind:document.getElementById("v2taskRecordKind")?.value||"Task",reminder:document.getElementById("v2taskReminder").value,notes:document.getElementById("v2taskNotes").value,status:document.getElementById("v2taskStatus")?.value||"Open"});v2CloseTask();renderMonth();document.getElementById("v2taskTitle").value="";document.getElementById("v2taskNotes").value=""}
-function localize(){document.getElementById("v2calKicker").textContent=X("TASKS & FOLLOW-UP","المهام والمتابعة");document.getElementById("v2calTitle").textContent=X("Enforcement Calendar","تقويم التنفيذ");document.getElementById("v2calSub").textContent=X("Plan tasks, deadlines, follow-ups and field actions.","خطط للمهام والمواعيد والمتابعات والإجراءات الميدانية.");document.getElementById("v2newTask").textContent=X("New Task","مهمة جديدة");let nc=document.getElementById("v2newCalendar");if(nc)nc.textContent=X("Add to Calendar","إضافة في التقويم");let bf=document.getElementById("v2browseFiles");if(bf)bf.textContent=X("Browse Files","استعراض الملفات");document.getElementById("v2todayBtn").textContent=X("Today","اليوم");renderMonth()}
-function addNav(){
- let taskNav=[...document.querySelectorAll(".nav-item")].find(x=>(x.textContent||"").includes("Tasks & Follow-ups")||(x.textContent||"").includes("المهام"));
- if(taskNav&&!taskNav.dataset.v2calendar){taskNav.dataset.v2calendar="1";taskNav.addEventListener("click",function(e){e.preventDefault();document.querySelectorAll(".page").forEach(p=>p.style.display="none");document.getElementById("v2CalendarPage").style.display="block";localize()},true)}
-}
-if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>{addNav();renderMonth()});else{addNav();renderMonth()}
-})();
-</script><script id="enforza-v2-calendar-phase3-js">
-(function(){
-"use strict";
-let editTaskId=null;
-function A3(){return (window.currentLang||document.documentElement.lang||"en")==="ar"}
-function T3(en,ar){return A3()?ar:en}
-function arr3(){if(!window.DATA)return[];if(!Array.isArray(DATA.smartTasks))DATA.smartTasks=[];return DATA.smartTasks}
-function today3(){let d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
-function refreshMyDay(){
- const host=document.querySelector(".v2-myday .v2-empty");if(!host)return;
- const list=arr3().filter(x=>(x.due||x.date)===today3()&&x.status!=="Completed");
- if(!list.length)return;
- host.outerHTML='<div class="v2-myday-list">'+list.map(x=>`<div class="v2-myday-item"><div><b>${x.title||x.task}</b><br><small>${x.file||T3("No file linked","غير مرتبط بملف")} · ${x.priority||"Normal"}</small></div><div class="v2-myday-time">${x.time||"—"}</div></div>`).join("")+'</div>';
-}
-const oldOpen=window.v2OpenTask;
-window.v2OpenTask=function(date,id,mode){
- editTaskId=id||null;
- if(oldOpen)oldOpen(date,id,mode);
- const t=id?arr3().find(x=>x.id===id):null;
- document.getElementById("v2taskEditActions").style.display=t?"grid":"none";
- document.getElementById("v2taskHead").textContent=t?T3("Task Details","تفاصيل المهمة"):T3("New Task","مهمة جديدة");
- if(t){
-  document.getElementById("v2taskTitle").value=t.title||t.task||"";
-  document.getElementById("v2taskDate").value=t.due||t.date||"";
-  document.getElementById("v2taskTime").value=t.time||"";
-  document.getElementById("v2taskFile").value=t.file||"";
-  document.getElementById("v2taskPriority").value=t.priority||"Normal";
-  document.getElementById("v2taskType").value=t.type||"Follow-up";
-  document.getElementById("v2taskReminder").value=t.reminder||"None";
-  document.getElementById("v2taskNotes").value=t.notes||"";
-  if(document.getElementById("v2taskRecordKind"))document.getElementById("v2taskRecordKind").value=t.recordKind||"Task";
-  if(document.getElementById("v2taskStatus"))document.getElementById("v2taskStatus").value=t.status||"Open";
-  document.getElementById("v2taskHead").textContent=(t.recordKind==="Calendar")?T3("Calendar Event","موعد التقويم"):T3("Task Details","تفاصيل المهمة");
- }
-};
-const oldSave=window.v2SaveTask;
-window.v2SaveTask=function(){
- if(!editTaskId){oldSave();refreshMyDay();return}
- const t=arr3().find(x=>x.id===editTaskId);if(!t)return;
- t.title=document.getElementById("v2taskTitle").value.trim();t.due=document.getElementById("v2taskDate").value;t.time=document.getElementById("v2taskTime").value;t.file=document.getElementById("v2taskFile").value;t.priority=document.getElementById("v2taskPriority").value;t.type=document.getElementById("v2taskType").value;t.recordKind=document.getElementById("v2taskRecordKind")?.value||"Task";t.status=document.getElementById("v2taskStatus")?.value||t.status||"Open";t.reminder=document.getElementById("v2taskReminder").value;t.notes=document.getElementById("v2taskNotes").value;
- editTaskId=null;v2CloseTask();v2CalToday();refreshMyDay();
-};
-window.v2CompleteTask=function(){let t=arr3().find(x=>x.id===editTaskId);if(t)t.status="Completed";editTaskId=null;v2CloseTask();v2CalToday();refreshMyDay()}
-window.v2DeleteTask=function(){if(!editTaskId)return;let i=arr3().findIndex(x=>x.id===editTaskId);if(i>=0)arr3().splice(i,1);editTaskId=null;v2CloseTask();v2CalToday();refreshMyDay()}
-window.v2AIParseTask=function(){
- let q=document.getElementById("v2aiTaskPrompt").value.trim();if(!q)return;
- let d=new Date(),date=today3(),time="";
- if(/tomorrow|غد/i.test(q)){d.setDate(d.getDate()+1);date=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
- let tm=q.match(/(?:at|الساعة)?\s*(\d{1,2})(?::(\d{2}))?\s*(am|pm|ص|م)?/i);
- if(tm){let h=+tm[1],mi=tm[2]||"00",ap=(tm[3]||"").toLowerCase();if((ap==="pm"||ap==="م")&&h<12)h+=12;if((ap==="am"||ap==="ص")&&h===12)h=0;time=String(h).padStart(2,"0")+":"+mi}
- document.getElementById("v2taskTitle").value=q;document.getElementById("v2taskDate").value=date;if(time)document.getElementById("v2taskTime").value=time;
-};
-function wireEvents(){
- document.addEventListener("click",function(e){
-  let ev=e.target.closest(".v2cal-event");if(!ev)return;
-  let id=ev.dataset.taskId;if(id){e.stopPropagation();v2OpenTask("",id)}
- },true);
-}
-function decorate(){
- document.querySelectorAll(".v2cal-event").forEach((el,i)=>{
-  if(el.dataset.taskId)return;
-  let text=el.textContent.trim(),match=arr3().find(x=>text.includes(x.title||x.task||"__"));
-  if(match){el.dataset.taskId=match.id;el.classList.add("priority-"+(match.priority||"Normal"));if(match.status==="Completed")el.classList.add("done")}
- });
-}
-new MutationObserver(decorate).observe(document.body,{childList:true,subtree:true});
-if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>{wireEvents();decorate();refreshMyDay()});else{wireEvents();decorate();refreshMyDay()}
-})();
-</script><section class="page" id="v2File360Page" style="display:none"><div class="v2360" id="v2360Root"></div></section><script id="enforza-v2-file360-js">
+<div class="v2-ai-assist"><b>✦ ENFORZA AI Calendar Assistant</b><p id="v2aiHint">Describe a task naturally and ENFORZA will prepare its fields.</p><div class="v2-ai-row"><input id="v2aiTaskPrompt" placeholder="Follow up file EF-... tomorrow at 10:00"><button onclick="v2AIParseTask()">Prepare</button></div></div></aside></div><section class="page" id="v2File360Page" style="display:none"><div class="v2360" id="v2360Root"></div></section><script id="enforza-v2-file360-js">
 (function(){
 "use strict";
 let current360=null,current360Tab="overview";
@@ -2341,8 +2238,8 @@ function render360(){
  <div class="v2360-layout"><main class="v2360-main"><div class="v2360-tabs">${tabs.map(t=>`<button class="v2360-tab ${current360Tab===t[0]?"active":""}" onclick="v2360Tab('${t[0]}')">${T360(t[1],t[2])}</button>`).join("")}</div><div class="v2360-content">${tabBody360(f)}</div></main>
  <aside class="v2360-side"><h3>${T360("Smart Panel","اللوحة الذكية")}</h3><div class="v2360-smart"><b>✦ ENFORZA AI</b><br><small>${T360("Recommendations will appear after enough file data is entered.","ستظهر التوصيات بعد إدخال بيانات كافية للملف.")}</small></div><div class="v2360-sideitem"><small>${T360("Next Recommended Action","الإجراء المقترح التالي")}</small><b>—</b></div><div class="v2360-sideitem"><small>${T360("Upcoming Deadline","الموعد القادم")}</small><b>—</b></div><div class="v2360-sideitem"><small>${T360("Outstanding","المبلغ القائم")}</small><b>${money360(f.outstanding||f.amount)}</b></div><div class="v2360-sideitem"><small>${T360("Assigned Officer","الموظف المسؤول")}</small><b>${f.officer||"—"}</b></div><button class="v2360-sidebtn" onclick="v2OpenTask('',null)">${T360("+ Add Task","+ إضافة مهمة")}</button></aside></div>`;
 }
-window.v2360Tab=function(tab){current360Tab=tab;render360()}
-window.openFile360=function(id){current360=files360().find(f=>(f.id||f.ref||f.fileNo)===id)||null;current360Tab="overview";hidePages360();render360()}
+
+
 function wire360(){
  let nav=[...document.querySelectorAll(".nav-item")].find(x=>(x.textContent||"").includes("Enforcement Files")||(x.textContent||"").includes("ملفات التنفيذ"));
  if(nav&&!nav.dataset.v2360){nav.dataset.v2360="1";nav.addEventListener("dblclick",function(e){e.preventDefault();hidePages360();current360=files360()[0]||null;render360()})}
@@ -2504,47 +2401,6 @@ function enhance8(){
 }
 document.addEventListener("click",e=>{if(e.target.closest(".v2file-row:not(.head)"))setTimeout(enhance8,30)},true);
 })();
-</script><script id="enforza-v2-phase9-calendar-refined-js">
-(function(){
-"use strict";
-function ar9(){return (window.currentLang||document.documentElement.lang||"en")==="ar"}
-function t9(en,ar){return ar9()?ar:en}
-function tasks9(){return window.DATA&&Array.isArray(DATA.smartTasks)?DATA.smartTasks:[]}
-function iso9(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
-function parseDate9(x){let d=new Date(x+"T12:00:00");return isNaN(d)?new Date():d}
-function getCalendarDate(){let p=document.getElementById("v2calPeriod");let active=tasks9()[0];return window.calDate instanceof Date?window.calDate:new Date()}
-function addStats9(){
- let top=document.querySelector("#v2CalendarPage .v2cal-top");if(!top)return;
- let old=document.querySelector(".v2cal-dashboard");if(old)old.remove();
- let today=iso9(new Date()),a=tasks9(),todayN=a.filter(x=>(x.due||x.date)===today&&x.status!=="Completed").length,over=a.filter(x=>(x.due||x.date)<today&&x.status!=="Completed").length,up=a.filter(x=>(x.due||x.date)>today&&x.status!=="Completed").length,done=a.filter(x=>x.status==="Completed").length;
- top.insertAdjacentHTML("afterend",`<div class="v2cal-dashboard"><div class="v2cal-mini"><small>${t9("TODAY","اليوم")}</small><b>${todayN}</b></div><div class="v2cal-mini"><small>${t9("OVERDUE","متأخرة")}</small><b>${over}</b></div><div class="v2cal-mini"><small>${t9("UPCOMING","قادمة")}</small><b>${up}</b></div><div class="v2cal-mini"><small>${t9("COMPLETED","مكتملة")}</small><b>${done}</b></div></div>`);
-}
-function weekStart9(d){let x=new Date(d);x.setDate(x.getDate()-x.getDay());return x}
-function renderWeek9(){
- let shell=document.getElementById("v2calShell");if(!shell)return;let base=new Date(),start=weekStart9(base),days=[];for(let i=0;i<7;i++){let d=new Date(start);d.setDate(start.getDate()+i);days.push(d)}
- let hrs=[];for(let h=7;h<=20;h++)hrs.push(h);
- let html='<div style="overflow:auto"><div class="v2week"><div class="v2week-head"></div>'+days.map(d=>`<div class="v2week-head">${d.toLocaleDateString(ar9()?"ar-BH":"en-US",{weekday:"short",day:"numeric"})}</div>`).join("");
- hrs.forEach(h=>{html+=`<div class="v2week-time">${String(h).padStart(2,"0")}:00</div>`;days.forEach(d=>{let di=iso9(d),ev=tasks9().filter(x=>(x.due||x.date)===di&&Number((x.time||"00").split(":")[0])===h);html+=`<div class="v2week-cell" onclick="v2OpenTask('${di}')">${ev.map(x=>`<div class="v2week-event">${x.time||""} ${x.title||x.task||""}</div>`).join("")}</div>`});});html+="</div></div>";shell.innerHTML=html;document.getElementById("v2calPeriod").textContent=start.toLocaleDateString(ar9()?"ar-BH":"en-US",{month:"long",day:"numeric"})+" — "+days[6].toLocaleDateString(ar9()?"ar-BH":"en-US",{month:"short",day:"numeric"})
-}
-function renderDay9(){
- let shell=document.getElementById("v2calShell");if(!shell)return;
- let d=new Date(),di=iso9(d),html='<div class="v2day">';
- for(let h=7;h<=21;h++){let ev=tasks9().filter(x=>(x.due||x.date)===di&&Number((x.time||"00").split(":")[0])===h);html+=`<div class="v2day-time">${String(h).padStart(2,"0")}:00</div><div class="v2day-slot" onclick="v2OpenTask('${di}')">${ev.map(x=>`<div class="v2cal-event">${x.time||""} ${x.title||x.task||""}</div>`).join("")}</div>`}html+="</div>";shell.innerHTML=html;document.getElementById("v2calPeriod").textContent=d.toLocaleDateString(ar9()?"ar-BH":"en-US",{dateStyle:"full"})
-}
-function renderAgenda9(){
- let shell=document.getElementById("v2calShell");if(!shell)return;
- let a=[...tasks9()].sort((x,y)=>String(x.due||x.date||"").localeCompare(String(y.due||y.date||"")));
- if(!a.length){shell.innerHTML=`<div class="v2cal-agenda-empty"><div><b>${t9("No tasks scheduled","لا توجد مهام مجدولة")}</b>${t9("Your agenda will build as you add tasks.","سيتم بناء جدول الأعمال عند إضافة المهام.")}</div></div>`;return}
- let last="",html='<div class="v2cal-agenda">';a.forEach(x=>{let d=x.due||x.date||"";if(d!==last){html+=`<div class="v2agenda-date">${d}</div>`;last=d}html+=`<div class="v2agenda-item" onclick="v2OpenTask('', '${x.id}')"><div class="v2agenda-time">${x.time||"—"}</div><div><b>${x.title||x.task||""}</b><small>${x.file||t9("No file linked","غير مرتبط بملف")} · ${x.priority||"Normal"}</small></div><span class="v2agenda-status">${x.status||"Open"}</span></div>`});shell.innerHTML=html+"</div>"
-}
-const oldSet9=window.v2SetView;
-window.v2SetView=function(v,b){document.querySelectorAll(".v2cal-switch .v2cal-btn").forEach(x=>x.classList.remove("active"));if(b)b.classList.add("active");if(v==="week")renderWeek9();else if(v==="day")renderDay9();else if(v==="agenda")renderAgenda9();else if(oldSet9)oldSet9(v,b);addStats9()}
-const oldSave9=window.v2SaveTask;window.v2SaveTask=function(){if(oldSave9)oldSave9();setTimeout(addStats9,20)}
-const oldComp9=window.v2CompleteTask;window.v2CompleteTask=function(){if(oldComp9)oldComp9();setTimeout(addStats9,20)}
-const oldDel9=window.v2DeleteTask;window.v2DeleteTask=function(){if(oldDel9)oldDel9();setTimeout(addStats9,20)}
-function init9(){addStats9();let sw=document.querySelector(".v2cal-switch");if(sw){let labels=ar9()?["شهر","أسبوع","يوم","جدول الأعمال"]:["Month","Week","Day","Agenda"];sw.querySelectorAll("button").forEach((b,i)=>{if(labels[i])b.textContent=labels[i]})}}
-if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init9);else init9();
-})();
 </script><script id="enforza-v2-phase10-command-js">
 (function(){
 "use strict";
@@ -2604,7 +2460,7 @@ function applyRole11(){
  let chip=document.querySelector(".enf-role-chip");if(chip){chip.textContent=role==="Creditor"?t11("Creditor","الدائن"):role==="Administrator"?t11("Administrator","مدير النظام"):t11("Enforcement Officer","منفذ خاص")}
  document.body.dataset.enforzaRole=role;
 }
-window.enfSetRole=function(role){if(!ROLE_RULES[role])return;localStorage.setItem("enforza_v2_role",role);applyRole11();let m=document.querySelector(".enf-role-menu");if(m)m.classList.remove("open");if(typeof v210Refresh==="function")v210Refresh()}
+
 function roleSwitcher11(){
  let chip=document.querySelector(".enf-role-chip");if(!chip||chip.closest("#enfRoleSwitcher"))return;
  let wrap=document.createElement("div");wrap.id="enfRoleSwitcher";chip.parentNode.insertBefore(wrap,chip);wrap.appendChild(chip);chip.style.cursor="pointer";
@@ -2696,7 +2552,7 @@ window.enfFieldCamera=function(){document.getElementById("enfCameraInput").click
 window.enfFieldUpload=function(){document.getElementById("enfUploadInput").click()}
 window.enfFieldDrive=function(){let st=document.getElementById("enfVoiceStatus");st.textContent=t13("Google Drive picker is prepared for connector/API integration in the deployment stage.","تم تجهيز خيار Google Drive للربط مع واجهة Drive عند مرحلة النشر.")}
 window.enfFieldVoice=function(){document.getElementById("enfFieldText").focus();enfToggleVoice()}
-window.enfFieldMinute=function(){let file=document.getElementById("enfFieldFile").value;enfCloseFieldMode();if(typeof openPage==="function")try{openPage("minutes")}catch(e){};setTimeout(()=>{let st=document.getElementById("enfVoiceStatus");if(st)st.textContent=t13("Minute mode selected.","تم اختيار وضع إعداد المحضر.")},0)}
+
 window.enfFieldTask=function(){let d=new Date(),iso=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");enfCloseFieldMode();if(typeof v2OpenTask==="function")v2OpenTask(iso)}
 window.enfToggleVoice=function(){
  let SR=window.SpeechRecognition||window.webkitSpeechRecognition,btn=document.getElementById("enfVoiceBtn"),status=document.getElementById("enfVoiceStatus"),box=document.getElementById("enfFieldText");
@@ -2785,7 +2641,7 @@ function render(){
 function rows(a){return `<div id="enfDeRows"><div class="enf-de-row head"><span></span><span>${t("RECORD","السجل")}</span><span>${t("FILE","الملف")}</span><span>${t("ORIGIN","المصدر")}</span><span>${t("DATE","التاريخ")}</span><span>${t("TYPE","النوع")}</span></div>${a.map(x=>`<div class="enf-de-row" data-kind="${x._kind}"><span class="enf-de-icon">${x._kind==="Evidence"?"◉":"▤"}</span><span><b>${x.title||x.name||t("Untitled","بدون عنوان")}</b><small>${x.ref||x.reference||""}</small></span><span>${x.file||"—"}</span><span>${x.origin||"—"}</span><span>${x.date||"—"}</span><span class="enf-de-tag">${x._kind}</span></div>`).join("")}</div>`}
 window.enfDeSearch=q=>{q=(q||"").toLowerCase();document.querySelectorAll("#enfDeRows .enf-de-row:not(.head)").forEach(r=>r.style.display=(r.textContent||"").toLowerCase().includes(q)?"grid":"none")}
 window.enfDeFilter=k=>document.querySelectorAll("#enfDeRows .enf-de-row:not(.head)").forEach(r=>r.style.display=(k==="all"||r.dataset.kind===k)?"grid":"none")
-window.enfDeOpen=function(kind){selected=[];source="Computer";document.getElementById("enfDeModal").classList.add("open");document.getElementById("enfDeKind").value=kind||"Document";let f=document.getElementById("enfDeFile");f.innerHTML=`<option value="">${t("Select file","اختر الملف")}</option>`+files().map(x=>`<option value="${x.id||x.ref||""}">${x.id||x.ref||"—"} · ${x.title||x.caseName||t("File","ملف")}</option>`).join("");document.getElementById("enfDeDate").value=new Date().toISOString().slice(0,10);document.getElementById("enfDeSelected").value="";document.querySelectorAll(".enf-de-source button").forEach((b,i)=>b.classList.toggle("active",i===0))}
+window.enfDeOpenCore=function(kind){selected=[];source="Computer";document.getElementById("enfDeModal").classList.add("open");document.getElementById("enfDeKind").value=kind||"Document";let f=document.getElementById("enfDeFile");f.innerHTML=`<option value="">${t("Select file","اختر الملف")}</option>`+files().map(x=>`<option value="${x.id||x.ref||""}">${x.id||x.ref||"—"} · ${x.title||x.caseName||t("File","ملف")}</option>`).join("");document.getElementById("enfDeDate").value=new Date().toISOString().slice(0,10);document.getElementById("enfDeSelected").value="";document.querySelectorAll(".enf-de-source button").forEach((b,i)=>b.classList.toggle("active",i===0))}
 window.enfDeClose=()=>document.getElementById("enfDeModal").classList.remove("open")
 window.enfDeSource=function(b){source=b.dataset.src;document.querySelectorAll(".enf-de-source button").forEach(x=>x.classList.remove("active"));b.classList.add("active");if(source==="Computer")document.getElementById("enfDeUpload").click();else if(source==="Camera")document.getElementById("enfDeCamera").click();else document.getElementById("enfDeSelected").value=t("Google Drive ready for deployment connector","Google Drive جاهز للربط عند النشر")}
 function selectedFiles(inp){selected=[...(inp.files||[])].map(f=>({name:f.name,type:f.type,size:f.size}));document.getElementById("enfDeSelected").value=selected.map(x=>x.name).join(", ")}
@@ -2852,7 +2708,7 @@ function render(){
  <div class="enf-fin-card"><div class="enf-fin-cardhead"><h2>${t("Financial Position","المركز المالي")}</h2><b>${pct.toFixed(1)}%</b></div><div class="enf-fin-progress"><i style="width:${pct}%"></i></div><div class="enf-fin-summary"><div class="enf-fin-sline"><span>${t("Claim","المطالبة")}</span><b>${money(c.claim)}</b></div><div class="enf-fin-sline"><span>${t("Less: Collected","يخصم: المحصل")}</span><b>${money(c.col)}</b></div><div class="enf-fin-sline total"><span>${t("Outstanding","المتبقي")}</span><b>${money(c.out)}</b></div><div class="enf-fin-sline"><span>${t("Expenses / Fees","المصاريف / الرسوم")}</span><b>${money(c.exp)}</b></div></div></div></div>`;
 }
 window.enfFinSelect=v=>{selectedFile=v;render()}
-window.enfFinOpen=function(type){let m=document.getElementById("enfFinModal");m.classList.add("open");let f=document.getElementById("enfFinFile");f.innerHTML=`<option value="">${t("Select file","اختر الملف")}</option>`+files().map(x=>`<option value="${fileId(x)}">${fileId(x)} · ${x.title||x.caseName||t("File","ملف")}</option>`).join("");document.getElementById("enfFinType").value=type||"Collection";document.getElementById("enfFinDate").value=new Date().toISOString().slice(0,10)}
+window.enfFinOpenCore=function(type){let m=document.getElementById("enfFinModal");m.classList.add("open");let f=document.getElementById("enfFinFile");f.innerHTML=`<option value="">${t("Select file","اختر الملف")}</option>`+files().map(x=>`<option value="${fileId(x)}">${fileId(x)} · ${x.title||x.caseName||t("File","ملف")}</option>`).join("");document.getElementById("enfFinType").value=type||"Collection";document.getElementById("enfFinDate").value=new Date().toISOString().slice(0,10)}
 window.enfFinClose=()=>document.getElementById("enfFinModal").classList.remove("open")
 window.enfFinSave=function(){let file=document.getElementById("enfFinFile").value,amount=Number(document.getElementById("enfFinAmount").value||0);if(!file||amount<=0)return;tx().push({id:"FIN-"+String(tx().length+1).padStart(5,"0"),file,type:document.getElementById("enfFinType").value,date:document.getElementById("enfFinDate").value,amount,method:document.getElementById("enfFinMethod").value,reference:document.getElementById("enfFinRef").value.trim(),notes:document.getElementById("enfFinNotes").value.trim(),status:"Posted"});enfFinClose();["enfFinAmount","enfFinRef","enfFinNotes"].forEach(i=>document.getElementById(i).value="");render();if(typeof v210Refresh==="function")setTimeout(v210Refresh,0)}
 function open(){document.querySelectorAll(".page").forEach(p=>p.style.display="none");document.getElementById("enfFinancePage").style.display="block";render()}
@@ -2932,7 +2788,7 @@ function show(){
 }
 window.enfIntakeType=function(b){type=b.dataset.type;document.querySelectorAll(".enf-intake-type").forEach(x=>x.classList.remove("active"));b.classList.add("active")}
 window.enfSyncClientFromParty=function(){let side=val("eiRepresent"),name=document.getElementById("eiClientName"),id=document.getElementById("eiClientId");if(!name||!id)return;if(side==="Creditor"){name.value=val("eiCreditor");id.value=val("eiCreditorId")}else if(side==="Debtor"){name.value=val("eiDebtor");id.value=val("eiDebtorId")}}
-window.enfIntakeOpen=function(){step=1;type="";attachments=[];document.querySelectorAll(".enf-intake-type").forEach(x=>x.classList.remove("active"));document.querySelectorAll("#enfIntake input:not([type=file]),#enfIntake textarea").forEach(x=>x.value="");document.querySelectorAll("#enfIntake select").forEach(x=>x.selectedIndex=0);document.getElementById("eiSelected").textContent=t("No documents selected.","لم يتم اختيار مستندات.");document.getElementById("enfIntake").classList.add("open");show()}
+window.enfIntakeOpenCore=function(){step=1;type="";attachments=[];document.querySelectorAll(".enf-intake-type").forEach(x=>x.classList.remove("active"));document.querySelectorAll("#enfIntake input:not([type=file]),#enfIntake textarea").forEach(x=>x.value="");document.querySelectorAll("#enfIntake select").forEach(x=>x.selectedIndex=0);document.getElementById("eiSelected").textContent=t("No documents selected.","لم يتم اختيار مستندات.");document.getElementById("enfIntake").classList.add("open");show()}
 window.enfIntakeClose=()=>document.getElementById("enfIntake").classList.remove("open")
 window.enfIntakeBack=()=>{if(step>1){step--;show()}}
 window.enfIntakeNext=function(){if(step===1&&!type){return}if(step===3){if(!val("eiRepresent")||!val("eiClientName")){alert(t("Please select who we represent and enter the client/customer name.","يرجى تحديد من نمثل في القضية وإدخال اسم الموكل / العميل."));return}}if(step<5){step++;show()}else create()}
@@ -3527,19 +3383,10 @@ function lang(){
  if(v!=="auto")return v;
  return ar()?"ar-BH":"en-US";
 }
-window.enfVoiceToggle=function(){
- let SR=window.SpeechRecognition||window.webkitSpeechRecognition;
- if(!SR){$i("enfVoiceStatus").textContent=t("Voice recognition is not supported by this browser.","المتصفح الحالي لا يدعم التعرف الصوتي.");return}
- if(listening){rec&&rec.stop();return}
- rec=new SR();rec.lang=lang();rec.continuous=true;rec.interimResults=true;
- rec.onstart=()=>{listening=true;$i("enfVoiceRec").classList.add("live");$i("enfVoiceRec").textContent=t("■ Stop Recording","■ إيقاف التسجيل");$i("enfVoiceStatus").textContent=t("Listening…","جاري الاستماع…")};
- rec.onresult=e=>{let final="",interim="";for(let i=e.resultIndex;i<e.results.length;i++){let z=e.results[i][0].transcript;if(e.results[i].isFinal)final+=z+" ";else interim+=z}$i("enfVoiceOriginal").value=($i("enfVoiceOriginal").dataset.final||"")+final+interim;if(final)$i("enfVoiceOriginal").dataset.final=($i("enfVoiceOriginal").dataset.final||"")+final;enfVoiceProcess()};
- rec.onerror=e=>{$i("enfVoiceStatus").textContent=t("Voice error: ","خطأ صوتي: ")+e.error};
- rec.onend=()=>{listening=false;$i("enfVoiceRec").classList.remove("live");$i("enfVoiceRec").textContent=t("● Start Recording","● بدء التسجيل");$i("enfVoiceStatus").textContent=t("Ready","جاهز")};rec.start()
-}
+
 window.enfVoiceOpen=function(el){target=el||document.activeElement;setText();$i("enfVoiceOriginal").value="";$i("enfVoiceOriginal").dataset.final="";$i("enfVoiceSmart").value="";$i("enfVoiceChips").innerHTML="";$i("enfVoiceAI").classList.add("open")}
 window.enfVoiceClose=function(){if(listening&&rec)rec.stop();$i("enfVoiceAI").classList.remove("open")}
-window.enfVoiceUse=function(){enfVoiceProcess();let text=$i("enfVoiceSmart").value;if(target&&("value" in target)){target.value=text;target.dispatchEvent(new Event("input",{bubbles:true}));target.dispatchEvent(new Event("change",{bubbles:true}))}enfVoiceClose()}
+window.enfVoiceInsertDictation=function(){enfVoiceProcess();let text=$i("enfVoiceSmart").value;if(target&&("value" in target)){target.value=text;target.dispatchEvent(new Event("input",{bubbles:true}));target.dispatchEvent(new Event("change",{bubbles:true}))}enfVoiceClose()}
 function wire(){
  document.querySelectorAll("[data-voice],.voice-btn,[onclick*='Voice'],[onclick*='voice']").forEach(b=>{if(b.closest("#enfVoiceAI"))return;b.onclick=e=>{e.preventDefault();let field=b.parentElement?.querySelector("textarea,input")||document.activeElement;enfVoiceOpen(field)}});
 }
@@ -3654,234 +3501,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 #enfVoiceRec.live{box-shadow:0 0 0 4px rgba(158,64,64,.12)}
 #enfVoiceStatus.live:before{content:"● ";color:#b54242}
 </style>
-<script id="enforza-smart-voice-v2-fix-js">
-(function(){
-"use strict";
-
-let recognition=null;
-let userWantsRecording=false;
-let isStarting=false;
-let restartTimer=null;
-let finalSegments=new Map();
-let interimText="";
-let lastRendered="";
-let targetField=null;
-
-function el(id){return document.getElementById(id)}
-function isArabic(){return (window.currentLang||document.documentElement.lang||"en").toLowerCase().startsWith("ar")}
-function tr(en,ar){return isArabic()?ar:en}
-
-function selectedLang(){
-  const x=el("enfVoiceLang");
-  const v=x?x.value:"ar-BH";
-  if(v==="auto") return isArabic()?"ar-BH":"en-US";
-  return v||"ar-BH";
-}
-
-function normalizeSpace(x){
-  return String(x||"").replace(/\s+/g," ").trim();
-}
-
-/* Prevent identical adjacent phrases from browser recognition revisions. */
-function deDuplicateAdjacent(text){
-  let words=normalizeSpace(text).split(" ").filter(Boolean);
-  if(words.length<2)return words.join(" ");
-  // Remove immediately repeated word sequences, up to 12 words long.
-  for(let size=Math.min(12,Math.floor(words.length/2));size>=1;size--){
-    let changed=true;
-    while(changed){
-      changed=false;
-      for(let i=0;i+size*2<=words.length;i++){
-        let a=words.slice(i,i+size).join(" ").toLowerCase();
-        let b=words.slice(i+size,i+size*2).join(" ").toLowerCase();
-        if(a===b){
-          words.splice(i+size,size);
-          changed=true;
-          break;
-        }
-      }
-    }
-  }
-  return words.join(" ");
-}
-
-function buildTranscript(){
-  const finals=[...finalSegments.keys()].sort((a,b)=>a-b).map(k=>finalSegments.get(k));
-  return deDuplicateAdjacent(normalizeSpace(finals.join(" ")+" "+interimText));
-}
-
-function renderTranscript(){
-  const text=buildTranscript();
-  if(text===lastRendered)return;
-  lastRendered=text;
-  const box=el("enfVoiceOriginal");
-  if(box){
-    box.value=text;
-    box.dispatchEvent(new Event("input",{bubbles:true}));
-  }
-  // Smart text updates live while speaking.
-  if(typeof window.enfVoiceProcess==="function") window.enfVoiceProcess();
-}
-
-function setUI(live,msg){
-  const btn=el("enfVoiceRec"),st=el("enfVoiceStatus");
-  if(btn){
-    btn.classList.toggle("live",live);
-    btn.textContent=live?tr("■ Stop Recording","■ إيقاف التسجيل"):tr("● Start Recording","● بدء التسجيل");
-  }
-  if(st){
-    st.classList.toggle("live",live);
-    st.textContent=msg|| (live?tr("Listening… text appears live","جاري الاستماع… النص يظهر مباشرة"):tr("Ready","جاهز"));
-  }
-}
-
-function createRecognition(){
-  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!SR)return null;
-  const r=new SR();
-  r.lang=selectedLang();
-  r.continuous=true;
-  r.interimResults=true;
-  r.maxAlternatives=1;
-
-  r.onstart=function(){
-    isStarting=false;
-    setUI(true,tr("Listening… text appears live","جاري الاستماع… النص يظهر مباشرة"));
-  };
-
-  r.onresult=function(event){
-    interimText="";
-    // Use stable result indexes. Final results replace their own index rather than append again.
-    for(let i=0;i<event.results.length;i++){
-      const res=event.results[i];
-      const text=normalizeSpace(res[0]&&res[0].transcript);
-      if(!text)continue;
-      if(res.isFinal){
-        finalSegments.set(i,text);
-      }else{
-        // Only current non-final hypotheses are displayed.
-        interimText += (interimText?" ":"")+text;
-      }
-    }
-    renderTranscript();
-  };
-
-  r.onerror=function(event){
-    isStarting=false;
-    const err=event&&event.error||"unknown";
-    // no-speech is not fatal; keep the session alive by restarting onend.
-    if(err!=="no-speech" && err!=="aborted"){
-      setUI(userWantsRecording,tr("Microphone: ","الميكروفون: ")+err);
-    }
-  };
-
-  r.onend=function(){
-    isStarting=false;
-    interimText="";
-    renderTranscript();
-    if(userWantsRecording){
-      // Browsers may end a recognition session after a short internal limit.
-      // Restart automatically until the user explicitly presses Stop.
-      clearTimeout(restartTimer);
-      restartTimer=setTimeout(function(){
-        if(userWantsRecording) startEngine(false);
-      },180);
-    }else{
-      setUI(false,tr("Ready","جاهز"));
-    }
-  };
-  return r;
-}
-
-function startEngine(reset){
-  if(isStarting)return;
-  if(reset){
-    finalSegments.clear();
-    interimText="";
-    lastRendered="";
-    const box=el("enfVoiceOriginal");
-    if(box){box.value="";box.dataset.final=""}
-  }
-  recognition=createRecognition();
-  if(!recognition){
-    userWantsRecording=false;
-    setUI(false,tr("Voice recognition is not supported by this browser.","المتصفح الحالي لا يدعم التعرف الصوتي."));
-    return;
-  }
-  try{
-    isStarting=true;
-    recognition.start();
-  }catch(e){
-    isStarting=false;
-    if(userWantsRecording){
-      clearTimeout(restartTimer);
-      restartTimer=setTimeout(()=>startEngine(false),300);
-    }
-  }
-}
-
-function stopEngine(){
-  userWantsRecording=false;
-  clearTimeout(restartTimer);
-  restartTimer=null;
-  if(recognition){
-    try{recognition.stop()}catch(e){}
-  }
-  recognition=null;
-  interimText="";
-  renderTranscript();
-  setUI(false,tr("Stopped — text ready","تم الإيقاف — النص جاهز"));
-}
-
-window.enfVoiceToggle=function(){
-  if(userWantsRecording){
-    stopEngine();
-    return;
-  }
-  userWantsRecording=true;
-  startEngine(true);
-};
-
-const oldOpen=window.enfVoiceOpen;
-window.enfVoiceOpen=function(field){
-  targetField=field||document.activeElement;
-  if(typeof oldOpen==="function") oldOpen(field);
-  finalSegments.clear(); interimText=""; lastRendered="";
-  const box=el("enfVoiceOriginal"); if(box){box.value="";box.dataset.final=""}
-  setUI(false,tr("Ready","جاهز"));
-};
-
-const oldClose=window.enfVoiceClose;
-window.enfVoiceClose=function(){
-  stopEngine();
-  if(typeof oldClose==="function") oldClose();
-};
-
-const oldUse=window.enfVoiceUse;
-window.enfVoiceUse=function(){
-  stopEngine();
-  if(typeof window.enfVoiceProcess==="function")window.enfVoiceProcess();
-  const smart=el("enfVoiceSmart");
-  const text=smart?smart.value:"";
-  const target=targetField;
-  if(target && ("value" in target) && text){
-    target.value=text;
-    target.dispatchEvent(new Event("input",{bubbles:true}));
-    target.dispatchEvent(new Event("change",{bubbles:true}));
-    window.enfVoiceClose();
-    return;
-  }
-  if(typeof oldUse==="function")oldUse();
-};
-
-/* Stop mic safely if page/tab is hidden. It will resume only if user still wants recording. */
-document.addEventListener("visibilitychange",function(){
-  if(document.hidden && recognition && userWantsRecording){
-    try{recognition.stop()}catch(e){}
-  }
-});
-})();
-</script><style id="enforza-ops-ready-css">
+<style id="enforza-ops-ready-css">
 .enf-ops-ready{position:fixed;inset:0;z-index:190000;background:rgba(7,11,15,.72);display:none;place-items:center;padding:18px}.enf-ops-ready.open{display:grid}
 .enf-ops-ready-card{width:min(900px,97vw);max-height:92vh;overflow:auto;background:#fff;border-radius:20px;box-shadow:0 36px 125px rgba(0,0,0,.36);padding:22px}
 .enf-ops-ready-card h2{margin:0 0 5px;font-size:22px!important}.enf-ops-ready-card p{margin:0 0 15px;color:var(--desk-muted);font-size:10px}
@@ -3923,36 +3543,7 @@ body.enf-dark .enf-auth-v3{background:#0e1318}body.enf-dark .enf-auth-card,body.
 </style>
 
 <div class="enf-voice-confirm" id="enfVoiceConfirm"><div class="enf-voice-confirm-card"><h2 id="enfVoiceConfirmTitle">Confirm voice command</h2><p id="enfVoiceConfirmMsg"></p><div class="enf-voice-confirm-data" id="enfVoiceConfirmData"></div><div class="enf-voice-confirm-foot"><button class="enf-ms-btn" onclick="enfVoiceCancelCommand()">Cancel</button><button class="enf-ms-btn primary" onclick="enfVoiceConfirmCommand()">Confirm & Open</button></div></div></div>
-<script id="enforza-users-voice-final-js">
-(function(){
-"use strict";
-let pendingVoice=null;
-function ar(){return (window.currentLang||document.documentElement.lang||"en").toLowerCase().startsWith("ar")}function t(e,a){return ar()?a:e}
-function users(){try{let u=JSON.parse(localStorage.getItem("enforzaUsersV2")||"[]");return Array.isArray(u)?u:[]}catch(e){return[]}}
-function saveUsers(u){try{localStorage.setItem("enforzaUsersV2",JSON.stringify(u||[]))}catch(e){}}
-function parseVoice(raw){
- let n=String(raw||"").replace(/[إأآ]/g,"ا").replace(/ى/g,"ي").replace(/ة/g,"ه").toLowerCase(),intent="",amount="",method="";
- if(/(اضف|سجل|انشئ).*(مهمه|متابعه|موعد)|ذكرني/.test(n))intent="task";
- else if(/(تحصيل|دفع|سدد|سداد|استلم)/.test(n))intent="collection";
- else if(/(اضف|ارفق|سجل).*(مستند|وثيقه|دليل)/.test(n))intent="document";
- else if(/(محضر|سجل الاجتماع|سجل الجلسه)/.test(n))intent="minute";
- else if(/(افتح|روح).*(ملف)/.test(n))intent="openfile";
- let m=raw.match(/(?:BHD|د\.?ب|دينار(?:\s+بحريني)?)\s*([0-9٠-٩,.]+)|([0-9٠-٩,.]+)\s*(?:BHD|د\.?ب|دينار(?:\s+بحريني)?)/i);if(m)amount=(m[1]||m[2]||"").replace(/[٠-٩]/g,d=>"٠١٢٣٤٥٦٧٨٩".indexOf(d));
- if(/بنفت|benefit/i.test(raw))method="BenefitPay";else if(/تحويل|transfer/i.test(raw))method="Bank Transfer";else if(/نقد|cash/i.test(raw))method="Cash";else if(/شيك|cheque/i.test(raw))method="Cheque";
- return{intent,amount,method,raw}
-}
-window.enfVoiceExecute=function(){
- let raw=document.getElementById("enfVoiceOriginal")?.value||"",p=parseVoice(raw);if(!p.intent){document.getElementById("enfVoiceStatus").textContent=t("No executable command detected.","لم يتم التعرف على أمر قابل للتنفيذ.");return}
- let r="admin";
- pendingVoice=p;document.getElementById("enfVoiceConfirmTitle").textContent=t("Confirm voice command","تأكيد الأمر الصوتي");document.getElementById("enfVoiceConfirmMsg").textContent=t("ENFORZA understood the following action. Nothing will be saved until you review the form and confirm it.","فهم ENFORZA الإجراء التالي. لن يتم حفظ أي شيء حتى تراجع النموذج وتؤكده.");document.getElementById("enfVoiceConfirmData").innerHTML="<b>"+p.intent+"</b>"+(p.amount?"<br>"+t("Amount: ","المبلغ: ")+"BHD "+p.amount:"")+(p.method?"<br>"+t("Method: ","الطريقة: ")+p.method:"")+"<br>"+p.raw;document.getElementById("enfVoiceConfirm").classList.add("open")
-}
-window.enfVoiceCancelCommand=function(){pendingVoice=null;document.getElementById("enfVoiceConfirm")?.classList.remove("open")}
-window.enfVoiceConfirmCommand=function(){let p=pendingVoice;if(!p)return;document.getElementById("enfVoiceConfirm")?.classList.remove("open");if(p.intent==="task"&&typeof window.v2OpenTask==="function")window.v2OpenTask(new Date().toISOString().slice(0,10));else if(p.intent==="collection"&&typeof window.enfFinOpen==="function"){window.enfFinOpen("Collection");setTimeout(()=>{let a=document.querySelector('#enfFinancePage input[type="number"],#enfFinAmount');if(a&&p.amount)a.value=p.amount},60)}else if(p.intent==="document"&&typeof window.enfDeOpen==="function")window.enfDeOpen("Document");else if(p.intent==="minute"&&typeof window.enfOpenMinutesStudio==="function")window.enfOpenMinutesStudio("");else if(p.intent==="openfile"){let fs=window.DATA&&Array.isArray(DATA.files)?DATA.files:[];if(fs.length===1&&typeof window.openFile360==="function")window.openFile360(fs[0].id||fs[0].ref)}pendingVoice=null}
-function addVoiceButton(){let foot=document.querySelector("#enfVoiceAI .enf-voice-foot div");if(foot&&!document.getElementById("enfVoiceExecuteBtn")){let b=document.createElement("button");b.id="enfVoiceExecuteBtn";b.className="enf-ms-btn primary";b.textContent=t("Understand & Execute","فهم وتنفيذ الأمر");b.onclick=window.enfVoiceExecute;foot.appendChild(b)}}
-function init(){addVoiceButton()}
-if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
-})();
-</script><style id="enforza-demo-operations-css">
+<style id="enforza-demo-operations-css">
 /* DEMO Operations Completion */
 .enf-demoops{position:fixed;inset:0;z-index:320000;background:rgba(7,11,15,.72);display:none;place-items:center;padding:18px}.enf-demoops.open{display:grid}
 .enf-demoops-card{width:min(930px,97vw);max-height:92vh;overflow:auto;background:#fff;border-radius:20px;box-shadow:0 36px 125px rgba(0,0,0,.36)}
@@ -4041,71 +3632,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 body.enf-dark .enf-vcmd-preview,body.enf-dark .enf-vcmd-field{background:#171d23;color:#eef2f5}
 @media(max-width:600px){.enf-vcmd-fields{grid-template-columns:1fr}}
 </style>
-<script id="enforza-smart-voice-demo-complete-js">
-(function(){
-"use strict";let command=null;
-function ar(){return (window.currentLang||document.documentElement.lang||"en").toLowerCase().startsWith("ar")}function t(e,a){return ar()?a:e}
-function norm(x){return String(x||"").replace(/[إأآ]/g,"ا").replace(/ى/g,"ي").replace(/ة/g,"ه").replace(/[٠-٩]/g,d=>"٠١٢٣٤٥٦٧٨٩".indexOf(d)).toLowerCase().replace(/\s+/g," ").trim()}
-function files(){return window.DATA&&Array.isArray(DATA.files)?DATA.files:[]}
-function findFile(raw){
- let n=norm(raw),m=n.match(/(?:ملف|قضيه|قضية|file|case)\s*(?:رقم)?\s*([a-z0-9\/_-]+)/i);
- if(m){let q=m[1];return files().find(f=>[f.id,f.ref,f.caseNumber,f.fileNumber].some(v=>norm(v)===q))||null}
- return files().find(f=>{let name=norm(f.title||f.creditorName||f.debtorName||f.name||"");return name&&n.includes(name)})||null
-}
-function amount(raw){let m=String(raw).match(/(?:BHD|د\.?ب|دينار(?:\s+بحريني)?)\s*([0-9٠-٩,.]+)|([0-9٠-٩,.]+)\s*(?:BHD|د\.?ب|دينار(?:\s+بحريني)?)/i);return m?(m[1]||m[2]||"").replace(/[٠-٩]/g,d=>"٠١٢٣٤٥٦٧٨٩".indexOf(d)):""}
-function method(raw){return /بنفت|benefit/i.test(raw)?"BenefitPay":/تحويل|transfer/i.test(raw)?"Bank Transfer":/نقد|cash/i.test(raw)?"Cash":/شيك|cheque|check/i.test(raw)?"Cheque":""}
-function time(raw){let m=norm(raw).match(/(?:الساعه|الساعة|at)\s*(\d{1,2})(?::(\d{2}))?\s*(صباحا|صباحًا|am|مساء|مساءً|pm)?/);if(!m)return"";let h=+m[1],mi=m[2]||"00",p=m[3]||"";if(/مساء|pm/.test(p)&&h<12)h+=12;if(/صباح|am/.test(p)&&h===12)h=0;return String(h).padStart(2,"0")+":"+mi}
-function date(raw){
- let n=norm(raw),d=new Date(),days={"الاحد":0,"الاثنين":1,"الثلاثاء":2,"الاربعاء":3,"الخميس":4,"الجمعه":5,"السبت":6};
- if(/غدا|بكره|بكرة|tomorrow/.test(n))d.setDate(d.getDate()+1);
- else{for(let k in days)if(n.includes(k)){let add=(days[k]-d.getDay()+7)%7;if(add===0)add=7;d.setDate(d.getDate()+add);break}}
- return d.toISOString().slice(0,10)
-}
-function parse(raw){
- let n=norm(raw),intent="dictation";
- if(/(اضف|انشئ|سجل|ذكرني).*(مهمه|متابعه|موعد)|ذكرني/.test(n))intent="task";
- else if(/(سجل|اضف|استلم|تحصيل|دفع|سدد).*(تحصيل|دفع|سداد|دينار)|تحصيل/.test(n))intent="collection";
- else if(/(اضف|ارفق|سجل).*(مستند|وثيقه|دليل)/.test(n))intent="document";
- else if(/(انشئ|سجل|افتح).*(محضر|اجتماع|جلسه)/.test(n))intent="minute";
- else if(/(افتح|اعرض).*(ملف|قضيه)/.test(n))intent="openfile";
- else if(/(اعرض|اظهر).*(متاخر|متأخر|overdue)/.test(n))intent="overdue";
- let f=findFile(raw);
- return{intent,raw,file:f,fileId:f?(f.id||f.ref||""):"",amount:amount(raw),method:method(raw),date:date(raw),time:time(raw)}
-}
-function preview(p){
- let box=document.getElementById("enfVoiceConfirmData");if(!box)return;
- let fields=[[t("Action","الإجراء"),p.intent],[t("File","الملف"),p.fileId||t("Not identified","لم يتم تحديده")]];
- if(p.amount)fields.push([t("Amount","المبلغ"),"BHD "+p.amount]);if(p.method)fields.push([t("Method","الطريقة"),p.method]);if(p.intent==="task"){fields.push([t("Date","التاريخ"),p.date]);if(p.time)fields.push([t("Time","الوقت"),p.time])}
- box.innerHTML=`<div class="enf-vcmd-preview"><h4>${t("ENFORZA understood","فهم ENFORZA")}</h4><div class="enf-vcmd-fields">${fields.map(x=>`<div class="enf-vcmd-field"><small>${x[0]}</small><b>${x[1]}</b></div>`).join("")}</div></div><div style="margin-top:9px">${p.raw}</div>`
-}
-window.enfVoiceExecute=function(){
- let raw=document.getElementById("enfVoiceOriginal")?.value||"";command=parse(raw);
- if(command.intent==="dictation"){document.getElementById("enfVoiceStatus").textContent=t("Dictation captured. No executable command detected.","تم التقاط الإملاء، ولم يتم التعرف على أمر تنفيذي.");return}
- let role=(window.currentUser||{}).role||window.currentRole||sessionStorage.getItem("enforzaRole")||"officer";
- if(role==="creditor"&&!["openfile","overdue","task"].includes(command.intent)){document.getElementById("enfVoiceStatus").textContent=t("This voice action is not permitted for Creditor access.","هذا الأمر الصوتي غير مسموح لصلاحية الدائن.");return}
- document.getElementById("enfVoiceConfirmTitle").textContent=t("Confirm smart voice command","تأكيد الأمر الصوتي الذكي");
- document.getElementById("enfVoiceConfirmMsg").textContent=t("Review what ENFORZA understood. The form will open pre-filled; final saving remains under your control.","راجع ما فهمه ENFORZA. سيتم فتح النموذج وتعبئته مبدئيًا، ويبقى الحفظ النهائي تحت سيطرتك.");
- preview(command);document.getElementById("enfVoiceConfirm").classList.add("open")
-}
-function setVal(selectors,val){if(!val)return;for(let q of selectors){let x=document.querySelector(q);if(x){x.value=val;x.dispatchEvent(new Event("input",{bubbles:true}));x.dispatchEvent(new Event("change",{bubbles:true}));return}}}
-window.enfVoiceConfirmCommand=function(){
- let p=command;if(!p)return;document.getElementById("enfVoiceConfirm")?.classList.remove("open");
- if(p.intent==="task"&&typeof window.v2OpenTask==="function"){window.v2OpenTask(p.date);setTimeout(()=>{setVal(["#taskDate","#v2TaskDate",'input[name="date"]'],p.date);setVal(["#taskTime","#v2TaskTime",'input[type="time"]'],p.time);setVal(["#taskFile","#v2TaskFile",'select[name="file"]'],p.fileId)},100)}
- else if(p.intent==="collection"&&typeof window.enfFinOpen==="function"){window.enfFinOpen("Collection");setTimeout(()=>{setVal(["#enfFinAmount",'#enfFinancePage input[type="number"]'],p.amount);setVal(["#enfFinMethod",'select[name="method"]'],p.method);setVal(["#enfFinFile",'select[name="file"]'],p.fileId)},100)}
- else if(p.intent==="document"&&typeof window.enfDeOpen==="function"){window.enfDeOpen("Document");setTimeout(()=>setVal(["#enfDeFile",'select[name="file"]'],p.fileId),100)}
- else if(p.intent==="minute"&&typeof window.enfOpenMinutesStudio==="function")window.enfOpenMinutesStudio(p.fileId||"");
- else if(p.intent==="openfile"&&p.fileId&&typeof window.openFile360==="function")window.openFile360(p.fileId);
- else if(p.intent==="overdue"){if(typeof window.v2ShowPage==="function")window.v2ShowPage("tasks");setTimeout(()=>{let q=document.querySelector('select[name="status"],#taskStatusFilter');if(q){let o=[...q.options].find(x=>/overdue|متأخر/i.test(x.text));if(o){q.value=o.value;q.dispatchEvent(new Event("change",{bubbles:true}))}}},100)}
- command=null;
-}
-function examples(){
- let box=document.querySelector("#enfVoiceAI .enf-voice-warning");if(box)box.innerHTML=t(
- "Try: “Add a task for file 25 tomorrow at 10” · “Record a BHD 500 collection by BenefitPay” · “Open file 25” · “Show overdue files”.",
- "جرّب: «أضف مهمة للملف 25 غدًا الساعة 10» · «سجل تحصيل 500 دينار بنفت» · «افتح ملف 25» · «اعرض الملفات المتأخرة»."
- )}
-if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",examples);else examples();
-})();
-</script><style id="enforza-creditor-experience-css">
+<style id="enforza-creditor-experience-css">
 /* DEMO — Creditor Experience Completion */
 .enf-cx{position:fixed;inset:0;z-index:330000;background:#f4f5f5;display:none;overflow:auto;color:#172028}.enf-cx.open{display:block}
 .enf-cx-top{position:sticky;top:0;z-index:5;background:rgba(255,255,255,.95);backdrop-filter:blur(14px);border-bottom:1px solid #e1e4e5;padding:13px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
@@ -4295,9 +3822,9 @@ function fillFileSelect(){let s=E('v2taskFile');if(!s)return;s.innerHTML='<optio
 window.v2OpenTask=function(date,id){ensureFields();fillFileSelect();clearForm(date);editing=id||null;let x=id?tasks().find(z=>z.id===id):null;if(x){E('v2taskTitle').value=x.title||x.task||'';E('v2taskDate').value=x.due||x.date||today();E('v2taskTime').value=x.time||'';E('v2taskFile').value=x.file||'';E('v2taskPriority').value=x.priority||'Normal';E('v2taskType').value=x.type||'Follow-up';E('v2taskReminder').value=x.reminder||'None';E('v2taskNotes').value=x.notes||'';E('v21EndTime').value=x.endTime||'';E('v21Status').value=x.status||'Open';E('v21Assignee').value=x.assignee||'';E('v21Location').value=x.location||'';E('v21Repeat').value=x.repeat||'None';E('v21AllDay').checked=!!x.allDay;E('v21People').value=x.people||'';E('v21Description').value=x.description||''}E('v2taskEditActions').style.display=x?'grid':'none';E('v2taskHead').textContent=x?tr('Event Details','تفاصيل الحدث'):tr('New Event / Task','حدث / مهمة جديدة');E('v2TaskDrawer').classList.add('open')}
 window.v2CloseTask=function(){E('v2TaskDrawer')?.classList.remove('open')}
 function record(){return {title:E('v2taskTitle').value.trim(),due:E('v2taskDate').value,time:E('v2taskTime').value,endTime:E('v21EndTime')?.value||'',file:E('v2taskFile').value,priority:E('v2taskPriority').value,type:E('v2taskType').value,reminder:E('v2taskReminder').value,notes:E('v2taskNotes').value,status:E('v21Status')?.value||'Open',assignee:E('v21Assignee')?.value||'',location:E('v21Location')?.value||'',repeat:E('v21Repeat')?.value||'None',allDay:!!E('v21AllDay')?.checked,people:E('v21People')?.value||'',description:E('v21Description')?.value||''}}
-window.v2SaveTask=function(){let r=record();if(!r.title||!r.due){alert(tr('Title and date are required.','العنوان والتاريخ مطلوبان.'));return}if(r.time&&r.endTime&&r.endTime<r.time&&!r.allDay){alert(tr('End time must be after start time.','يجب أن يكون وقت النهاية بعد وقت البداية.'));return}if(editing){let x=tasks().find(z=>z.id===editing);if(x)Object.assign(x,r)}else{r.id='TSK-'+Date.now().toString(36).toUpperCase();tasks().push(r)}editing=null;v2CloseTask();render();if(typeof window.v210Refresh==='function')window.v210Refresh()}
-window.v2CompleteTask=function(){let x=tasks().find(z=>z.id===editing);if(x)x.status='Completed';editing=null;v2CloseTask();render()}
-window.v2DeleteTask=function(){if(!editing)return;if(!confirm(tr('Delete this event?','حذف هذا الحدث؟')))return;let i=tasks().findIndex(z=>z.id===editing);if(i>=0)tasks().splice(i,1);editing=null;v2CloseTask();render()}
+window.v2SaveTask=function(){let r=record();if(!r.title||!r.due){alert(tr('Title and date are required.','العنوان والتاريخ مطلوبان.'));return}if(r.time&&r.endTime&&r.endTime<r.time&&!r.allDay){alert(tr('End time must be after start time.','يجب أن يكون وقت النهاية بعد وقت البداية.'));return}if(editing){let x=tasks().find(z=>z.id===editing);if(x)Object.assign(x,r)}else{r.id='TSK-'+Date.now().toString(36).toUpperCase();tasks().push(r)}editing=null;v2CloseTask();render();if(typeof window.enfModernCalendarRender==='function')window.enfModernCalendarRender();if(typeof window.v210Refresh==='function')window.v210Refresh()}
+window.v2CompleteTask=function(){let x=tasks().find(z=>z.id===editing);if(x)x.status='Completed';editing=null;v2CloseTask();render();if(typeof window.enfModernCalendarRender==='function')window.enfModernCalendarRender()}
+window.v2DeleteTask=function(){if(!editing)return;if(!confirm(tr('Delete this event?','حذف هذا الحدث؟')))return;let i=tasks().findIndex(z=>z.id===editing);if(i>=0)tasks().splice(i,1);editing=null;v2CloseTask();render();if(typeof window.enfModernCalendarRender==='function')window.enfModernCalendarRender()}
 function parseDate(text){let d=new Date(),n=norm(text);if(/غدا|tomorrow/.test(n))d.setDate(d.getDate()+1);else if(/بعد غد|day after tomorrow/.test(n))d.setDate(d.getDate()+2);let m=text.match(/(20\d{2})[-\/]([01]?\d)[-\/]([0-3]?\d)|([0-3]?\d)[-\/]([01]?\d)[-\/](20\d{2})/);if(m)d=m[1]?new Date(+m[1],+m[2]-1,+m[3]):new Date(+m[6],+m[5]-1,+m[4]);return iso(d)}
 function parseTime(text){let m=text.match(/(?:الساعة|الساعه|at)?\s*(\d{1,2})(?::(\d{2}))?\s*(صباحا|صباحًا|مساء|مساءً|ص|م|am|pm)?/i);if(!m)return'';let h=+m[1],mi=m[2]||'00',ap=(m[3]||'').toLowerCase();if(/مساء|م|pm/.test(ap)&&h<12)h+=12;if(/صباح|ص|am/.test(ap)&&h===12)h=0;return pad(Math.min(23,h))+':'+mi}
 function amount(text){let m=text.match(/(?:BHD|د\.?ب|دينار(?:\s+بحريني)?)\s*([0-9٠-٩,.]+)|([0-9٠-٩,.]+)\s*(?:BHD|د\.?ب|دينار(?:\s+بحريني)?)/i);if(!m)return null;return Number((m[1]||m[2]).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/,/g,''))}
@@ -4313,7 +3840,7 @@ function voiceBuild(){const SR=window.SpeechRecognition||window.webkitSpeechReco
 function voiceStart(reset){if(voiceStarting)return;if(reset){voiceFinal.clear();voiceInterim='';if(E('enfVoiceOriginal'))E('enfVoiceOriginal').value=''}voiceRec=voiceBuild();if(!voiceRec)return;try{voiceStarting=true;voiceRec.start()}catch(e){voiceStarting=false}}
 window.enfVoiceToggle=function(){if(voiceWanted){voiceWanted=false;clearTimeout(voiceTimer);try{voiceRec?.stop()}catch(e){};return}voiceWanted=true;voiceStart(true)}
 window.enfVoiceCommandOpen=function(){if(typeof window.enfVoiceOpen==='function'){window.enfVoiceOpen(null);setTimeout(()=>{let u=E('enfVoiceWarning');if(u)u.textContent=tr('Speak a command. ENFORZA will prepare it for review before saving.','تحدث بالأمر. سيقوم ENFORZA بتجهيزه للمراجعة قبل الحفظ.')},0)}}
-const oldUse=window.enfVoiceUse;window.enfVoiceUse=function(){let text=cleanVoice(E('enfVoiceOriginal')?.value||E('enfVoiceSmart')?.value||'');voiceWanted=false;clearTimeout(voiceTimer);try{voiceRec?.stop()}catch(e){};if(text&&intent(text)!=='dictation'){if(typeof window.enfVoiceClose==='function')window.enfVoiceClose();command(text);return}if(typeof oldUse==='function')oldUse()}
+const oldUse=window.enfVoiceInsertDictation;window.enfVoiceUse=function(){let text=cleanVoice(E('enfVoiceOriginal')?.value||E('enfVoiceSmart')?.value||'');voiceWanted=false;clearTimeout(voiceTimer);try{voiceRec?.stop()}catch(e){};if(text&&intent(text)!=='dictation'){if(typeof window.enfVoiceClose==='function')window.enfVoiceClose();command(text);return}if(typeof oldUse==='function')oldUse()}
 function init(){ensureFields();filters();fillFilters();document.documentElement.dataset.enforzaCalendar=V;let nav=[...document.querySelectorAll('.nav-item')].find(x=>(x.dataset.page||x.getAttribute('data-page'))==='tasks');if(nav)nav.addEventListener('click',()=>setTimeout(()=>{ensureFields();filters();render()},20),true);render()}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
@@ -4417,9 +3944,9 @@ window.enfCalMove=function(n){if(modernView==="month")modernDate=new Date(modern
 window.enfCalToday=function(){modernDate=new Date();miniDate=new Date();enfModernCalendarRender()}
 window.enfMiniMove=function(n){miniDate=new Date(miniDate.getFullYear(),miniDate.getMonth()+n,1);miniM()}
 window.enfMiniPick=function(di){modernDate=dateM(di)||new Date();miniDate=new Date(modernDate);if(modernView==="month")modernView="day";enfModernCalendarRender()}
-const saveM=window.v2SaveTask;window.v2SaveTask=function(){let r=saveM?saveM.apply(this,arguments):undefined;setTimeout(enfModernCalendarRender,0);return r}
-const delM=window.v2DeleteTask;window.v2DeleteTask=function(){let r=delM?delM.apply(this,arguments):undefined;setTimeout(enfModernCalendarRender,0);return r}
-const compM=window.v2CompleteTask;window.v2CompleteTask=function(){let r=compM?compM.apply(this,arguments):undefined;setTimeout(enfModernCalendarRender,0);return r}
+const saveM=window.v2SaveTask;
+const delM=window.v2DeleteTask;
+const compM=window.v2CompleteTask;
 function initM(){
  let nav=[...document.querySelectorAll(".nav-item")].find(x=>(x.textContent||"").includes("Tasks & Follow-ups")||(x.textContent||"").includes("المهام"));
  if(nav&&!nav.dataset.modernCal){nav.dataset.modernCal="1";nav.addEventListener("click",()=>setTimeout(enfModernCalendarRender,0))}
