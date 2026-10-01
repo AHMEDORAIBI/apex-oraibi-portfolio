@@ -3980,5 +3980,48 @@ function addVoiceButton(){let foot=document.querySelector("#enfVoiceAI .enf-voic
 function init(){authText();bindLogin();addVoiceButton();let u=session();if(u){window.currentRole=u.role;window.userRole=u.role;window.currentUserId=u.id;window.currentUser=u;hideLogin();roleApply()}else showLogin()}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
 })();
+</script><style id="enforza-demo-operations-css">
+/* DEMO Operations Completion */
+.enf-demoops{position:fixed;inset:0;z-index:320000;background:rgba(7,11,15,.72);display:none;place-items:center;padding:18px}.enf-demoops.open{display:grid}
+.enf-demoops-card{width:min(930px,97vw);max-height:92vh;overflow:auto;background:#fff;border-radius:20px;box-shadow:0 36px 125px rgba(0,0,0,.36)}
+.enf-demoops-head{display:flex;justify-content:space-between;gap:18px;padding:21px 23px;border-bottom:1px solid var(--desk-line)}.enf-demoops-head h2{font-size:23px!important;margin:3px 0}.enf-demoops-head p{margin:0;color:var(--desk-muted);font-size:10px}
+.enf-demoops-body{padding:18px 23px}.enf-demoops-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.enf-demoops-row{border:1px solid var(--desk-line);border-radius:11px;padding:12px}.enf-demoops-row b{display:block;font-size:10px;margin-bottom:7px}.enf-demoops-actions{display:flex;gap:5px;flex-wrap:wrap}.enf-demoops-tag{padding:5px 7px;border-radius:999px;background:#edf3ee;color:#4e7657;font-size:8px;font-weight:950}.enf-demoops-note{margin-top:12px;padding:11px;border:1px solid var(--desk-line);border-radius:10px;background:#fbfaf8;color:var(--desk-muted);font-size:9px;line-height:1.6}.enf-demoops-foot{display:flex;justify-content:flex-end;padding:14px 23px;border-top:1px solid var(--desk-line)}
+.enf-demo-search{display:flex;gap:7px;margin-bottom:12px}.enf-demo-search input{flex:1;border:1px solid var(--desk-line);border-radius:10px;padding:10px}.enf-demo-search select{border:1px solid var(--desk-line);border-radius:10px;padding:10px;background:#fff}
+body.enf-dark .enf-demoops-card,body.enf-dark .enf-demo-search select{background:#171d23;color:#eef2f5}
+@media(max-width:700px){.enf-demoops{padding:0}.enf-demoops-card{width:100%;height:100%;max-height:none;border-radius:0}.enf-demoops-grid{grid-template-columns:1fr}.enf-demo-search{flex-direction:column}}
+</style>
+<div class="enf-demoops" id="enfDemoOps"><div class="enf-demoops-card">
+<div class="enf-demoops-head"><div><div class="v2-kicker">DEMO · OPERATIONS COMPLETION</div><h2 id="enfDemoOpsTitle">Operational Demo Readiness</h2><p id="enfDemoOpsSub">Add · View · Edit · Search · Filter · Delete/Archive</p></div><button class="enf-field-close" onclick="enfDemoOpsClose()">×</button></div>
+<div class="enf-demoops-body"><div class="enf-demo-search"><input id="enfGlobalDemoSearch" placeholder="Search files, tasks, documents…"><select id="enfGlobalDemoType"><option value="all">All</option><option value="files">Files</option><option value="tasks">Tasks</option><option value="documents">Documents</option><option value="finance">Finance</option></select></div><div class="enf-demoops-grid" id="enfDemoOpsGrid"></div><div class="enf-demoops-note" id="enfDemoOpsNote"></div></div>
+<div class="enf-demoops-foot"><button class="enf-ms-btn primary" onclick="enfDemoOpsClose()">Close</button></div></div></div>
+<script id="enforza-demo-operations-js">
+(function(){
+"use strict";
+function ar(){return (window.currentLang||document.documentElement.lang||"en").toLowerCase().startsWith("ar")}function t(e,a){return ar()?a:e}
+function A(n){return window.DATA&&Array.isArray(DATA[n])?DATA[n]:[]}
+function save(){try{localStorage.setItem("enforzaDemoDataV2",JSON.stringify(window.DATA||{}));return true}catch(e){return false}}
+function load(){try{let x=JSON.parse(localStorage.getItem("enforzaDemoDataV2")||"null");if(x&&window.DATA)Object.keys(x).forEach(k=>{if(Array.isArray(x[k]))DATA[k]=x[k]})}catch(e){}}
+window.enfDemoArchive=function(kind,id){let a=A(kind),x=a.find(v=>String(v.id||v.ref)===String(id));if(!x)return false;x.status="Archived";x.archived=true;save();return true}
+window.enfDemoDelete=function(kind,id){let a=A(kind),i=a.findIndex(v=>String(v.id||v.ref)===String(id));if(i<0)return false;if(!confirm(t("Delete this demo record?","حذف هذا السجل من الديمو؟")))return false;a.splice(i,1);save();return true}
+window.enfDemoUpdate=function(kind,id,changes){let x=A(kind).find(v=>String(v.id||v.ref)===String(id));if(!x)return false;Object.assign(x,changes||{}, {updatedAt:new Date().toISOString()});save();return true}
+window.enfDemoSearch=function(q,type){q=String(q||"").toLowerCase().trim();let kinds=type&&type!=="all"?[type]:["files","smartTasks","documents","financialTransactions"];let out=[];kinds.forEach(k=>A(k).forEach(x=>{let blob=Object.values(x||{}).join(" ").toLowerCase();if(!q||blob.includes(q))out.push({kind:k,item:x})}));return out}
+function wrapPersistence(){
+ ["enfIntakeSave","v2SaveTask","enfFinSave","enfDeSave","enfMinutesSave"].forEach(n=>{let f=window[n];if(typeof f!=="function"||f.__demoPersist)return;let w=function(){let r=f.apply(this,arguments);setTimeout(save,0);return r};w.__demoPersist=true;window[n]=w})
+}
+function rows(){
+ return[
+ [t("Enforcement Files","ملفات التنفيذ"),["Add","View","Edit","Search","Filter","Archive"]],
+ [t("Tasks & Calendar","المهام والتقويم"),["Add","View","Edit","Search","Filter","Delete"]],
+ [t("Collections & Finance","التحصيل والمالية"),["Add","View","Edit","Search","Filter","Delete"]],
+ [t("Documents & Evidence","المستندات والأدلة"),["Add","View","Edit","Search","Filter","Delete"]],
+ [t("Minutes","المحاضر"),["Add","View","Edit","Search","Delete"]],
+ [t("Creditor View","واجهة الدائن"),["View","Search","Filter"]]
+ ]}
+window.enfDemoOpsOpen=function(){let g=document.getElementById("enfDemoOpsGrid");g.innerHTML=rows().map(r=>`<div class="enf-demoops-row"><b>${r[0]}</b><div class="enf-demoops-actions">${r[1].map(a=>`<span class="enf-demoops-tag">${a}</span>`).join("")}</div></div>`).join("");document.getElementById("enfDemoOpsNote").textContent=t("This is DEMO persistence only. Records entered by you are stored locally in this browser. No sample records are inserted automatically.","هذا تخزين خاص بالديمو فقط. البيانات التي تدخلها أنت تحفظ محليًا في هذا المتصفح، ولا تتم إضافة أي سجلات افتراضية تلقائيًا.");document.getElementById("enfDemoOps").classList.add("open")}
+window.enfDemoOpsClose=()=>document.getElementById("enfDemoOps")?.classList.remove("open");
+function bindSearch(){let q=document.getElementById("enfGlobalDemoSearch"),ty=document.getElementById("enfGlobalDemoType");if(!q||!ty)return;let go=()=>{let type=ty.value==="tasks"?"smartTasks":ty.value==="finance"?"financialTransactions":ty.value;let r=enfDemoSearch(q.value,type);document.getElementById("enfDemoOpsNote").textContent=t("Matching demo records: ","السجلات المطابقة في الديمو: ")+r.length};q.addEventListener("input",go);ty.addEventListener("change",go)}
+function init(){load();wrapPersistence();bindSearch();document.addEventListener("keydown",e=>{if(e.ctrlKey&&e.shiftKey&&String(e.key).toLowerCase()==="d"){e.preventDefault();enfDemoOpsOpen()}})}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
+})();
 </script></body>
 </html>
