@@ -3656,5 +3656,236 @@ function init(){
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
 })();
+</script><style id="enforza-voice-v2-fix-css">
+#enfVoiceRec.live{box-shadow:0 0 0 4px rgba(158,64,64,.12)}
+#enfVoiceStatus.live:before{content:"● ";color:#b54242}
+</style>
+<script id="enforza-smart-voice-v2-fix-js">
+(function(){
+"use strict";
+
+let recognition=null;
+let userWantsRecording=false;
+let isStarting=false;
+let restartTimer=null;
+let finalSegments=new Map();
+let interimText="";
+let lastRendered="";
+let targetField=null;
+
+function el(id){return document.getElementById(id)}
+function isArabic(){return (window.currentLang||document.documentElement.lang||"en").toLowerCase().startsWith("ar")}
+function tr(en,ar){return isArabic()?ar:en}
+
+function selectedLang(){
+  const x=el("enfVoiceLang");
+  const v=x?x.value:"ar-BH";
+  if(v==="auto") return isArabic()?"ar-BH":"en-US";
+  return v||"ar-BH";
+}
+
+function normalizeSpace(x){
+  return String(x||"").replace(/\s+/g," ").trim();
+}
+
+/* Prevent identical adjacent phrases from browser recognition revisions. */
+function deDuplicateAdjacent(text){
+  let words=normalizeSpace(text).split(" ").filter(Boolean);
+  if(words.length<2)return words.join(" ");
+  // Remove immediately repeated word sequences, up to 12 words long.
+  for(let size=Math.min(12,Math.floor(words.length/2));size>=1;size--){
+    let changed=true;
+    while(changed){
+      changed=false;
+      for(let i=0;i+size*2<=words.length;i++){
+        let a=words.slice(i,i+size).join(" ").toLowerCase();
+        let b=words.slice(i+size,i+size*2).join(" ").toLowerCase();
+        if(a===b){
+          words.splice(i+size,size);
+          changed=true;
+          break;
+        }
+      }
+    }
+  }
+  return words.join(" ");
+}
+
+function buildTranscript(){
+  const finals=[...finalSegments.keys()].sort((a,b)=>a-b).map(k=>finalSegments.get(k));
+  return deDuplicateAdjacent(normalizeSpace(finals.join(" ")+" "+interimText));
+}
+
+function renderTranscript(){
+  const text=buildTranscript();
+  if(text===lastRendered)return;
+  lastRendered=text;
+  const box=el("enfVoiceOriginal");
+  if(box){
+    box.value=text;
+    box.dispatchEvent(new Event("input",{bubbles:true}));
+  }
+  // Smart text updates live while speaking.
+  if(typeof window.enfVoiceProcess==="function") window.enfVoiceProcess();
+}
+
+function setUI(live,msg){
+  const btn=el("enfVoiceRec"),st=el("enfVoiceStatus");
+  if(btn){
+    btn.classList.toggle("live",live);
+    btn.textContent=live?tr("■ Stop Recording","■ إيقاف التسجيل"):tr("● Start Recording","● بدء التسجيل");
+  }
+  if(st){
+    st.classList.toggle("live",live);
+    st.textContent=msg|| (live?tr("Listening… text appears live","جاري الاستماع… النص يظهر مباشرة"):tr("Ready","جاهز"));
+  }
+}
+
+function createRecognition(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR)return null;
+  const r=new SR();
+  r.lang=selectedLang();
+  r.continuous=true;
+  r.interimResults=true;
+  r.maxAlternatives=1;
+
+  r.onstart=function(){
+    isStarting=false;
+    setUI(true,tr("Listening… text appears live","جاري الاستماع… النص يظهر مباشرة"));
+  };
+
+  r.onresult=function(event){
+    interimText="";
+    // Use stable result indexes. Final results replace their own index rather than append again.
+    for(let i=0;i<event.results.length;i++){
+      const res=event.results[i];
+      const text=normalizeSpace(res[0]&&res[0].transcript);
+      if(!text)continue;
+      if(res.isFinal){
+        finalSegments.set(i,text);
+      }else{
+        // Only current non-final hypotheses are displayed.
+        interimText += (interimText?" ":"")+text;
+      }
+    }
+    renderTranscript();
+  };
+
+  r.onerror=function(event){
+    isStarting=false;
+    const err=event&&event.error||"unknown";
+    // no-speech is not fatal; keep the session alive by restarting onend.
+    if(err!=="no-speech" && err!=="aborted"){
+      setUI(userWantsRecording,tr("Microphone: ","الميكروفون: ")+err);
+    }
+  };
+
+  r.onend=function(){
+    isStarting=false;
+    interimText="";
+    renderTranscript();
+    if(userWantsRecording){
+      // Browsers may end a recognition session after a short internal limit.
+      // Restart automatically until the user explicitly presses Stop.
+      clearTimeout(restartTimer);
+      restartTimer=setTimeout(function(){
+        if(userWantsRecording) startEngine(false);
+      },180);
+    }else{
+      setUI(false,tr("Ready","جاهز"));
+    }
+  };
+  return r;
+}
+
+function startEngine(reset){
+  if(isStarting)return;
+  if(reset){
+    finalSegments.clear();
+    interimText="";
+    lastRendered="";
+    const box=el("enfVoiceOriginal");
+    if(box){box.value="";box.dataset.final=""}
+  }
+  recognition=createRecognition();
+  if(!recognition){
+    userWantsRecording=false;
+    setUI(false,tr("Voice recognition is not supported by this browser.","المتصفح الحالي لا يدعم التعرف الصوتي."));
+    return;
+  }
+  try{
+    isStarting=true;
+    recognition.start();
+  }catch(e){
+    isStarting=false;
+    if(userWantsRecording){
+      clearTimeout(restartTimer);
+      restartTimer=setTimeout(()=>startEngine(false),300);
+    }
+  }
+}
+
+function stopEngine(){
+  userWantsRecording=false;
+  clearTimeout(restartTimer);
+  restartTimer=null;
+  if(recognition){
+    try{recognition.stop()}catch(e){}
+  }
+  recognition=null;
+  interimText="";
+  renderTranscript();
+  setUI(false,tr("Stopped — text ready","تم الإيقاف — النص جاهز"));
+}
+
+window.enfVoiceToggle=function(){
+  if(userWantsRecording){
+    stopEngine();
+    return;
+  }
+  userWantsRecording=true;
+  startEngine(true);
+};
+
+const oldOpen=window.enfVoiceOpen;
+window.enfVoiceOpen=function(field){
+  targetField=field||document.activeElement;
+  if(typeof oldOpen==="function") oldOpen(field);
+  finalSegments.clear(); interimText=""; lastRendered="";
+  const box=el("enfVoiceOriginal"); if(box){box.value="";box.dataset.final=""}
+  setUI(false,tr("Ready","جاهز"));
+};
+
+const oldClose=window.enfVoiceClose;
+window.enfVoiceClose=function(){
+  stopEngine();
+  if(typeof oldClose==="function") oldClose();
+};
+
+const oldUse=window.enfVoiceUse;
+window.enfVoiceUse=function(){
+  stopEngine();
+  if(typeof window.enfVoiceProcess==="function")window.enfVoiceProcess();
+  const smart=el("enfVoiceSmart");
+  const text=smart?smart.value:"";
+  const target=targetField;
+  if(target && ("value" in target) && text){
+    target.value=text;
+    target.dispatchEvent(new Event("input",{bubbles:true}));
+    target.dispatchEvent(new Event("change",{bubbles:true}));
+    window.enfVoiceClose();
+    return;
+  }
+  if(typeof oldUse==="function")oldUse();
+};
+
+/* Stop mic safely if page/tab is hidden. It will resume only if user still wants recording. */
+document.addEventListener("visibilitychange",function(){
+  if(document.hidden && recognition && userWantsRecording){
+    try{recognition.stop()}catch(e){}
+  }
+});
+})();
 </script></body>
 </html>
