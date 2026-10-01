@@ -475,7 +475,10 @@ html[dir="rtl"] .file-timeline{padding-left:0;padding-right:30px}html[dir="rtl"]
 @media(max-width:720px){.attach-source-grid{grid-template-columns:1fr}.voice-lab{right:8px;bottom:8px;width:calc(100vw - 16px)}}
 
 </style>
-</head>
+<style id="future-modules-clean">
+.future-modules{margin-top:10px}.future-modules-title{padding:12px 10px 7px;color:#9e8e83;font-size:10px;font-weight:900;letter-spacing:1.5px}.future-module{border:1px solid rgba(255,255,255,.06)}.future-module .future-tag{margin-left:auto;padding:3px 7px;border-radius:999px;background:rgba(213,158,106,.13);color:#d59e6a;font-size:9px;font-weight:900}html[dir="rtl"] .future-module .future-tag{margin-left:0;margin-right:auto}
+#futureModuleModal{position:fixed;inset:0;z-index:99999;display:none;place-items:center;padding:20px;background:rgba(8,6,5,.72);backdrop-filter:blur(9px)}#futureModuleModal.open{display:grid}.future-module-card{width:min(560px,94vw);background:var(--white);color:var(--text);border:1px solid var(--border);border-radius:22px;padding:34px;text-align:center;box-shadow:0 30px 100px rgba(0,0,0,.35)}.future-module-icon{width:76px;height:76px;margin:0 auto 16px;border-radius:21px;display:grid;place-items:center;background:var(--bronze-soft);color:var(--bronze);font-size:22px;font-weight:900}.future-module-card h2{font-size:20px!important;margin:0 0 8px}.future-module-badge{display:inline-block;margin:5px 0 13px;padding:7px 12px;border-radius:999px;background:var(--bronze-soft);color:var(--bronze);font-size:11px;font-weight:900;letter-spacing:1.1px}.future-module-card p{margin:0 auto 20px;max-width:430px;color:var(--muted);line-height:1.65}.future-module-card button{border:0;border-radius:10px;background:var(--sidebar);color:#fff;padding:11px 24px;font-size:16px;font-weight:900;cursor:pointer}
+</style></head>
 <body>
 
 
@@ -596,7 +599,12 @@ html[dir="rtl"] .file-timeline{padding-left:0;padding-right:30px}html[dir="rtl"]
     <a class="nav-item" data-page="settings" href="#" onclick="openPage('settings');return false;"><span class="nav-icon">⚙</span><span data-i18n="Settings">Settings</span></a>
     <a class="nav-item" data-page="audit" href="#" onclick="openPage('audit');return false;"><span class="nav-icon">⊙</span><span data-i18n="Audit Log">Audit Log</span></a>
   </div>
-  <div class="sidebar-footer"><div>● <span data-i18n="DEMO ENVIRONMENT">DEMO ENVIRONMENT</span></div><div style="margin-top:8px" data-i18n="Designed & Developed by">Designed & Developed by</div><strong>APEX ORAIBI</strong></div>
+  <div class="future-modules" id="futureModules">
+<div class="future-modules-title" data-future-en="FUTURE MODULES" data-future-ar="أقسام مستقبلية">FUTURE MODULES</div>
+<a class="nav-item future-module" href="#" onclick="openFutureModule('hr');return false;"><span class="nav-icon">♙</span><span data-future-en="Human Resources" data-future-ar="الموارد البشرية">Human Resources</span><span class="future-tag" data-future-en="SOON" data-future-ar="قريبًا">SOON</span></a>
+<a class="nav-item future-module" href="#" onclick="openFutureModule('accounting');return false;"><span class="nav-icon">▦</span><span data-future-en="Accounting" data-future-ar="المحاسبة">Accounting</span><span class="future-tag" data-future-en="SOON" data-future-ar="قريبًا">SOON</span></a>
+<a class="nav-item future-module" href="#" onclick="openFutureModule('tax');return false;"><span class="nav-icon">%</span><span data-future-en="Tax" data-future-ar="الضريبة">Tax</span><span class="future-tag" data-future-en="SOON" data-future-ar="قريبًا">SOON</span></a>
+</div><div class="sidebar-footer"><div>● <span data-i18n="DEMO ENVIRONMENT">DEMO ENVIRONMENT</span></div><div style="margin-top:8px" data-i18n="Designed & Developed by">Designed & Developed by</div><strong>APEX ORAIBI</strong></div>
 </aside>
 
 <main class="main">
@@ -1634,7 +1642,7 @@ function printMinute(id){
  const m=DATA.minutes.find(x=>x.id===id);if(!m)return;
  const w=window.open("","_blank");const imgs=(m.images||[]).map((x,i)=>`<div style="margin:12px 0"><b>${t("Image")} ${i+1}</b><br><img src="${x.data}" style="max-width:100%;max-height:420px"></div>`).join("");
  const att=(m.attendees||[]).filter(x=>x.name).map(x=>`<tr><td>${x.name}</td><td>${x.capacity}</td></tr>`).join("");
- w.document.write(`<!doctype html><html dir="${currentLang==="ar"?"rtl":"ltr"}"><head><meta charset="utf-8"><title>${m.id}</title><style>body{font-family:Arial,sans-serif;padding:35px;line-height:1.8;color:#17212b}h1{font-size:20px}table{width:100%;border-collapse:collapse;margin:15px 0}td,th{border:1px solid #ddd;padding:7px;font-size:12px}.meta{font-size:12px;color:#555}.text{white-space:pre-wrap;border-top:1px solid #ddd;padding-top:15px}.sig{max-width:260px;margin-top:20px}</style></head><body><h1>ENFORZA — ${t("Enforcement Minutes")}</h1><div class="meta">${m.id} · ${m.file} · ${m.date.replace("T"," ")} · ${m.location||""}</div><h2>${m.subject}</h2>${att?`<table><tr><th>${t("Name")}</th><th>${t("Capacity")}</th></tr>${att}</table>`:""}<div class="text">${m.text}</div>${imgs}${m.signature?`<h3>${t("Officer Signature")}</h3><img class="sig" src="${m.signature}">`:""}${(m.amendments||[]).map((a,i)=>`<h3>${t("Amendment")} ${i+1}</h3><div>${a.text}</div>`).join("")}<script>window.onload=()=>window.print()<\/script></body></html>`);w.document.close();
+ w.document.write(`<!doctype html><html dir="${currentLang==="ar"?"rtl":"ltr"}"><head><meta charset="utf-8"><title>${m.id}</title><style>body{font-family:Arial,sans-serif;padding:35px;line-height:1.8;color:#17212b}h1{font-size:20px}table{width:100%;border-collapse:collapse;margin:15px 0}td,th{border:1px solid #ddd;padding:7px;font-size:12px}.meta{font-size:12px;color:#555}.text{white-space:pre-wrap;border-top:1px solid #ddd;padding-top:15px}.sig{max-width:260px;margin-top:20px}</style></head><body><h1>ENFORZA — ${t("Enforcement Minutes")}</h1><div class="meta">${m.id} · ${m.file} · ${m.date.replace("T"," ")} · ${m.location||""}</div><h2>${m.subject}</h2>${att?`<table><tr><th>${t("Name")}</th><th>${t("Capacity")}</th></tr>${att}</table>`:""}<div class="text">${m.text}</div>${imgs}${m.signature?`<h3>${t("Officer Signature")}</h3><img class="sig" src="${m.signature}">`:""}${(m.amendments||[]).map((a,i)=>`<h3>${t("Amendment")} ${i+1}</h3><div>${a.text}</div>`).join("")}</body></html>`);w.document.close();
 }
 Object.assign(I18N.ar,{"Attendees & Capacities":"الحاضرون وصفاتهم","Add Attendee":"إضافة حاضر","Name":"الاسم","Capacity":"الصفة","Location / Site":"الموقع","Prepared By":"أعد المحضر","Officer Signature":"توقيع المنفذ","Sign using mouse or touch.":"وقع باستخدام الفأرة أو شاشة اللمس.","Clear Signature":"مسح التوقيع","Final Approval & Lock":"الاعتماد النهائي وقفل المحضر","Once approved, the original minutes are locked. Later changes are recorded as amendments.":"بعد الاعتماد يقفل أصل المحضر، وأي تعديل لاحق يسجل كملحق تعديل مستقل.","Approve & Lock":"اعتماد وقفل","Image":"صورة","Minutes Approved & Locked":"تم اعتماد وقفل المحضر","Minutes approved and locked.":"تم اعتماد المحضر وقفل النسخة الأصلية.","Enter the minutes text before approval.":"أدخل نص المحضر قبل الاعتماد.","Enter amendment / additional note":"أدخل ملحق التعديل أو الملاحظة الإضافية","Minutes Amendment Added":"تمت إضافة ملحق للمحضر","Amendment added without changing the approved original.":"تمت إضافة الملحق دون تغيير أصل المحضر المعتمد.","APPROVED":"معتمد","attendees":"حاضرين","amendments recorded":"ملحقات تعديل مسجلة","Add Amendment":"إضافة ملحق","Print":"طباعة","Enforcement Minutes":"محضر تنفيذ","Amendment":"ملحق تعديل"});
 
@@ -1746,7 +1754,7 @@ function renderEvidenceGallery(){
  const e=document.getElementById("evidenceGallery");if(!e)return;e.innerHTML=DATA.evidence.length?DATA.evidence.map((x,i)=>`<div class="gallery-card"><img src="${x.data}"><div><strong>${t("Evidence")} ${DATA.evidence.length-i}</strong><span>${x.file}${x.minute?" · "+x.minute:""}</span><span>${x.description||t("No description")}</span></div></div>`).join(""):`<div class="empty-state"><strong>${t("No field evidence captured yet.")}</strong></div>`;
 }
 function printEvidenceReport(){
- if(!DATA.evidence.length){showToast(t("No evidence available for report."));return}const w=window.open("","_blank"),rows=DATA.evidence.map((x,i)=>`<section style="page-break-inside:avoid;margin:20px 0"><h3>${t("Evidence")} ${i+1} — ${x.file}</h3><p>${x.captured}${x.minute?" · "+x.minute:""}</p><img src="${x.data}" style="max-width:100%;max-height:520px"><p>${x.description||""}</p></section>`).join("");w.document.write(`<!doctype html><html dir="${currentLang==="ar"?"rtl":"ltr"}"><head><meta charset="utf-8"><title>Field Evidence Report</title><style>body{font-family:Arial;padding:35px;font-size:16px;color:#17212b}h1,h2,h3{font-size:20px}</style></head><body><h1>ENFORZA — ${t("Field Evidence Report")}</h1>${rows}<script>window.onload=()=>window.print()<\/script></body></html>`);w.document.close();
+ if(!DATA.evidence.length){showToast(t("No evidence available for report."));return}const w=window.open("","_blank"),rows=DATA.evidence.map((x,i)=>`<section style="page-break-inside:avoid;margin:20px 0"><h3>${t("Evidence")} ${i+1} — ${x.file}</h3><p>${x.captured}${x.minute?" · "+x.minute:""}</p><img src="${x.data}" style="max-width:100%;max-height:520px"><p>${x.description||""}</p></section>`).join("");w.document.write(`<!doctype html><html dir="${currentLang==="ar"?"rtl":"ltr"}"><head><meta charset="utf-8"><title>Field Evidence Report</title><style>body{font-family:Arial;padding:35px;font-size:16px;color:#17212b}h1,h2,h3{font-size:20px}</style></head><body><h1>ENFORZA — ${t("Field Evidence Report")}</h1>${rows}</body></html>`);w.document.close();
 }
 const _openPageP17=openPage;
 openPage=function(page){if(page==="evidence"){hidePages();currentModule=page;document.querySelectorAll(".nav-item").forEach(el=>el.classList.toggle("active",el.dataset.page===page));document.getElementById("evidencePage").classList.remove("hidden");setHeading("Field Evidence Gallery","Capture and organize field images with voice descriptions and file linkage.");renderEvidenceGallery();const h=document.querySelector("#evidencePage .hero-row");if(h&&!h.querySelector(".report-evidence-btn"))h.insertAdjacentHTML("beforeend",`<button class="action-btn report-evidence-btn" onclick="printEvidenceReport()">▧ ${t("Field Evidence Report")}</button>`);document.getElementById("sidebar").classList.remove("open");window.scrollTo(0,0);applyLanguage();return}_openPageP17(page)}
@@ -1795,7 +1803,7 @@ function renderFileTimeline(f,filter="All"){
 function printFileTimeline(id){
  const f=DATA.files.find(x=>x.id===id);if(!f)return;const events=buildFileTimeline(f),w=window.open("","_blank");
  const rows=events.map(x=>`<tr><td>${x.date||"—"}</td><td>${t(x.type)}</td><td><b>${x.title}</b><br>${x.detail}</td></tr>`).join("");
- w.document.write(`<!doctype html><html dir="${currentLang==="ar"?"rtl":"ltr"}"><head><meta charset="utf-8"><title>${id} Timeline</title><style>body{font-family:Arial;padding:35px;font-size:16px;color:#17212b}h1,h2{font-size:20px}table{width:100%;border-collapse:collapse;margin-top:20px}td,th{border:1px solid #ddd;padding:10px;text-align:start;vertical-align:top}</style></head><body><h1>ENFORZA — ${t("File Timeline")}</h1><h2>${id} · ${f.creditor} → ${f.debtor}</h2><table><tr><th>${t("Date")}</th><th>${t("Type")}</th><th>${t("Event")}</th></tr>${rows}</table><script>window.onload=()=>window.print()<\/script></body></html>`);w.document.close();
+ w.document.write(`<!doctype html><html dir="${currentLang==="ar"?"rtl":"ltr"}"><head><meta charset="utf-8"><title>${id} Timeline</title><style>body{font-family:Arial;padding:35px;font-size:16px;color:#17212b}h1,h2{font-size:20px}table{width:100%;border-collapse:collapse;margin-top:20px}td,th{border:1px solid #ddd;padding:10px;text-align:start;vertical-align:top}</style></head><body><h1>ENFORZA — ${t("File Timeline")}</h1><h2>${id} · ${f.creditor} → ${f.debtor}</h2><table><tr><th>${t("Date")}</th><th>${t("Type")}</th><th>${t("Event")}</th></tr>${rows}</table></body></html>`);w.document.close();
 }
 const _enrichP19=enrichFile360;
 enrichFile360=function(m,r){_enrichP19(m,r);if(m==="files")setTimeout(()=>renderFileTimeline(r),25)}
@@ -1813,17 +1821,12 @@ function saveSmartTask(){const title=document.getElementById("stTitle").value.tr
 function completeSmartTask(id){const x=DATA.smartTasks.find(a=>a.id===id);if(x){x.status="Completed";x.completed=new Date().toISOString();renderSmartTasks(document.getElementById("taskFilter")?.value||"all");showToast(t("Task completed."))}}
 function renderSmartTasks(filter="all"){const list=document.getElementById("smartTaskList"),k=document.getElementById("taskKPIs");if(!list||!k)return;const a=DATA.smartTasks,counts={today:a.filter(x=>taskState(x)==="today").length,overdue:a.filter(x=>taskState(x)==="overdue").length,open:a.filter(x=>x.status!=="Completed").length,done:a.filter(x=>x.status==="Completed").length};k.innerHTML=[[t("Today"),counts.today],[t("Overdue"),counts.overdue],[t("Open"),counts.open],[t("Completed"),counts.done]].map(x=>`<div class="task-kpi"><span>${x[0]}</span><strong>${x[1]}</strong></div>`).join("");let rows=filter==="all"?a:a.filter(x=>taskState(x)===filter);list.innerHTML=rows.length?rows.map(x=>`<div class="task-row ${taskState(x)}"><div><strong>${x.title}</strong><span>${x.id} · ${x.file}</span></div><div><strong>${x.assignee}</strong><span>${t("Assigned To")}</span></div><div><strong>${x.due}</strong><span>${x.reminder}</span></div><div><span class="task-status">${t(x.status)}</span><span>${t(x.priority)}</span></div><div>${x.status!=="Completed"?`<button onclick="completeSmartTask('${x.id}')">✓</button>`:""}</div></div>`).join(""):`<div class="timeline-empty">${t("No tasks for this filter.")}</div>`}
 function aiTaskAssistant(){const open=DATA.smartTasks.filter(x=>x.status!=="Completed"),over=open.filter(x=>taskState(x)==="overdue"),critical=open.filter(x=>x.priority==="Critical");showToast(`${t("AI Task Review")}: ${over.length} ${t("overdue")}, ${critical.length} ${t("critical priority")}.`)}
-function printTaskReport(){const a=DATA.smartTasks,w=window.open("","_blank"),rows=a.map(x=>`<tr><td>${x.id}</td><td>${x.file}</td><td>${x.title}</td><td>${x.assignee}</td><td>${x.due}</td><td>${t(x.priority)}</td><td>${t(x.status)}</td><td>${x.reminder}</td></tr>`).join("");w.document.write(`<!doctype html><html dir="${currentLang==="ar"?"rtl":"ltr"}"><head><meta charset="utf-8"><style>body{font-family:Arial;padding:35px;font-size:16px}h1{font-size:20px}table{width:100%;border-collapse:collapse}td,th{border:1px solid #ddd;padding:8px;text-align:start}</style>
-<style id="stable-rebuild-42-css">
-.future-module-label{padding:14px 18px 7px;font-size:10px;letter-spacing:1.7px;font-weight:900;color:var(--muted)}
-.coming-overlay{position:fixed;inset:0;z-index:9999;background:rgba(8,13,18,.62);backdrop-filter:blur(8px);display:none;place-items:center;padding:18px}
-.coming-overlay.open{display:grid}.coming-card{width:min(560px,94vw);background:var(--white);color:var(--text);border:1px solid var(--border);border-radius:22px;padding:32px;text-align:center;box-shadow:0 28px 90px rgba(0,0,0,.28)}
-.coming-icon{width:72px;height:72px;margin:0 auto 16px;border-radius:20px;display:grid;place-items:center;background:var(--bronze-soft);font-size:34px}.coming-card h2{font-size:24px!important;margin:0 0 8px}.coming-card p{color:var(--muted);line-height:1.6}.coming-card button{border:0;background:var(--bronze);color:#fff;border-radius:10px;padding:11px 22px;font-size:16px;font-weight:900}
-body.role-creditor .sidebar .nav-item:not([data-page="creditorPortal"]):not([data-page="documents"]):not([data-page="reports"]){display:none!important}
-body.role-officer .nav-item[data-page="users"],body.role-officer .nav-item[data-page="settings"],body.role-officer .nav-item[data-page="audit"],body.role-officer .nav-item[data-page="aiInsights"]{display:none!important}
-html[dir="rtl"] body,html[dir="rtl"] .sidebar,html[dir="rtl"] .main{direction:rtl}
-</style>
-</head><body><h1>ENFORZA — ${t("Task Report")}</h1><table><tr><th>ID</th><th>${t("File")}</th><th>${t("Task")}</th><th>${t("Assigned To")}</th><th>${t("Due Date")}</th><th>${t("Priority")}</th><th>${t("Status")}</th><th>${t("Reminder")}</th></tr>${rows}</table><script>window.onload=()=>window.print()<\/script></body></html>`);w.document.close()}
+function printTaskReport(){
+ const a=DATA.smartTasks,w=window.open("","_blank");
+ const rows=a.map(x=>`<tr><td>${x.id}</td><td>${x.file}</td><td>${x.title}</td><td>${x.assignee}</td><td>${x.due}</td><td>${t(x.priority)}</td><td>${t(x.status)}</td><td>${x.reminder}</td></tr>`).join("");
+ w.document.write(`<!doctype html><html dir="${currentLang==="ar"?"rtl":"ltr"}"><head><meta charset="utf-8"><title>${t("Task Report")}</title><style>body{font-family:Arial;padding:35px;font-size:16px}h1{font-size:20px}table{width:100%;border-collapse:collapse}td,th{border:1px solid #ddd;padding:8px;text-align:start}</style></head><body><h1>ENFORZA — ${t("Task Report")}</h1><table><tr><th>ID</th><th>${t("File")}</th><th>${t("Task")}</th><th>${t("Assigned To")}</th><th>${t("Due Date")}</th><th>${t("Priority")}</th><th>${t("Status")}</th><th>${t("Reminder")}</th></tr>${rows}</table></body></html>`);
+ w.document.close();w.focus();setTimeout(()=>w.print(),250);
+}
 const _commitP20=commitWizardFile;
 commitWizardFile=function(){const id=document.getElementById("wfRef").value;_commitP20();const f=DATA.files.find(x=>x.id===id);if(f){f.origin=document.getElementById("wfOrigin")?.value||"New Direct File";f.source=document.getElementById("wfSource")?.value||"";f.caseNo=document.getElementById("wfCaseNo")?.value||"";f.court=document.getElementById("wfCourt")?.value||"";f.externalRef=document.getElementById("wfExternalRef")?.value||"";f.previousCollection=+(document.getElementById("wfPreviousCollection")?.value||0)}}
 const _renderUnifiedP20=renderUnifiedFile360;
@@ -1915,122 +1918,18 @@ Object.assign(I18N.ar,{"Add Attachment":"إضافة مرفق","Choose where you 
 renderDashboard();renderUsers();renderAudit();renderPermissions();showReport("executive");applyLanguage();
 </script>
 
-<div class="coming-overlay" id="stableComingOverlay" onclick="if(event.target===this)closeStableComing()">
- <div class="coming-card"><div class="coming-icon" id="stableComingIcon">👥</div><h2 id="stableComingTitle">Human Resources</h2><p id="stableComingText">COMING SOON</p><button id="stableComingClose" onclick="closeStableComing()">Close</button></div>
-</div>
 
-<script id="stable-rebuild-42-js">
+
+
+<div id="futureModuleModal" onclick="if(event.target===this)closeFutureModule()"><div class="future-module-card"><div class="future-module-icon" id="futureModuleIcon">HR</div><h2 id="futureModuleTitle">Human Resources</h2><div class="future-module-badge" id="futureModuleBadge">COMING SOON</div><p id="futureModuleText">This module is being prepared for a future release.</p><button type="button" id="futureModuleClose" onclick="closeFutureModule()">Close</button></div></div><script id="future-modules-clean-js">
 (function(){
-const FUTURE=[
- {id:"hr",icon:"👥",en:"Human Resources",ar:"الموارد البشرية"},
- {id:"accounting",icon:"▤",en:"Accounting",ar:"المحاسبة"},
- {id:"tax",icon:"%",en:"Tax",ar:"الضريبة"}
-];
-Object.assign(I18N.ar,{
- "Human Resources":"الموارد البشرية","Accounting":"المحاسبة","Tax":"الضريبة",
- "Future Modules":"أقسام مستقبلية","COMING SOON":"قريبًا","Close":"إغلاق",
- "This module is being prepared for a future release.":"هذا القسم قيد التجهيز وسيتم تفعيله في إصدار قادم.",
- "Executive Dashboard":"لوحة التحكم التنفيذية",
- "Enforcement, collection and financial performance overview":"نظرة عامة على التنفيذ والتحصيل والأداء المالي",
- "Search file, party or reference...":"ابحث عن ملف أو طرف أو مرجع...",
- "Dashboard":"لوحة التحكم","Enforcement Files":"ملفات التنفيذ","Parties":"الأطراف",
- "Financial Claims":"المطالبات المالية","Tasks & Follow-ups":"المهام والمتابعات",
- "Collections":"التحصيلات","Expenses":"المصروفات","Settlements":"التسويات",
- "Banking & Treasury":"البنوك والخزينة","Reports & Analytics":"التقارير والتحليلات",
- "Users & Permissions":"المستخدمون والصلاحيات","Settings":"الإعدادات","Audit Log":"سجل التدقيق",
- "Minutes":"المحاضر","Smart Tasks":"المهام الذكية","Field Evidence":"الأدلة الميدانية",
- "Document Center":"مركز المستندات","Workspace":"مساحة العمل","Financial":"المالية",
- "Management":"الإدارة","Good morning, Ahmed":"صباح الخير، أحمد",
- "Here is the current enforcement portfolio position.":"هذه هي الوضعية الحالية لمحفظة التنفيذ.",
- "Start Demo Tour":"بدء الجولة التجريبية","New Action":"إجراء جديد",
- "Active Enforcement Files":"ملفات التنفيذ النشطة","Total Claims":"إجمالي المطالبات",
- "Collected":"المحصل","Outstanding":"المتبقي","Collected This Month":"المحصل هذا الشهر",
- "Claims vs Collections":"المطالبات مقابل التحصيلات","Recovery Performance":"أداء التحصيل",
- "Priority Enforcement Files":"ملفات التنفيذ ذات الأولوية","Recovery by Officer":"التحصيل حسب المنفذ",
- "Upcoming Actions":"الإجراءات القادمة","Recent Financial Activity":"النشاط المالي الأخير",
- "View All":"عرض الكل","Files requiring immediate action":"ملفات تتطلب إجراءً فوريًا",
- "Next enforcement activities":"إجراءات التنفيذ القادمة","Latest collections and expenses":"أحدث التحصيلات والمصروفات",
- "Current enforcement portfolio":"محفظة التنفيذ الحالية","Current month performance":"أداء الشهر الحالي",
- "Designed & Developed by":"تصميم وتطوير","DEMO ENVIRONMENT":"بيئة تجريبية"
-});
-
-window.openStableComing=function(id){
- const m=FUTURE.find(x=>x.id===id);if(!m)return;
- const ar=currentLang==="ar";
- document.getElementById("stableComingIcon").textContent=m.icon;
- document.getElementById("stableComingTitle").textContent=ar?m.ar:m.en;
- document.getElementById("stableComingText").textContent=ar?"قريبًا — هذا القسم قيد التجهيز وسيتم تفعيله في إصدار قادم.":"COMING SOON — This module is being prepared for a future release.";
- document.getElementById("stableComingClose").textContent=ar?"إغلاق":"Close";
- document.getElementById("stableComingOverlay").classList.add("open");
-};
-window.closeStableComing=function(){document.getElementById("stableComingOverlay").classList.remove("open")};
-
-function addFutureModules(){
- const sidebar=document.getElementById("sidebar")||document.querySelector(".sidebar");
- if(!sidebar||document.getElementById("stableFutureModules"))return;
- const box=document.createElement("div");box.id="stableFutureModules";
- box.innerHTML='<div class="future-module-label" data-i18n="Future Modules">Future Modules</div>'+
- FUTURE.map(m=>'<a class="nav-item" href="#" data-future="'+m.id+'"><span class="nav-icon">'+m.icon+'</span><span data-i18n="'+m.en+'">'+m.en+'</span></a>').join("");
- const footer=sidebar.querySelector(".sidebar-footer")||sidebar.lastElementChild;
- if(footer)sidebar.insertBefore(box,footer);else sidebar.appendChild(box);
- box.querySelectorAll("[data-future]").forEach(a=>a.addEventListener("click",e=>{e.preventDefault();openStableComing(a.dataset.future)}));
- applyLanguage();
-}
-
-const baseApplyRole=window.applyRoleAccess;
-window.applyRoleAccess=function(role){
- if(baseApplyRole)baseApplyRole(role);
- activeDemoRole=role;
- document.body.classList.remove("role-management","role-officer","role-creditor");
- document.body.classList.add("role-"+role);
- const allowed={
-   management:null,
-   officer:new Set(["dashboard","files","parties","claims","tasks","collections","settlements","documents","reports","minutes","followupBoard","actionsCenter"]),
-   creditor:new Set(["creditorPortal","documents","reports"])
- };
- document.querySelectorAll(".nav-item[data-page]").forEach(n=>{
-   const ok=!allowed[role]||allowed[role].has(n.dataset.page);
-   n.style.display=ok?"":"none";
- });
- document.getElementById("stableFutureModules")?.querySelectorAll(".nav-item").forEach(n=>n.style.display=role==="management"?"":"none");
-};
-
-const baseOpen=window.openPage;
-window.openPage=function(page){
- const allowed={
-  management:null,
-  officer:new Set(["dashboard","files","parties","claims","tasks","collections","settlements","documents","reports","minutes","followupBoard","actionsCenter"]),
-  creditor:new Set(["creditorPortal","documents","reports"])
- };
- if(allowed[activeDemoRole]&&!allowed[activeDemoRole].has(page)){
-   showToast(currentLang==="ar"?"ليس لديك صلاحية لعرض هذا القسم.":"You do not have permission to view this section.");
-   return;
- }
- return baseOpen(page);
-};
-
-const baseApplyLanguage=window.applyLanguage;
-window.applyLanguage=function(){
- if(baseApplyLanguage)baseApplyLanguage();
- const ar=currentLang==="ar";
- document.documentElement.lang=ar?"ar":"en";
- document.documentElement.dir=ar?"rtl":"ltr";
- document.body.dir=ar?"rtl":"ltr";
- document.querySelectorAll("[data-i18n]").forEach(el=>el.textContent=t(el.dataset.i18n));
- const title=document.getElementById("stableComingTitle");
- if(document.getElementById("stableComingOverlay")?.classList.contains("open")){
-   const active=document.querySelector("#stableFutureModules .nav-item.active");
-   if(active)openStableComing(active.dataset.future);
- }
-};
-
-function initStable(){
- addFutureModules();
- applyRoleAccess(activeDemoRole||"management");
- applyLanguage();
-}
-if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initStable);else initStable();
+ const modules={hr:{icon:"HR",en:"Human Resources",ar:"الموارد البشرية"},accounting:{icon:"AC",en:"Accounting",ar:"المحاسبة"},tax:{icon:"TX",en:"Tax",ar:"الضريبة"}};
+ function isAr(){return (window.currentLang||document.documentElement.lang||"en")==="ar"}
+ window.refreshFutureModuleLanguage=function(){const ar=isAr();document.querySelectorAll("[data-future-en]").forEach(el=>el.textContent=ar?el.dataset.futureAr:el.dataset.futureEn)};
+ window.openFutureModule=function(id){const m=modules[id];if(!m)return;const ar=isAr();document.getElementById("futureModuleIcon").textContent=m.icon;document.getElementById("futureModuleTitle").textContent=ar?m.ar:m.en;document.getElementById("futureModuleBadge").textContent=ar?"قريبًا":"COMING SOON";document.getElementById("futureModuleText").textContent=ar?"هذا القسم قيد التجهيز وسيتم تفعيله في إصدار قادم.":"This module is being prepared for a future release.";document.getElementById("futureModuleClose").textContent=ar?"إغلاق":"Close";document.getElementById("futureModuleModal").classList.add("open")};
+ window.closeFutureModule=function(){document.getElementById("futureModuleModal").classList.remove("open")};
+ new MutationObserver(refreshFutureModuleLanguage).observe(document.documentElement,{attributes:true,attributeFilter:["lang","dir"]});
+ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",refreshFutureModuleLanguage);else refreshFutureModuleLanguage();
 })();
-</script>
-</body>
+</script></body>
 </html>
