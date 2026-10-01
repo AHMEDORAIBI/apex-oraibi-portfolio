@@ -499,7 +499,27 @@ html[dir="rtl"] .v2-command{text-align:right}
 @media(max-width:700px){.v2-command{padding:18px 14px}.v2-hero{align-items:flex-start;flex-direction:column}.v2-hero h1{font-size:25px!important}.v2-kpis{grid-template-columns:1fr 1fr}.v2-actions{width:100%}.v2-btn{flex:1}.v2-grid{display:block}.v2-panel{margin-bottom:12px}}
 </style>
 
-</head>
+<style id="enforza-v2-calendar-css">
+.v2cal{padding:28px}.v2cal-top{display:flex;justify-content:space-between;gap:16px;align-items:flex-end;margin-bottom:16px}
+.v2cal-top h1{font-size:28px!important;margin:4px 0}.v2cal-top p{margin:0;color:var(--muted)}
+.v2cal-actions,.v2cal-switch{display:flex;gap:8px;flex-wrap:wrap}.v2cal-btn{border:1px solid var(--border);background:var(--white);color:var(--text);border-radius:10px;padding:10px 13px;font-weight:900;cursor:pointer}
+.v2cal-btn.active,.v2cal-btn.primary{background:#111820;color:#fff;border-color:#111820}
+.v2cal-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:13px}.v2cal-period{font-size:18px;font-weight:950}
+.v2cal-shell{background:var(--white);border:1px solid var(--border);border-radius:17px;overflow:hidden;box-shadow:0 12px 34px rgba(33,27,21,.045)}
+.v2cal-weekdays,.v2cal-month{display:grid;grid-template-columns:repeat(7,1fr)}.v2cal-weekdays div{padding:11px;text-align:center;font-size:11px;font-weight:900;color:var(--muted);border-bottom:1px solid var(--border)}
+.v2cal-day{min-height:120px;padding:9px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);cursor:pointer}.v2cal-day:nth-child(7n){border-right:0}.v2cal-day.muted{background:#faf9f7;color:#aaa}.v2cal-day.today{background:#fbf5ee}.v2cal-num{font-size:12px;font-weight:900;margin-bottom:7px}.v2cal-day.today .v2cal-num{display:grid;place-items:center;width:27px;height:27px;border-radius:50%;background:#b77a3e;color:#fff}
+.v2cal-empty{font-size:10px;color:#b4aca4;margin-top:14px}.v2cal-event{display:block;padding:6px 7px;margin:4px 0;border-radius:7px;background:#f0e6db;color:#6d4928;font-size:10px;font-weight:850;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.v2cal-agenda{padding:16px}.v2cal-agenda-empty{min-height:340px;display:grid;place-items:center;text-align:center;color:var(--muted)}.v2cal-agenda-empty b{display:block;color:var(--text);font-size:17px;margin-bottom:6px}
+.v2task-drawer{position:fixed;inset:0;z-index:60000;display:none;background:rgba(9,13,17,.5)}.v2task-drawer.open{display:block}.v2task-panel{position:absolute;top:0;right:0;width:min(520px,100%);height:100%;overflow:auto;background:var(--white);padding:25px;box-shadow:-20px 0 60px rgba(0,0,0,.18)}
+html[dir=rtl] .v2task-panel{right:auto;left:0}.v2task-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.v2task-head h2{font-size:20px!important;margin:0}.v2task-close{border:0;background:transparent;font-size:25px;cursor:pointer}
+.v2task-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.v2task-field{margin-bottom:13px}.v2task-field.full{grid-column:1/-1}.v2task-field label{display:block;font-size:11px;font-weight:900;color:var(--muted);margin-bottom:5px}.v2task-field input,.v2task-field select,.v2task-field textarea{width:100%;border:1px solid var(--border);border-radius:9px;padding:10px;background:var(--white);color:var(--text);font:inherit}.v2task-field textarea{min-height:90px;resize:vertical}.v2task-save{width:100%;border:0;border-radius:10px;padding:12px;background:#111820;color:#fff;font-size:14px;font-weight:900;cursor:pointer}
+@media(max-width:760px){.v2cal{padding:16px 12px}.v2cal-top{align-items:flex-start;flex-direction:column}.v2cal-day{min-height:83px;padding:6px}.v2cal-empty{display:none}.v2cal-weekdays div{font-size:9px;padding:8px 2px}.v2task-grid{grid-template-columns:1fr}.v2task-field.full{grid-column:auto}}
+</style><style id="enforza-v2-calendar-phase3-css">
+.v2cal-event.priority-High{background:#fff0dd;color:#925715}.v2cal-event.priority-Critical{background:#fde7e7;color:#9b2e2e}.v2cal-event.done{opacity:.55;text-decoration:line-through}
+.v2task-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.v2task-action{border:1px solid var(--border);border-radius:10px;padding:11px;background:var(--white);font-weight:900;cursor:pointer}.v2task-action.complete{background:#eef7ef;color:#276c34}.v2task-action.delete{background:#fff0f0;color:#9b2e2e}
+.v2-ai-assist{margin:16px 0;padding:14px;border-radius:13px;background:#17130f;color:#fff}.v2-ai-assist b{display:block;margin-bottom:6px}.v2-ai-assist p{margin:0 0 10px;color:#cdbbaa;font-size:12px;line-height:1.5}.v2-ai-row{display:flex;gap:7px}.v2-ai-row input{flex:1;border:1px solid #413329;background:#211a14;color:#fff;border-radius:9px;padding:10px}.v2-ai-row button{border:0;border-radius:9px;background:#b77a3e;color:#fff;font-weight:900;padding:10px 12px;cursor:pointer}
+.v2-myday-list{display:grid;gap:8px}.v2-myday-item{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:11px 12px;border:1px solid var(--v2-line);border-radius:11px;background:#fff}.v2-myday-item b{font-size:13px}.v2-myday-item small{color:var(--v2-muted)}.v2-myday-time{font-weight:950;color:var(--v2-gold);white-space:nowrap}
+</style></head>
 <body>
 
 
@@ -1963,5 +1983,116 @@ if(typeof oldSet==="function"){window.setLanguage=function(lang){oldSet(lang);se
 })();
 </script>
 
-</body>
+<section class="page" id="v2CalendarPage" style="display:none">
+<div class="v2cal">
+ <div class="v2cal-top"><div><div class="v2-kicker" id="v2calKicker">TASKS & FOLLOW-UP</div><h1 id="v2calTitle">Enforcement Calendar</h1><p id="v2calSub">Plan tasks, deadlines, follow-ups and field actions.</p></div><div class="v2cal-actions"><button class="v2cal-btn primary" onclick="v2OpenTask()">+ <span id="v2newTask">New Task</span></button></div></div>
+ <div class="v2cal-toolbar"><div><button class="v2cal-btn" onclick="v2CalMove(-1)">‹</button><button class="v2cal-btn" onclick="v2CalToday()" id="v2todayBtn">Today</button><button class="v2cal-btn" onclick="v2CalMove(1)">›</button></div><div class="v2cal-period" id="v2calPeriod"></div><div class="v2cal-switch"><button class="v2cal-btn active" data-view="month" onclick="v2SetView('month',this)">Month</button><button class="v2cal-btn" data-view="week" onclick="v2SetView('week',this)">Week</button><button class="v2cal-btn" data-view="day" onclick="v2SetView('day',this)">Day</button><button class="v2cal-btn" data-view="agenda" onclick="v2SetView('agenda',this)">Agenda</button></div></div>
+ <div class="v2cal-shell" id="v2calShell"></div>
+</div></section>
+<div class="v2task-drawer" id="v2TaskDrawer" onclick="if(event.target===this)v2CloseTask()"><aside class="v2task-panel"><div class="v2task-head"><h2 id="v2taskHead">New Task</h2><button class="v2task-close" onclick="v2CloseTask()">×</button></div><div class="v2task-grid">
+<div class="v2task-field full"><label id="v2lblTitle">Task title</label><input id="v2taskTitle"></div>
+<div class="v2task-field"><label id="v2lblDate">Date</label><input id="v2taskDate" type="date"></div><div class="v2task-field"><label id="v2lblTime">Time</label><input id="v2taskTime" type="time"></div>
+<div class="v2task-field"><label id="v2lblFile">Enforcement file</label><select id="v2taskFile"><option value="">—</option></select></div><div class="v2task-field"><label id="v2lblPriority">Priority</label><select id="v2taskPriority"><option>Normal</option><option>High</option><option>Critical</option></select></div>
+<div class="v2task-field"><label id="v2lblType">Task type</label><select id="v2taskType"><option>Follow-up</option><option>Collection</option><option>Hearing</option><option>Service</option><option>Field Action</option><option>Document</option></select></div><div class="v2task-field"><label id="v2lblReminder">Reminder</label><select id="v2taskReminder"><option>None</option><option>30 minutes before</option><option>1 hour before</option><option>1 day before</option></select></div>
+<div class="v2task-field full"><label id="v2lblNotes">Notes</label><textarea id="v2taskNotes"></textarea></div></div><button class="v2task-save" id="v2taskSave" onclick="v2SaveTask()">Save Task</button><div class="v2task-actions" id="v2taskEditActions" style="display:none"><button class="v2task-action complete" onclick="v2CompleteTask()">Complete</button><button class="v2task-action delete" onclick="v2DeleteTask()">Delete</button></div>
+<div class="v2-ai-assist"><b>✦ ENFORZA AI Calendar Assistant</b><p id="v2aiHint">Describe a task naturally and ENFORZA will prepare its fields.</p><div class="v2-ai-row"><input id="v2aiTaskPrompt" placeholder="Follow up file EF-... tomorrow at 10:00"><button onclick="v2AIParseTask()">Prepare</button></div></div></aside></div><script id="enforza-v2-calendar-js">
+(function(){
+"use strict";
+let calDate=new Date(),calView="month";
+function A(){return (window.currentLang||document.documentElement.lang||"en")==="ar"}
+function X(en,ar){return A()?ar:en}
+function tasks(){if(!window.DATA)return[];if(!Array.isArray(DATA.smartTasks))DATA.smartTasks=[];return DATA.smartTasks}
+function pad(n){return String(n).padStart(2,"0")}function iso(d){return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())}
+function monthName(d){return d.toLocaleDateString(A()?"ar-BH":"en-US",{month:"long",year:"numeric"})}
+function renderMonth(){
+ const y=calDate.getFullYear(),m=calDate.getMonth(),first=new Date(y,m,1),start=new Date(y,m,1-first.getDay()),today=iso(new Date());
+ let days="",wd=A()?["الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"]:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+ for(let i=0;i<42;i++){let d=new Date(start);d.setDate(start.getDate()+i);let di=iso(d),ev=tasks().filter(t=>t.due===di||t.date===di);days+=`<div class="v2cal-day ${d.getMonth()!==m?"muted":""} ${di===today?"today":""}" onclick="v2OpenTask('${di}')"><div class="v2cal-num">${d.getDate()}</div>${ev.length?ev.map(t=>`<span class="v2cal-event">${t.time||""} ${t.title||t.task||""}</span>`).join(""):`<div class="v2cal-empty">${X("No tasks","لا توجد مهام")}</div>`}</div>`}
+ document.getElementById("v2calShell").innerHTML=`<div class="v2cal-weekdays">${wd.map(x=>`<div>${x}</div>`).join("")}</div><div class="v2cal-month">${days}</div>`;document.getElementById("v2calPeriod").textContent=monthName(calDate)
+}
+function renderAgenda(){
+ let a=[...tasks()].sort((x,y)=>(x.due||x.date||"").localeCompare(y.due||y.date||""));
+ document.getElementById("v2calPeriod").textContent=calView==="agenda"?X("Agenda","جدول الأعمال"):calDate.toLocaleDateString(A()?"ar-BH":"en-US",{dateStyle:"full"});
+ if(!a.length){document.getElementById("v2calShell").innerHTML=`<div class="v2cal-agenda-empty"><div><b>${X("No tasks scheduled","لا توجد مهام مجدولة")}</b>${X("Create your first task to start building the enforcement calendar.","أنشئ أول مهمة لبدء بناء تقويم التنفيذ.")}</div></div>`;return}
+ document.getElementById("v2calShell").innerHTML=`<div class="v2cal-agenda">${a.map(t=>`<div class="v2-card" style="padding:14px;margin-bottom:9px"><b>${t.title||t.task}</b><div style="color:var(--muted);font-size:12px;margin-top:4px">${t.due||t.date||""} ${t.time||""} · ${t.file||"—"} · ${t.priority||"Normal"}</div></div>`).join("")}</div>`
+}
+window.v2SetView=function(v,b){calView=v;document.querySelectorAll(".v2cal-switch .v2cal-btn").forEach(x=>x.classList.remove("active"));b.classList.add("active");v==="month"?renderMonth():renderAgenda()}
+window.v2CalMove=function(n){if(calView==="month")calDate.setMonth(calDate.getMonth()+n);else calDate.setDate(calDate.getDate()+n);calView==="month"?renderMonth():renderAgenda()}
+window.v2CalToday=function(){calDate=new Date();calView==="month"?renderMonth():renderAgenda()}
+window.v2OpenTask=function(date){document.getElementById("v2taskDate").value=date||iso(new Date());let sel=document.getElementById("v2taskFile");sel.innerHTML='<option value="">—</option>'+((window.DATA&&DATA.files)||[]).map(f=>`<option value="${f.id||f.ref||""}">${f.id||f.ref||""}</option>`).join("");document.getElementById("v2TaskDrawer").classList.add("open")}
+window.v2CloseTask=function(){document.getElementById("v2TaskDrawer").classList.remove("open")}
+window.v2SaveTask=function(){let title=document.getElementById("v2taskTitle").value.trim(),date=document.getElementById("v2taskDate").value;if(!title||!date)return;tasks().push({id:"TSK-"+String(tasks().length+1).padStart(4,"0"),title:title,due:date,time:document.getElementById("v2taskTime").value,file:document.getElementById("v2taskFile").value,priority:document.getElementById("v2taskPriority").value,type:document.getElementById("v2taskType").value,reminder:document.getElementById("v2taskReminder").value,notes:document.getElementById("v2taskNotes").value,status:"Open"});v2CloseTask();renderMonth();document.getElementById("v2taskTitle").value="";document.getElementById("v2taskNotes").value=""}
+function localize(){document.getElementById("v2calKicker").textContent=X("TASKS & FOLLOW-UP","المهام والمتابعة");document.getElementById("v2calTitle").textContent=X("Enforcement Calendar","تقويم التنفيذ");document.getElementById("v2calSub").textContent=X("Plan tasks, deadlines, follow-ups and field actions.","خطط للمهام والمواعيد والمتابعات والإجراءات الميدانية.");document.getElementById("v2newTask").textContent=X("New Task","مهمة جديدة");document.getElementById("v2todayBtn").textContent=X("Today","اليوم");renderMonth()}
+function addNav(){
+ let taskNav=[...document.querySelectorAll(".nav-item")].find(x=>(x.textContent||"").includes("Tasks & Follow-ups")||(x.textContent||"").includes("المهام"));
+ if(taskNav&&!taskNav.dataset.v2calendar){taskNav.dataset.v2calendar="1";taskNav.addEventListener("click",function(e){e.preventDefault();document.querySelectorAll(".page").forEach(p=>p.style.display="none");document.getElementById("v2CalendarPage").style.display="block";localize()},true)}
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>{addNav();renderMonth()});else{addNav();renderMonth()}
+})();
+</script><script id="enforza-v2-calendar-phase3-js">
+(function(){
+"use strict";
+let editTaskId=null;
+function A3(){return (window.currentLang||document.documentElement.lang||"en")==="ar"}
+function T3(en,ar){return A3()?ar:en}
+function arr3(){if(!window.DATA)return[];if(!Array.isArray(DATA.smartTasks))DATA.smartTasks=[];return DATA.smartTasks}
+function today3(){let d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function refreshMyDay(){
+ const host=document.querySelector(".v2-myday .v2-empty");if(!host)return;
+ const list=arr3().filter(x=>(x.due||x.date)===today3()&&x.status!=="Completed");
+ if(!list.length)return;
+ host.outerHTML='<div class="v2-myday-list">'+list.map(x=>`<div class="v2-myday-item"><div><b>${x.title||x.task}</b><br><small>${x.file||T3("No file linked","غير مرتبط بملف")} · ${x.priority||"Normal"}</small></div><div class="v2-myday-time">${x.time||"—"}</div></div>`).join("")+'</div>';
+}
+const oldOpen=window.v2OpenTask;
+window.v2OpenTask=function(date,id){
+ editTaskId=id||null;
+ if(oldOpen)oldOpen(date);
+ const t=id?arr3().find(x=>x.id===id):null;
+ document.getElementById("v2taskEditActions").style.display=t?"grid":"none";
+ document.getElementById("v2taskHead").textContent=t?T3("Task Details","تفاصيل المهمة"):T3("New Task","مهمة جديدة");
+ if(t){
+  document.getElementById("v2taskTitle").value=t.title||t.task||"";
+  document.getElementById("v2taskDate").value=t.due||t.date||"";
+  document.getElementById("v2taskTime").value=t.time||"";
+  document.getElementById("v2taskFile").value=t.file||"";
+  document.getElementById("v2taskPriority").value=t.priority||"Normal";
+  document.getElementById("v2taskType").value=t.type||"Follow-up";
+  document.getElementById("v2taskReminder").value=t.reminder||"None";
+  document.getElementById("v2taskNotes").value=t.notes||"";
+ }
+};
+const oldSave=window.v2SaveTask;
+window.v2SaveTask=function(){
+ if(!editTaskId){oldSave();refreshMyDay();return}
+ const t=arr3().find(x=>x.id===editTaskId);if(!t)return;
+ t.title=document.getElementById("v2taskTitle").value.trim();t.due=document.getElementById("v2taskDate").value;t.time=document.getElementById("v2taskTime").value;t.file=document.getElementById("v2taskFile").value;t.priority=document.getElementById("v2taskPriority").value;t.type=document.getElementById("v2taskType").value;t.reminder=document.getElementById("v2taskReminder").value;t.notes=document.getElementById("v2taskNotes").value;
+ editTaskId=null;v2CloseTask();v2CalToday();refreshMyDay();
+};
+window.v2CompleteTask=function(){let t=arr3().find(x=>x.id===editTaskId);if(t)t.status="Completed";editTaskId=null;v2CloseTask();v2CalToday();refreshMyDay()}
+window.v2DeleteTask=function(){if(!editTaskId)return;let i=arr3().findIndex(x=>x.id===editTaskId);if(i>=0)arr3().splice(i,1);editTaskId=null;v2CloseTask();v2CalToday();refreshMyDay()}
+window.v2AIParseTask=function(){
+ let q=document.getElementById("v2aiTaskPrompt").value.trim();if(!q)return;
+ let d=new Date(),date=today3(),time="";
+ if(/tomorrow|غد/i.test(q)){d.setDate(d.getDate()+1);date=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+ let tm=q.match(/(?:at|الساعة)?\s*(\d{1,2})(?::(\d{2}))?\s*(am|pm|ص|م)?/i);
+ if(tm){let h=+tm[1],mi=tm[2]||"00",ap=(tm[3]||"").toLowerCase();if((ap==="pm"||ap==="م")&&h<12)h+=12;if((ap==="am"||ap==="ص")&&h===12)h=0;time=String(h).padStart(2,"0")+":"+mi}
+ document.getElementById("v2taskTitle").value=q;document.getElementById("v2taskDate").value=date;if(time)document.getElementById("v2taskTime").value=time;
+};
+function wireEvents(){
+ document.addEventListener("click",function(e){
+  let ev=e.target.closest(".v2cal-event");if(!ev)return;
+  let id=ev.dataset.taskId;if(id){e.stopPropagation();v2OpenTask("",id)}
+ },true);
+}
+function decorate(){
+ document.querySelectorAll(".v2cal-event").forEach((el,i)=>{
+  if(el.dataset.taskId)return;
+  let text=el.textContent.trim(),match=arr3().find(x=>text.includes(x.title||x.task||"__"));
+  if(match){el.dataset.taskId=match.id;el.classList.add("priority-"+(match.priority||"Normal"));if(match.status==="Completed")el.classList.add("done")}
+ });
+}
+new MutationObserver(decorate).observe(document.body,{childList:true,subtree:true});
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>{wireEvents();decorate();refreshMyDay()});else{wireEvents();decorate();refreshMyDay()}
+})();
+</script></body>
 </html>
