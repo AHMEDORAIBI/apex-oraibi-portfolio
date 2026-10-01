@@ -4112,9 +4112,9 @@ body.enf-dark #enfDemoAccess{background:#0e1318;color:#eef2f5}body.enf-dark .enf
  <div class="enf-da-card">
   <div class="enf-da-brand"><div class="enf-da-mark">E</div><h1>ENFORZA</h1><p>DEMO ACCESS · اختر المستخدم للدخول</p></div>
   <div class="enf-da-grid">
-   <button type="button" class="enf-da-user" data-enf-demo-role="admin"><span class="enf-da-icon">A</span><b>Administrator</b><small>Full demo access and user management</small><span class="enf-da-role">ADMIN</span></button>
-   <button type="button" class="enf-da-user" data-enf-demo-role="officer"><span class="enf-da-icon">O</span><b>Enforcement Officer</b><small>Files, tasks, collections and operational work</small><span class="enf-da-role">OFFICER</span></button>
-   <button type="button" class="enf-da-user" data-enf-demo-role="creditor"><span class="enf-da-icon">C</span><b>Creditor</b><small>Simplified creditor portal experience</small><span class="enf-da-role">CREDITOR</span></button>
+   <button type="button" class="enf-da-user" data-enf-demo-role="admin" onclick="enfDemoEnterRole('admin')"><span class="enf-da-icon">A</span><b>Administrator</b><small>Full demo access and user management</small><span class="enf-da-role">ADMIN</span></button>
+   <button type="button" class="enf-da-user" data-enf-demo-role="officer" onclick="enfDemoEnterRole('officer')"><span class="enf-da-icon">O</span><b>Enforcement Officer</b><small>Files, tasks, collections and operational work</small><span class="enf-da-role">OFFICER</span></button>
+   <button type="button" class="enf-da-user" data-enf-demo-role="creditor" onclick="enfDemoEnterRole('creditor')"><span class="enf-da-icon">C</span><b>Creditor</b><small>Simplified creditor portal experience</small><span class="enf-da-role">CREDITOR</span></button>
   </div>
   <div class="enf-da-foot">ENFORZA V2 · DEMO · NO PASSWORD</div>
  </div>
@@ -4125,44 +4125,70 @@ body.enf-dark #enfDemoAccess{background:#0e1318;color:#eef2f5}body.enf-dark .enf
 "use strict";
 const SESSION="enforzaSessionV2";
 const USERS={
- admin:{id:"DEMO-ADMIN",username:"admin",name:"Demo Administrator",role:"admin",creditorId:""},
- officer:{id:"DEMO-OFFICER",username:"officer",name:"Demo Enforcement Officer",role:"officer",creditorId:""},
- creditor:{id:"DEMO-CREDITOR",username:"creditor",name:"Demo Creditor",role:"creditor",creditorId:""}
+ admin:{id:"DEMO-ADMIN",username:"admin",name:"Demo Administrator",role:"admin"},
+ officer:{id:"DEMO-OFFICER",username:"officer",name:"Demo Enforcement Officer",role:"officer"},
+ creditor:{id:"DEMO-CREDITOR",username:"creditor",name:"Demo Creditor",role:"creditor"}
 };
-function setSession(u){
- const x={id:u.id,username:u.username,name:u.name,role:u.role,creditorId:u.creditorId||""};
- sessionStorage.setItem(SESSION,JSON.stringify(x));sessionStorage.setItem("enforzaRole",x.role);sessionStorage.setItem("enforzaUserId",x.id);
- window.currentUser=x;window.currentRole=x.role;window.userRole=x.role;window.currentUserId=x.id;document.body.dataset.enfRole=x.role;return x;
+function session(u){
+ const x={id:u.id,username:u.username,name:u.name,role:u.role,creditorId:""};
+ try{sessionStorage.setItem(SESSION,JSON.stringify(x));sessionStorage.setItem("enforzaRole",x.role);sessionStorage.setItem("enforzaUserId",x.id)}catch(e){}
+ window.currentUser=x;window.currentRole=x.role;window.userRole=x.role;window.currentUserId=x.id;
+ document.body.dataset.enfRole=x.role;
 }
-function permissions(u){
+function permissions(role){
  const creditorAllowed=new Set(["dashboard","creditorPortal","documents","reports"]);
  const officerBlocked=new Set(["users","settings","presentation","aiInsights"]);
  document.querySelectorAll(".nav-item").forEach(n=>{
-  const p=n.dataset.page||"";
-  n.style.display=u.role==="creditor"?(creditorAllowed.has(p)?"":""):u.role==="officer"?(officerBlocked.has(p)?"none":""):"";
+   const p=n.dataset.page||"";
+   n.style.display=role==="creditor"?(creditorAllowed.has(p)?"":"none"):role==="officer"?(officerBlocked.has(p)?"none":""):"";
  });
 }
-function enter(role){
- const u=USERS[role];if(!u)return;
- setSession(u);permissions(u);
- const gate=document.getElementById("enfDemoAccess");if(gate){gate.classList.add("hidden");gate.style.display="none"}
- if(role==="creditor"&&typeof window.enfOpenCreditorExperience==="function"){window.enfOpenCreditorExperience();return}
- if(typeof window.openPage==="function"){window.openPage(role==="creditor"?"creditorPortal":"dashboard");return}
- alert("ENFORZA routing error: openPage is unavailable.");
+function showDashboard(){
+ /* Direct DOM routing — independent of every old/new router. */
+ document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));
+ const d=document.getElementById("dashboardPage");
+ if(!d)throw new Error("dashboardPage missing");
+ d.classList.remove("hidden");
+ document.querySelectorAll(".nav-item").forEach(n=>n.classList.toggle("active",n.dataset.page==="dashboard"));
+ const title=document.getElementById("pageTitle"),sub=document.getElementById("pageSubtitle");
+ if(title)title.textContent=(window.currentLang==="ar"?"لوحة التحكم التنفيذية":"Executive Dashboard");
+ if(sub)sub.textContent=(window.currentLang==="ar"?"نظرة عامة على الأداء التنفيذي والتحصيل والمالية":"Enforcement, collection and financial performance overview");
+ const sb=document.getElementById("sidebar");if(sb)sb.classList.remove("open");
+ window.scrollTo(0,0);
 }
-window.enfDemoEnterRole=enter;
+function showCreditor(){
+ const cx=document.getElementById("enfCreditorExperience");
+ if(cx&&typeof window.enfOpenCreditorExperience==="function"){window.enfOpenCreditorExperience();return}
+ document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));
+ const cp=document.getElementById("creditorPortalPage");
+ if(cp){cp.classList.remove("hidden");if(typeof window.renderCreditorPortal==="function")window.renderCreditorPortal();return}
+ showDashboard();
+}
+window.enfDemoEnterRole=function(role){
+ try{
+   const u=USERS[role];if(!u)return;
+   session(u);permissions(role);
+   const gate=document.getElementById("enfDemoAccess");
+   if(gate){gate.style.setProperty("display","none","important");gate.classList.add("hidden")}
+   if(role==="creditor")showCreditor();else showDashboard();
+ }catch(err){
+   console.error("ENFORZA DEMO ENTRY ERROR",err);
+   const gate=document.getElementById("enfDemoAccess");
+   if(gate)gate.style.setProperty("display","none","important");
+   alert("ENFORZA Demo entry error: "+(err&&err.message?err.message:String(err)));
+ }
+};
 window.enfLogout=function(){
- try{if(typeof window.closeAI==="function")window.closeAI()}catch(e){}
- try{if(typeof window.closeVoice==="function")window.closeVoice()}catch(e){}
- sessionStorage.removeItem(SESSION);sessionStorage.removeItem("enforzaRole");sessionStorage.removeItem("enforzaUserId");
+ try{sessionStorage.removeItem(SESSION);sessionStorage.removeItem("enforzaRole");sessionStorage.removeItem("enforzaUserId")}catch(e){}
  window.currentUser=null;window.currentRole=null;window.userRole=null;window.currentUserId=null;
  document.getElementById("enfCreditorExperience")?.classList.remove("open");
- const gate=document.getElementById("enfDemoAccess");if(gate){gate.style.display="grid";gate.classList.remove("hidden")}
+ const gate=document.getElementById("enfDemoAccess");
+ if(gate){gate.style.setProperty("display","grid","important");gate.classList.remove("hidden")}
 };
 function init(){
- sessionStorage.removeItem(SESSION);sessionStorage.removeItem("enforzaRole");sessionStorage.removeItem("enforzaUserId");
- document.querySelectorAll("[data-enf-demo-role]").forEach(b=>b.onclick=e=>{e.preventDefault();e.stopImmediatePropagation();enter(b.dataset.enfDemoRole)});
- const gate=document.getElementById("enfDemoAccess");if(gate){gate.style.display="grid";gate.classList.remove("hidden")}
+ try{sessionStorage.removeItem(SESSION);sessionStorage.removeItem("enforzaRole");sessionStorage.removeItem("enforzaUserId")}catch(e){}
+ const gate=document.getElementById("enfDemoAccess");
+ if(gate){gate.style.setProperty("display","grid","important");gate.classList.remove("hidden")}
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
 })();
