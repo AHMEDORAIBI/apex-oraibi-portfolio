@@ -753,15 +753,7 @@ body.enf-dark .enf360-actions button,body.enf-dark .enf360-tab,body.enf-dark .en
 </style>
 
 
-<style id="enforza-native-demo-routing-css">
-.enf-da-user{text-decoration:none!important}
-#dashboardPage:target,
-#creditorPortalPage:target{display:block!important}
-body:has(#dashboardPage:target) #enfDemoAccess,
-body:has(#creditorPortalPage:target) #enfDemoAccess{display:none!important}
-body:has(#dashboardPage:target) .page:not(#dashboardPage),
-body:has(#creditorPortalPage:target) .page:not(#creditorPortalPage){display:none!important}
-</style>
+
 </head>
 <body>
 
@@ -4098,68 +4090,68 @@ function init(){direction();polishButtons();protectDoubleSubmit();escClose();emp
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
 })();
 </script>
-<style id="enforza-clean-demo-access-css">
-#enfDemoAccess{
- position:fixed;inset:0;z-index:500000;display:grid;place-items:center;padding:22px;
- background:radial-gradient(circle at 12% 15%,rgba(174,117,65,.14),transparent 30%),linear-gradient(145deg,#f8f7f4,#eceff1);
- color:#172028
-}
-#enfDemoAccess.hidden{display:none!important}
-.enf-da-card{width:min(760px,96vw);background:rgba(255,255,255,.97);border:1px solid rgba(70,75,80,.10);border-radius:25px;padding:29px;box-shadow:0 34px 110px rgba(17,24,32,.17)}
-.enf-da-brand{text-align:center;margin-bottom:22px}.enf-da-mark{width:60px;height:60px;border-radius:18px;background:#172129;color:#d4a16e;display:grid;place-items:center;margin:0 auto 11px;font-size:20px;font-weight:950}
-.enf-da-brand h1{margin:0;font-size:27px!important}.enf-da-brand p{margin:6px 0 0;color:#7b858d;font-size:10px}
-.enf-da-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}
-.enf-da-user{border:1px solid #dde1e3;background:#fff;border-radius:17px;padding:19px 13px;cursor:pointer;text-align:center;color:#172028;transition:.14s ease}
-.enf-da-user:hover{transform:translateY(-2px);border-color:#c9b39e;box-shadow:0 14px 34px rgba(17,24,32,.09)}
-.enf-da-icon{width:49px;height:49px;border-radius:14px;background:#172129;color:#d4a16e;display:grid;place-items:center;margin:0 auto 10px;font-weight:950}
-.enf-da-user b{display:block;font-size:11px}.enf-da-user small{display:block;margin-top:5px;color:#879097;font-size:8px;line-height:1.45}.enf-da-role{display:inline-block;margin-top:9px;padding:4px 7px;border-radius:999px;background:#f2e9e0;color:#80562f;font-size:7px;font-weight:950}
-.enf-da-foot{text-align:center;color:#90989e;font-size:8px;margin-top:16px}
-body.enf-dark #enfDemoAccess{background:#0e1318;color:#eef2f5}body.enf-dark .enf-da-card,body.enf-dark .enf-da-user{background:#171d23;color:#eef2f5;border-color:#2a333b}
-@media(max-width:650px){#enfDemoAccess{padding:12px}.enf-da-card{padding:20px}.enf-da-grid{grid-template-columns:1fr}.enf-da-user{display:grid;grid-template-columns:50px 1fr;text-align:start;gap:0 11px;align-items:center}.enf-da-icon{grid-row:1/4;margin:0}.enf-da-user small,.enf-da-role{grid-column:2}}
-</style>
 
-<div id="enfDemoAccess">
- <div class="enf-da-card">
-  <div class="enf-da-brand"><div class="enf-da-mark">E</div><h1>ENFORZA</h1><p>DEMO ACCESS · اختر المستخدم للدخول</p></div>
-  <div class="enf-da-grid">
-   <a class="enf-da-user" data-enf-demo-role="admin" href="#dashboardPage"><span class="enf-da-icon">A</span><b>Administrator</b><small>Full demo access and user management</small><span class="enf-da-role">ADMIN</span></a>
-   <a class="enf-da-user" data-enf-demo-role="officer" href="#dashboardPage"><span class="enf-da-icon">O</span><b>Enforcement Officer</b><small>Files, tasks, collections and operational work</small><span class="enf-da-role">OFFICER</span></a>
-   <a class="enf-da-user" data-enf-demo-role="creditor" href="#creditorPortalPage"><span class="enf-da-icon">C</span><b>Creditor</b><small>Simplified creditor portal experience</small><span class="enf-da-role">CREDITOR</span></a>
+
+
+
+
+
+<style id="enforza-demo-gate-v1-css">
+#enfDemoGate{position:fixed;inset:0;z-index:999999;display:grid;place-items:center;padding:22px;background:linear-gradient(145deg,#f8f7f4,#eceff1);color:#172028}
+#enfDemoGate.is-hidden{display:none!important}
+.enf-dg-card{width:min(760px,96vw);background:#fff;border:1px solid #dde1e3;border-radius:24px;padding:28px;box-shadow:0 34px 110px rgba(17,24,32,.16)}
+.enf-dg-brand{text-align:center;margin-bottom:22px}.enf-dg-logo{width:60px;height:60px;border-radius:18px;background:#172129;color:#d4a16e;display:grid;place-items:center;margin:0 auto 10px;font-size:20px;font-weight:950}.enf-dg-brand h1{margin:0;font-size:27px!important}.enf-dg-brand p{margin:6px 0 0;color:#7b858d;font-size:10px}
+.enf-dg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}.enf-dg-btn{border:1px solid #dde1e3;background:#fff;border-radius:16px;padding:18px 12px;text-align:center;cursor:pointer;color:#172028}.enf-dg-btn:hover{border-color:#c9b39e;box-shadow:0 12px 30px rgba(17,24,32,.08)}.enf-dg-icon{width:48px;height:48px;border-radius:14px;background:#172129;color:#d4a16e;display:grid;place-items:center;margin:0 auto 9px;font-weight:950}.enf-dg-btn b{display:block;font-size:11px}.enf-dg-btn small{display:block;margin-top:5px;color:#879097;font-size:8px}.enf-dg-role{display:inline-block;margin-top:8px;padding:4px 7px;border-radius:999px;background:#f2e9e0;color:#80562f;font-size:7px;font-weight:950}
+@media(max-width:650px){.enf-dg-grid{grid-template-columns:1fr}}
+</style>
+<div id="enfDemoGate">
+ <div class="enf-dg-card">
+  <div class="enf-dg-brand"><div class="enf-dg-logo">E</div><h1>ENFORZA</h1><p>DEMO ACCESS · اختر المستخدم للدخول</p></div>
+  <div class="enf-dg-grid">
+   <button type="button" class="enf-dg-btn" id="enfEnterAdmin"><span class="enf-dg-icon">A</span><b>Administrator</b><small>Full demo access</small><span class="enf-dg-role">ADMIN</span></button>
+   <button type="button" class="enf-dg-btn" id="enfEnterOfficer"><span class="enf-dg-icon">O</span><b>Enforcement Officer</b><small>Operational demo access</small><span class="enf-dg-role">OFFICER</span></button>
+   <button type="button" class="enf-dg-btn" id="enfEnterCreditor"><span class="enf-dg-icon">C</span><b>Creditor</b><small>Creditor portal</small><span class="enf-dg-role">CREDITOR</span></button>
   </div>
-  <div class="enf-da-foot">ENFORZA V2 · DEMO · NO PASSWORD</div>
  </div>
 </div>
-
-<script id="enforza-clean-demo-access-js">
+<script id="enforza-demo-gate-v1-js">
 (function(){
 "use strict";
-const SESSION="enforzaSessionV2";
-const USERS={
- admin:{id:"DEMO-ADMIN",username:"admin",name:"Demo Administrator",role:"admin"},
- officer:{id:"DEMO-OFFICER",username:"officer",name:"Demo Enforcement Officer",role:"officer"},
- creditor:{id:"DEMO-CREDITOR",username:"creditor",name:"Demo Creditor",role:"creditor"}
-};
-function apply(role){
- const u=USERS[role];if(!u)return;
- const x={id:u.id,username:u.username,name:u.name,role:u.role,creditorId:""};
- try{sessionStorage.setItem(SESSION,JSON.stringify(x));sessionStorage.setItem("enforzaRole",role);sessionStorage.setItem("enforzaUserId",u.id)}catch(e){}
- window.currentUser=x;window.currentRole=role;window.userRole=role;window.currentUserId=u.id;document.body.dataset.enfRole=role;
- const creditorAllowed=new Set(["dashboard","creditorPortal","documents","reports"]);
+function setUser(role){
+ const names={admin:"Demo Administrator",officer:"Demo Enforcement Officer",creditor:"Demo Creditor"};
+ const x={id:"DEMO-"+role.toUpperCase(),username:role,name:names[role],role:role,creditorId:""};
+ try{sessionStorage.setItem("enforzaSessionV2",JSON.stringify(x));sessionStorage.setItem("enforzaRole",role)}catch(e){}
+ window.currentUser=x;window.currentRole=role;window.userRole=role;document.body.dataset.enfRole=role;
+}
+function applyPermissions(role){
  const officerBlocked=new Set(["users","settings","presentation","aiInsights"]);
+ const creditorAllowed=new Set(["dashboard","creditorPortal","documents","reports"]);
  document.querySelectorAll(".nav-item").forEach(n=>{
   const p=n.dataset.page||"";
-  n.style.display=role==="creditor"?(creditorAllowed.has(p)?"":"none"):role==="officer"?(officerBlocked.has(p)?"none":""):"";
+  n.style.display=role==="admin"?"":role==="officer"?(officerBlocked.has(p)?"none":""):(creditorAllowed.has(p)?"":"none");
  });
 }
+function enter(role){
+ setUser(role);applyPermissions(role);
+ document.getElementById("enfDemoGate").classList.add("is-hidden");
+ /* Use ENFORZA's own proven page engine. */
+ if(role==="creditor" && typeof window.enfOpenCreditorExperience==="function"){window.enfOpenCreditorExperience();return}
+ if(typeof window.openPage==="function"){window.openPage(role==="creditor"?"creditorPortal":"dashboard");return}
+ /* Last-resort direct page visibility */
+ if(typeof window.hidePages==="function")window.hidePages();
+ const id=role==="creditor"?"creditorPortalPage":"dashboardPage";
+ const p=document.getElementById(id);if(p)p.classList.remove("hidden");
+}
 window.enfLogout=function(){
- try{sessionStorage.removeItem(SESSION);sessionStorage.removeItem("enforzaRole");sessionStorage.removeItem("enforzaUserId")}catch(e){}
- window.currentUser=null;window.currentRole=null;window.userRole=null;window.currentUserId=null;
- location.hash="";
- location.reload();
+ try{sessionStorage.clear()}catch(e){}
+ document.getElementById("enfCreditorExperience")?.classList.remove("open");
+ document.getElementById("enfDemoGate")?.classList.remove("is-hidden");
 };
 function init(){
- try{sessionStorage.removeItem(SESSION);sessionStorage.removeItem("enforzaRole");sessionStorage.removeItem("enforzaUserId")}catch(e){}
- document.querySelectorAll("[data-enf-demo-role]").forEach(a=>a.addEventListener("click",()=>apply(a.dataset.enfDemoRole),{capture:true}));
+ try{sessionStorage.removeItem("enforzaSessionV2");sessionStorage.removeItem("enforzaRole")}catch(e){}
+ document.getElementById("enfEnterAdmin").onclick=()=>enter("admin");
+ document.getElementById("enfEnterOfficer").onclick=()=>enter("officer");
+ document.getElementById("enfEnterCreditor").onclick=()=>enter("creditor");
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
 })();
