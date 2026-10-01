@@ -319,9 +319,44 @@ html[dir="rtl"] .ai-recommendation{border-left:1px solid #ead7c6;border-right:3p
 @media(max-width:720px){.voice-fab{right:64px;bottom:69px}.voice-panel{left:7px;right:7px;bottom:62px;width:auto}.smart-notify-panel{left:7px;right:7px;top:62px;width:auto;max-height:calc(100vh - 130px)}}
 html[dir="rtl"] .voice-fab{right:auto;left:64px}html[dir="rtl"] .voice-panel{right:auto;left:22px}html[dir="rtl"] .smart-notify-panel{right:auto;left:18px}
 
+
+/* ===== ENFORZA PHASE 10 — LOGIN + ROLE-BASED DEMO ===== */
+.login-gate{position:fixed;inset:0;z-index:1200;background:linear-gradient(135deg,#11171d 0%,#202932 52%,#8d603f 160%);display:grid;place-items:center;padding:18px}
+.login-shell{width:min(980px,100%);display:grid;grid-template-columns:1.08fr .92fr;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 35px 100px rgba(0,0,0,.38);min-height:600px}
+.login-brand{background:linear-gradient(155deg,#17120f,#2b211a);padding:42px;color:#fff;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
+.login-brand:after{content:"";position:absolute;width:360px;height:360px;border:1px solid rgba(196,146,105,.18);border-radius:50%;right:-180px;bottom:-130px}
+.login-brand .mark{width:58px;height:58px;border:1px solid #c39269;border-radius:14px;display:grid;place-items:center;font-size:21px;font-weight:900;color:#d4a67f}
+.login-brand h1{font-size:29px;margin-top:24px}.login-brand h1 span{display:block;color:#c9976e;font-size:12px;letter-spacing:2.2px;margin-top:7px}.login-brand p{font-size:9px;color:#cdbdaf;line-height:1.8;margin-top:15px;max-width:410px}
+.login-feature{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:25px}.login-feature div{border:1px solid rgba(255,255,255,.11);border-radius:9px;padding:11px;font-size:8px;color:#d8cdc4}
+.login-credit{font-size:8px;color:#9f9187;letter-spacing:.5px}
+.login-form-side{padding:40px;display:flex;flex-direction:column;justify-content:center}.login-form-side h2{font-size:21px;color:var(--navy)}.login-form-side>p{font-size:9px;color:var(--muted);margin-top:7px}
+.role-picker{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:20px 0 15px}.role-option{border:1px solid var(--border);border-radius:10px;padding:12px 7px;background:#fff;text-align:center;cursor:pointer}.role-option.active{border-color:#c58c61;background:#fff8f2}.role-option b{display:block;font-size:18px;color:var(--bronze)}.role-option strong{display:block;font-size:8px;color:var(--navy);margin-top:6px}
+.login-fields{display:grid;gap:10px}.login-fields label{font-size:8px;color:var(--muted);font-weight:800}.login-fields input{width:100%;border:1px solid var(--border);border-radius:9px;padding:12px;font-size:10px;margin-top:5px}.login-submit{margin-top:15px;border:0;border-radius:9px;background:var(--bronze);color:#fff;padding:13px;font-size:9px;font-weight:900;cursor:pointer;width:100%}.login-demo-note{margin-top:12px;background:#f7f9fa;border-radius:8px;padding:10px;font-size:7px;color:var(--muted);line-height:1.7}
+.role-pill{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--border);border-radius:20px;padding:5px 8px;font-size:7px;color:var(--bronze);font-weight:900;background:#fff}
+body.role-creditor .admin-only,body.role-creditor .officer-only{display:none!important}
+body.role-officer .admin-only{display:none!important}
+@media(max-width:720px){.login-gate{padding:0;background:#fff}.login-shell{display:block;border-radius:0;min-height:100vh}.login-brand{padding:25px;min-height:225px}.login-brand h1{font-size:23px;margin-top:14px}.login-brand p{margin-top:8px}.login-feature{display:none}.login-form-side{padding:24px 18px}.role-picker{margin-top:17px}.login-credit{margin-top:20px}.login-shell{overflow:auto}.role-option{padding:11px 5px}}
+
 </style>
 </head>
 <body>
+<div class="login-gate" id="loginGate">
+ <div class="login-shell">
+  <section class="login-brand">
+   <div><div class="mark">E</div><h1>ENFORZA<span>PRIVATE ENFORCEMENT</span></h1><p data-i18n="Login brand text">Interactive enforcement management demo with workflow, collections, settlements, smart notifications, mobile access and ENFORZA AI.</p>
+   <div class="login-feature"><div>✦ ENFORZA AI</div><div>🎙 Voice Command</div><div>◷ Smart Follow-up</div><div>◈ Creditor Portal</div></div></div>
+   <div class="login-credit">APEX ORAIBI — SYSTEM DESIGN & DEVELOPMENT</div>
+  </section>
+  <section class="login-form-side">
+   <h2 data-i18n="Welcome to ENFORZA">Welcome to ENFORZA</h2><p data-i18n="Choose a demo role to experience the system.">Choose a demo role to experience the system.</p>
+   <div class="role-picker"><div class="role-option active" data-role="management" onclick="selectDemoRole('management',this)"><b>◆</b><strong data-i18n="Management">Management</strong></div><div class="role-option" data-role="officer" onclick="selectDemoRole('officer',this)"><b>⚑</b><strong data-i18n="Enforcement Officer">Enforcement Officer</strong></div><div class="role-option" data-role="creditor" onclick="selectDemoRole('creditor',this)"><b>◈</b><strong data-i18n="Creditor">Creditor</strong></div></div>
+   <div class="login-fields"><label data-i18n="Username">Username<input id="demoUsername" value="admin"></label><label data-i18n="Password">Password<input id="demoPassword" type="password" value="demo123"></label></div>
+   <button class="login-submit" onclick="loginDemo()" data-i18n="Enter Demo">Enter Demo</button>
+   <div class="login-demo-note" data-i18n="Demo login note">Demo only. Select any role and enter. No real authentication or client data is used.</div>
+  </section>
+ </div>
+</div>
+
 <div class="app">
 <aside class="sidebar" id="sidebar">
   <div class="brand"><div class="brand-mark">E</div><div><strong>ENFORZA</strong><span>PRIVATE ENFORCEMENT</span></div></div>
@@ -362,12 +397,12 @@ html[dir="rtl"] .voice-fab{right:auto;left:64px}html[dir="rtl"] .voice-panel{rig
     <button class="top-btn mobile-menu" onclick="toggleSidebar()">☰</button>
     <div class="page-heading"><h1 id="pageTitle" data-i18n="Executive Dashboard">Executive Dashboard</h1><p id="pageSubtitle" data-i18n="Enforcement, collection and financial performance overview">Enforcement, collection and financial performance overview</p></div>
   </div>
-  <div class="top-actions">
+  <div class="top-actions"><span class="role-pill" id="activeRolePill">MANAGEMENT</span>
     <div class="global-search-wrap">
 <input id="globalSearch" class="search" data-i18n-placeholder="Search file, party or reference..." placeholder="Search file, party or reference..." oninput="runGlobalSearch()" onfocus="runGlobalSearch()">
 <div id="globalSearchResults" class="global-search-results"></div>
 </div>
-    <div class="lang-switch"><button id="langEn" class="active" onclick="setLanguage('en')">EN</button><button id="langAr" onclick="setLanguage('ar')">عربي</button></div>
+    <button class="top-btn" onclick="logoutDemo()" title="Logout">⇥</button><div class="lang-switch"><button id="langEn" class="active" onclick="setLanguage('en')">EN</button><button id="langAr" onclick="setLanguage('ar')">عربي</button></div>
     <button class="top-btn" onclick="toggleSmartNotifications()" title="Notifications" style="position:relative"><span>●</span><span class="notify-badge" id="notifyBadge">4</span></button>
     <div class="profile"><div class="avatar">AO</div><div><strong>Ahmed Oraibi</strong><span data-i18n="Administrator">Administrator</span></div></div>
   </div>
@@ -1162,6 +1197,38 @@ function runVoiceText(s){
 }
 renderSmartNotifications("all");
 Object.assign(I18N.ar,{"Morning Management Brief":"الموجز الصباحي للإدارة","Read Aloud":"قراءة صوتية","Morning brief text":"لديك اليوم 9 إجراءات مستحقة و3 متابعات متأخرة ودفعتا تسوية تقتربان من الاستحقاق وملفان مرتفعا القيمة يحتاجان إلى اهتمام الإدارة.","Arabic and English voice control":"تحكم صوتي بالعربية والإنجليزية","Tap microphone and speak":"اضغط الميكروفون وتحدث","Try a navigation or AI command":"جرب أمر تنقل أو أمر للذكاء الاصطناعي","Smart Notifications":"الإشعارات الذكية","AI-ranked operational alerts":"تنبيهات تشغيلية مرتبة بالذكاء الاصطناعي","All":"الكل","Critical":"حرج","Mark all read":"تحديد الكل كمقروء","Settlement installment due":"قسط تسوية مستحق","High-value file inactive":"ملف مرتفع القيمة بلا حركة","Bank response received":"تم استلام رد البنك","Asset inquiry overdue":"استعلام أصول متأخر","Listening...":"جاري الاستماع...","Executing command...":"جاري تنفيذ الأمر...","Voice recognition is not supported in this browser":"التعرف الصوتي غير مدعوم في هذا المتصفح","Could not understand. Try again.":"لم يتم فهم الأمر. حاول مرة أخرى."});
+
+
+let selectedDemoRole="management",activeDemoRole="management";
+function selectDemoRole(role,el){
+ selectedDemoRole=role;document.querySelectorAll(".role-option").forEach(x=>x.classList.remove("active"));if(el)el.classList.add("active");
+ const u=document.getElementById("demoUsername");if(u)u.value=role==="management"?"admin":role==="officer"?"officer":"creditor";
+}
+function applyRoleAccess(role){
+ activeDemoRole=role;document.body.classList.remove("role-management","role-officer","role-creditor");document.body.classList.add("role-"+role);
+ const pill=document.getElementById("activeRolePill");if(pill)pill.textContent=role==="management"?t("Management"):role==="officer"?t("Enforcement Officer"):t("Creditor");
+ const adminPages=["users","settings","audit","permissions","presentation","aiInsights"];
+ document.querySelectorAll(".nav-item").forEach(n=>{
+  const p=n.dataset.page||"";
+  n.classList.remove("admin-only","officer-only");
+  if(adminPages.includes(p))n.classList.add("admin-only");
+  if(["actionsCenter","treasury","expenses"].includes(p))n.classList.add("officer-only");
+ });
+ if(role==="creditor"){
+   document.querySelectorAll(".nav-item").forEach(n=>{const p=n.dataset.page||"";n.style.display=["dashboard","creditorPortal","documents","reports"].includes(p)?"":"none"});
+ } else if(role==="officer"){
+   document.querySelectorAll(".nav-item").forEach(n=>{n.style.display=(n.classList.contains("admin-only"))?"none":""});
+ } else document.querySelectorAll(".nav-item").forEach(n=>n.style.display="");
+}
+function loginDemo(){
+ const gate=document.getElementById("loginGate");gate.style.display="none";applyRoleAccess(selectedDemoRole);
+ if(selectedDemoRole==="creditor")openPage("creditorPortal");else if(selectedDemoRole==="officer")openPage("followupBoard");else openPage("dashboard");
+ showToast(t("Demo session started"));
+}
+function logoutDemo(){closeAI();closeVoice();document.getElementById("loginGate").style.display="grid";document.getElementById("smartNotifyPanel").style.display="none"}
+Object.assign(I18N.ar,{
+"Login brand text":"ديمو تفاعلي لإدارة التنفيذ يشمل مسار العمل والتحصيلات والتسويات والإشعارات الذكية واستخدام الهاتف وENFORZA AI.","Welcome to ENFORZA":"مرحبًا بك في ENFORZA","Choose a demo role to experience the system.":"اختر صفة الدخول لتجربة النظام.","Management":"الإدارة","Enforcement Officer":"منفذ خاص","Creditor":"الدائن","Username":"اسم المستخدم","Password":"كلمة المرور","Enter Demo":"دخول الديمو","Demo login note":"نسخة تجريبية فقط. اختر أي صفة ثم ادخل. لا تستخدم بيانات عملاء حقيقية أو مصادقة فعلية.","Demo session started":"تم بدء جلسة الديمو"
+});
 
 renderDashboard();renderUsers();renderAudit();renderPermissions();showReport("executive");applyLanguage();
 </script>
