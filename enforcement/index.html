@@ -669,6 +669,12 @@ html[dir="rtl"] .p29-appearance{right:auto;left:18px}html[dir="rtl"] .p29-pop{ri
 .p35-actions{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}.p35-action{border:1px solid var(--border);background:var(--white);color:var(--text);border-radius:11px;padding:12px 7px;font-size:15px;font-weight:900;cursor:pointer}.p35-action b{display:block;font-size:22px;margin-bottom:5px}.p35-action.primary{background:var(--p29-accent);border-color:var(--p29-accent);color:#fff}
 .p35-modal{position:fixed;inset:0;z-index:1800;background:rgba(7,12,17,.48);display:none;place-items:center;padding:14px}.p35-modal.open{display:grid}.p35-box{width:min(650px,96vw);max-height:92vh;overflow:auto;background:var(--white);border:1px solid var(--border);border-radius:16px;box-shadow:0 25px 80px rgba(0,0,0,.25)}.p35-title{background:linear-gradient(135deg,#111923,#263440);color:#fff;padding:17px;display:flex;justify-content:space-between;align-items:center}.p35-title h3{color:#fff!important;margin:0}.p35-title button{border:0;background:transparent;color:#fff;font-size:22px}.p35-body{padding:16px}.p35-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.p35-field.full{grid-column:1/-1}.p35-field label{display:block;font-weight:800;margin-bottom:5px}.p35-field input,.p35-field select,.p35-field textarea{width:100%;border:1px solid var(--border);background:var(--white);color:var(--text);border-radius:9px;padding:10px;font-size:16px}.p35-field textarea{min-height:105px}.p35-footer{padding:12px 16px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px}.p35-footer button{border:1px solid var(--border);background:var(--white);color:var(--text);border-radius:9px;padding:10px 13px;font-weight:900}.p35-footer .save{background:var(--p29-accent);border-color:var(--p29-accent);color:#fff}
 @media(max-width:800px){.p35-actions{grid-template-columns:repeat(3,1fr)}}@media(max-width:520px){.p35-actions{grid-template-columns:repeat(2,1fr)}.p35-grid{grid-template-columns:1fr}.p35-field.full{grid-column:auto}.p35-modal{padding:0}.p35-box{width:100%;height:100%;max-height:none;border-radius:0}}
+</style><style id="phase36-official-minutes">
+/* PHASE 36 — OFFICIAL FIELD MINUTES */
+.p36-tools{display:flex;gap:7px;flex-wrap:wrap;margin:8px 0}.p36-tools button{border:1px solid var(--border);background:var(--white);color:var(--text);border-radius:9px;padding:9px 11px;font-weight:900}
+.p36-preview{background:#fff;color:#17212b;border:1px solid #ddd;border-radius:12px;padding:24px;line-height:1.75}.p36-preview h2{text-align:center;color:#17212b!important}.p36-meta{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:15px 0}.p36-meta div{border-bottom:1px solid #ddd;padding:6px}.p36-images{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}.p36-images img{width:100%;max-height:240px;object-fit:cover;border-radius:8px}.p36-sign{border-top:1px solid #ddd;margin-top:24px;padding-top:12px}.p36-sign canvas{width:100%;height:130px;border:1px dashed #aaa;border-radius:8px;touch-action:none}
+@media(max-width:520px){.p36-meta,.p36-images{grid-template-columns:1fr}}
+@media print{body *{visibility:hidden}.p36-preview,.p36-preview *{visibility:visible}.p36-preview{position:absolute;inset:0;border:0;padding:18mm}}
 </style></head>
 <div class="exec-action-sheet" id="execActionSheet"><div class="exec-action-box"><div class="minutes-head"><div><h2>New Action</h2><p>Choose what you want to add to this enforcement file.</p></div><button class="top-btn" onclick="closeExecActionSheet()">×</button></div><div class="exec-action-grid">
 <div class="exec-action-card" onclick="execAction('task')"><b>✓</b><strong>Task</strong></div><div class="exec-action-card" onclick="execAction('minutes')"><b>✎</b><strong>Minutes</strong></div><div class="exec-action-card" onclick="execAction('collection')"><b>◉</b><strong>Collection</strong></div><div class="exec-action-card" onclick="execAction('document')"><b>▧</b><strong>Document</strong></div><div class="exec-action-card" onclick="execAction('camera')"><b>📷</b><strong>Camera / Evidence</strong></div><div class="exec-action-card" onclick="execAction('settlement')"><b>◇</b><strong>Settlement</strong></div></div></div></div>
@@ -2456,6 +2462,59 @@ function p35Voice(){
  r.onresult=e=>{let s="";for(let i=e.resultIndex;i<e.results.length;i++)s+=e.results[i][0].transcript+" ";ta.value=(ta.value+" "+s).trim()};r.start();showToast(currentLang==="ar"?"بدأ الإملاء الصوتي.":"Voice dictation started.");
 }
 if(typeof p26Workspace==="function"){let p35old=p26Workspace;p26Workspace=function(f){p35old(f);setTimeout(()=>p35Hub(f),25)}}
+</script><script id="phase36-official-minutes-js">
+let p36Photos=[],p36SigData="";
+function p36MinuteForm(){
+ let today=new Date(),d=today.toISOString().slice(0,10),tm=today.toTimeString().slice(0,5);
+ return `<div class="p35-grid">
+ ${p35Field(currentLang==="ar"?"موضوع المحضر":"Minutes Subject","p35Subject")}
+ ${p35Field(currentLang==="ar"?"التاريخ":"Date","p35Date","date")}
+ ${p35Field(currentLang==="ar"?"الوقت":"Time","p36Time","time")}
+ ${p35Field(currentLang==="ar"?"الموقع / مكان الإجراء":"Location","p36Location")}
+ <div class="p35-field full"><label>${currentLang==="ar"?"نص المحضر":"Minutes Text"}</label><textarea id="p35Text"></textarea>
+ <div class="p36-tools"><button type="button" onclick="p35Voice()">🎙 ${currentLang==="ar"?"إملاء صوتي":"Voice Dictation"}</button><button type="button" onclick="document.getElementById('p36Photos').click()">📷 ${currentLang==="ar"?"إضافة صور":"Add Photos"}</button><button type="button" onclick="p36Preview()">▤ ${currentLang==="ar"?"معاينة":"Preview"}</button></div></div>
+ <div class="p35-field full"><label>${currentLang==="ar"?"الصور والمرفقات":"Photos"}</label><input id="p36Photos" type="file" accept="image/*" capture="environment" multiple onchange="p36LoadPhotos(this)"><div id="p36PhotoList"></div></div>
+ <div class="p35-field full"><label>${currentLang==="ar"?"التوقيع على الشاشة":"On-screen Signature"}</label><canvas id="p36Canvas" width="560" height="130"></canvas><div class="p36-tools"><button type="button" onclick="p36ClearSign()">${currentLang==="ar"?"مسح التوقيع":"Clear Signature"}</button></div></div>
+ </div>`;
+}
+const p36OldOpen=p35Open;
+p35Open=function(file,type){
+ p36OldOpen(file,type);
+ if(type==="minute"){
+   p36Photos=[];p36SigData="";
+   document.getElementById("p35Body").innerHTML=p36MinuteForm();
+   document.getElementById("p35Date").value=new Date().toISOString().slice(0,10);
+   document.getElementById("p36Time").value=new Date().toTimeString().slice(0,5);
+   setTimeout(p36InitSignature,20);
+ }
+}
+function p36LoadPhotos(inp){
+ p36Photos=[];let files=[...(inp.files||[])];
+ Promise.all(files.map(f=>new Promise(res=>{let r=new FileReader();r.onload=()=>res({name:f.name,data:r.result});r.readAsDataURL(f)}))).then(a=>{p36Photos=a;document.getElementById("p36PhotoList").innerHTML=a.map(x=>`<span class="p31-chip">${x.name}</span> `).join("")});
+}
+function p36InitSignature(){
+ let c=document.getElementById("p36Canvas");if(!c)return,ctx=c.getContext("2d"),drawing=false;
+ function pos(e){let r=c.getBoundingClientRect(),p=e.touches?e.touches[0]:e;return [(p.clientX-r.left)*(c.width/r.width),(p.clientY-r.top)*(c.height/r.height)]}
+ function start(e){drawing=true;let [x,y]=pos(e);ctx.beginPath();ctx.moveTo(x,y);e.preventDefault()}
+ function move(e){if(!drawing)return;let [x,y]=pos(e);ctx.lineWidth=2;ctx.lineCap="round";ctx.strokeStyle="#111";ctx.lineTo(x,y);ctx.stroke();e.preventDefault()}
+ function end(){drawing=false;p36SigData=c.toDataURL("image/png")}
+ c.onmousedown=start;c.onmousemove=move;c.onmouseup=end;c.onmouseleave=end;c.ontouchstart=start;c.ontouchmove=move;c.ontouchend=end;
+}
+function p36ClearSign(){let c=document.getElementById("p36Canvas");if(c)c.getContext("2d").clearRect(0,0,c.width,c.height);p36SigData=""}
+function p36Preview(){
+ let f=(DATA.files||[]).find(x=>x.id===p35FileId);if(!f)return;
+ let w=window.open("","_blank"),imgs=p36Photos.map(x=>`<img src="${x.data}">`).join("");
+ let sig=p36SigData?`<img src="${p36SigData}" style="max-width:300px;max-height:100px">`:"";
+ w.document.write(`<!doctype html><html dir="${currentLang==="ar"?"rtl":"ltr"}"><head><meta charset="utf-8"><title>ENFORZA Minutes</title><style>body{font-family:Arial;padding:35px;color:#17212b;line-height:1.8}.doc{max-width:850px;margin:auto}h2{text-align:center}.meta{display:grid;grid-template-columns:1fr 1fr;gap:8px}.meta div{border-bottom:1px solid #ddd;padding:6px}.imgs{display:grid;grid-template-columns:1fr 1fr;gap:8px}.imgs img{width:100%;max-height:300px;object-fit:cover}.sign{margin-top:30px;border-top:1px solid #ddd;padding-top:12px}@media print{button{display:none}}</style></head><body><div class="doc"><h2>${currentLang==="ar"?"محضر إجراء تنفيذي":"Enforcement Action Minutes"}</h2><div class="meta"><div><b>${currentLang==="ar"?"رقم الملف":"File"}:</b> ${f.id}</div><div><b>${currentLang==="ar"?"رقم القضية":"Case"}:</b> ${f.caseNo||"—"}</div><div><b>${currentLang==="ar"?"التاريخ":"Date"}:</b> ${p35v("p35Date")}</div><div><b>${currentLang==="ar"?"الوقت":"Time"}:</b> ${p35v("p36Time")}</div><div><b>${currentLang==="ar"?"الموقع":"Location"}:</b> ${p35v("p36Location")||"—"}</div><div><b>${currentLang==="ar"?"الموضوع":"Subject"}:</b> ${p35v("p35Subject")}</div></div><p>${(p35v("p35Text")||"").replace(/\n/g,"<br>")}</p><div class="imgs">${imgs}</div><div class="sign"><b>${currentLang==="ar"?"التوقيع":"Signature"}</b><br>${sig}</div><br><button onclick="window.print()">${currentLang==="ar"?"طباعة / حفظ PDF":"Print / Save PDF"}</button></div></body></html>`);w.document.close();
+}
+const p36OldSave=p35Save;
+p35Save=function(){
+ if(p35Type!=="minute")return p36OldSave();
+ let f=(DATA.files||[]).find(x=>x.id===p35FileId);if(!f)return;
+ let c=document.getElementById("p36Canvas");if(c&&!p36SigData)p36SigData=c.toDataURL("image/png");
+ DATA.minutes=DATA.minutes||[];DATA.minutes.push({id:p34Id("MIN"),file:f.id,subject:p35v("p35Subject"),date:p35v("p35Date"),time:p35v("p36Time"),location:p35v("p36Location"),text:p35v("p35Text"),photos:p36Photos,signature:p36SigData,status:"Draft",created:new Date().toISOString()});
+ p34Persist();p35Close();showToast(currentLang==="ar"?"تم حفظ المحضر وربطه بالملف.":"Minutes saved and linked to the file.");openDetail("files",f.id);
+}
 </script></body></html>`);w.document.close();
 }
 if(typeof openPage==="function"){let p28old=openPage;openPage=function(p){p28old(p);if(p==="reports")setTimeout(renderP28Reports,10)}}
