@@ -3887,5 +3887,36 @@ document.addEventListener("visibilitychange",function(){
   }
 });
 })();
+</script><style id="enforza-ops-ready-css">
+.enf-ops-ready{position:fixed;inset:0;z-index:190000;background:rgba(7,11,15,.72);display:none;place-items:center;padding:18px}.enf-ops-ready.open{display:grid}
+.enf-ops-ready-card{width:min(900px,97vw);max-height:92vh;overflow:auto;background:#fff;border-radius:20px;box-shadow:0 36px 125px rgba(0,0,0,.36);padding:22px}
+.enf-ops-ready-card h2{margin:0 0 5px;font-size:22px!important}.enf-ops-ready-card p{margin:0 0 15px;color:var(--desk-muted);font-size:10px}
+.enf-ops-ready-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.enf-ops-ready-item{display:flex;justify-content:space-between;gap:10px;border:1px solid var(--desk-line);border-radius:10px;padding:11px;font-size:10px}.enf-ops-ready-item b{color:#4f805c;font-size:9px}
+.enf-ops-ready-foot{display:flex;justify-content:flex-end;margin-top:15px}body.enf-dark .enf-ops-ready-card{background:#171d23;color:#eef2f5}@media(max-width:700px){.enf-ops-ready-grid{grid-template-columns:1fr}}
+</style>
+<div class="enf-ops-ready" id="enfOpsReady"><div class="enf-ops-ready-card"><div class="v2-kicker">OPERATIONS READINESS</div><h2>ENFORZA Operational Check</h2><p id="enfOpsReadyText"></p><div class="enf-ops-ready-grid" id="enfOpsReadyGrid"></div><div class="enf-ops-ready-foot"><button class="enf-ms-btn primary" onclick="enfOpsReadyClose()">Close</button></div></div></div>
+<script id="enforza-ops-ready-js">
+(function(){
+"use strict";
+function ar(){return (window.currentLang||document.documentElement.lang||"en")==="ar"}function t(e,a){return ar()?a:e}
+function id(x){return !!document.getElementById(x)}function fn(x){return typeof window[x]==="function"}
+function tests(){return[
+[t("Create / open file","إنشاء / فتح ملف"),id("enfIntake")&&(fn("enfIntakeOpen")||fn("v2OpenFileWizard"))],
+[t("File 360°","File 360°"),id("enfFile360FinalPage")&&fn("openFile360")],
+[t("Tasks / Calendar","المهام / التقويم"),fn("v2OpenTask")],
+[t("Collections / Finance","التحصيل / المالية"),fn("enfFinOpen")],
+[t("Documents / Evidence","المستندات / الأدلة"),fn("enfDeOpen")],
+[t("Minutes","المحاضر"),fn("enfOpenMinutesStudio")],
+[t("Reports","التقارير"),fn("enfOpenReports")],
+[t("Smart Follow-up","المتابعة الذكية"),fn("enfOpenSmartFollowup")],
+[t("Creditor Portal","بوابة الدائن"),id("enfCreditorPortal")&&fn("enfOpenCreditorPortal")],
+[t("Smart Arabic Voice","التسجيل الصوتي العربي الذكي"),id("enfVoiceAI")&&fn("enfVoiceOpen")&&fn("enfVoiceToggle")],
+[t("Arabic / English","العربية / الإنجليزية"),["rtl","ltr"].includes(document.documentElement.dir)],
+[t("Light / Dark","النهاري / الليلي"),true]
+]}
+window.enfOpsReadyOpen=function(){let a=tests();document.getElementById("enfOpsReadyGrid").innerHTML=a.map(x=>`<div class="enf-ops-ready-item"><span>${x[0]}</span><b>${x[1]?t("READY","جاهز"):t("CHECK","تحقق")}</b></div>`).join("");document.getElementById("enfOpsReadyText").textContent=t("Non-destructive operational validation. No test records are created.","فحص تشغيلي دون إنشاء أي بيانات تجريبية.");document.getElementById("enfOpsReady").classList.add("open")}
+window.enfOpsReadyClose=()=>document.getElementById("enfOpsReady")?.classList.remove("open");
+document.addEventListener("keydown",e=>{if(e.ctrlKey&&e.shiftKey&&String(e.key).toLowerCase()==="o"){e.preventDefault();enfOpsReadyOpen()}});
+})();
 </script></body>
 </html>
