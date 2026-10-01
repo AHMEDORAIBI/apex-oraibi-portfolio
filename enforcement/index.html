@@ -4363,7 +4363,7 @@ function checks(){
   ["Files 360",has("enfFilesClient360Page")&&fn("enfFiles360Open")],
   ["Open File 360",fn("openFile360")],
   ["Client 360",has("enfClient360Panel")&&fn("enfClient360Open")],
-  ["Add File",fn("enfIntakeOpen")||fn("openFileWizard")||fn("openQuickAdd")],
+  ["Add File",fn("enfIntakeOpen")&&fn("enfIntakeNext")&&has("enfIntake")],
   ["Financial workspace",has("enfFinRoot")&&fn("enfOpenFinance")],
   ["Add financial transaction",fn("enfFinSave")],
   ["Client transfer",fn("enfFinClientTransfer")],
@@ -4372,7 +4372,7 @@ function checks(){
   ["Reports",has("reportsPage")&&fn("enfReportsV2Render")],
   ["CSV export",fn("enfReportsCSV")],
   ["Voice engine",fn("enfVoiceToggle")||fn("enfVoiceOpen")],
-  ["Voice commands",fn("enfRunVoiceCommand")],
+  ["Voice commands",fn("enfVoiceExecute")||fn("enfRunVoiceCommand")],
   ["Direct demo access",!has("loginGate")&&!has("enfAuthV3")]
  ]
 }
@@ -4400,6 +4400,34 @@ function boot(){
  window.enfOperationalQA()
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});else boot()
+})();
+</script>
+
+<style id="enforza-demo-operation-launcher-css">
+.enf-opbar{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 12px}.enf-opbar button{border:1px solid var(--line);background:var(--surface);color:inherit;border-radius:9px;padding:7px 10px;font-size:8px;cursor:pointer}.enf-opbar button:hover{border-color:var(--bronze)}
+</style>
+<script id="enforza-demo-operation-launcher-js">
+(function(){
+"use strict";
+function openTask(){if(typeof window.v2OpenTask==="function")window.v2OpenTask(new Date().toISOString().slice(0,10))}
+function openCal(){if(typeof window.v210Go==="function")window.v210Go("calendar")}
+function openFile(){if(typeof window.enfIntakeOpen==="function")window.enfIntakeOpen()}
+function openFin(){if(typeof window.enfOpenFinance==="function")window.enfOpenFinance()}
+function openRep(){if(typeof window.openPage==="function")window.openPage("reports")}
+window.enfDemoNewFile=openFile;
+window.enfDemoNewTask=openTask;
+window.enfDemoCalendar=openCal;
+window.enfDemoFinance=openFin;
+window.enfDemoReports=openRep;
+function mount(){
+ const root=document.getElementById("enfExecutiveDashboardRoot");if(!root||document.getElementById("enfDemoOperationBar"))return;
+ const bar=document.createElement("div");bar.id="enfDemoOperationBar";bar.className="enf-opbar";
+ bar.innerHTML='<button type="button" onclick="enfDemoNewFile()">＋ New File</button><button type="button" onclick="enfDemoNewTask()">＋ Task</button><button type="button" onclick="enfDemoCalendar()">Calendar</button><button type="button" onclick="enfDemoFinance()">＋ Collection / Finance</button><button type="button" onclick="enfDemoReports()">Reports</button>';
+ root.prepend(bar)
+}
+const old=window.enfExecutiveDashboardRender;
+if(typeof old==="function")window.enfExecutiveDashboardRender=function(){let r=old.apply(this,arguments);setTimeout(mount,0);return r};
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>setTimeout(mount,0),{once:true});else setTimeout(mount,0)
 })();
 </script>
 </body>
