@@ -2738,7 +2738,7 @@ window.enfIntakeDrive=function(){document.getElementById("eiSelected").textConte
 function pick(inp){attachments=[...(inp.files||[])].map(f=>({name:f.name,type:f.type,size:f.size}));document.getElementById("eiSelected").textContent=attachments.length?attachments.map(x=>x.name).join(", "):t("No documents selected.","لم يتم اختيار مستندات.")}
 function review(){let a=[[t("Intake Type","نوع فتح الملف"),type],[t("Case Number","رقم القضية"),val("eiCase")||"—"],[t("Court / Authority","المحكمة / الجهة"),val("eiCourt")||"—"],[t("Creditor","الدائن"),val("eiCreditor")||"—"],[t("Debtor","المدين"),val("eiDebtor")||"—"],[t("We Represent","نمثل"),val("eiRepresent")||"—"],[t("Client / Customer","الموكل / العميل"),val("eiClientName")||"—"],[t("Claim","المطالبة"),"BHD "+Number(val("eiAmount")||0).toFixed(3)],[t("Assigned Officer","المسؤول"),val("eiOfficer")||"—"],[t("Attachments","المرفقات"),String(attachments.length)]];document.getElementById("eiReview").innerHTML=a.map(x=>`<div><small>${x[0]}</small><b>${x[1]}</b></div>`).join("")}
 function create(){
- let n=files().length+1,id="ENF-"+String(n).padStart(5,"0"),title=val("eiCase")?t("Case ","قضية ")+val("eiCase"):t("Enforcement File ","ملف تنفيذ ")+id;
+ let n=files().length+1,id=(typeof window.enfNextFileId==="function"?window.enfNextFileId():"ENF-"+String(n).padStart(5,"0")),title=val("eiCase")?t("Case ","قضية ")+val("eiCase"):t("Enforcement File ","ملف تنفيذ ")+id;
  let f={id,title,status:"Active",intakeType:type,caseNumber:val("eiCase"),court:val("eiCourt"),caseType:val("eiCaseType"),judgmentRef:val("eiJudgment"),lawFirm:val("eiLawFirm"),externalRef:val("eiExternalRef"),sourceNotes:val("eiSourceNotes"),creditor:val("eiCreditor"),creditorId:val("eiCreditorId"),debtor:val("eiDebtor"),debtorId:val("eiDebtorId"),clientSide:val("eiRepresent"),clientName:val("eiClientName"),clientId:val("eiClientId"),clientContact:val("eiClientContact"),amount:Number(val("eiAmount")||0),assignedOfficer:val("eiOfficer"),summary:val("eiSummary"),attachments:[...attachments],openedDate:new Date().toISOString().slice(0,10)};
  files().push(f);
  if(window.DATA&&Array.isArray(DATA.documents))attachments.forEach((a,i)=>DATA.documents.push({id:"DOC-"+String(DATA.documents.length+1).padStart(4,"0"),file:id,title:a.name,recordType:"Initial Document",date:f.openedDate,origin:type,source:"Intake",attachments:[a],status:"Recorded"}));
@@ -2764,7 +2764,7 @@ function financial(f){let ok=x=>(x.status||"Posted")!=="Reversed",claim=Number(f
 function list(items,fn){return items.length?`<div class="enf360-list">${items.map(fn).join("")}</div>`:`<div class="enf360-empty">${t("No records yet.","لا توجد سجلات حتى الآن.")}</div>`}
 function main(f){
  let F=financial(f);
- if(tab==="overview")return `<div class="enf360-card"><h2>${t("Case & File Information","بيانات القضية والملف")}</h2><div class="enf360-info">${info(t("Case Number","رقم القضية"),f.caseNumber)}${info(t("Court / Authority","المحكمة / الجهة"),f.court)}${info(t("Case Type","نوع القضية"),f.caseType)}${info(t("Judgment Reference","مرجع الحكم"),f.judgmentRef)}${info(t("Client / Customer","الموكل / العميل"),f.clientName||((f.clientSide==="Creditor")?f.creditor:(f.clientSide==="Debtor")?f.debtor:""))}${info(t("We Represent","نمثل"),f.clientSide)}${info(t("Client ID / CR","هوية / سجل الموكل"),f.clientId)}${info(t("Client Contact","تواصل الموكل"),f.clientContact)}${info(t("Creditor","الدائن"),f.creditor)}${info(t("Debtor","المدين"),f.debtor)}${info(t("Intake Source","مصدر الملف"),f.intakeType)}${info(t("Assigned Officer","المسؤول"),f.assignedOfficer)}</div></div>`;
+ if(tab==="overview")return `<div class="enf360-card"><h2>${t("Case & File Information","بيانات القضية والملف")}</h2><div class="enf360-info">${info(t("Case Number","رقم القضية"),f.caseNumber)}${info(t("Court / Authority","المحكمة / الجهة"),f.court)}${info(t("Case Type","نوع القضية"),f.caseType)}${info(t("Judgment Reference","مرجع الحكم"),f.judgmentRef)}${info(t("Client / Customer","الموكل / العميل"),f.clientName||((f.clientSide==="Creditor")?f.creditor:(f.clientSide==="Debtor")?f.debtor:""))}${info(t("We Represent","نمثل"),f.clientSide)}${info(t("Client ID / CR","هوية / سجل الموكل"),f.clientId)}${info(t("Client Contact","تواصل الموكل"),f.clientContact)}${info(t("Creditor","الدائن"),f.creditor)}${info(t("Debtor","المدين"),f.debtor)}${info(t("Intake Source","مصدر الملف"),f.intakeType)}${info(t("Assigned Officer","المسؤول"),f.assignedOfficer)}</div></div>${typeof window.enfFileLifecycleActions==="function"?window.enfFileLifecycleActions(fid(f)):""}`;
  if(tab==="financial")return `<div class="enf360-card"><h2>${t("Financial Position","المركز المالي")}</h2><div class="enf360-kpis"><div class="enf360-kpi"><small>${t("CLAIM","المطالبة")}</small><b>${money(F.claim)}</b></div><div class="enf360-kpi"><small>${t("COLLECTED","المحصل")}</small><b>${money(F.col)}</b></div><div class="enf360-kpi"><small>${t("OUTSTANDING","المتبقي")}</small><b>${money(F.out)}</b></div><div class="enf360-kpi"><small>${t("TRANSFERRED TO CLIENT","المحول للموكل")}</small><b>${money(F.trans)}</b></div><div class="enf360-kpi"><small>${t("HELD / AVAILABLE","المحتجز / المتاح")}</small><b>${money(F.held)}</b></div></div><div class="enf360-progress"><i style="width:${F.pct}%"></i></div><div style="margin-top:12px">${list(tx().slice().reverse(),x=>`<div class="enf360-item"><b>${x.type} · ${money(x.amount)}</b><small>${x.date||""} · ${x.reference||""} · ${x.notes||""}</small></div>`)}</div></div>`;
  if(tab==="tasks")return `<div class="enf360-card"><h2>${t("Tasks & Calendar","المهام والتقويم")}</h2>${list(tasks(),x=>`<div class="enf360-item" onclick="v2OpenTask('', '${x.id}')"><b>${x.title||x.task||t("Task","مهمة")}</b><small>${x.due||x.date||""} · ${x.priority||"Normal"} · ${x.status||"Open"}</small></div>`)}</div>`;
  if(tab==="minutes")return `<div class="enf360-card"><h2>${t("Minutes","المحاضر")}</h2>${list(mins(),x=>`<div class="enf360-item"><b>${x.title||t("Minute","محضر")}</b><small>${x.date||""} · ${x.type||""}</small></div>`)}</div>`;
@@ -4459,6 +4459,46 @@ function install(){
  setInterval(saveNow,30000)
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",install,{once:true});else install()
+})();
+</script>
+
+<style id="enforza-file-lifecycle-css">
+.enf-life{margin-top:10px;border:1px solid var(--line);border-radius:13px;padding:11px;background:var(--surface)}
+.enf-life h3{margin:0 0 8px;font-size:11px}.enf-life-actions{display:flex;gap:6px;flex-wrap:wrap}.enf-life-actions button{border:1px solid var(--line);background:transparent;color:inherit;border-radius:8px;padding:6px 9px;font-size:8px;cursor:pointer}.enf-life-actions button:hover{border-color:var(--bronze)}
+</style>
+<script id="enforza-file-lifecycle-js">
+(function(){
+"use strict";
+function A(n){return window.DATA&&Array.isArray(DATA[n])?DATA[n]:[]}
+function file(id){return A("files").find(f=>(f.id||f.ref)===id)}
+function save(){if(typeof window.enfDemoSaveNow==="function")window.enfDemoSaveNow()}
+function refresh(id){save();if(typeof window.enfFiles360Render==="function")window.enfFiles360Render();if(typeof window.enfExecutiveDashboardRender==="function")window.enfExecutiveDashboardRender();if(typeof window.openFile360==="function"&&id)setTimeout(()=>window.openFile360(id),20)}
+function selectFile(id,selector){setTimeout(()=>{let e=document.querySelector(selector);if(e){e.value=id;e.dispatchEvent(new Event("change",{bubbles:true}))}},60)}
+window.enfFileAddTask=function(id){
+ if(!file(id))return;
+ if(typeof window.v2OpenTask==="function"){window.v2OpenTask(new Date().toISOString().slice(0,10));selectFile(id,"#v2TaskFile");return}
+ if(typeof window.v210Go==="function")window.v210Go("tasks")
+}
+window.enfFileAddCalendar=function(id){
+ if(!file(id))return;
+ if(typeof window.v210Go==="function"){window.v210Go("calendar");setTimeout(()=>{if(typeof window.v2OpenTask==="function"){window.v2OpenTask(new Date().toISOString().slice(0,10));selectFile(id,"#v2TaskFile")}},80)}
+}
+window.enfFileAddCollection=function(id){
+ if(!file(id))return;
+ if(typeof window.enfOpenFinance==="function"){window.enfOpenFinance();selectFile(id,"#enfFinFile")}
+}
+window.enfFileOpenClient=function(id){
+ let f=file(id);if(!f)return;let n=f.clientName||((f.clientSide==="Creditor")?f.creditor:(f.clientSide==="Debtor")?f.debtor:"");
+ if(n&&typeof window.enfClient360Open==="function")window.enfClient360Open(n)
+}
+window.enfFileLifecycleActions=function(id){
+ return `<div class="enf-life"><h3>File Actions</h3><div class="enf-life-actions"><button onclick="enfFileAddTask('${id}')">＋ Task</button><button onclick="enfFileAddCalendar('${id}')">＋ Calendar</button><button onclick="enfFileAddCollection('${id}')">＋ Collection</button><button onclick="enfFileOpenClient('${id}')">Client 360°</button></div></div>`
+}
+/* Ensure file IDs do not collide after deletion/archive. */
+window.enfNextFileId=function(){
+ let mx=A("files").reduce((m,f)=>Math.max(m,Number(String(f.id||f.ref||"").replace(/\D/g,""))||0),0);
+ return "ENF-"+String(mx+1).padStart(5,"0")
+}
 })();
 </script>
 </body>
