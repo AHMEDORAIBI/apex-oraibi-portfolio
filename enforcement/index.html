@@ -3551,5 +3551,52 @@ function wire(){
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",wire);else wire();
 })();
+</script><style id="enforza-v2-rc3-workflow-css">
+/* RC3 — Full Workflow Validation */
+.enf-rc3{position:fixed;inset:0;z-index:180000;background:rgba(7,11,15,.72);display:none;place-items:center;padding:18px}.enf-rc3.open{display:grid}
+.enf-rc3-card{width:min(900px,97vw);max-height:92vh;overflow:auto;background:#fff;border-radius:20px;box-shadow:0 36px 125px rgba(0,0,0,.36)}
+.enf-rc3-head{display:flex;justify-content:space-between;gap:18px;padding:21px 23px;border-bottom:1px solid var(--desk-line)}.enf-rc3-head h2{font-size:23px!important;margin:3px 0}.enf-rc3-head p{margin:0;color:var(--desk-muted);font-size:10px}
+.enf-rc3-body{padding:18px 23px}.enf-rc3-flow{display:grid;gap:8px}.enf-rc3-step{display:grid;grid-template-columns:32px 1fr auto;gap:10px;align-items:center;border:1px solid var(--desk-line);border-radius:11px;padding:11px}.enf-rc3-step i{display:grid;place-items:center;width:30px;height:30px;border-radius:9px;background:#f1e7dd;color:#87572d;font-style:normal;font-size:10px;font-weight:950}.enf-rc3-step b{display:block;font-size:10px}.enf-rc3-step small{display:block;color:var(--desk-muted);font-size:9px;margin-top:3px}.enf-rc3-state{font-size:9px;font-weight:950;color:#4f805c}
+.enf-rc3-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:13px}.enf-rc3-stat{border:1px solid var(--desk-line);border-radius:10px;padding:11px}.enf-rc3-stat small{display:block;color:var(--desk-muted);font-size:8px;font-weight:900}.enf-rc3-stat b{display:block;font-size:16px;margin-top:4px}.enf-rc3-note{margin-top:12px;padding:11px;border-radius:10px;border:1px solid var(--desk-line);background:#fbfaf8;color:var(--desk-muted);font-size:9px;line-height:1.55}.enf-rc3-foot{display:flex;justify-content:space-between;gap:7px;padding:14px 23px;border-top:1px solid var(--desk-line)}
+body.enf-dark .enf-rc3-card{background:#171d23;color:#eef2f5}
+@media(max-width:700px){.enf-rc3{padding:0}.enf-rc3-card{width:100%;height:100%;max-height:none;border-radius:0}.enf-rc3-summary{grid-template-columns:1fr 1fr}}
+</style>
+<div class="enf-rc3" id="enfRc3"><div class="enf-rc3-card">
+<div class="enf-rc3-head"><div><div class="v2-kicker">RC3 · FULL WORKFLOW</div><h2>ENFORZA V2.0 RC3</h2><p id="enfRc3Sub">End-to-end workflow validation with Smart Arabic Voice included.</p></div><button class="enf-field-close" onclick="enfRc3Close()">×</button></div>
+<div class="enf-rc3-body"><div class="enf-rc3-summary" id="enfRc3Stats"></div><div class="enf-rc3-flow" id="enfRc3Flow"></div><div class="enf-rc3-note" id="enfRc3Note"></div></div>
+<div class="enf-rc3-foot"><button class="enf-ms-btn" onclick="enfVoiceOpen()">Test Arabic Voice</button><button class="enf-ms-btn primary" onclick="enfRc3Close()">Continue</button></div>
+</div></div>
+<script id="enforza-v2-rc3-workflow-js">
+(function(){
+"use strict";const VERSION="ENFORZA V2.0 RC3";
+function ar(){return (window.currentLang||document.documentElement.lang||"en")==="ar"}function t(e,a){return ar()?a:e}
+function A(n){return window.DATA&&Array.isArray(DATA[n])?DATA[n]:[]}
+function role(){let r=String(window.currentRole||window.userRole||sessionStorage.getItem("enforzaRole")||localStorage.getItem("enforzaRole")||"").toLowerCase();return r.includes("creditor")?"creditor":"officer"}
+function present(id){return !!document.getElementById(id)}
+function noSeed(){if(!window.DATA)return;Object.keys(DATA).forEach(k=>{if(Array.isArray(DATA[k]))DATA[k]=DATA[k].filter(x=>!(x&&(x.demo===true||x.isDemo===true||x.seed===true||/^demo[-_]/i.test(String(x.id||"")))))})}
+function stages(){
+ return [
+ [t("Login & Role","الدخول والصلاحية"),true,t("Officer and Creditor routing available.","مسارات الموظف والدائن متاحة.")],
+ [t("Dashboard","لوحة التحكم"),!!document.querySelector('.nav-item[data-page="dashboard"]'),t("Role-aware home navigation.","واجهة رئيسية حسب الصلاحية.")],
+ [t("New File","ملف جديد"),present("enfIntake"),t("Five-step intake workflow.","مسار فتح ملف من خمس مراحل.")],
+ [t("File 360°","File 360°"),present("enfFile360FinalPage"),t("Case, finance, tasks, documents and timeline integrated.","القضية والمالية والمهام والمستندات والتسلسل مترابطة.")],
+ [t("Task & Calendar","المهام والتقويم"),!!document.querySelector('.nav-item[data-page="tasks"]'),t("Task workflow available.","مسار المهام متاح.")],
+ [t("Smart Arabic Voice","الصوت العربي الذكي"),present("enfVoiceAI"),t("Arabic/Bahraini-Gulf and English assistant available.","المساعد العربي البحريني والخليجي والإنجليزي متاح.")],
+ [t("Documents","المستندات"),present("enfDocumentsCenter"),t("Documents and evidence linked to files.","ربط المستندات والأدلة بالملفات.")],
+ [t("Collection","التحصيل"),present("enfFinancePage"),t("Collections update financial position.","التحصيلات مرتبطة بالمركز المالي.")],
+ [t("Reports","التقارير"),present("enfReportsPage"),t("Operational and financial reporting available.","التقارير التشغيلية والمالية متاحة.")],
+ [t("Creditor View","واجهة الدائن"),present("enfCreditorPortal"),t("Simplified isolated creditor portal.","بوابة دائن مبسطة ومعزولة.")]
+ ];}
+window.enfRc3Open=function(){
+ noSeed();let st=stages(),stats=[[t("FILES","الملفات"),A("files").length],[t("TASKS","المهام"),A("smartTasks").length],[t("DOCUMENTS","المستندات"),A("documents").length],[t("ROLE","الصلاحية"),role()==="creditor"?t("Creditor","دائن"):t("Officer","موظف تنفيذ")]];
+ document.getElementById("enfRc3Stats").innerHTML=stats.map(x=>`<div class="enf-rc3-stat"><small>${x[0]}</small><b>${x[1]}</b></div>`).join("");
+ document.getElementById("enfRc3Flow").innerHTML=st.map((x,i)=>`<div class="enf-rc3-step"><i>${i+1}</i><div><b>${x[0]}</b><small>${x[2]}</small></div><span class="enf-rc3-state">${x[1]?t("READY","جاهز"):t("CHECK","تحقق")}</span></div>`).join("");
+ document.getElementById("enfRc3Note").textContent=t("RC3 validates the complete interface path without generating test records. Real browser microphone permission is still required to test speech recognition.","RC3 يتحقق من المسار الكامل للواجهة دون إنشاء بيانات تجريبية. اختبار التعرف الصوتي فعليًا يتطلب السماح للمتصفح باستخدام الميكروفون.");
+ document.getElementById("enfRc3").classList.add("open");
+}
+window.enfRc3Close=()=>document.getElementById("enfRc3")?.classList.remove("open");
+function init(){noSeed();document.documentElement.dataset.enforzaVersion=VERSION;document.addEventListener("keydown",e=>{if(e.ctrlKey&&e.shiftKey&&String(e.key).toLowerCase()==="w"){e.preventDefault();enfRc3Open()}})}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
+})();
 </script></body>
 </html>
