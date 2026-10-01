@@ -465,6 +465,15 @@ html[dir="rtl"] .file-timeline{padding-left:0;padding-right:30px}html[dir="rtl"]
 @media(max-width:720px){.case-data-grid{grid-template-columns:1fr 1fr}.case-plan-step{grid-template-columns:38px 1fr}.case-plan-step button{grid-column:2}}
 @media(max-width:430px){.case-data-grid{grid-template-columns:1fr}}
 
+
+/* ===== ENFORZA PHASE 22 — ATTACHMENT SOURCE CHOOSER + AI VOICE LAB ===== */
+.attach-source-sheet{position:fixed;inset:0;background:rgba(12,18,23,.58);z-index:1200;display:none;place-items:center;padding:16px}
+.attach-source-box{width:min(620px,100%);background:#fff;border-radius:15px;padding:22px;box-shadow:0 30px 90px rgba(0,0,0,.35)}
+.attach-source-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}.attach-source-card{border:1px solid var(--border);background:#fff;border-radius:11px;padding:18px 10px;text-align:center;cursor:pointer}.attach-source-card:hover{border-color:#c9976e;background:#fffaf6}.attach-source-card b{display:block;font-size:30px!important;color:var(--bronze)}.attach-source-card strong{display:block;color:var(--navy);margin-top:8px}.attach-source-card span{display:block;color:var(--muted);margin-top:5px}
+.voice-lab{position:fixed;right:24px;bottom:24px;width:min(440px,calc(100vw - 30px));background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.28);z-index:1190;display:none;overflow:hidden}.voice-lab-head{padding:14px;background:#17120f;color:#fff;display:flex;justify-content:space-between;align-items:center}.voice-lab-body{padding:15px}.voice-wave{height:56px;display:flex;align-items:center;justify-content:center;gap:5px}.voice-wave i{width:5px;height:14px;background:var(--bronze);border-radius:5px}.voice-wave.listening i{animation:wave .7s infinite alternate}.voice-wave i:nth-child(2){animation-delay:.1s}.voice-wave i:nth-child(3){animation-delay:.2s}.voice-wave i:nth-child(4){animation-delay:.3s}.voice-wave i:nth-child(5){animation-delay:.4s}@keyframes wave{to{height:44px}}
+.voice-transcript{border:1px solid var(--border);background:#f8f9fa;border-radius:9px;padding:11px;min-height:70px}.voice-lab-actions{display:flex;gap:8px;margin-top:10px}.voice-lab-actions button{flex:1;border:1px solid var(--border);background:#fff;border-radius:8px;padding:10px;font-weight:800}.voice-lab-actions .primary{background:var(--bronze);color:#fff;border-color:var(--bronze)}
+@media(max-width:720px){.attach-source-grid{grid-template-columns:1fr}.voice-lab{right:8px;bottom:8px;width:calc(100vw - 16px)}}
+
 </style>
 </head>
 <body>
@@ -473,6 +482,9 @@ html[dir="rtl"] .file-timeline{padding-left:0;padding-right:30px}html[dir="rtl"]
 
 
 
+
+<div class="attach-source-sheet" id="attachSourceSheet"><div class="attach-source-box"><div class="minutes-head"><div><h2 data-i18n="Add Attachment">Add Attachment</h2><p data-i18n="Choose where you want to add the file from.">Choose where you want to add the file from.</p></div><button class="top-btn" onclick="closeAttachSources()">×</button></div><div class="attach-source-grid"><div class="attach-source-card" onclick="chooseAttachSource('camera')"><b>📷</b><strong data-i18n="Camera">Camera</strong><span data-i18n="Take a photo now">Take a photo now</span></div><div class="attach-source-card" onclick="chooseAttachSource('computer')"><b>▧</b><strong data-i18n="Computer / Device">Computer / Device</strong><span data-i18n="Choose a local file">Choose a local file</span></div><div class="attach-source-card" onclick="chooseAttachSource('drive')"><b>△</b><strong data-i18n="Google Drive">Google Drive</strong><span data-i18n="Select from Drive demo">Select from Drive demo</span></div></div><input id="globalCameraInput" type="file" accept="image/*" capture="environment" style="display:none" onchange="globalAttachmentSelected(this.files[0],'Camera')"><input id="globalComputerInput" type="file" accept="image/*,.pdf,.doc,.docx,.xls,.xlsx" style="display:none" onchange="globalAttachmentSelected(this.files[0],'Computer')"></div></div>
+<div class="voice-lab" id="voiceLab"><div class="voice-lab-head"><strong>✦ ENFORZA AI Voice</strong><button class="top-btn" onclick="closeVoiceLab()">×</button></div><div class="voice-lab-body"><div class="voice-wave" id="voiceWave"><i></i><i></i><i></i><i></i><i></i></div><div class="voice-transcript" id="voiceTranscript" data-i18n="Press Start Voice Test and speak.">Press Start Voice Test and speak.</div><div class="voice-lab-actions"><button class="primary" onclick="startAIVoiceTest()">🎙 <span data-i18n="Start Voice Test">Start Voice Test</span></button><button onclick="speakAIDemo()">🔊 <span data-i18n="Test AI Reply">Test AI Reply</span></button></div><p id="voiceSupportNote" style="margin-top:10px;color:var(--muted)"></p></div></div>
 <div class="task-modal" id="smartTaskModal"><div class="task-modal-box">
  <div class="minutes-head"><div><h2 data-i18n="Create Smart Task">Create Smart Task</h2><p data-i18n="Link a task to an enforcement file and schedule its follow-up.">Link a task to an enforcement file and schedule its follow-up.</p></div><button class="top-btn" onclick="closeSmartTaskModal()">×</button></div>
  <div class="doc-fields" style="margin-top:15px"><div class="doc-field"><label data-i18n="Related File">Related File</label><select id="stFile"></select></div><div class="doc-field"><label data-i18n="Assigned To">Assigned To</label><select id="stAssignee"><option>Ali Hassan</option><option>Fatima Ahmed</option><option>Mohammed Ali</option></select></div><div class="doc-field full"><label data-i18n="Task">Task</label><input id="stTitle" placeholder="Follow up with debtor / مراجعة..."></div><div class="doc-field"><label data-i18n="Due Date">Due Date</label><input id="stDue" type="date"></div><div class="doc-field"><label data-i18n="Priority">Priority</label><select id="stPriority"><option>Normal</option><option>High</option><option>Critical</option></select></div><div class="doc-field full"><label data-i18n="Reminder">Reminder</label><select id="stReminder"><option>On due date</option><option>1 day before</option><option>3 days before</option><option>7 days before</option></select></div></div>
@@ -1838,6 +1850,57 @@ renderUnifiedFile360=function(f){
  e.prepend(box);e.prepend(data);
 }
 Object.assign(I18N.ar,{"Enforcement File Number":"رقم ملف التنفيذ","Judgment Date":"تاريخ الحكم","Enforcement Instrument":"السند التنفيذي","Final Judgment":"حكم نهائي","Executable Judgment":"حكم واجب التنفيذ","Settlement Agreement":"اتفاقية تسوية","Cheque / Commercial Paper":"شيك أو ورقة تجارية","Notarial Instrument":"محرر موثق","Other":"أخرى","Judgment Amount":"مبلغ الحكم","Fees & Expenses":"الرسوم والمصاريف","Creditor ID / CR":"رقم هوية أو سجل الدائن","Debtor ID / CR":"رقم هوية أو سجل المدين","Referring Law Firm":"مكتب المحاماة المحيل","Case & Enforcement Data":"بيانات القضية والتنفيذ","AI Enforcement Plan":"خطة التنفيذ الذكية","Verify Enforcement Instrument":"التحقق من السند التنفيذي","Review enforceability and supporting documents":"مراجعة قابلية التنفيذ والمستندات المؤيدة","Verify Debtor Data":"التحقق من بيانات المدين","ID / CR":"الهوية أو السجل","Financial & Asset Inquiry":"الاستعلام المالي وعن الأصول","Review available bank, asset and income information":"مراجعة المعلومات المتاحة عن الحسابات والأصول والدخل","Recovery Action":"إجراء التحصيل والتنفيذ","Coordinate with Referring Law Firm":"التنسيق مع مكتب المحاماة المحيل","Confirm handover documents and prior actions":"التأكد من مستندات الإحالة والإجراءات السابقة","Schedule Follow-up":"جدولة المتابعة","Create responsible officer task and due date":"إنشاء مهمة للمنفذ المسؤول وتحديد موعدها","Create Task":"إنشاء مهمة","AI plan step added as task.":"تمت إضافة خطوة الخطة الذكية كمهمة."});
+
+
+let attachmentTarget="documents",aiVoiceRecognition=null;
+function openAttachSources(target="documents"){attachmentTarget=target;document.getElementById("attachSourceSheet").style.display="grid"}
+function closeAttachSources(){document.getElementById("attachSourceSheet").style.display="none"}
+function chooseAttachSource(src){
+ if(src==="camera"){closeAttachSources();document.getElementById("globalCameraInput").click();return}
+ if(src==="computer"){closeAttachSources();document.getElementById("globalComputerInput").click();return}
+ closeAttachSources();openDriveDemoPicker();
+}
+function globalAttachmentSelected(file,source){
+ if(!file)return;
+ if(attachmentTarget==="documents"){openDocIntel();setTimeout(()=>handleDocFile(file),100)}
+ else if(attachmentTarget==="evidence"){const dt=new DataTransfer();dt.items.add(file);openEvidenceCapture();setTimeout(()=>handleEvidenceFiles(dt.files),100)}
+ else if(attachmentTarget==="minutes"){openMinutesModal();setTimeout(()=>handleMinuteImages([file]),100)}
+ showToast(`${t("Attachment selected from")} ${t(source)}.`);
+}
+function openDriveDemoPicker(){
+ const names=["Court_Order_2026.pdf","Bank_Response.pdf","Debtor_ID.jpg","Asset_Document.pdf"];
+ const pick=prompt(t("Google Drive demo — type 1, 2, 3 or 4")+"\n"+names.map((x,i)=>`${i+1}. ${x}`).join("\n"),"1");
+ const n=+pick;if(!n||n<1||n>4)return;
+ activeDocData={name:names[n-1],type:names[n-1].endsWith(".jpg")?"image/jpeg":"application/pdf",data:null};
+ openDocIntel();setTimeout(()=>{document.getElementById("docTitle").value=names[n-1].replace(/\.[^.]+$/,"");document.getElementById("docPreviewBox").innerHTML=`<div class="placeholder"><b>△</b><span>Google Drive · ${names[n-1]}</span></div>`;analyzeDemoDocument()},120);
+}
+function openVoiceLab(){document.getElementById("voiceLab").style.display="block";const SR=window.SpeechRecognition||window.webkitSpeechRecognition;document.getElementById("voiceSupportNote").textContent=SR?t("Speech recognition detected. Allow microphone access when prompted."):t("Speech recognition is not available in this browser. Try Chrome or Edge and allow microphone permission.")}
+function closeVoiceLab(){if(aiVoiceRecognition)try{aiVoiceRecognition.stop()}catch(e){};document.getElementById("voiceLab").style.display="none"}
+function startAIVoiceTest(){
+ const SR=window.SpeechRecognition||window.webkitSpeechRecognition,box=document.getElementById("voiceTranscript"),wave=document.getElementById("voiceWave");
+ if(!SR){box.textContent=t("Speech recognition is not available in this browser. Try Chrome or Edge and allow microphone permission.");return}
+ try{
+  aiVoiceRecognition=new SR();aiVoiceRecognition.lang=currentLang==="ar"?"ar-BH":"en-US";aiVoiceRecognition.interimResults=true;aiVoiceRecognition.continuous=false;
+  aiVoiceRecognition.onstart=()=>{wave.classList.add("listening");box.textContent=t("Listening... speak now.")};
+  aiVoiceRecognition.onresult=e=>{let s="";for(let i=e.resultIndex;i<e.results.length;i++)s+=e.results[i][0].transcript;box.textContent=s||t("Listening... speak now.")};
+  aiVoiceRecognition.onerror=e=>{wave.classList.remove("listening");box.textContent=t("Microphone error")+": "+e.error+" — "+t("Check browser microphone permission.")};
+  aiVoiceRecognition.onend=()=>wave.classList.remove("listening");aiVoiceRecognition.start();
+ }catch(e){box.textContent=t("Unable to start microphone. Check browser permission and HTTPS.")}
+}
+function speakAIDemo(){
+ const msg=currentLang==="ar"?"تم تشغيل تجربة الصوت بنجاح. يمكن استخدام الصوت لإنشاء المهام والمحاضر والأوامر داخل إنفورزا.":"AI voice test is working. Voice can be used for tasks, minutes and commands in ENFORZA.";
+ if(!("speechSynthesis" in window)){document.getElementById("voiceTranscript").textContent=t("Text-to-speech is not supported in this browser.");return}
+ speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(msg);u.lang=currentLang==="ar"?"ar-BH":"en-US";speechSynthesis.speak(u);document.getElementById("voiceTranscript").textContent=msg;
+}
+const _renderDocsP22=renderSmartDocuments;
+renderSmartDocuments=function(){_renderDocsP22();const page=document.getElementById("documentsPage");if(!page)return;const b=page.querySelector(".hero-row .action-btn.primary");if(b){b.onclick=()=>openAttachSources("documents");b.innerHTML=`＋ ${t("Add Attachment")}`}}
+const _openEvidenceP22=openEvidenceCapture;
+openEvidenceCapture=function(){_openEvidenceP22();const box=document.getElementById("evidenceModal");if(box){const area=box.querySelector(".evidence-capture");if(area&&!area.querySelector(".source-choice-btn"))area.insertAdjacentHTML("afterbegin",`<button class="source-choice-btn" onclick="closeEvidenceCapture();openAttachSources('evidence')">＋ ${t("Attachment Options")}</button>`)}}
+const _openMinutesP22=openMinutesModal;
+openMinutesModal=function(id=null){_openMinutesP22(id);if(!id){const area=document.querySelector("#minutesModal .minutes-actions");if(area&&!document.getElementById("minuteAttachOptions"))area.insertAdjacentHTML("beforebegin",`<div style="margin-top:10px"><button id="minuteAttachOptions" class="action-btn" onclick="closeMinutesModal();openAttachSources('minutes')">＋ ${t("Attachment Options")}</button></div>`)}}
+const _openAIP22=openAI;
+openAI=function(){_openAIP22();setTimeout(()=>{const panel=document.querySelector(".ai-panel,.ai-drawer,.ai-modal");if(panel&&!document.getElementById("aiVoiceTestBtn")){const btn=document.createElement("button");btn.id="aiVoiceTestBtn";btn.className="action-btn";btn.innerHTML="🎙 "+t("AI Voice Test");btn.onclick=openVoiceLab;panel.prepend(btn)}else if(!panel)openVoiceLab()},80)}
+Object.assign(I18N.ar,{"Add Attachment":"إضافة مرفق","Choose where you want to add the file from.":"اختر مصدر إضافة المرفق.","Camera":"الكاميرا","Take a photo now":"التقاط صورة الآن","Computer / Device":"الكمبيوتر أو الجهاز","Choose a local file":"اختيار ملف من الجهاز","Google Drive":"Google Drive","Select from Drive demo":"اختيار من الدرايف التجريبي","Attachment selected from":"تم اختيار المرفق من","Computer":"الكمبيوتر","Google Drive demo — type 1, 2, 3 or 4":"تجربة Google Drive — اكتب 1 أو 2 أو 3 أو 4","Press Start Voice Test and speak.":"اضغط بدء تجربة الصوت ثم تكلم.","Start Voice Test":"بدء تجربة الصوت","Test AI Reply":"تجربة رد AI الصوتي","Speech recognition detected. Allow microphone access when prompted.":"تم اكتشاف دعم التعرف على الصوت. اسمح باستخدام الميكروفون عند الطلب.","Speech recognition is not available in this browser. Try Chrome or Edge and allow microphone permission.":"التعرف على الصوت غير متاح في هذا المتصفح. جرّب Chrome أو Edge واسمح بصلاحية الميكروفون.","Listening... speak now.":"جاري الاستماع... تكلم الآن.","Microphone error":"خطأ في الميكروفون","Check browser microphone permission.":"تحقق من صلاحية الميكروفون في المتصفح.","Unable to start microphone. Check browser permission and HTTPS.":"تعذر تشغيل الميكروفون. تحقق من الصلاحية وأن الموقع يعمل عبر HTTPS.","Text-to-speech is not supported in this browser.":"تحويل النص إلى صوت غير مدعوم في هذا المتصفح.","Attachment Options":"خيارات الإرفاق","AI Voice Test":"تجربة صوت AI"});
 
 renderDashboard();renderUsers();renderAudit();renderPermissions();showReport("executive");applyLanguage();
 </script>
