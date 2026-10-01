@@ -725,6 +725,13 @@ body[dir="rtl"] .main,body[dir="rtl"] .main-content{direction:rtl}
 body[dir="rtl"] .sidebar{direction:rtl}
 .p40-lang{font-weight:900}
 .role-hidden{display:none!important}
+</style><style id="phase41-coming-soon-modules">
+.p41-soon-overlay{position:fixed;inset:0;z-index:5000;background:rgba(10,16,22,.58);backdrop-filter:blur(8px);display:none;place-items:center;padding:18px}
+.p41-soon-overlay.open{display:grid}
+.p41-soon-card{width:min(560px,94vw);background:var(--white);color:var(--text);border:1px solid var(--border);border-radius:22px;padding:32px;text-align:center;box-shadow:0 28px 90px rgba(0,0,0,.28)}
+.p41-soon-icon{width:72px;height:72px;border-radius:20px;margin:0 auto 16px;display:grid;place-items:center;background:color-mix(in srgb,var(--p29-accent) 12%,var(--white));font-size:34px}
+.p41-soon-card h2{font-size:24px!important;margin:0 0 8px}.p41-soon-card p{color:var(--muted);margin:0 0 20px;line-height:1.6}
+.p41-soon-card button{border:0;background:var(--p29-accent);color:#fff;border-radius:11px;padding:11px 22px;font-size:16px;font-weight:900;cursor:pointer}
 </style></head>
 <div class="exec-action-sheet" id="execActionSheet"><div class="exec-action-box"><div class="minutes-head"><div><h2>New Action</h2><p>Choose what you want to add to this enforcement file.</p></div><button class="top-btn" onclick="closeExecActionSheet()">×</button></div><div class="exec-action-grid">
 <div class="exec-action-card" onclick="execAction('task')"><b>✓</b><strong>Task</strong></div><div class="exec-action-card" onclick="execAction('minutes')"><b>✎</b><strong>Minutes</strong></div><div class="exec-action-card" onclick="execAction('collection')"><b>◉</b><strong>Collection</strong></div><div class="exec-action-card" onclick="execAction('document')"><b>▧</b><strong>Document</strong></div><div class="exec-action-card" onclick="execAction('camera')"><b>📷</b><strong>Camera / Evidence</strong></div><div class="exec-action-card" onclick="execAction('settlement')"><b>◇</b><strong>Settlement</strong></div></div></div></div>
@@ -2933,6 +2940,44 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 else setTimeout(stabilize,120);
 const obs=new MutationObserver(()=>{wireNavigation();wireLanguage()});
 obs.observe(document.body,{childList:true,subtree:true});
+})();
+</script><div class="p41-soon-overlay" id="p41SoonOverlay" onclick="if(event.target===this)p41CloseSoon()">
+<div class="p41-soon-card"><div class="p41-soon-icon" id="p41SoonIcon">👥</div><h2 id="p41SoonTitle">Coming Soon</h2>
+<p id="p41SoonText">This module is being prepared for a future release.</p>
+<button onclick="p41CloseSoon()" id="p41SoonBtn">Close</button></div></div><script id="phase41-coming-soon-modules-js">
+(function(){
+ const MODULES=[
+  {id:"hr",icon:"👥",en:"Human Resources",ar:"الموارد البشرية"},
+  {id:"accounting",icon:"▤",en:"Accounting",ar:"المحاسبة"},
+  {id:"tax",icon:"%",en:"Tax",ar:"الضريبة"}
+ ];
+ window.p41OpenSoon=function(id){
+   const m=MODULES.find(x=>x.id===id);if(!m)return;
+   const ar=window.currentLang==="ar";
+   document.getElementById("p41SoonIcon").textContent=m.icon;
+   document.getElementById("p41SoonTitle").textContent=ar?m.ar:m.en;
+   document.getElementById("p41SoonText").textContent=ar?"هذا القسم قيد التجهيز وسيتم تفعيله في إصدار قادم.":"COMING SOON — This module is being prepared for a future release.";
+   document.getElementById("p41SoonBtn").textContent=ar?"إغلاق":"Close";
+   document.getElementById("p41SoonOverlay").classList.add("open");
+ };
+ window.p41CloseSoon=function(){document.getElementById("p41SoonOverlay")?.classList.remove("open")};
+ function addModules(){
+   const sidebar=document.querySelector(".sidebar");if(!sidebar||document.getElementById("p41Modules"))return;
+   let box=document.createElement("div");box.id="p41Modules";
+   box.innerHTML=`<div style="padding:15px 16px 7px;font-size:11px;letter-spacing:1.7px;font-weight:900;color:var(--muted)" data-p41-en="FUTURE MODULES" data-p41-ar="أقسام مستقبلية">FUTURE MODULES</div>
+   ${MODULES.map(m=>`<div class="nav-item" data-p41-module="${m.id}" onclick="p41OpenSoon('${m.id}')" style="cursor:pointer"><span style="display:inline-block;width:24px">${m.icon}</span><span data-p41-en="${m.en}" data-p41-ar="${m.ar}">${m.en}</span></div>`).join("")}`;
+   const footer=[...sidebar.children].find(x=>(x.textContent||"").includes("DEMO ENVIRONMENT"));
+   if(footer)sidebar.insertBefore(box,footer);else sidebar.appendChild(box);
+   p41Lang();
+ }
+ function p41Lang(){
+   const ar=window.currentLang==="ar";
+   document.querySelectorAll("[data-p41-en]").forEach(x=>x.textContent=ar?x.dataset.p41Ar:x.dataset.p41En);
+ }
+ const oldLang=window.p40ApplyLanguage;
+ window.p40ApplyLanguage=function(lang){if(oldLang)oldLang(lang);setTimeout(p41Lang,30)};
+ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>setTimeout(addModules,180));else setTimeout(addModules,180);
+ new MutationObserver(()=>addModules()).observe(document.body,{childList:true,subtree:true});
 })();
 </script></body></html>`);w.document.close();
 }
