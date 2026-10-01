@@ -422,12 +422,31 @@ h1,h2,h3,h4,h5,h6,.top-title h1,.hero-row h2,.card-head h3,.login-form-side h2,.
 @media(max-width:720px){.doc-intel-modal{padding:0}.doc-intel-shell{display:block;width:100%;height:100vh;max-height:none;border-radius:0;overflow:auto}.doc-preview{padding:14px}.doc-preview-box{min-height:220px}.doc-intel-main{max-height:none;padding:16px}.doc-fields,.doc-ai-grid{grid-template-columns:1fr}.doc-field.full{grid-column:auto}.doc-card{display:block}.doc-card-actions{margin-top:10px}}
 html[dir="rtl"] .main{margin-left:0;margin-right:285px}@media(max-width:720px){html[dir="rtl"] .main{margin-right:0}}
 
+
+/* ===== ENFORZA PHASE 17 — FIELD EVIDENCE GALLERY ===== */
+.evidence-modal{position:fixed;inset:0;background:rgba(12,18,23,.64);backdrop-filter:blur(5px);z-index:1150;display:none;place-items:center;padding:16px}
+.evidence-shell{width:min(1100px,100%);max-height:94vh;overflow:auto;background:#fff;border-radius:15px;box-shadow:0 30px 90px rgba(0,0,0,.36);padding:22px}
+.evidence-head{display:flex;justify-content:space-between;gap:10px}.evidence-capture{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.evidence-capture button{border:1px solid var(--border);background:#fff;border-radius:8px;padding:10px 12px;font-weight:900;color:var(--navy)}.evidence-capture .primary{background:var(--bronze);color:#fff}
+.evidence-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.evidence-item{border:1px solid var(--border);border-radius:10px;overflow:hidden;background:#fff}.evidence-item img{width:100%;aspect-ratio:4/3;object-fit:cover;background:#eef1f3}.evidence-body{padding:11px}.evidence-body strong{display:block;color:var(--navy)}.evidence-body span{display:block;color:var(--muted);margin-top:4px}.evidence-body textarea{width:100%;min-height:72px;border:1px solid var(--border);border-radius:7px;padding:8px;margin-top:8px;font-size:16px}.evidence-actions{display:flex;gap:6px;margin-top:8px}.evidence-actions button{flex:1;border:1px solid var(--border);background:#fff;border-radius:7px;padding:8px;color:var(--bronze);font-size:16px}
+.evidence-gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.gallery-card{border:1px solid var(--border);border-radius:9px;overflow:hidden;background:#fff}.gallery-card img{width:100%;aspect-ratio:4/3;object-fit:cover}.gallery-card div{padding:9px}.gallery-card strong{display:block;color:var(--navy)}.gallery-card span{display:block;color:var(--muted);margin-top:3px}
+@media(max-width:720px){.evidence-modal{padding:0}.evidence-shell{width:100%;height:100vh;max-height:none;border-radius:0;padding:16px}.evidence-grid,.evidence-gallery{grid-template-columns:1fr 1fr}}
+@media(max-width:430px){.evidence-grid,.evidence-gallery{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
 
 
 
+
+<div class="evidence-modal" id="evidenceModal"><div class="evidence-shell">
+ <div class="evidence-head"><div><h2 data-i18n="Field Evidence Capture">Field Evidence Capture</h2><p data-i18n="Take multiple photos, add voice or typed descriptions, and link them to a file or minutes record.">Take multiple photos, add voice or typed descriptions, and link them to a file or minutes record.</p></div><button class="top-btn" onclick="closeEvidenceCapture()">×</button></div>
+ <div class="doc-fields" style="margin-top:15px"><div class="doc-field"><label data-i18n="Related File">Related File</label><select id="evidenceFile"></select></div><div class="doc-field"><label data-i18n="Related Minutes">Related Minutes</label><select id="evidenceMinute"><option value="">—</option></select></div></div>
+ <input id="evidenceCamera" type="file" accept="image/*" capture="environment" multiple style="display:none" onchange="handleEvidenceFiles(this.files)">
+ <input id="evidenceUpload" type="file" accept="image/*" multiple style="display:none" onchange="handleEvidenceFiles(this.files)">
+ <div class="evidence-capture"><button class="primary" onclick="document.getElementById('evidenceCamera').click()">📷 <span data-i18n="Take Photos">Take Photos</span></button><button onclick="document.getElementById('evidenceUpload').click()">＋ <span data-i18n="Choose Images">Choose Images</span></button><button onclick="saveEvidenceBatch()">✓ <span data-i18n="Save Evidence">Save Evidence</span></button></div>
+ <div id="evidenceDraftGrid" class="evidence-grid"></div>
+</div></div>
 <div class="doc-intel-modal" id="docIntelModal"><div class="doc-intel-shell">
  <aside class="doc-preview"><h3 data-i18n="Document Preview">Document Preview</h3><div class="doc-preview-box" id="docPreviewBox"><div class="placeholder"><b>▧</b><span data-i18n="Capture or upload a document">Capture or upload a document</span></div></div></aside>
  <main class="doc-intel-main">
@@ -513,6 +532,7 @@ html[dir="rtl"] .main{margin-left:0;margin-right:285px}@media(max-width:720px){h
   <div class="nav-section">
     <div class="nav-label" data-i18n="MANAGEMENT">MANAGEMENT</div>
     <a class="nav-item" data-page="minutes" href="#" onclick="openPage('minutes');return false;"><span class="nav-icon">✎</span><span data-i18n="Minutes">Minutes</span></a>
+    <a class="nav-item" data-page="evidence" href="#" onclick="openPage('evidence');return false;"><span class="nav-icon">▣</span><span data-i18n="Field Evidence">Field Evidence</span></a>
     <a class="nav-item" data-page="documents" href="#" onclick="openPage('documents');return false;"><span class="nav-icon">▤</span><span data-i18n="Document Center">Document Center</span></a>
     <a class="nav-item" data-page="creditorPortal" href="#" onclick="openPage('creditorPortal');return false;"><span class="nav-icon">◈</span><span data-i18n="Creditor Portal Preview">Creditor Portal Preview</span></a>
     <a class="nav-item" data-page="aiInsights" href="#" onclick="openPage('aiInsights');return false;"><span class="nav-icon">✦</span><span data-i18n="AI Management Insights">AI Management Insights</span></a>
@@ -678,6 +698,11 @@ html[dir="rtl"] .main{margin-left:0;margin-right:285px}@media(max-width:720px){h
 </div></section>
 
 
+
+<section id="evidencePage" class="page hidden"><div class="content">
+ <div class="hero-row"><div><h2 data-i18n="Field Evidence Gallery">Field Evidence Gallery</h2><p data-i18n="Capture and organize field images with voice descriptions and file linkage.">Capture and organize field images with voice descriptions and file linkage.</p></div><button class="action-btn primary" onclick="openEvidenceCapture()">📷 <span data-i18n="Capture Evidence">Capture Evidence</span></button></div>
+ <div id="evidenceGallery" class="evidence-gallery"></div>
+</div></section>
 <section id="minutesPage" class="page hidden"><div class="content">
  <div class="hero-row"><div><h2 data-i18n="Minutes & Field Records">Minutes & Field Records</h2><p data-i18n="Create, dictate, edit and attach images to enforcement minutes.">Create, dictate, edit and attach images to enforcement minutes.</p></div><button class="action-btn primary" onclick="openMinutesModal()">＋ <span data-i18n="New Minutes">New Minutes</span></button></div>
  <div id="minutesList"></div>
@@ -1635,6 +1660,38 @@ function renderSmartDocuments(){
 const _openPageP16=openPage;
 openPage=function(page){_openPageP16(page);if(page==="documents")setTimeout(renderSmartDocuments,20)}
 Object.assign(I18N.ar,{"Document Preview":"معاينة المستند","Capture or upload a document":"صوّر المستند أو ارفعه","Document Intelligence":"ذكاء المستندات","Capture, classify and link documents to enforcement files.":"تصوير المستندات وتصنيفها وربطها بملفات التنفيذ.","Camera Scan":"تصوير المستند","Upload Document":"رفع مستند","Analyze with AI":"تحليل بالذكاء الاصطناعي","Document Type":"نوع المستند","Document Title":"عنوان المستند","Notes":"ملاحظات","Classification":"التصنيف","Detected Date":"التاريخ المستخرج","Key Figure":"المبلغ الرئيسي","Suggested Action":"الإجراء المقترح","Upload a document to prepare the demo intelligence summary.":"ارفع مستندًا لإعداد ملخص الذكاء الاصطناعي التجريبي.","Save Document":"حفظ المستند","Demo AI summary: the document has been classified and linked to the selected enforcement file. Verify names, dates, amounts and legal effect before relying on the extracted information.":"ملخص AI تجريبي: تم تصنيف المستند وربطه بملف التنفيذ المختار. يجب التحقق من الأسماء والتواريخ والمبالغ والأثر القانوني قبل الاعتماد على البيانات المستخرجة.","Enter a document title.":"أدخل عنوان المستند.","Document Added":"تمت إضافة المستند","Document saved and linked to the enforcement file.":"تم حفظ المستند وربطه بملف التنفيذ.","Scan / Add Document":"تصوير أو إضافة مستند","No scanned documents in this demo session.":"لا توجد مستندات مصورة في جلسة الديمو الحالية."});
+
+
+DATA.evidence=DATA.evidence||[];let evidenceDraft=[],evidenceVoiceRec=null;
+function openEvidenceCapture(){
+ evidenceDraft=[];document.getElementById("evidenceFile").innerHTML=(DATA.files||[]).map(f=>`<option value="${f.id}">${f.id} · ${f.debtor}</option>`).join("");
+ document.getElementById("evidenceMinute").innerHTML=`<option value="">—</option>`+(DATA.minutes||[]).map(m=>`<option value="${m.id}">${m.id} · ${m.subject}</option>`).join("");renderEvidenceDraft();document.getElementById("evidenceModal").style.display="grid";
+}
+function closeEvidenceCapture(){if(evidenceVoiceRec)try{evidenceVoiceRec.stop()}catch(e){};document.getElementById("evidenceModal").style.display="none"}
+function handleEvidenceFiles(files){
+ [...files].forEach(file=>{const r=new FileReader();r.onload=e=>{evidenceDraft.push({id:"EV-"+String(Date.now()).slice(-6)+"-"+(evidenceDraft.length+1),data:e.target.result,name:file.name,description:"",captured:new Date().toLocaleString()});renderEvidenceDraft()};r.readAsDataURL(file)});
+}
+function renderEvidenceDraft(){
+ const e=document.getElementById("evidenceDraftGrid");if(!e)return;e.innerHTML=evidenceDraft.length?evidenceDraft.map((x,i)=>`<div class="evidence-item"><img src="${x.data}"><div class="evidence-body"><strong>${t("Evidence")} ${i+1}</strong><span>${x.captured}</span><textarea placeholder="${t("Description")}" oninput="evidenceDraft[${i}].description=this.value">${x.description}</textarea><div class="evidence-actions"><button onclick="dictateEvidence(${i})">🎙 ${t("Voice Description")}</button><button onclick="evidenceDraft.splice(${i},1);renderEvidenceDraft()">×</button></div></div></div>`).join(""):`<div class="empty-state"><strong>${t("Take or choose images to begin.")}</strong></div>`;
+}
+function dictateEvidence(i){
+ const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){showToast(t("Voice recognition is not supported in this browser"));return}
+ evidenceVoiceRec=new SR();evidenceVoiceRec.lang=currentLang==="ar"?"ar-BH":"en-US";evidenceVoiceRec.interimResults=false;evidenceVoiceRec.onstart=()=>showToast(t("Listening for image description..."));evidenceVoiceRec.onresult=e=>{evidenceDraft[i].description+=(evidenceDraft[i].description?" ":"")+e.results[0][0].transcript;renderEvidenceDraft()};evidenceVoiceRec.start();
+}
+function saveEvidenceBatch(){
+ if(!evidenceDraft.length){showToast(t("Add at least one evidence image."));return}const file=document.getElementById("evidenceFile").value,minute=document.getElementById("evidenceMinute").value;
+ evidenceDraft.forEach((x,i)=>DATA.evidence.unshift({...x,file,minute,label:`Evidence ${DATA.evidence.length+1}`}));
+ logDemo(t("Field Evidence Added"),`${file} · ${evidenceDraft.length} ${t("images")}`);closeEvidenceCapture();renderEvidenceGallery();showToast(t("Evidence saved and linked successfully."));
+}
+function renderEvidenceGallery(){
+ const e=document.getElementById("evidenceGallery");if(!e)return;e.innerHTML=DATA.evidence.length?DATA.evidence.map((x,i)=>`<div class="gallery-card"><img src="${x.data}"><div><strong>${t("Evidence")} ${DATA.evidence.length-i}</strong><span>${x.file}${x.minute?" · "+x.minute:""}</span><span>${x.description||t("No description")}</span></div></div>`).join(""):`<div class="empty-state"><strong>${t("No field evidence captured yet.")}</strong></div>`;
+}
+function printEvidenceReport(){
+ if(!DATA.evidence.length){showToast(t("No evidence available for report."));return}const w=window.open("","_blank"),rows=DATA.evidence.map((x,i)=>`<section style="page-break-inside:avoid;margin:20px 0"><h3>${t("Evidence")} ${i+1} — ${x.file}</h3><p>${x.captured}${x.minute?" · "+x.minute:""}</p><img src="${x.data}" style="max-width:100%;max-height:520px"><p>${x.description||""}</p></section>`).join("");w.document.write(`<!doctype html><html dir="${currentLang==="ar"?"rtl":"ltr"}"><head><meta charset="utf-8"><title>Field Evidence Report</title><style>body{font-family:Arial;padding:35px;font-size:16px;color:#17212b}h1,h2,h3{font-size:20px}</style></head><body><h1>ENFORZA — ${t("Field Evidence Report")}</h1>${rows}<script>window.onload=()=>window.print()<\/script></body></html>`);w.document.close();
+}
+const _openPageP17=openPage;
+openPage=function(page){if(page==="evidence"){hidePages();currentModule=page;document.querySelectorAll(".nav-item").forEach(el=>el.classList.toggle("active",el.dataset.page===page));document.getElementById("evidencePage").classList.remove("hidden");setHeading("Field Evidence Gallery","Capture and organize field images with voice descriptions and file linkage.");renderEvidenceGallery();const h=document.querySelector("#evidencePage .hero-row");if(h&&!h.querySelector(".report-evidence-btn"))h.insertAdjacentHTML("beforeend",`<button class="action-btn report-evidence-btn" onclick="printEvidenceReport()">▧ ${t("Field Evidence Report")}</button>`);document.getElementById("sidebar").classList.remove("open");window.scrollTo(0,0);applyLanguage();return}_openPageP17(page)}
+Object.assign(I18N.ar,{"Field Evidence":"الأدلة الميدانية","Field Evidence Gallery":"معرض الأدلة الميدانية","Capture and organize field images with voice descriptions and file linkage.":"تصوير وتنظيم الأدلة الميدانية مع وصف صوتي وربطها بملف التنفيذ.","Capture Evidence":"التقاط دليل","Field Evidence Capture":"التقاط الأدلة الميدانية","Take multiple photos, add voice or typed descriptions, and link them to a file or minutes record.":"التقط عدة صور وأضف وصفًا صوتيًا أو كتابيًا واربطها بملف أو محضر.","Related Minutes":"المحضر المرتبط","Take Photos":"التقاط صور","Choose Images":"اختيار صور","Save Evidence":"حفظ الأدلة","Evidence":"دليل","Description":"الوصف","Voice Description":"وصف صوتي","Take or choose images to begin.":"التقط أو اختر الصور للبدء.","Listening for image description...":"جاري الاستماع لوصف الصورة...","Add at least one evidence image.":"أضف صورة دليل واحدة على الأقل.","Field Evidence Added":"تمت إضافة أدلة ميدانية","Evidence saved and linked successfully.":"تم حفظ الأدلة وربطها بنجاح.","No description":"بدون وصف","No field evidence captured yet.":"لا توجد أدلة ميدانية مصورة حتى الآن.","No evidence available for report.":"لا توجد أدلة متاحة لإعداد التقرير.","Field Evidence Report":"تقرير الأدلة الميدانية"});
 
 renderDashboard();renderUsers();renderAudit();renderPermissions();showReport("executive");applyLanguage();
 </script>
