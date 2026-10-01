@@ -614,6 +614,15 @@ html[dir="rtl"] .p29-appearance{right:auto;left:18px}html[dir="rtl"] .p29-pop{ri
 .p30-mobile-nav{display:none}
 @media(max-width:850px){.p30-grid{grid-template-columns:1fr}.p30-kpis{grid-template-columns:1fr 1fr}.p30-hero{display:block}.p30-actions{margin-top:14px}.p30-mobile-nav{display:grid;position:fixed;z-index:1250;bottom:0;left:0;right:0;grid-template-columns:repeat(5,1fr);background:var(--white);border-top:1px solid var(--border);padding:6px 5px calc(6px + env(safe-area-inset-bottom));box-shadow:0 -10px 30px rgba(0,0,0,.1)}.p30-mobile-nav button{border:0;background:transparent;color:var(--text);font-size:12px;font-weight:800;padding:5px 2px}.p30-mobile-nav b{display:block;font-size:20px;margin-bottom:2px}.role-officer .content{padding-bottom:82px!important}}
 @media(max-width:520px){.p30-kpis{grid-template-columns:1fr 1fr}.p30-quick{grid-template-columns:1fr 1fr}.p30-hero{padding:17px}.p30-actions button{flex:1;min-width:44%}}
+</style><style id="phase31-creditor-portal">
+/* PHASE 31 — PREMIUM CREDITOR PORTAL */
+.p31{display:grid;gap:14px}.p31-hero{background:linear-gradient(135deg,#111923,#293844);border-radius:18px;padding:24px;color:#fff;display:flex;justify-content:space-between;gap:16px;align-items:center}.p31-hero h2{color:#fff!important;font-size:20px!important;margin:0}.p31-hero p{color:#cbd3d9;margin:6px 0 0}.p31-hero button{border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);color:#fff;border-radius:10px;padding:10px 13px;font-size:16px;font-weight:900}.p31-hero button.primary{background:var(--p29-accent);border-color:var(--p29-accent)}
+.p31-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.p31-kpi{background:var(--white);border:1px solid var(--border);border-radius:13px;padding:15px}.p31-kpi span{display:block;color:var(--muted)}.p31-kpi strong{display:block;font-size:21px!important;margin-top:5px}.p31-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:13px}.p31-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:16px}.p31-card h3{font-size:20px!important;margin:0 0 12px}
+.p31-file{border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:9px;cursor:pointer}.p31-file:last-child{margin-bottom:0}.p31-file-head{display:flex;justify-content:space-between;gap:10px}.p31-file span{display:block;color:var(--muted);margin-top:4px}.p31-chip{display:inline-flex!important;padding:4px 8px;border-radius:99px;background:var(--p29-accent-soft);color:var(--p29-accent)!important;font-size:13px!important;font-weight:900}
+.p31-progress{height:8px;background:color-mix(in srgb,var(--border) 65%,transparent);border-radius:99px;overflow:hidden;margin-top:10px}.p31-progress i{display:block;height:100%;background:var(--p29-accent);border-radius:99px}.p31-update{padding:11px 0;border-bottom:1px solid var(--border)}.p31-update:last-child{border:0}.p31-update strong,.p31-update span{display:block}.p31-update span{color:var(--muted);margin-top:4px}.p31-doc{display:flex;justify-content:space-between;gap:8px;align-items:center;border:1px solid var(--border);border-radius:10px;padding:11px;margin-bottom:7px}.p31-doc button{border:0;background:var(--p29-accent);color:#fff;border-radius:8px;padding:7px 9px;font-weight:800}
+.p31-ai{background:linear-gradient(135deg,color-mix(in srgb,var(--p29-accent) 12%,var(--white)),var(--white));border:1px solid color-mix(in srgb,var(--p29-accent) 45%,var(--border));border-radius:14px;padding:16px}.p31-ai h3{font-size:20px!important;margin:0}.p31-ai p{color:var(--muted);line-height:1.65}.p31-ai button{border:0;background:#111923;color:#fff;border-radius:9px;padding:10px 12px;font-size:16px;font-weight:900}.p31-note{font-size:14px!important;color:var(--muted);margin-top:10px}
+.p31-mobile-nav{display:none}
+@media(max-width:850px){.p31-grid{grid-template-columns:1fr}.p31-kpis{grid-template-columns:1fr 1fr}.p31-hero{display:block}.p31-hero div+div{margin-top:13px}.p31-mobile-nav{display:grid;position:fixed;z-index:1250;bottom:0;left:0;right:0;grid-template-columns:repeat(4,1fr);background:var(--white);border-top:1px solid var(--border);padding:6px 5px calc(6px + env(safe-area-inset-bottom));box-shadow:0 -10px 30px rgba(0,0,0,.1)}.p31-mobile-nav button{border:0;background:transparent;color:var(--text);font-size:12px;font-weight:800;padding:5px}.p31-mobile-nav b{display:block;font-size:20px}.role-creditor .content{padding-bottom:82px!important}}
 </style></head>
 <div class="exec-action-sheet" id="execActionSheet"><div class="exec-action-box"><div class="minutes-head"><div><h2>New Action</h2><p>Choose what you want to add to this enforcement file.</p></div><button class="top-btn" onclick="closeExecActionSheet()">×</button></div><div class="exec-action-grid">
 <div class="exec-action-card" onclick="execAction('task')"><b>✓</b><strong>Task</strong></div><div class="exec-action-card" onclick="execAction('minutes')"><b>✎</b><strong>Minutes</strong></div><div class="exec-action-card" onclick="execAction('collection')"><b>◉</b><strong>Collection</strong></div><div class="exec-action-card" onclick="execAction('document')"><b>▧</b><strong>Document</strong></div><div class="exec-action-card" onclick="execAction('camera')"><b>📷</b><strong>Camera / Evidence</strong></div><div class="exec-action-card" onclick="execAction('settlement')"><b>◇</b><strong>Settlement</strong></div></div></div></div>
@@ -2218,6 +2227,45 @@ function p30NewMinute(){
 }
 const p30OldOpenPage=openPage;
 openPage=function(p){p30OldOpenPage(p);if(p==="followupBoard"&&activeDemoRole==="officer")setTimeout(p30Render,20)}
+</script><script id="phase31-creditor-portal-js">
+function p31CreditorFiles(){
+ let fs=DATA.files||[];
+ let preferred=fs.filter(f=>String(f.creditor||"").toLowerCase().includes("gulf")||String(f.creditor||"").toLowerCase().includes("trading"));
+ return preferred.length?preferred:fs.slice(0,3);
+}
+function p31PublicUpdates(files){
+ let ids=new Set(files.map(f=>f.id)),a=[];
+ (DATA.smartTasks||[]).filter(x=>ids.has(x.file)&&x.status==="Completed").forEach(x=>a.push({date:x.completed||x.due,title:x.title,file:x.file}));
+ (DATA.minutes||[]).filter(x=>ids.has(x.file)&&String(x.status||"").toLowerCase()==="approved").forEach(x=>a.push({date:x.date||x.created,title:x.subject||"Approved update",file:x.file}));
+ return a.sort((x,y)=>String(y.date||"").localeCompare(String(x.date||""))).slice(0,6);
+}
+function p31AllowedDocs(files){
+ let ids=new Set(files.map(f=>f.id));
+ return (DATA.smartDocuments||[]).filter(x=>ids.has(x.file)&&!String(x.type||"").toLowerCase().includes("internal")).slice(0,6);
+}
+function p31Render(){
+ if(activeDemoRole!=="creditor")return;
+ let page=document.getElementById("creditorPortalPage");if(!page)return,host=page.querySelector(".content")||page;
+ let files=p31CreditorFiles(),claim=files.reduce((s,f)=>s+ +(f.claim||0),0),col=files.reduce((s,f)=>s+ +(f.collected||0),0),out=Math.max(0,claim-col),rate=claim?Math.round(col/claim*100):0,updates=p31PublicUpdates(files),docs=p31AllowedDocs(files);
+ host.innerHTML=`<div class="p31">
+ <div class="p31-hero"><div><h2>${currentLang==="ar"?"بوابة الدائن":"Creditor Portal"}</h2><p>${currentLang==="ar"?"متابعة واضحة وآمنة لملفات التنفيذ والتحصيلات والتحديثات المعتمدة.":"A clear and secure view of your enforcement files, collections and approved updates."}</p></div><div><button onclick="p31Ask()">✦ ${currentLang==="ar"?"اسأل ENFORZA":"Ask ENFORZA"}</button> <button class="primary" onclick="p31Statement()">${currentLang==="ar"?"كشف الملف":"File Statement"}</button></div></div>
+ <div class="p31-kpis"><div class="p31-kpi"><span>${currentLang==="ar"?"ملفاتي":"My Files"}</span><strong>${files.length}</strong></div><div class="p31-kpi"><span>${currentLang==="ar"?"إجمالي المطالبات":"Total Claims"}</span><strong>${money(claim)}</strong></div><div class="p31-kpi"><span>${currentLang==="ar"?"المحصل":"Collected"}</span><strong>${money(col)}</strong></div><div class="p31-kpi"><span>${currentLang==="ar"?"المتبقي":"Outstanding"}</span><strong>${money(out)}</strong></div></div>
+ <div class="p31-grid"><section class="p31-card"><h3>${currentLang==="ar"?"ملفات التنفيذ":"Enforcement Files"}</h3>${files.map(f=>{let c=+(f.claim||0),r=c?Math.round(+(f.collected||0)/c*100):0;return `<div class="p31-file" onclick="p31FileSummary('${f.id}')"><div class="p31-file-head"><strong>${f.id} · ${f.debtor}</strong><span class="p31-chip">${f.status||"Active"}</span></div><span>${currentLang==="ar"?"القضية":"Case"} ${f.caseNo||"—"} · ${currentLang==="ar"?"المتبقي":"Outstanding"} ${money(Math.max(0,c-+(f.collected||0)))}</span><div class="p31-progress"><i style="width:${Math.min(100,r)}%"></i></div><span>${currentLang==="ar"?"نسبة التحصيل":"Recovery"} ${r}%</span></div>`}).join("")}</section>
+ <section class="p31-ai"><h3>✦ ENFORZA</h3><p>${currentLang==="ar"?`تم تحصيل ${rate}% من إجمالي المطالبات الظاهرة في بوابتك. يمكنك السؤال عن حالة أي ملف أو آخر تحديث معتمد.`:`${rate}% of the claims shown in your portal have been recovered. Ask about any file status or the latest approved update.`}</p><button onclick="p31Ask()">${currentLang==="ar"?"اسأل عن حالة ملف":"Ask About a File"}</button><div class="p31-note">${currentLang==="ar"?"لا يعرض المساعد الملاحظات الداخلية أو البيانات التشغيلية الخاصة بفريق التنفيذ.":"The assistant does not expose internal notes or private operational data."}</div></section></div>
+ <div class="p31-grid"><section class="p31-card"><h3>${currentLang==="ar"?"آخر التحديثات المعتمدة":"Latest Approved Updates"}</h3>${updates.map(x=>`<div class="p31-update"><strong>${x.title}</strong><span>${x.file} · ${x.date||"—"}</span></div>`).join("")||`<div class="p31-update"><span>${currentLang==="ar"?"لا توجد تحديثات جديدة":"No new approved updates"}</span></div>`}</section>
+ <section class="p31-card"><h3>${currentLang==="ar"?"المستندات المتاحة":"Available Documents"}</h3>${docs.map(x=>`<div class="p31-doc"><div><strong>${x.title}</strong><span>${x.file||""}</span></div><button onclick="event.stopPropagation();showToast('${currentLang==="ar"?"فتح المستند التجريبي":"Opening demo document"}')">${currentLang==="ar"?"عرض":"View"}</button></div>`).join("")||`<div class="p31-update"><span>${currentLang==="ar"?"لا توجد مستندات متاحة حاليًا":"No documents currently available"}</span></div>`}</section></div></div>
+ <nav class="p31-mobile-nav"><button onclick="openPage('creditorPortal')"><b>⌂</b>${currentLang==="ar"?"الرئيسية":"Home"}</button><button onclick="p31ScrollFiles()"><b>▣</b>${currentLang==="ar"?"ملفاتي":"Files"}</button><button onclick="p31Statement()"><b>▤</b>${currentLang==="ar"?"الكشف":"Statement"}</button><button onclick="p31Ask()"><b>✦</b>ENFORZA</button></nav>`;
+}
+function p31Ask(){if(typeof openAI==="function"){openAI();showToast(currentLang==="ar"?"يمكنك السؤال عن حالة ملفك وآخر إجراء معتمد.":"Ask about your file status and latest approved action.")}}
+function p31Statement(){if(typeof p28Print==="function")return p28Print();showToast(currentLang==="ar"?"سيتم تجهيز كشف الملف في نسخة الديمو.":"Demo file statement is ready for preview.")}
+function p31FileSummary(id){
+ let f=(DATA.files||[]).find(x=>x.id===id);if(!f)return;
+ let c=+(f.claim||0),out=Math.max(0,c-+(f.collected||0));
+ alert((currentLang==="ar"?"ملخص الملف":"File Summary")+"\n\n"+id+"\n"+(currentLang==="ar"?"المدين: ":"Debtor: ")+(f.debtor||"—")+"\n"+(currentLang==="ar"?"المطالبة: ":"Claim: ")+money(c)+"\n"+(currentLang==="ar"?"المحصل: ":"Collected: ")+money(+(f.collected||0))+"\n"+(currentLang==="ar"?"المتبقي: ":"Outstanding: ")+money(out)+"\n"+(currentLang==="ar"?"الحالة: ":"Status: ")+(f.status||"Active"));
+}
+function p31ScrollFiles(){document.querySelector(".p31-card")?.scrollIntoView({behavior:"smooth",block:"start"})}
+const p31OldOpenPage=openPage;
+openPage=function(p){p31OldOpenPage(p);if(p==="creditorPortal"&&activeDemoRole==="creditor")setTimeout(p31Render,20)}
 </script></body></html>`);w.document.close();
 }
 if(typeof openPage==="function"){let p28old=openPage;openPage=function(p){p28old(p);if(p==="reports")setTimeout(renderP28Reports,10)}}
