@@ -3292,5 +3292,85 @@ window.enfReleaseClose=()=>document.getElementById("enfReleaseModal")?.classList
 function init(){clean();permission();guards();document.addEventListener("keydown",e=>{if(e.ctrlKey&&e.shiftKey&&String(e.key).toLowerCase()==="r"){e.preventDefault();enfReleaseOpen()}})}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
 })();
+</script><style id="enforza-v2-phase25-rc1-css">
+/* Phase 25 — Release Candidate 1 */
+.enf-rc-badge{position:fixed;right:18px;bottom:18px;z-index:1150;padding:7px 10px;border-radius:999px;background:rgba(17,24,32,.92);color:#fff;font-size:8px;font-weight:950;letter-spacing:.08em;box-shadow:0 8px 25px rgba(0,0,0,.12);pointer-events:none}
+html[dir=rtl] .enf-rc-badge{right:auto;left:18px}
+.enf-rc-center{position:fixed;inset:0;z-index:150000;background:rgba(7,11,15,.7);display:none;place-items:center;padding:18px}.enf-rc-center.open{display:grid}
+.enf-rc-card{width:min(900px,97vw);max-height:92vh;overflow:auto;background:#fff;border-radius:20px;box-shadow:0 34px 120px rgba(0,0,0,.34)}
+.enf-rc-head{display:flex;justify-content:space-between;gap:18px;padding:21px 23px;border-bottom:1px solid var(--desk-line)}.enf-rc-head h2{font-size:23px!important;margin:3px 0}.enf-rc-head p{margin:0;color:var(--desk-muted);font-size:10px}
+.enf-rc-body{padding:19px 23px}.enf-rc-status{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:13px}.enf-rc-stat{border:1px solid var(--desk-line);border-radius:11px;padding:12px}.enf-rc-stat small{display:block;color:var(--desk-muted);font-size:8px;font-weight:900}.enf-rc-stat b{display:block;font-size:17px;margin-top:5px}
+.enf-rc-flow{display:grid;gap:8px}.enf-rc-step{display:grid;grid-template-columns:30px 1fr auto;gap:10px;align-items:center;border:1px solid var(--desk-line);border-radius:11px;padding:11px}.enf-rc-num{display:grid;place-items:center;width:28px;height:28px;border-radius:9px;background:#f1e7dd;color:#8d5a2e;font-size:10px;font-weight:950}.enf-rc-step b{display:block;font-size:10px}.enf-rc-step small{display:block;color:var(--desk-muted);font-size:9px;margin-top:3px}.enf-rc-pass{color:#4f805c;font-size:9px;font-weight:950}
+.enf-rc-note{margin-top:13px;padding:11px;border:1px solid var(--desk-line);border-radius:10px;background:#fbfaf8;color:var(--desk-muted);font-size:10px;line-height:1.55}.enf-rc-foot{display:flex;justify-content:space-between;gap:8px;padding:14px 23px;border-top:1px solid var(--desk-line)}
+body.enf-dark .enf-rc-card{background:#171d23;color:#eef2f5}.enf-rc-hidden{display:none!important}
+@media(max-width:700px){.enf-rc-center{padding:0}.enf-rc-card{width:100%;height:100%;max-height:none;border-radius:0}.enf-rc-status{grid-template-columns:1fr 1fr}.enf-rc-badge{bottom:8px;right:8px}}
+</style>
+<div class="enf-rc-badge">ENFORZA V2 · RC1</div>
+<div class="enf-rc-center" id="enfRcCenter"><div class="enf-rc-card">
+<div class="enf-rc-head"><div><div class="v2-kicker">RELEASE CANDIDATE 1</div><h2 id="enfRcTitle">ENFORZA V2 · RC1</h2><p id="enfRcSub">Production-style candidate with zero seeded records.</p></div><button class="enf-field-close" onclick="enfRcClose()">×</button></div>
+<div class="enf-rc-body"><div class="enf-rc-status" id="enfRcStats"></div><div class="enf-rc-flow" id="enfRcFlow"></div><div class="enf-rc-note" id="enfRcNote"></div></div>
+<div class="enf-rc-foot"><button class="enf-ms-btn" onclick="enfReleaseOpen()">Pre-Release Check</button><button class="enf-ms-btn primary" onclick="enfRcClose()">Ready to Test</button></div>
+</div></div>
+<script id="enforza-v2-phase25-rc1-js">
+(function(){
+"use strict";
+const VERSION="ENFORZA V2.0 RC1";
+function ar(){return (window.currentLang||document.documentElement.lang||"en")==="ar"}function t(e,a){return ar()?a:e}
+function A(n){return window.DATA&&Array.isArray(DATA[n])?DATA[n]:[]}
+function currentRole(){let r=String(window.currentRole||window.userRole||sessionStorage.getItem("enforzaRole")||localStorage.getItem("enforzaRole")||"").toLowerCase();return r.includes("creditor")?"creditor":"officer"}
+function noSeed(){
+ if(!window.DATA)return;
+ Object.keys(DATA).forEach(k=>{if(Array.isArray(DATA[k]))DATA[k]=DATA[k].filter(x=>!(x&&(x.demo===true||x.isDemo===true||x.seed===true||/^demo[-_]/i.test(String(x.id||"")))))});
+}
+function creditorIsolation(){
+ if(currentRole()!=="creditor")return;
+ let allowed=new Set(["dashboard","reports","followupBoard","tasks"]);
+ document.querySelectorAll(".nav-item").forEach(n=>{let p=n.dataset.page||"";if(p&&!allowed.has(p))n.style.setProperty("display","none","important")});
+}
+function officerRestore(){
+ if(currentRole()!=="officer")return;
+ document.querySelectorAll(".nav-item").forEach(n=>{if(n.dataset.p22RoleHidden!=="1")n.style.removeProperty("display")});
+}
+function startupRoute(){
+ let r=currentRole();
+ if(r==="creditor"&&typeof window.enfOpenCreditorPortal==="function"){
+   let loginVisible=[...document.querySelectorAll(".login-screen,.login-page,[id*='login' i]")].some(x=>{let cs=getComputedStyle(x);return cs.display!=="none"&&x.offsetWidth>250&&x.offsetHeight>180});
+   if(!loginVisible)setTimeout(()=>window.enfOpenCreditorPortal(),80);
+ }
+}
+function stats(){
+ return [
+  [t("FILES","الملفات"),A("files").length],
+  [t("OPEN TASKS","المهام المفتوحة"),A("smartTasks").filter(x=>x.status!=="Completed").length],
+  [t("DOCUMENTS","المستندات"),A("documents").length],
+  [t("ROLE","الصلاحية"),currentRole()==="creditor"?t("Creditor","دائن"):t("Officer","موظف تنفيذ")]
+ ];
+}
+function flow(){
+ return [
+  [t("Sign in with the required role","تسجيل الدخول بالصلاحية المطلوبة"),t("Officer and Creditor views are separated.","تم فصل واجهة الموظف عن واجهة الدائن.")],
+  [t("Open the first real test file","فتح أول ملف اختبار فعلي"),t("Use New File and enter your own data only.","استخدم ملف جديد وأدخل بياناتك أنت فقط.")],
+  [t("Review File 360°","مراجعة File 360°"),t("Confirm parties, financial position, tasks and timeline.","تأكد من الأطراف والمركز المالي والمهام والتسلسل الزمني.")],
+  [t("Add one collection and one task","إضافة تحصيل ومهمة"),t("Verify the financial balance and Calendar update immediately.","تحقق من تحديث الرصيد المالي والتقويم مباشرة.")],
+  [t("Attach a document","إرفاق مستند"),t("Confirm it appears under the same enforcement file.","تأكد من ظهوره تحت ملف التنفيذ نفسه.")],
+  [t("Switch to Creditor","الانتقال إلى الدائن"),t("Confirm only the simplified creditor portfolio is visible.","تأكد من ظهور بوابة الدائن المبسطة فقط.")]
+ ];
+}
+window.enfRcOpen=function(){
+ noSeed();creditorIsolation();officerRestore();
+ let st=document.getElementById("enfRcStats"),fl=document.getElementById("enfRcFlow");
+ st.innerHTML=stats().map(x=>`<div class="enf-rc-stat"><small>${x[0]}</small><b>${x[1]}</b></div>`).join("");
+ fl.innerHTML=flow().map((x,i)=>`<div class="enf-rc-step"><span class="enf-rc-num">${i+1}</span><div><b>${x[0]}</b><small>${x[1]}</small></div><span class="enf-rc-pass">${t("READY","جاهز")}</span></div>`).join("");
+ document.getElementById("enfRcNote").textContent=t("RC1 contains no sample enforcement records. Any file, task, collection or document shown after testing comes from data entered during your test session.","نسخة RC1 لا تحتوي على سجلات تنفيذ تجريبية. أي ملف أو مهمة أو تحصيل أو مستند يظهر بعد الاختبار يكون ناتجًا عن البيانات التي تم إدخالها أثناء تجربتك.");
+ document.getElementById("enfRcCenter").classList.add("open");
+}
+window.enfRcClose=()=>document.getElementById("enfRcCenter")?.classList.remove("open");
+function init(){
+ noSeed();creditorIsolation();officerRestore();startupRoute();
+ document.documentElement.dataset.enforzaVersion=VERSION;
+ document.addEventListener("keydown",e=>{if(e.ctrlKey&&e.shiftKey&&String(e.key).toLowerCase()==="t"){e.preventDefault();enfRcOpen()}});
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
+})();
 </script></body>
 </html>
