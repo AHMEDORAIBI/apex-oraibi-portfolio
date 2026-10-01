@@ -4196,73 +4196,89 @@ window.enfCreditorExit=function(){document.getElementById("enfCreditorExperience
 function init(){document.getElementById("cxFileSelect")?.addEventListener("change",e=>render(e.target.value));let u=sess();if(u?.role==="creditor")setTimeout(()=>window.enfOpenCreditorExperience(),180)}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
 })();
-</script><style id="enforza-fast-login-css">
-/* FAST LOGIN — instant visual transition */
-#enfAuthV3.enf-auth-leaving{opacity:0;pointer-events:none;transition:opacity .12s ease}
-.enf-login-progress{height:2px;position:absolute;left:0;right:0;top:0;overflow:hidden;border-radius:24px 24px 0 0}
-.enf-login-progress:after{content:"";display:block;width:45%;height:100%;background:#b77d48;transform:translateX(-110%);animation:enfFastLogin .45s ease infinite}
-@keyframes enfFastLogin{to{transform:translateX(260%)}}
+</script><style id="enforza-login-recovery-css">
+#enfAuthV3.enf-login-ok{opacity:0;pointer-events:none;transition:opacity .10s ease}
 </style>
-<script id="enforza-fast-login-js">
+<script id="enforza-login-recovery-js">
 (function(){
 "use strict";
-const SESSION="enforzaSessionV2", USERS="enforzaUsersV2";
+const UK="enforzaUsersV2",SK="enforzaSessionV2";
 function ar(){return (window.currentLang||document.documentElement.lang||"en").toLowerCase().startsWith("ar")}
-function t(e,a){return ar()?a:e}
-function readUsers(){try{return JSON.parse(localStorage.getItem(USERS)||"[]")}catch(e){return[]}}
-function showAppImmediately(user){
-  window.currentRole=user.role;window.userRole=user.role;window.currentUserId=user.id;
-  window.currentUser={id:user.id,username:user.username,name:user.name,role:user.role,creditorId:user.creditorId||""};
-  sessionStorage.setItem(SESSION,JSON.stringify(window.currentUser));
-  sessionStorage.setItem("enforzaRole",user.role);
-  sessionStorage.setItem("enforzaUserId",user.id);
-  const auth=document.getElementById("enfAuthV3");
-  if(auth){auth.classList.add("enf-auth-leaving");requestAnimationFrame(()=>auth.classList.remove("open"))}
-  document.body.dataset.enfRole=user.role;
+function tr(e,a){return ar()?a:e}
+function defaults(){return[
+{id:"USR-ADMIN",username:"admin",password:"admin123",name:"System Administrator",role:"admin",active:true},
+{id:"USR-OFFICER",username:"officer",password:"officer123",name:"Enforcement Officer",role:"officer",active:true},
+{id:"USR-CREDITOR",username:"creditor",password:"creditor123",name:"Creditor",role:"creditor",active:true}
+]}
+function getUsers(){
+ let u=[];
+ try{u=JSON.parse(localStorage.getItem(UK)||"[]")}catch(e){}
+ if(!Array.isArray(u))u=[];
+ /* Recovery only: ensure the three DEMO login accounts exist without deleting users created by Admin. */
+ defaults().forEach(d=>{if(!u.some(x=>String(x.username||"").toLowerCase()===d.username))u.push(d)});
+ try{localStorage.setItem(UK,JSON.stringify(u))}catch(e){}
+ return u;
 }
-function applyRoleLight(user){
-  const creditor=user.role==="creditor", admin=user.role==="admin";
-  document.querySelectorAll(".nav-item").forEach(n=>{
-    const p=n.dataset.page||"";
-    if(p==="users") n.style.display=admin?"":"none";
-    else if(creditor && ["expenses","treasury","claims","users","settings","evidence","collections"].includes(p)) n.style.display="none";
-  });
+function setSession(u){
+ const x={id:u.id,username:u.username,name:u.name,role:u.role,creditorId:u.creditorId||""};
+ try{sessionStorage.setItem(SK,JSON.stringify(x));sessionStorage.setItem("enforzaRole",u.role);sessionStorage.setItem("enforzaUserId",u.id)}catch(e){}
+ window.currentUser=x;window.currentRole=u.role;window.userRole=u.role;window.currentUserId=u.id;
+ return x;
 }
-function route(user){
-  if(user.role==="creditor" && typeof window.enfOpenCreditorExperience==="function"){
-    window.enfOpenCreditorExperience(); return;
-  }
-  if(typeof window.v2ShowPage==="function"){window.v2ShowPage("dashboard");return}
-  const nav=document.querySelector('.nav-item[data-page="dashboard"]'); if(nav)nav.click();
+function applyRole(u){
+ document.body.dataset.enfRole=u.role;
+ const hiddenForCreditor=["expenses","treasury","claims","users","settings","evidence","collections"];
+ document.querySelectorAll(".nav-item").forEach(n=>{
+   const p=n.dataset.page||"";
+   if(p==="users"){n.style.display=u.role==="admin"?"":"none";return}
+   n.style.display=(u.role==="creditor"&&hiddenForCreditor.includes(p))?"none":"";
+ });
 }
-function deferHeavy(){
-  // Allow first paint before optional demo modules do any work.
-  setTimeout(()=>{
-    try{if(typeof window.enfDemoOpsRefresh==="function")window.enfDemoOpsRefresh()}catch(e){}
-  },250);
+function route(u){
+ if(u.role==="creditor"){
+   if(typeof window.enfOpenCreditorExperience==="function"){window.enfOpenCreditorExperience();return}
+   if(typeof window.enfOpenCreditorPortal==="function"){window.enfOpenCreditorPortal();return}
+ }
+ if(typeof window.v2ShowPage==="function"){window.v2ShowPage("dashboard");return}
+ const d=document.querySelector('.nav-item[data-page="dashboard"]');
+ if(d){try{d.click()}catch(e){}}
 }
-function install(){
- const form=document.getElementById("enfAuthForm"); if(!form||form.dataset.fastLogin==="1")return;
- form.dataset.fastLogin="1";
- // Capture phase prevents the older accumulated login handler from doing duplicate routing.
+function login(un,pw){
+ const u=getUsers().find(x=>x.active!==false&&String(x.username||"").trim().toLowerCase()===un.trim().toLowerCase()&&String(x.password||"")===pw);
+ if(!u)return null;
+ setSession(u);applyRole(u);return u;
+}
+function bind(){
+ const form=document.getElementById("enfAuthForm");
+ if(!form||form.dataset.recoveryLogin==="1")return;
+ form.dataset.recoveryLogin="1";
  form.addEventListener("submit",function(e){
    e.preventDefault();e.stopImmediatePropagation();
-   const un=(document.getElementById("enfAuthUser")?.value||"").trim();
+   const un=document.getElementById("enfAuthUser")?.value||"";
    const pw=document.getElementById("enfAuthPass")?.value||"";
    const err=document.getElementById("enfAuthError");
    const btn=document.getElementById("enfAuthSubmit");
-   const u=readUsers().find(x=>x.active!==false&&String(x.username||"").toLowerCase()===un.toLowerCase()&&x.password===pw);
-   if(!u){if(err)err.textContent=t("Invalid username or password.","اسم المستخدم أو كلمة المرور غير صحيحة.");return}
+   if(btn)btn.disabled=true;
+   const u=login(un,pw);
+   if(!u){
+     if(err)err.textContent=tr("Invalid username or password.","اسم المستخدم أو كلمة المرور غير صحيحة.");
+     if(btn){btn.disabled=false;btn.textContent=tr("Sign In","تسجيل الدخول")}
+     return;
+   }
    if(err)err.textContent="";
-   if(btn){btn.disabled=true;btn.textContent=t("Opening…","جاري الفتح…")}
-   showAppImmediately(u);
-   applyRoleLight(u);
-   requestAnimationFrame(()=>requestAnimationFrame(()=>route(u)));
-   deferHeavy();
-   setTimeout(()=>{if(btn){btn.disabled=false;btn.textContent=t("Sign In","تسجيل الدخول")}},350);
+   const auth=document.getElementById("enfAuthV3");
+   if(auth){auth.classList.add("enf-login-ok");auth.classList.remove("open");setTimeout(()=>auth.classList.remove("enf-login-ok"),150)}
+   /* Route synchronously after authentication. No delayed duplicate login path. */
+   route(u);
+   if(btn){btn.disabled=false;btn.textContent=tr("Sign In","تسجيل الدخول")}
  },true);
 }
-if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",install,{once:true});else install();
+function restore(){
+ let u=null;try{u=JSON.parse(sessionStorage.getItem(SK)||"null")}catch(e){}
+ if(u&&u.role){window.currentUser=u;window.currentRole=u.role;window.userRole=u.role;window.currentUserId=u.id;applyRole(u)}
+}
+function init(){getUsers();restore();bind()}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
 })();
 </script></body>
 </html>
