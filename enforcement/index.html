@@ -519,6 +519,14 @@ html[dir=rtl] .v2task-panel{right:auto;left:0}.v2task-head{display:flex;justify-
 .v2task-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.v2task-action{border:1px solid var(--border);border-radius:10px;padding:11px;background:var(--white);font-weight:900;cursor:pointer}.v2task-action.complete{background:#eef7ef;color:#276c34}.v2task-action.delete{background:#fff0f0;color:#9b2e2e}
 .v2-ai-assist{margin:16px 0;padding:14px;border-radius:13px;background:#17130f;color:#fff}.v2-ai-assist b{display:block;margin-bottom:6px}.v2-ai-assist p{margin:0 0 10px;color:#cdbbaa;font-size:12px;line-height:1.5}.v2-ai-row{display:flex;gap:7px}.v2-ai-row input{flex:1;border:1px solid #413329;background:#211a14;color:#fff;border-radius:9px;padding:10px}.v2-ai-row button{border:0;border-radius:9px;background:#b77a3e;color:#fff;font-weight:900;padding:10px 12px;cursor:pointer}
 .v2-myday-list{display:grid;gap:8px}.v2-myday-item{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:11px 12px;border:1px solid var(--v2-line);border-radius:11px;background:#fff}.v2-myday-item b{font-size:13px}.v2-myday-item small{color:var(--v2-muted)}.v2-myday-time{font-weight:950;color:var(--v2-gold);white-space:nowrap}
+</style><style id="enforza-v2-file360-css">
+.v2360{padding:28px}.v2360-empty{min-height:70vh;display:grid;place-items:center;text-align:center}.v2360-emptybox{max-width:560px}.v2360-emptyicon{width:78px;height:78px;border-radius:22px;margin:0 auto 16px;display:grid;place-items:center;background:#f1e7dd;color:#b77a3e;font-size:30px}.v2360-empty h1{font-size:28px!important;margin:0 0 8px}.v2360-empty p{color:var(--muted);line-height:1.65;margin:0 0 18px}
+.v2360-head{background:linear-gradient(145deg,#111820,#1a232c);color:#fff;border-radius:20px;padding:22px;margin-bottom:14px;box-shadow:0 18px 50px rgba(15,20,25,.14)}.v2360-headtop{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}.v2360-ref{font-size:12px;letter-spacing:1.5px;color:#d7a16c;font-weight:900}.v2360-head h1{font-size:27px!important;margin:5px 0}.v2360-meta{display:flex;gap:10px;flex-wrap:wrap;color:#c7cdd2;font-size:12px}.v2360-status{padding:7px 11px;border-radius:999px;background:rgba(90,190,115,.13);color:#8ed39d;font-size:11px;font-weight:900}
+.v2360-flow{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:20px}.v2360-step{padding:9px 6px;border-radius:9px;background:rgba(255,255,255,.055);text-align:center;font-size:10px;color:#aeb7bf}.v2360-step.active{background:rgba(183,122,62,.18);color:#e4b27f}
+.v2360-layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:14px}.v2360-main,.v2360-side{background:#fff;border:1px solid var(--border);border-radius:17px}.v2360-tabs{display:flex;gap:4px;overflow:auto;padding:10px;border-bottom:1px solid var(--border)}.v2360-tab{white-space:nowrap;border:0;background:transparent;padding:10px 11px;border-radius:9px;font-weight:850;color:var(--muted);cursor:pointer}.v2360-tab.active{background:#f1e7dd;color:#7b512b}.v2360-content{padding:18px}
+.v2360-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.v2360-stat{padding:15px;border:1px solid var(--border);border-radius:12px}.v2360-stat small{display:block;color:var(--muted);margin-bottom:7px}.v2360-stat b{font-size:18px}.v2360-section{margin-top:16px}.v2360-section h3{font-size:16px!important;margin:0 0 9px}.v2360-blank{padding:22px;border:1px dashed #d8cfc6;border-radius:12px;text-align:center;color:var(--muted);font-size:13px}
+.v2360-side{padding:17px;height:max-content;position:sticky;top:82px}.v2360-side h3{font-size:16px!important;margin:0 0 12px}.v2360-smart{padding:13px;border-radius:12px;background:#17130f;color:#fff;margin-bottom:10px}.v2360-smart small{color:#cdbbaa}.v2360-sideitem{padding:12px 0;border-bottom:1px solid var(--border)}.v2360-sideitem small{display:block;color:var(--muted);margin-bottom:4px}.v2360-sideitem b{font-size:13px}.v2360-sidebtn{width:100%;margin-top:12px;padding:11px;border:0;border-radius:10px;background:#111820;color:#fff;font-weight:900;cursor:pointer}
+@media(max-width:980px){.v2360-layout{grid-template-columns:1fr}.v2360-side{position:static}.v2360-flow{grid-template-columns:repeat(4,1fr)}}@media(max-width:650px){.v2360{padding:15px 12px}.v2360-headtop{flex-direction:column}.v2360-flow{grid-template-columns:repeat(2,1fr)}.v2360-summary{grid-template-columns:1fr}}
 </style></head>
 <body>
 
@@ -2093,6 +2101,43 @@ function decorate(){
 }
 new MutationObserver(decorate).observe(document.body,{childList:true,subtree:true});
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>{wireEvents();decorate();refreshMyDay()});else{wireEvents();decorate();refreshMyDay()}
+})();
+</script><section class="page" id="v2File360Page" style="display:none"><div class="v2360" id="v2360Root"></div></section><script id="enforza-v2-file360-js">
+(function(){
+"use strict";
+let current360=null,current360Tab="overview";
+function A360(){return (window.currentLang||document.documentElement.lang||"en")==="ar"}
+function T360(en,ar){return A360()?ar:en}
+function files360(){return window.DATA&&Array.isArray(DATA.files)?DATA.files:[]}
+function money360(v){return "BHD "+Number(v||0).toFixed(3)}
+function hidePages360(){document.querySelectorAll(".page").forEach(p=>p.style.display="none");document.getElementById("v2File360Page").style.display="block"}
+function blank360(text){return `<div class="v2360-blank">${text}</div>`}
+function related(arr,key,val){return window.DATA&&Array.isArray(DATA[arr])?DATA[arr].filter(x=>(x[key]||x.file||x.fileId)===val):[]}
+function renderEmpty360(){
+ document.getElementById("v2360Root").innerHTML=`<div class="v2360-empty"><div class="v2360-emptybox"><div class="v2360-emptyicon">360°</div><h1>${T360("File 360°","ملف 360°")}</h1><p>${T360("No enforcement file is open yet. Create your first file, then all actions, financials, tasks, minutes, documents and evidence will be available from one workspace.","لا يوجد ملف تنفيذ مفتوح حتى الآن. أنشئ أول ملف، وبعدها ستتوفر الإجراءات والبيانات المالية والمهام والمحاضر والمستندات والأدلة في مساحة عمل واحدة.")}</p><button class="v2-btn primary" onclick="try{openQuickAdd('files')}catch(e){}">+ ${T360("Create First File","إنشاء أول ملف")}</button></div></div>`;
+}
+function tabBody360(f){
+ const id=f.id||f.ref||f.fileNo||"";
+ const labels={overview:["Overview","نظرة عامة"],actions:["Actions","الإجراءات"],financial:["Financial","المالي"],tasks:["Tasks","المهام"],minutes:["Minutes","المحاضر"],documents:["Documents","المستندات"],evidence:["Evidence","الأدلة"],timeline:["Timeline","التسلسل الزمني"]};
+ if(current360Tab==="overview")return `<div class="v2360-summary"><div class="v2360-stat"><small>${T360("Outstanding","المبلغ القائم")}</small><b>${money360(f.outstanding||f.amount)}</b></div><div class="v2360-stat"><small>${T360("Collected","المحصل")}</small><b>${money360(f.collected)}</b></div><div class="v2360-stat"><small>${T360("Open Tasks","المهام المفتوحة")}</small><b>${related("smartTasks","file",id).filter(x=>x.status!=="Completed").length}</b></div></div><div class="v2360-section"><h3>${T360("File Summary","ملخص الملف")}</h3>${blank360(T360("File information will build here from the data you enter.","سيتم بناء ملخص الملف هنا من البيانات التي تدخلها."))}</div>`;
+ let map={actions:"activities",financial:"claims",tasks:"smartTasks",minutes:"minutes",documents:"documents",evidence:"evidence",timeline:"activities"},arr=related(map[current360Tab]||"activities","file",id);
+ return `<div class="v2360-section"><h3>${T360(labels[current360Tab][0],labels[current360Tab][1])}</h3>${arr.length?arr.map(x=>`<div class="v2-card" style="padding:13px;margin-bottom:8px"><b>${x.title||x.type||x.id||"Record"}</b><div style="font-size:12px;color:var(--muted);margin-top:4px">${x.date||x.due||""} ${x.status||""}</div></div>`).join(""):blank360(T360("No records have been added to this section yet.","لم تتم إضافة سجلات إلى هذا القسم حتى الآن."))}</div>`;
+}
+function render360(){
+ const f=current360;if(!f){renderEmpty360();return}
+ const id=f.id||f.ref||f.fileNo||"—",tabs=[["overview","Overview","نظرة عامة"],["actions","Actions","الإجراءات"],["financial","Financial","المالي"],["tasks","Tasks","المهام"],["minutes","Minutes","المحاضر"],["documents","Documents","المستندات"],["evidence","Evidence","الأدلة"],["timeline","Timeline","التسلسل الزمني"]];
+ document.getElementById("v2360Root").innerHTML=`<div class="v2360-head"><div class="v2360-headtop"><div><div class="v2360-ref">${id}</div><h1>${f.title||f.caseName||T360("Enforcement File","ملف التنفيذ")}</h1><div class="v2360-meta"><span>${f.caseNo||T360("No case number","بدون رقم قضية")}</span><span>•</span><span>${f.creditor||T360("Creditor not entered","لم يتم إدخال الدائن")}</span><span>→</span><span>${f.debtor||T360("Debtor not entered","لم يتم إدخال المدين")}</span></div></div><div class="v2360-status">${f.status||T360("Active","نشط")}</div></div><div class="v2360-flow">${["Received","Reviewed","Filed","Served","Enforcement","Collection","Closed"].map((x,i)=>`<div class="v2360-step ${i===0?"active":""}">${T360(x,["مستلم","مراجع","مقيد","مبلغ","تنفيذ","تحصيل","مغلق"][i])}</div>`).join("")}</div></div>
+ <div class="v2360-layout"><main class="v2360-main"><div class="v2360-tabs">${tabs.map(t=>`<button class="v2360-tab ${current360Tab===t[0]?"active":""}" onclick="v2360Tab('${t[0]}')">${T360(t[1],t[2])}</button>`).join("")}</div><div class="v2360-content">${tabBody360(f)}</div></main>
+ <aside class="v2360-side"><h3>${T360("Smart Panel","اللوحة الذكية")}</h3><div class="v2360-smart"><b>✦ ENFORZA AI</b><br><small>${T360("Recommendations will appear after enough file data is entered.","ستظهر التوصيات بعد إدخال بيانات كافية للملف.")}</small></div><div class="v2360-sideitem"><small>${T360("Next Recommended Action","الإجراء المقترح التالي")}</small><b>—</b></div><div class="v2360-sideitem"><small>${T360("Upcoming Deadline","الموعد القادم")}</small><b>—</b></div><div class="v2360-sideitem"><small>${T360("Outstanding","المبلغ القائم")}</small><b>${money360(f.outstanding||f.amount)}</b></div><div class="v2360-sideitem"><small>${T360("Assigned Officer","الموظف المسؤول")}</small><b>${f.officer||"—"}</b></div><button class="v2360-sidebtn" onclick="v2OpenTask('',null)">${T360("+ Add Task","+ إضافة مهمة")}</button></aside></div>`;
+}
+window.v2360Tab=function(tab){current360Tab=tab;render360()}
+window.openFile360=function(id){current360=files360().find(f=>(f.id||f.ref||f.fileNo)===id)||null;current360Tab="overview";hidePages360();render360()}
+function wire360(){
+ let nav=[...document.querySelectorAll(".nav-item")].find(x=>(x.textContent||"").includes("Enforcement Files")||(x.textContent||"").includes("ملفات التنفيذ"));
+ if(nav&&!nav.dataset.v2360){nav.dataset.v2360="1";nav.addEventListener("dblclick",function(e){e.preventDefault();hidePages360();current360=files360()[0]||null;render360()})}
+ document.addEventListener("click",function(e){let row=e.target.closest("[data-file-id]");if(row&&row.dataset.fileId){e.preventDefault();openFile360(row.dataset.fileId)}},true);
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",wire360);else wire360();
 })();
 </script></body>
 </html>
