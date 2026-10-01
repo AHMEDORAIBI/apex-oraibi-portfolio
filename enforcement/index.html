@@ -822,23 +822,6 @@ body.enf-dark .enf360-actions button,body.enf-dark .enf360-tab,body.enf-dark .en
   <div class="wizard-actions"><button id="wizardBack" onclick="wizardMove(-1)" data-i18n="Back">Back</button><div><button onclick="closeFileWizard()" data-i18n="Cancel">Cancel</button> <button class="primary" id="wizardNext" onclick="wizardMove(1)" data-i18n="Next">Next</button></div></div>
  </main>
 </div></div>
-<div class="login-gate" id="loginGate">
- <div class="login-shell">
-  <section class="login-brand">
-   <div><div class="mark">E</div><h1>ENFORZA<span>PRIVATE ENFORCEMENT</span></h1><p data-i18n="Login brand text">Interactive enforcement management demo with workflow, collections, settlements, smart notifications, mobile access and ENFORZA AI.</p>
-   <div class="login-feature"><div>✦ ENFORZA AI</div><div>🎙 Voice Command</div><div>◷ Smart Follow-up</div><div>◈ Creditor Portal</div></div></div>
-   <div class="login-credit">APEX ORAIBI — SYSTEM DESIGN & DEVELOPMENT</div>
-  </section>
-  <section class="login-form-side">
-   <h2 data-i18n="Welcome to ENFORZA">Welcome to ENFORZA</h2><p data-i18n="Choose a demo role to experience the system.">Choose a demo role to experience the system.</p>
-   <div class="role-picker"><div class="role-option active" data-role="management" onclick="selectDemoRole('management',this)"><b>◆</b><strong data-i18n="Management">Management</strong></div><div class="role-option" data-role="officer" onclick="selectDemoRole('officer',this)"><b>⚑</b><strong data-i18n="Enforcement Officer">Enforcement Officer</strong></div><div class="role-option" data-role="creditor" onclick="selectDemoRole('creditor',this)"><b>◈</b><strong data-i18n="Creditor">Creditor</strong></div></div>
-   <div class="login-fields"><label data-i18n="Username">Username<input id="demoUsername" value="admin"></label><label data-i18n="Password">Password<input id="demoPassword" type="password" value="demo123"></label></div>
-   <button class="login-submit" onclick="loginDemo()" data-i18n="Enter Demo">Enter Demo</button>
-   <div class="login-demo-note" data-i18n="Demo login note">Demo only. Select any role and enter. No real authentication or client data is used.</div>
-  </section>
- </div>
-</div>
-
 <div class="app">
 <aside class="sidebar" id="sidebar">
   <div class="brand"><div class="brand-mark">E</div><div><strong>ENFORZA</strong><span>PRIVATE ENFORCEMENT</span></div></div>
@@ -892,7 +875,7 @@ body.enf-dark .enf360-actions button,body.enf-dark .enf360-tab,body.enf-dark .en
 <input id="globalSearch" class="search" data-i18n-placeholder="Search file, party or reference..." placeholder="Search file, party or reference..." oninput="runGlobalSearch()" onfocus="runGlobalSearch()">
 <div id="globalSearchResults" class="global-search-results"></div>
 </div>
-    <button class="top-btn" onclick="logoutDemo()" title="Logout">⇥</button><div class="lang-switch"><button id="langEn" class="active" onclick="setLanguage('en')">EN</button><button id="langAr" onclick="setLanguage('ar')">عربي</button></div>
+    <button class="top-btn" onclick="enfLogout()" title="Logout">⇥</button><div class="lang-switch"><button id="langEn" class="active" onclick="setLanguage('en')">EN</button><button id="langAr" onclick="setLanguage('ar')">عربي</button></div>
     <button class="top-btn" onclick="toggleSmartNotifications()" title="Notifications" style="position:relative"><span>●</span><span class="notify-badge" id="notifyBadge">4</span></button>
     <div class="profile"><div class="avatar">AO</div><div><strong>Ahmed Oraibi</strong><span data-i18n="Administrator">Administrator</span></div></div>
   </div>
@@ -1664,38 +1647,6 @@ function runVoiceText(s){
 }
 renderSmartNotifications("all");
 Object.assign(I18N.ar,{"Morning Management Brief":"الموجز الصباحي للإدارة","Read Aloud":"قراءة صوتية","Morning brief text":"لديك اليوم 9 إجراءات مستحقة و3 متابعات متأخرة ودفعتا تسوية تقتربان من الاستحقاق وملفان مرتفعا القيمة يحتاجان إلى اهتمام الإدارة.","Arabic and English voice control":"تحكم صوتي بالعربية والإنجليزية","Tap microphone and speak":"اضغط الميكروفون وتحدث","Try a navigation or AI command":"جرب أمر تنقل أو أمر للذكاء الاصطناعي","Smart Notifications":"الإشعارات الذكية","AI-ranked operational alerts":"تنبيهات تشغيلية مرتبة بالذكاء الاصطناعي","All":"الكل","Critical":"حرج","Mark all read":"تحديد الكل كمقروء","Settlement installment due":"قسط تسوية مستحق","High-value file inactive":"ملف مرتفع القيمة بلا حركة","Bank response received":"تم استلام رد البنك","Asset inquiry overdue":"استعلام أصول متأخر","Listening...":"جاري الاستماع...","Executing command...":"جاري تنفيذ الأمر...","Voice recognition is not supported in this browser":"التعرف الصوتي غير مدعوم في هذا المتصفح","Could not understand. Try again.":"لم يتم فهم الأمر. حاول مرة أخرى."});
-
-
-let selectedDemoRole="management",activeDemoRole="management";
-function selectDemoRole(role,el){
- selectedDemoRole=role;document.querySelectorAll(".role-option").forEach(x=>x.classList.remove("active"));if(el)el.classList.add("active");
- const u=document.getElementById("demoUsername");if(u)u.value=role==="management"?"admin":role==="officer"?"officer":"creditor";
-}
-function applyRoleAccess(role){
- activeDemoRole=role;document.body.classList.remove("role-management","role-officer","role-creditor");document.body.classList.add("role-"+role);
- const pill=document.getElementById("activeRolePill");if(pill)pill.textContent=role==="management"?t("Management"):role==="officer"?t("Enforcement Officer"):t("Creditor");
- const adminPages=["users","settings","audit","permissions","presentation","aiInsights"];
- document.querySelectorAll(".nav-item").forEach(n=>{
-  const p=n.dataset.page||"";
-  n.classList.remove("admin-only","officer-only");
-  if(adminPages.includes(p))n.classList.add("admin-only");
-  if(["actionsCenter","treasury","expenses"].includes(p))n.classList.add("officer-only");
- });
- if(role==="creditor"){
-   document.querySelectorAll(".nav-item").forEach(n=>{const p=n.dataset.page||"";n.style.display=["dashboard","creditorPortal","documents","reports"].includes(p)?"":"none"});
- } else if(role==="officer"){
-   document.querySelectorAll(".nav-item").forEach(n=>{n.style.display=(n.classList.contains("admin-only"))?"none":""});
- } else document.querySelectorAll(".nav-item").forEach(n=>n.style.display="");
-}
-function loginDemo(){
- const gate=document.getElementById("loginGate");gate.style.display="none";applyRoleAccess(selectedDemoRole);
- if(selectedDemoRole==="creditor")openPage("creditorPortal");else if(selectedDemoRole==="officer")openPage("followupBoard");else openPage("dashboard");
- showToast(t("Demo session started"));
-}
-function logoutDemo(){closeAI();closeVoice();document.getElementById("loginGate").style.display="grid";document.getElementById("smartNotifyPanel").style.display="none"}
-Object.assign(I18N.ar,{
-"Login brand text":"ديمو تفاعلي لإدارة التنفيذ يشمل مسار العمل والتحصيلات والتسويات والإشعارات الذكية واستخدام الهاتف وENFORZA AI.","Welcome to ENFORZA":"مرحبًا بك في ENFORZA","Choose a demo role to experience the system.":"اختر صفة الدخول لتجربة النظام.","Management":"الإدارة","Enforcement Officer":"منفذ خاص","Creditor":"الدائن","Username":"اسم المستخدم","Password":"كلمة المرور","Enter Demo":"دخول الديمو","Demo login note":"نسخة تجريبية فقط. اختر أي صفة ثم ادخل. لا تستخدم بيانات عملاء حقيقية أو مصادقة فعلية.","Demo session started":"تم بدء جلسة الديمو"
-});
 
 
 const DEMO_ORIGINAL=JSON.parse(JSON.stringify(DATA));
@@ -4178,54 +4129,40 @@ const USERS={
  officer:{id:"DEMO-OFFICER",username:"officer",name:"Demo Enforcement Officer",role:"officer",creditorId:""},
  creditor:{id:"DEMO-CREDITOR",username:"creditor",name:"Demo Creditor",role:"creditor",creditorId:""}
 };
-function saveUser(u){
+function setSession(u){
  const x={id:u.id,username:u.username,name:u.name,role:u.role,creditorId:u.creditorId||""};
- sessionStorage.setItem(SESSION,JSON.stringify(x));
- sessionStorage.setItem("enforzaRole",x.role);
- sessionStorage.setItem("enforzaUserId",x.id);
- window.currentUser=x;window.currentRole=x.role;window.userRole=x.role;window.currentUserId=x.id;
- document.body.dataset.enfRole=x.role;
- return x;
+ sessionStorage.setItem(SESSION,JSON.stringify(x));sessionStorage.setItem("enforzaRole",x.role);sessionStorage.setItem("enforzaUserId",x.id);
+ window.currentUser=x;window.currentRole=x.role;window.userRole=x.role;window.currentUserId=x.id;document.body.dataset.enfRole=x.role;return x;
 }
 function permissions(u){
- const creditorHidden=new Set(["expenses","treasury","claims","users","settings","evidence","collections"]);
+ const creditorAllowed=new Set(["dashboard","creditorPortal","documents","reports"]);
+ const officerBlocked=new Set(["users","settings","presentation","aiInsights"]);
  document.querySelectorAll(".nav-item").forEach(n=>{
-   const p=n.dataset.page||"";
-   if(p==="users"){n.style.display=u.role==="admin"?"":"none";return}
-   n.style.display=(u.role==="creditor"&&creditorHidden.has(p))?"none":"";
+  const p=n.dataset.page||"";
+  n.style.display=u.role==="creditor"?(creditorAllowed.has(p)?"":""):u.role==="officer"?(officerBlocked.has(p)?"none":""):"";
  });
 }
-function dashboard(){
- if(typeof window.v2ShowPage==="function"){window.v2ShowPage("dashboard");return true}
- const n=document.querySelector('.nav-item[data-page="dashboard"]');
- if(n){n.click();return true}
- const d=document.getElementById("dashboard");
- if(d){d.style.display="";return true}
- return false;
-}
-function creditor(){
- if(typeof window.enfOpenCreditorExperience==="function"){window.enfOpenCreditorExperience();return true}
- if(typeof window.enfOpenCreditorPortal==="function"){window.enfOpenCreditorPortal();return true}
- return dashboard();
-}
 function enter(role){
- const u=USERS[role]; if(!u)return;
- saveUser(u); permissions(u);
- document.getElementById("enfDemoAccess")?.classList.add("hidden");
- if(role==="creditor")creditor();else dashboard();
+ const u=USERS[role];if(!u)return;
+ setSession(u);permissions(u);
+ const gate=document.getElementById("enfDemoAccess");if(gate){gate.classList.add("hidden");gate.style.display="none"}
+ if(role==="creditor"&&typeof window.enfOpenCreditorExperience==="function"){window.enfOpenCreditorExperience();return}
+ if(typeof window.openPage==="function"){window.openPage(role==="creditor"?"creditorPortal":"dashboard");return}
+ alert("ENFORZA routing error: openPage is unavailable.");
 }
 window.enfDemoEnterRole=enter;
 window.enfLogout=function(){
+ try{if(typeof window.closeAI==="function")window.closeAI()}catch(e){}
+ try{if(typeof window.closeVoice==="function")window.closeVoice()}catch(e){}
  sessionStorage.removeItem(SESSION);sessionStorage.removeItem("enforzaRole");sessionStorage.removeItem("enforzaUserId");
  window.currentUser=null;window.currentRole=null;window.userRole=null;window.currentUserId=null;
  document.getElementById("enfCreditorExperience")?.classList.remove("open");
- document.getElementById("enfDemoAccess")?.classList.remove("hidden");
+ const gate=document.getElementById("enfDemoAccess");if(gate){gate.style.display="grid";gate.classList.remove("hidden")}
 };
 function init(){
- /* Always start clean in DEMO. There is only one login controller. */
  sessionStorage.removeItem(SESSION);sessionStorage.removeItem("enforzaRole");sessionStorage.removeItem("enforzaUserId");
- document.querySelectorAll("[data-enf-demo-role]").forEach(b=>b.addEventListener("click",()=>enter(b.dataset.enfDemoRole)));
- document.getElementById("enfDemoAccess")?.classList.remove("hidden");
+ document.querySelectorAll("[data-enf-demo-role]").forEach(b=>b.onclick=e=>{e.preventDefault();e.stopImmediatePropagation();enter(b.dataset.enfDemoRole)});
+ const gate=document.getElementById("enfDemoAccess");if(gate){gate.style.display="grid";gate.classList.remove("hidden")}
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
 })();
