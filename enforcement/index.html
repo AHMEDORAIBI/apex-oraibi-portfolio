@@ -2738,6 +2738,7 @@ window.enfIntakeDrive=function(){document.getElementById("eiSelected").textConte
 function pick(inp){attachments=[...(inp.files||[])].map(f=>({name:f.name,type:f.type,size:f.size}));document.getElementById("eiSelected").textContent=attachments.length?attachments.map(x=>x.name).join(", "):t("No documents selected.","لم يتم اختيار مستندات.")}
 function review(){let a=[[t("Intake Type","نوع فتح الملف"),type],[t("Case Number","رقم القضية"),val("eiCase")||"—"],[t("Court / Authority","المحكمة / الجهة"),val("eiCourt")||"—"],[t("Creditor","الدائن"),val("eiCreditor")||"—"],[t("Debtor","المدين"),val("eiDebtor")||"—"],[t("We Represent","نمثل"),val("eiRepresent")||"—"],[t("Client / Customer","الموكل / العميل"),val("eiClientName")||"—"],[t("Claim","المطالبة"),"BHD "+Number(val("eiAmount")||0).toFixed(3)],[t("Assigned Officer","المسؤول"),val("eiOfficer")||"—"],[t("Attachments","المرفقات"),String(attachments.length)]];document.getElementById("eiReview").innerHTML=a.map(x=>`<div><small>${x[0]}</small><b>${x[1]}</b></div>`).join("")}
 function create(){
+ let existingClient=(window.DATA?.files||[]).map(x=>({name:x.clientName||"",id:x.clientId||"",contact:x.clientContact||""})).find(c=>c.id&&c.id===val("eiClientId"));if(existingClient){if(!val("eiClientName"))document.getElementById("eiClientName").value=existingClient.name;if(!val("eiClientContact"))document.getElementById("eiClientContact").value=existingClient.contact}
  let n=files().length+1,id=(typeof window.enfNextFileId==="function"?window.enfNextFileId():"ENF-"+String(n).padStart(5,"0")),title=val("eiCase")?t("Case ","قضية ")+val("eiCase"):t("Enforcement File ","ملف تنفيذ ")+id;
  let f={id,title,status:"Active",intakeType:type,caseNumber:val("eiCase"),court:val("eiCourt"),caseType:val("eiCaseType"),judgmentRef:val("eiJudgment"),lawFirm:val("eiLawFirm"),externalRef:val("eiExternalRef"),sourceNotes:val("eiSourceNotes"),creditor:val("eiCreditor"),creditorId:val("eiCreditorId"),debtor:val("eiDebtor"),debtorId:val("eiDebtorId"),clientSide:val("eiRepresent"),clientName:val("eiClientName"),clientId:val("eiClientId"),clientContact:val("eiClientContact"),amount:Number(val("eiAmount")||0),assignedOfficer:val("eiOfficer"),summary:val("eiSummary"),attachments:[...attachments],openedDate:new Date().toISOString().slice(0,10)};
  files().push(f);
@@ -4499,6 +4500,51 @@ window.enfNextFileId=function(){
  let mx=A("files").reduce((m,f)=>Math.max(m,Number(String(f.id||f.ref||"").replace(/\D/g,""))||0),0);
  return "ENF-"+String(mx+1).padStart(5,"0")
 }
+})();
+</script>
+
+<style id="enforza-smart-client-intake-css">
+.enf-client-match{grid-column:1/-1;display:none;border:1px solid var(--line);border-radius:11px;padding:9px;background:rgba(178,122,67,.05)}
+.enf-client-match.show{display:block}.enf-client-match-head{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:7px}.enf-client-match-list{display:flex;gap:6px;flex-wrap:wrap}
+.enf-client-match-item{border:1px solid var(--line);background:var(--surface);color:inherit;border-radius:9px;padding:7px 9px;cursor:pointer;font-size:8px;text-align:start}.enf-client-match-item:hover{border-color:var(--bronze)}
+.enf-client-match-item small{display:block;color:var(--muted);font-size:7px}
+</style>
+<script id="enforza-smart-client-intake-js">
+(function(){
+"use strict";
+function A(n){return window.DATA&&Array.isArray(DATA[n])?DATA[n]:[]}
+function norm(v){return String(v||"").trim().toLowerCase().replace(/\s+/g," ")}
+function clientOf(f){return {name:f.clientName||((f.clientSide==="Creditor")?f.creditor:(f.clientSide==="Debtor")?f.debtor:"")||"",id:f.clientId||((f.clientSide==="Creditor")?f.creditorId:(f.clientSide==="Debtor")?f.debtorId:"")||"",contact:f.clientContact||"",side:f.clientSide||""}}
+function clients(){
+ let map=new Map();
+ A("files").forEach(f=>{let c=clientOf(f),key=norm(c.id)||norm(c.name);if(!key)return;if(!map.has(key))map.set(key,{...c,files:0});map.get(key).files++});
+ return [...map.values()]
+}
+function fill(c){
+ let n=document.getElementById("eiClientName"),id=document.getElementById("eiClientId"),co=document.getElementById("eiClientContact"),side=document.getElementById("eiRepresent");
+ if(n)n.value=c.name||"";if(id)id.value=c.id||"";if(co)co.value=c.contact||"";if(side&&c.side){side.value=c.side;side.dispatchEvent(new Event("change",{bubbles:true}))}
+ let cr=document.getElementById("eiCreditor"),crid=document.getElementById("eiCreditorId"),db=document.getElementById("eiDebtor"),dbid=document.getElementById("eiDebtorId");
+ if(c.side==="Creditor"){if(cr)cr.value=c.name||"";if(crid)crid.value=c.id||""}
+ if(c.side==="Debtor"){if(db)db.value=c.name||"";if(dbid)dbid.value=c.id||""}
+ render()
+}
+function render(){
+ let box=document.getElementById("enfClientMatch");if(!box)return;
+ let q=norm(document.getElementById("eiClientName")?.value),qid=norm(document.getElementById("eiClientId")?.value);
+ let list=clients().filter(c=>(q&&norm(c.name).includes(q))||(qid&&norm(c.id).includes(qid))).slice(0,5);
+ if(!q&&!qid){box.classList.remove("show");return}
+ box.classList.toggle("show",list.length>0);
+ box.innerHTML=list.length?`<div class="enf-client-match-head"><b>Existing Client Match</b><small>${list.length} found</small></div><div class="enf-client-match-list">${list.map((c,i)=>`<button type="button" class="enf-client-match-item" data-ci="${i}"><b>${c.name||"Client"}</b><small>${c.id||"No ID"} · ${c.contact||"No contact"} · ${c.files} file(s)</small></button>`).join("")}</div>`:"";
+ box.querySelectorAll("[data-ci]").forEach(b=>b.onclick=()=>fill(list[Number(b.dataset.ci)]))
+}
+window.enfClientIntakeSelect=fill;
+function install(){
+ let name=document.getElementById("eiClientName"),id=document.getElementById("eiClientId");if(!name||document.getElementById("enfClientMatch"))return;
+ let box=document.createElement("div");box.id="enfClientMatch";box.className="enf-client-match";name.closest(".enf-intake-grid").appendChild(box);
+ [name,id].forEach(x=>x.addEventListener("input",render));
+ let side=document.getElementById("eiRepresent");side?.addEventListener("change",()=>setTimeout(render,0));
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",install,{once:true});else install()
 })();
 </script>
 </body>
