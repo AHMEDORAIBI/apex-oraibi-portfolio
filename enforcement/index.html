@@ -571,6 +571,23 @@ input,select,textarea,button{font-family:inherit}
 .enf-role-chip{padding:7px 10px;border-radius:999px;background:#f1e7dd;color:#80562f;font-size:10px;font-weight:900;white-space:nowrap}
 .enf-page-enter{animation:enfFade .16s ease}@keyframes enfFade{from{opacity:.55;transform:translateY(3px)}to{opacity:1;transform:none}}
 @media(max-width:1000px){.enf-search{display:none}.enf-role-chip{display:none}}
+</style><style id="enforza-v2-phase7-files-css">
+/* Phase 7 — Files workspace + premium file creation */
+.v2files{max-width:1540px;margin:0 auto;padding:30px 32px}
+.v2files-head{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;margin-bottom:18px}
+.v2files-head h1{font-size:30px!important;margin:4px 0}.v2files-head p{margin:0;color:var(--desk-muted);font-size:13px}
+.v2files-tools{display:flex;gap:8px;flex-wrap:wrap}.v2files-search{min-width:300px;border:1px solid var(--desk-line);background:#fff;border-radius:11px;padding:11px 13px;font-size:13px}
+.v2files-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}.v2files-kpi{background:#fff;border:1px solid var(--desk-line);border-radius:15px;padding:16px}.v2files-kpi small{display:block;color:var(--desk-muted);font-size:11px;font-weight:850}.v2files-kpi b{display:block;font-size:23px;margin-top:7px}
+.v2files-body{background:#fff;border:1px solid var(--desk-line);border-radius:17px;min-height:430px;box-shadow:0 8px 28px rgba(28,24,20,.035)}
+.v2files-filter{display:flex;gap:7px;padding:12px;border-bottom:1px solid var(--desk-line);overflow:auto}.v2files-filter button{border:0;background:transparent;border-radius:9px;padding:9px 11px;color:var(--desk-muted);font-size:12px;font-weight:850;white-space:nowrap;cursor:pointer}.v2files-filter button.active{background:#f1e7dd;color:#80562f}
+.v2files-empty{min-height:360px;display:grid;place-items:center;text-align:center;padding:25px}.v2files-emptyicon{width:68px;height:68px;border-radius:19px;background:#f1e7dd;color:#b77a3e;display:grid;place-items:center;margin:0 auto 13px;font-size:25px}.v2files-empty h3{font-size:18px!important;margin:0 0 7px}.v2files-empty p{max-width:460px;margin:0 auto 15px;color:var(--desk-muted);font-size:13px;line-height:1.6}
+.v2files-list{padding:12px}.v2file-row{display:grid;grid-template-columns:130px minmax(220px,1.5fr) 1fr 1fr 120px 110px;gap:12px;align-items:center;padding:13px 12px;border-bottom:1px solid var(--desk-line);cursor:pointer}.v2file-row:hover{background:#fbfaf8}.v2file-row.head{font-size:10px;color:var(--desk-muted);font-weight:900;cursor:default}.v2file-ref{font-weight:950;color:#8a5a2d}.v2file-title b{display:block;font-size:13px}.v2file-title small{color:var(--desk-muted)}.v2file-status{display:inline-block;width:max-content;padding:6px 9px;border-radius:999px;background:#eef7ef;color:#2d6d39;font-size:10px;font-weight:900}
+.v2wizard{position:fixed;inset:0;z-index:70000;display:none;background:rgba(9,13,17,.56);backdrop-filter:blur(4px);padding:24px}.v2wizard.open{display:grid;place-items:center}.v2wizard-card{width:min(880px,96vw);max-height:92vh;overflow:auto;background:#fff;border-radius:20px;box-shadow:0 30px 100px rgba(0,0,0,.25)}
+.v2wizard-head{padding:21px 23px;border-bottom:1px solid var(--desk-line);display:flex;justify-content:space-between;align-items:flex-start}.v2wizard-head h2{font-size:20px!important;margin:0 0 4px}.v2wizard-head p{margin:0;color:var(--desk-muted);font-size:12px}.v2wizard-close{border:0;background:transparent;font-size:25px;cursor:pointer}
+.v2wizard-steps{display:grid;grid-template-columns:repeat(4,1fr);padding:14px 22px;border-bottom:1px solid var(--desk-line)}.v2wizard-step{font-size:10px;color:#9a928a;font-weight:900;text-align:center}.v2wizard-step.active{color:#b77a3e}.v2wizard-form{padding:22px}.v2wizard-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.v2wizard-field.full{grid-column:1/-1}.v2wizard-field label{display:block;margin-bottom:6px;font-size:11px;font-weight:900;color:var(--desk-muted)}.v2wizard-field input,.v2wizard-field select,.v2wizard-field textarea{width:100%;border:1px solid var(--desk-line);border-radius:10px;padding:11px 12px;background:#fff;color:var(--desk-ink);font-size:13px}.v2wizard-field textarea{min-height:85px;resize:vertical}
+.v2wizard-source{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.v2source{border:1px solid var(--desk-line);border-radius:11px;padding:12px;background:#fff;cursor:pointer;text-align:center;font-size:12px;font-weight:850}.v2source.active{border-color:#b77a3e;background:#fbf4ed;color:#80562f}.v2wizard-foot{display:flex;justify-content:flex-end;gap:8px;padding:16px 22px;border-top:1px solid var(--desk-line)}
+@media(max-width:1100px){.v2files-grid{grid-template-columns:repeat(2,1fr)}.v2file-row{grid-template-columns:120px 1.4fr 1fr 110px}.v2file-row>*:nth-child(4),.v2file-row>*:nth-child(5){display:none}}
+@media(max-width:700px){.v2files{padding:18px 13px}.v2files-head{align-items:flex-start;flex-direction:column}.v2files-search{min-width:0;width:100%}.v2files-grid{grid-template-columns:1fr 1fr}.v2file-row{grid-template-columns:100px 1fr 90px}.v2file-row>*:nth-child(3){display:none}.v2wizard{padding:8px}.v2wizard-grid{grid-template-columns:1fr}.v2wizard-field.full{grid-column:auto}.v2wizard-source{grid-template-columns:1fr}}
 </style></head>
 <body>
 
@@ -2255,6 +2272,47 @@ function animatePages(){document.addEventListener("click",function(e){let n=e.ta
 function init(){rebuildNav();topbar();animatePages()}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
 new MutationObserver(relabel).observe(document.documentElement,{attributes:true,attributeFilter:["lang","dir"]});
+})();
+</script><section class="page" id="v2FilesWorkspace" style="display:none"><div class="v2files" id="v2FilesRoot"></div></section>
+<div class="v2wizard" id="v2FileWizard" onclick="if(event.target===this)v2CloseFileWizard()"><div class="v2wizard-card">
+<div class="v2wizard-head"><div><h2 id="v2fwTitle">New Enforcement File</h2><p id="v2fwSub">Create a clean file and link its legal and financial information.</p></div><button class="v2wizard-close" onclick="v2CloseFileWizard()">×</button></div>
+<div class="v2wizard-steps"><div class="v2wizard-step active">01 · Source</div><div class="v2wizard-step">02 · Case</div><div class="v2wizard-step">03 · Parties</div><div class="v2wizard-step">04 · Assignment</div></div>
+<div class="v2wizard-form"><div class="v2wizard-grid">
+<div class="v2wizard-field full"><label id="v2fwSourceLabel">File Source</label><div class="v2wizard-source"><button class="v2source active" data-source="New File" onclick="v2PickSource(this)">New File</button><button class="v2source" data-source="Law Firm Transfer" onclick="v2PickSource(this)">Law Firm Transfer</button><button class="v2source" data-source="Collection Transfer" onclick="v2PickSource(this)">Collection Transfer</button></div></div>
+<div class="v2wizard-field"><label>File Reference</label><input id="v2fwRef" placeholder="EF-2026-001"></div><div class="v2wizard-field"><label>Case Number</label><input id="v2fwCase"></div>
+<div class="v2wizard-field full"><label>File / Case Title</label><input id="v2fwName"></div>
+<div class="v2wizard-field"><label>Creditor</label><input id="v2fwCreditor"></div><div class="v2wizard-field"><label>Debtor</label><input id="v2fwDebtor"></div>
+<div class="v2wizard-field"><label>Claim Amount (BHD)</label><input id="v2fwAmount" type="number" step="0.001"></div><div class="v2wizard-field"><label>Assigned Officer</label><input id="v2fwOfficer"></div>
+<div class="v2wizard-field full"><label>Notes</label><textarea id="v2fwNotes"></textarea></div>
+</div></div><div class="v2wizard-foot"><button class="v2cal-btn" onclick="v2CloseFileWizard()">Cancel</button><button class="v2cal-btn primary" onclick="v2SaveFileV2()">Create File</button></div>
+</div></div><script id="enforza-v2-phase7-files-js">
+(function(){
+"use strict";
+let fileSource7="New File",fileFilter7="all";
+function ar7(){return (window.currentLang||document.documentElement.lang||"en")==="ar"}
+function t7(en,ar){return ar7()?ar:en}
+function F7(){if(!window.DATA)return[];if(!Array.isArray(DATA.files))DATA.files=[];return DATA.files}
+function money7(v){return "BHD "+Number(v||0).toFixed(3)}
+function renderFiles7(){
+ const root=document.getElementById("v2FilesRoot");if(!root)return;let all=F7(),list=all;
+ if(fileFilter7==="active")list=all.filter(x=>(x.status||"Active")!=="Closed");if(fileFilter7==="closed")list=all.filter(x=>x.status==="Closed");
+ let total=all.reduce((a,x)=>a+Number(x.amount||x.outstanding||0),0),col=all.reduce((a,x)=>a+Number(x.collected||0),0);
+ root.innerHTML=`<div class="v2files-head"><div><div class="v2-kicker">${t7("ENFORCEMENT","التنفيذ")}</div><h1>${t7("Files","الملفات")}</h1><p>${t7("One workspace for every enforcement matter.","مساحة عمل موحدة لكل ملف تنفيذ.")}</p></div><div class="v2files-tools"><input class="v2files-search" id="v2fileSearch" placeholder="${t7("Search by file, case, creditor or debtor…","ابحث برقم الملف أو القضية أو الدائن أو المدين…")}" oninput="v2SearchFiles(this.value)"><button class="v2cal-btn primary" onclick="v2OpenFileWizard()">+ ${t7("New File","ملف جديد")}</button></div></div>
+ <div class="v2files-grid"><div class="v2files-kpi"><small>${t7("Total Files","إجمالي الملفات")}</small><b>${all.length}</b></div><div class="v2files-kpi"><small>${t7("Active","النشطة")}</small><b>${all.filter(x=>(x.status||"Active")!=="Closed").length}</b></div><div class="v2files-kpi"><small>${t7("Outstanding","المبالغ القائمة")}</small><b>${money7(total-col)}</b></div><div class="v2files-kpi"><small>${t7("Collected","المحصل")}</small><b>${money7(col)}</b></div></div>
+ <div class="v2files-body"><div class="v2files-filter"><button class="${fileFilter7==="all"?"active":""}" onclick="v2FileFilter('all')">${t7("All Files","كل الملفات")}</button><button class="${fileFilter7==="active"?"active":""}" onclick="v2FileFilter('active')">${t7("Active","نشطة")}</button><button class="${fileFilter7==="closed"?"active":""}" onclick="v2FileFilter('closed')">${t7("Closed","مغلقة")}</button></div>${list.length?renderRows7(list):renderEmpty7()}</div>`;
+}
+function renderEmpty7(){return `<div class="v2files-empty"><div><div class="v2files-emptyicon">▤</div><h3>${t7("No enforcement files yet","لا توجد ملفات تنفيذ حتى الآن")}</h3><p>${t7("Start with your first real file. No previous demo records are displayed in ENFORZA V2.","ابدأ بإضافة أول ملف فعلي. لا يتم عرض أي سجلات تجريبية سابقة في ENFORZA V2.")}</p><button class="v2cal-btn primary" onclick="v2OpenFileWizard()">+ ${t7("Create First File","إنشاء أول ملف")}</button></div></div>`}
+function renderRows7(a){return `<div class="v2files-list"><div class="v2file-row head"><span>${t7("FILE","الملف")}</span><span>${t7("MATTER","الموضوع")}</span><span>${t7("PARTIES","الأطراف")}</span><span>${t7("OUTSTANDING","القائم")}</span><span>${t7("OFFICER","المسؤول")}</span><span>${t7("STATUS","الحالة")}</span></div>${a.map(f=>{let id=f.id||f.ref||f.fileNo||"—";return `<div class="v2file-row" onclick="openFile360('${String(id).replace(/'/g,"\\'")}')"><span class="v2file-ref">${id}</span><span class="v2file-title"><b>${f.title||f.caseName||t7("Enforcement File","ملف تنفيذ")}</b><small>${f.caseNo||"—"}</small></span><span>${f.creditor||"—"} → ${f.debtor||"—"}</span><span>${money7((f.amount||f.outstanding||0)-(f.collected||0))}</span><span>${f.officer||"—"}</span><span class="v2file-status">${f.status||t7("Active","نشط")}</span></div>`}).join("")}</div>`}
+window.v2FileFilter=function(x){fileFilter7=x;renderFiles7()}
+window.v2SearchFiles=function(q){q=(q||"").toLowerCase();document.querySelectorAll(".v2file-row:not(.head)").forEach(r=>r.style.display=(r.textContent||"").toLowerCase().includes(q)?"grid":"none")}
+window.v2OpenFileWizard=function(){document.getElementById("v2FileWizard").classList.add("open");if(!document.getElementById("v2fwRef").value)document.getElementById("v2fwRef").value="EF-"+new Date().getFullYear()+"-"+String(F7().length+1).padStart(3,"0")}
+window.v2CloseFileWizard=function(){document.getElementById("v2FileWizard").classList.remove("open")}
+window.v2PickSource=function(b){fileSource7=b.dataset.source;document.querySelectorAll(".v2source").forEach(x=>x.classList.remove("active"));b.classList.add("active")}
+window.v2SaveFileV2=function(){let id=document.getElementById("v2fwRef").value.trim(),name=document.getElementById("v2fwName").value.trim();if(!id||!name)return;F7().push({id:id,ref:id,title:name,caseNo:document.getElementById("v2fwCase").value.trim(),creditor:document.getElementById("v2fwCreditor").value.trim(),debtor:document.getElementById("v2fwDebtor").value.trim(),amount:Number(document.getElementById("v2fwAmount").value||0),outstanding:Number(document.getElementById("v2fwAmount").value||0),collected:0,officer:document.getElementById("v2fwOfficer").value.trim(),notes:document.getElementById("v2fwNotes").value.trim(),source:fileSource7,status:"Active",created:new Date().toISOString()});v2CloseFileWizard();renderFiles7();["v2fwName","v2fwCase","v2fwCreditor","v2fwDebtor","v2fwAmount","v2fwOfficer","v2fwNotes","v2fwRef"].forEach(i=>document.getElementById(i).value="")}
+function openWorkspace7(){document.querySelectorAll(".page").forEach(p=>p.style.display="none");document.getElementById("v2FilesWorkspace").style.display="block";renderFiles7()}
+function wire7(){let nav=[...document.querySelectorAll(".nav-item")].find(x=>{let p=x.dataset.page||x.getAttribute("data-page")||"";return p==="files"});if(nav&&!nav.dataset.v2files){nav.dataset.v2files="1";nav.addEventListener("click",function(e){e.preventDefault();e.stopImmediatePropagation();openWorkspace7()},true)}}
+window.openQuickAdd=(function(old){return function(type){if(type==="files"){v2OpenFileWizard();return}if(old)return old.apply(this,arguments)}})(window.openQuickAdd);
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>{wire7();renderFiles7()});else{wire7();renderFiles7()}
 })();
 </script></body>
 </html>
