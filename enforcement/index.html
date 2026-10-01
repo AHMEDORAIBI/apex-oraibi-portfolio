@@ -1591,10 +1591,13 @@ renderSmartNotifications("all");
 Object.assign(I18N.ar,{"Morning Management Brief":"الموجز الصباحي للإدارة","Read Aloud":"قراءة صوتية","Morning brief text":"لديك اليوم 9 إجراءات مستحقة و3 متابعات متأخرة ودفعتا تسوية تقتربان من الاستحقاق وملفان مرتفعا القيمة يحتاجان إلى اهتمام الإدارة.","Arabic and English voice control":"تحكم صوتي بالعربية والإنجليزية","Tap microphone and speak":"اضغط الميكروفون وتحدث","Try a navigation or AI command":"جرب أمر تنقل أو أمر للذكاء الاصطناعي","Smart Notifications":"الإشعارات الذكية","AI-ranked operational alerts":"تنبيهات تشغيلية مرتبة بالذكاء الاصطناعي","All":"الكل","Critical":"حرج","Mark all read":"تحديد الكل كمقروء","Settlement installment due":"قسط تسوية مستحق","High-value file inactive":"ملف مرتفع القيمة بلا حركة","Bank response received":"تم استلام رد البنك","Asset inquiry overdue":"استعلام أصول متأخر","Listening...":"جاري الاستماع...","Executing command...":"جاري تنفيذ الأمر...","Voice recognition is not supported in this browser":"التعرف الصوتي غير مدعوم في هذا المتصفح","Could not understand. Try again.":"لم يتم فهم الأمر. حاول مرة أخرى."});
 
 
-let selectedDemoRole="management",activeDemoRole="management";
+var selectedDemoRole=window.selectedDemoRole||"management";
+var activeDemoRole=window.activeDemoRole||"management";
+window.selectedDemoRole=selectedDemoRole;
+window.activeDemoRole=activeDemoRole;
 
 function applyRoleAccess(role){
- activeDemoRole=role;document.body.classList.remove("role-management","role-officer","role-creditor");document.body.classList.add("role-"+role);
+ activeDemoRole=role;window.activeDemoRole=role;document.body.classList.remove("role-management","role-officer","role-creditor");document.body.classList.add("role-"+role);
  const pill=document.getElementById("activeRolePill");if(pill)pill.textContent=role==="management"?t("Management"):role==="officer"?t("Enforcement Officer"):t("Creditor");
  const adminPages=["users","settings","audit","permissions","presentation","aiInsights"];
  document.querySelectorAll(".nav-item").forEach(n=>{
