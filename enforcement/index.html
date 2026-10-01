@@ -3463,5 +3463,93 @@ function init(){
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
 })();
+</script><style id="enforza-v2-smart-arabic-voice-css">
+/* Smart Arabic Voice Assistant */
+.enf-voice-ai{position:fixed;inset:0;z-index:175000;background:rgba(7,11,15,.7);display:none;place-items:center;padding:18px}.enf-voice-ai.open{display:grid}
+.enf-voice-card{width:min(820px,97vw);max-height:92vh;overflow:auto;background:#fff;border-radius:20px;box-shadow:0 34px 120px rgba(0,0,0,.34)}
+.enf-voice-head{display:flex;justify-content:space-between;gap:18px;padding:20px 22px;border-bottom:1px solid var(--desk-line)}.enf-voice-head h2{font-size:22px!important;margin:3px 0}.enf-voice-head p{margin:0;color:var(--desk-muted);font-size:10px}
+.enf-voice-body{padding:18px 22px}.enf-voice-toolbar{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px}.enf-voice-toolbar select{border:1px solid var(--desk-line);border-radius:9px;padding:9px;background:#fff;font-size:10px}.enf-voice-rec{border:0;border-radius:10px;padding:10px 14px;background:#111820;color:#fff;font-size:10px;font-weight:950;cursor:pointer}.enf-voice-rec.live{background:#9e4040}
+.enf-voice-status{font-size:9px;color:var(--desk-muted);align-self:center}.enf-voice-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.enf-voice-box{border:1px solid var(--desk-line);border-radius:12px;padding:12px}.enf-voice-box label{display:block;font-size:9px;color:var(--desk-muted);font-weight:950;margin-bottom:6px}.enf-voice-box textarea{width:100%;min-height:150px;border:0;resize:vertical;background:transparent;font-size:12px;line-height:1.65;outline:none}
+.enf-voice-understood{margin-top:10px;border:1px solid var(--desk-line);border-radius:12px;padding:12px}.enf-voice-understood h3{font-size:13px!important;margin:0 0 8px}.enf-voice-chips{display:flex;gap:6px;flex-wrap:wrap}.enf-voice-chip{padding:6px 8px;border-radius:999px;background:#f1e7dd;color:#80562f;font-size:9px;font-weight:900}.enf-voice-warning{margin-top:10px;padding:10px;border-radius:10px;background:#fbfaf8;border:1px solid var(--desk-line);color:var(--desk-muted);font-size:9px;line-height:1.5}.enf-voice-foot{display:flex;justify-content:space-between;gap:7px;padding:14px 22px;border-top:1px solid var(--desk-line)}
+body.enf-dark .enf-voice-card,body.enf-dark .enf-voice-toolbar select{background:#171d23;color:#eef2f5;border-color:#2a333b}
+@media(max-width:700px){.enf-voice-ai{padding:0}.enf-voice-card{width:100%;height:100%;max-height:none;border-radius:0}.enf-voice-grid{grid-template-columns:1fr}.enf-voice-box textarea{min-height:115px}}
+</style>
+<div class="enf-voice-ai" id="enfVoiceAI"><div class="enf-voice-card">
+<div class="enf-voice-head"><div><div class="v2-kicker">ENFORZA AI · VOICE</div><h2 id="enfVoiceTitle">Smart Voice Assistant</h2><p id="enfVoiceSub">Arabic, Gulf/Bahraini speech and English with smart structuring.</p></div><button class="enf-field-close" onclick="enfVoiceClose()">×</button></div>
+<div class="enf-voice-body">
+<div class="enf-voice-toolbar"><select id="enfVoiceLang"><option value="ar-BH">العربية — البحرين / الخليج</option><option value="ar-SA">العربية الفصحى / الخليجية</option><option value="en-US">English</option><option value="auto">Auto Detect</option></select><button class="enf-voice-rec" id="enfVoiceRec" onclick="enfVoiceToggle()">● Start Recording</button><span class="enf-voice-status" id="enfVoiceStatus">Ready</span></div>
+<div class="enf-voice-grid"><div class="enf-voice-box"><label id="enfVoiceOriginalLabel">ORIGINAL TRANSCRIPT</label><textarea id="enfVoiceOriginal" placeholder="Your original speech appears here..."></textarea></div><div class="enf-voice-box"><label id="enfVoiceSmartLabel">SMART VERSION</label><textarea id="enfVoiceSmart" placeholder="Cleaned and structured text appears here..."></textarea></div></div>
+<div class="enf-voice-understood"><h3 id="enfVoiceUnderstandTitle">What ENFORZA understood</h3><div class="enf-voice-chips" id="enfVoiceChips"></div></div>
+<div class="enf-voice-warning" id="enfVoiceWarning">Voice commands never post a financial transaction or material file change automatically. Review and confirm first.</div>
+</div>
+<div class="enf-voice-foot"><button class="enf-ms-btn" onclick="enfVoiceClose()">Cancel</button><div><button class="enf-ms-btn" onclick="enfVoiceProcess()">Process Again</button> <button class="enf-ms-btn primary" onclick="enfVoiceUse()">Use Smart Version</button></div></div>
+</div></div>
+<script id="enforza-v2-smart-arabic-voice-js">
+(function(){
+"use strict";let rec=null,listening=false,target=null;
+function ar(){return (window.currentLang||document.documentElement.lang||"en")==="ar"}function t(e,a){return ar()?a:e}
+function $i(x){return document.getElementById(x)}
+function setText(){
+ $i("enfVoiceTitle").textContent=t("Smart Voice Assistant","المساعد الصوتي الذكي");
+ $i("enfVoiceSub").textContent=t("Arabic, Gulf/Bahraini speech and English with smart structuring.","يدعم العربية واللهجة الخليجية والبحرينية والإنجليزية مع تنظيم ذكي للكلام.");
+ $i("enfVoiceOriginalLabel").textContent=t("ORIGINAL TRANSCRIPT","النص الأصلي");
+ $i("enfVoiceSmartLabel").textContent=t("SMART VERSION","الصياغة الذكية");
+ $i("enfVoiceUnderstandTitle").textContent=t("What ENFORZA understood","ما الذي فهمه ENFORZA");
+ $i("enfVoiceWarning").textContent=t("Voice commands never post a financial transaction or material file change automatically. Review and confirm first.","الأوامر الصوتية لا تعتمد أي حركة مالية أو تعديل جوهري تلقائيًا. تتم المراجعة والتأكيد أولًا.");
+}
+function normalizeArabic(x){
+ return x.replace(/[إأآ]/g,"ا").replace(/ى/g,"ي").replace(/ة/g,"ه").replace(/\s+/g," ").trim();
+}
+function smartClean(raw){
+ let x=raw.trim().replace(/\s+/g," ");
+ if(!x)return"";
+ x=x.replace(/\b(اممم+|اه+|يعني يعني|اوكي اوكي)\b/gi," ").replace(/\s+/g," ").trim();
+ let isArabic=/[\u0600-\u06ff]/.test(x);
+ if(isArabic){
+   x=x.replace(/^(ابي|ابغى|اريد|أريد)\s+/,"").trim();
+   if(x&&!/[.!؟]$/.test(x))x+=".";
+ }else{
+   x=x.charAt(0).toUpperCase()+x.slice(1);
+   if(x&&!/[.!?]$/.test(x))x+=".";
+ }
+ return x;
+}
+function parse(raw){
+ let n=normalizeArabic(raw),chips=[],intent="";
+ if(/(تحصيل|دفع|سدد|سداد|استلم|استلام)/.test(n)){intent="Collection";chips.push(t("Intent: Collection","النوع: تحصيل"))}
+ else if(/(مهمه|متابعه|ذكرني|موعد|اجتماع)/.test(n)){intent="Task";chips.push(t("Intent: Task","النوع: مهمة"))}
+ else if(/(محضر|اجتماع|جلسه)/.test(n)){intent="Minute";chips.push(t("Intent: Minute","النوع: محضر"))}
+ else if(/(مستند|وثيقه|ارفق|مرفق)/.test(n)){intent="Document";chips.push(t("Intent: Document","النوع: مستند"))}
+ let amount=raw.match(/(?:BHD|د\.?ب|دينار(?:\s+بحريني)?)\s*([0-9٠-٩,.]+)|([0-9٠-٩,.]+)\s*(?:BHD|د\.?ب|دينار(?:\s+بحريني)?)/i);
+ if(amount){let v=(amount[1]||amount[2]||"").replace(/[٠-٩]/g,d=>"٠١٢٣٤٥٦٧٨٩".indexOf(d));chips.push(t("Amount: BHD ","المبلغ: ")+v)}
+ let method=/بنفت|benefit/i.test(raw)?"BenefitPay":/تحويل|transfer/i.test(raw)?t("Bank Transfer","تحويل بنكي"):/شيك|cheque|check/i.test(raw)?t("Cheque","شيك"):/نقد|cash/i.test(raw)?t("Cash","نقدًا"):"";
+ if(method)chips.push(t("Method: ","الطريقة: ")+method);
+ let caseNo=raw.match(/(?:قضيه|قضية|case)\s*(?:رقم)?\s*([A-Za-z0-9\/-]+)/i);if(caseNo)chips.push(t("Case: ","القضية: ")+caseNo[1]);
+ return {intent,chips};
+}
+window.enfVoiceProcess=function(){let raw=$i("enfVoiceOriginal").value,parsed=parse(raw);$i("enfVoiceSmart").value=smartClean(raw);$i("enfVoiceChips").innerHTML=parsed.chips.length?parsed.chips.map(x=>`<span class="enf-voice-chip">${x}</span>`).join(""):`<span class="enf-voice-chip">${t("Free dictation","إملاء حر")}</span>`;$i("enfVoiceAI").dataset.intent=parsed.intent||"Dictation"}
+function lang(){
+ let v=$i("enfVoiceLang").value;
+ if(v!=="auto")return v;
+ return ar()?"ar-BH":"en-US";
+}
+window.enfVoiceToggle=function(){
+ let SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+ if(!SR){$i("enfVoiceStatus").textContent=t("Voice recognition is not supported by this browser.","المتصفح الحالي لا يدعم التعرف الصوتي.");return}
+ if(listening){rec&&rec.stop();return}
+ rec=new SR();rec.lang=lang();rec.continuous=true;rec.interimResults=true;
+ rec.onstart=()=>{listening=true;$i("enfVoiceRec").classList.add("live");$i("enfVoiceRec").textContent=t("■ Stop Recording","■ إيقاف التسجيل");$i("enfVoiceStatus").textContent=t("Listening…","جاري الاستماع…")};
+ rec.onresult=e=>{let final="",interim="";for(let i=e.resultIndex;i<e.results.length;i++){let z=e.results[i][0].transcript;if(e.results[i].isFinal)final+=z+" ";else interim+=z}$i("enfVoiceOriginal").value=($i("enfVoiceOriginal").dataset.final||"")+final+interim;if(final)$i("enfVoiceOriginal").dataset.final=($i("enfVoiceOriginal").dataset.final||"")+final;enfVoiceProcess()};
+ rec.onerror=e=>{$i("enfVoiceStatus").textContent=t("Voice error: ","خطأ صوتي: ")+e.error};
+ rec.onend=()=>{listening=false;$i("enfVoiceRec").classList.remove("live");$i("enfVoiceRec").textContent=t("● Start Recording","● بدء التسجيل");$i("enfVoiceStatus").textContent=t("Ready","جاهز")};rec.start()
+}
+window.enfVoiceOpen=function(el){target=el||document.activeElement;setText();$i("enfVoiceOriginal").value="";$i("enfVoiceOriginal").dataset.final="";$i("enfVoiceSmart").value="";$i("enfVoiceChips").innerHTML="";$i("enfVoiceAI").classList.add("open")}
+window.enfVoiceClose=function(){if(listening&&rec)rec.stop();$i("enfVoiceAI").classList.remove("open")}
+window.enfVoiceUse=function(){enfVoiceProcess();let text=$i("enfVoiceSmart").value;if(target&&("value" in target)){target.value=text;target.dispatchEvent(new Event("input",{bubbles:true}));target.dispatchEvent(new Event("change",{bubbles:true}))}enfVoiceClose()}
+function wire(){
+ document.querySelectorAll("[data-voice],.voice-btn,[onclick*='Voice'],[onclick*='voice']").forEach(b=>{if(b.closest("#enfVoiceAI"))return;b.onclick=e=>{e.preventDefault();let field=b.parentElement?.querySelector("textarea,input")||document.activeElement;enfVoiceOpen(field)}});
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",wire);else wire();
+})();
 </script></body>
 </html>
