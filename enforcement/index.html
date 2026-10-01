@@ -303,6 +303,22 @@ html[dir="rtl"] .ai-fab{right:auto;left:22px}html[dir="rtl"] .ai-panel{right:aut
 @media(max-width:430px){.ai-insight-grid{grid-template-columns:1fr}}
 html[dir="rtl"] .ai-recommendation{border-left:1px solid #ead7c6;border-right:3px solid var(--bronze);border-radius:7px 0 0 7px}
 
+
+/* ===== ENFORZA PHASE 9 — VOICE + SMART NOTIFICATIONS ===== */
+.voice-fab{position:fixed;right:22px;bottom:76px;z-index:875;width:44px;height:44px;border:0;border-radius:50%;background:#fff;color:var(--bronze);border:1px solid #d9c1aa;box-shadow:0 12px 30px rgba(0,0,0,.16);font-size:18px;cursor:pointer}
+.voice-fab.listening{background:var(--bronze);color:#fff;animation:voicePulse 1s infinite}
+@keyframes voicePulse{0%,100%{box-shadow:0 0 0 0 rgba(166,110,70,.32)}50%{box-shadow:0 0 0 12px rgba(166,110,70,0)}}
+.voice-panel{position:fixed;right:22px;bottom:128px;width:min(390px,calc(100vw - 28px));background:#fff;border:1px solid #d9c1aa;border-radius:12px;box-shadow:0 22px 60px rgba(0,0,0,.24);z-index:965;display:none;overflow:hidden}
+.voice-head{padding:14px;background:linear-gradient(135deg,#17120f,#2d2119);color:#fff;display:flex;justify-content:space-between;gap:10px}.voice-head h3{font-size:12px}.voice-head p{font-size:8px;color:#cdb9a7;margin-top:4px}
+.voice-body{padding:15px}.voice-state{text-align:center;padding:13px}.voice-orb{width:70px;height:70px;margin:auto;border-radius:50%;display:grid;place-items:center;background:var(--bronze-soft);font-size:26px}.voice-state strong{display:block;font-size:11px;color:var(--navy);margin-top:10px}.voice-state span{display:block;font-size:8px;color:var(--muted);margin-top:5px}
+.voice-transcript{border:1px solid var(--border);border-radius:8px;background:#f8fafb;padding:10px;font-size:9px;min-height:42px;color:var(--navy);margin-top:8px}.voice-examples{display:flex;gap:6px;overflow:auto;margin-top:10px}.voice-examples button{white-space:nowrap;border:1px solid var(--border);background:#fff;border-radius:18px;padding:7px 8px;font-size:7px;color:var(--bronze)}
+.smart-notify-panel{position:fixed;top:66px;right:18px;width:min(410px,calc(100vw - 24px));max-height:76vh;overflow:auto;background:#fff;border:1px solid var(--border);border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.22);z-index:955;display:none}
+.sn-head{padding:14px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;gap:8px}.sn-head h3{font-size:12px;color:var(--navy)}.sn-tabs{display:flex;gap:5px;padding:9px 12px;border-bottom:1px solid var(--border);overflow:auto}.sn-tabs button{border:1px solid var(--border);background:#fff;border-radius:16px;padding:6px 8px;font-size:7px;white-space:nowrap}.sn-item{display:flex;gap:10px;padding:12px 14px;border-bottom:1px solid #edf1f3;cursor:pointer}.sn-item.unread{background:#fffaf6}.sn-priority{width:8px;height:8px;border-radius:50%;margin-top:5px;flex:0 0 auto}.sn-priority.critical{background:#b64242}.sn-priority.high{background:#c48146}.sn-priority.normal{background:#6b8798}.sn-item strong{display:block;font-size:9px;color:var(--navy)}.sn-item span{display:block;font-size:8px;color:var(--muted);margin-top:4px;line-height:1.5}.sn-item small{display:block;font-size:7px;color:var(--bronze);margin-top:5px}
+.notify-badge{position:absolute;top:-4px;right:-4px;min-width:16px;height:16px;padding:0 4px;border-radius:10px;background:#b64242;color:#fff;font-size:7px;display:grid;place-items:center;font-weight:900}
+.morning-brief{border:1px solid #ead7c6;background:linear-gradient(135deg,#fff8f1,#fff);border-radius:10px;padding:15px;margin-bottom:16px}.morning-brief h3{font-size:11px;color:var(--navy)}.morning-brief p{font-size:8px;color:var(--muted);line-height:1.7;margin-top:6px}
+@media(max-width:720px){.voice-fab{right:64px;bottom:69px}.voice-panel{left:7px;right:7px;bottom:62px;width:auto}.smart-notify-panel{left:7px;right:7px;top:62px;width:auto;max-height:calc(100vh - 130px)}}
+html[dir="rtl"] .voice-fab{right:auto;left:64px}html[dir="rtl"] .voice-panel{right:auto;left:22px}html[dir="rtl"] .smart-notify-panel{right:auto;left:18px}
+
 </style>
 </head>
 <body>
@@ -352,7 +368,7 @@ html[dir="rtl"] .ai-recommendation{border-left:1px solid #ead7c6;border-right:3p
 <div id="globalSearchResults" class="global-search-results"></div>
 </div>
     <div class="lang-switch"><button id="langEn" class="active" onclick="setLanguage('en')">EN</button><button id="langAr" onclick="setLanguage('ar')">عربي</button></div>
-    <button class="top-btn" onclick="toggleNotifications()" title="Notifications">●</button>
+    <button class="top-btn" onclick="toggleSmartNotifications()" title="Notifications" style="position:relative"><span>●</span><span class="notify-badge" id="notifyBadge">4</span></button>
     <div class="profile"><div class="avatar">AO</div><div><strong>Ahmed Oraibi</strong><span data-i18n="Administrator">Administrator</span></div></div>
   </div>
 </header>
@@ -368,7 +384,7 @@ html[dir="rtl"] .ai-recommendation{border-left:1px solid #ead7c6;border-right:3p
     <div class="kpi-card"><span class="kpi-label" data-i18n="Settlements">Settlements</span><strong class="kpi-value">18</strong><div class="kpi-note">BHD 196,000</div></div>
     <div class="kpi-card"><span class="kpi-label" data-i18n="Collected This Month">Collected This Month</span><strong class="kpi-value">BHD 96,450</strong><div class="kpi-note"><span class="positive">↑ 12.8%</span></div></div>
   </div>
-  <div class="ai-brief"><div class="ai-brief-head"><div><span class="ai-chip">ENFORZA AI · DEMO</span><h3 data-i18n="AI Executive Brief">AI Executive Brief</h3></div><button class="card-link" onclick="openAI('executive')" data-i18n="Ask AI">Ask AI</button></div><p data-i18n="AI demo brief text">7 files require attention today. 3 settlement installments are approaching due date, 2 high-value files have had no movement for more than 14 days, and recovery performance is strongest in files assigned to Ali Hassan.</p></div><div class="alert-strip" id="smartAlerts">
+  <div class="morning-brief"><div class="ai-brief-head"><div><span class="ai-chip">AI MORNING BRIEF</span><h3 data-i18n="Morning Management Brief">Morning Management Brief</h3></div><button class="card-link" onclick="speakMorningBrief()" data-i18n="Read Aloud">Read Aloud</button></div><p data-i18n="Morning brief text">Today you have 9 actions due, 3 overdue follow-ups, 2 settlement installments approaching due date, and 2 high-value files requiring management attention.</p></div><div class="ai-brief"><div class="ai-brief-head"><div><span class="ai-chip">ENFORZA AI · DEMO</span><h3 data-i18n="AI Executive Brief">AI Executive Brief</h3></div><button class="card-link" onclick="openAI('executive')" data-i18n="Ask AI">Ask AI</button></div><p data-i18n="AI demo brief text">7 files require attention today. 3 settlement installments are approaching due date, 2 high-value files have had no movement for more than 14 days, and recovery performance is strongest in files assigned to Ali Hassan.</p></div><div class="alert-strip" id="smartAlerts">
     <div class="alert-tile"><strong>7</strong><span data-i18n="Files without action">Files without action</span></div>
     <div class="alert-tile"><strong>5</strong><span data-i18n="Installments due today">Installments due today</span></div>
     <div class="alert-tile"><strong>3</strong><span data-i18n="Broken settlements">Broken settlements</span></div>
@@ -578,6 +594,17 @@ html[dir="rtl"] .ai-recommendation{border-left:1px solid #ead7c6;border-right:3p
 </div>
 
 
+
+<button class="voice-fab" id="voiceFab" onclick="toggleVoice()" title="Voice Command">🎙</button>
+<div class="voice-panel" id="voicePanel">
+ <div class="voice-head"><div><h3>ENFORZA Voice Command</h3><p data-i18n="Arabic and English voice control">Arabic and English voice control · Demo</p></div><button class="top-btn" onclick="closeVoice()">×</button></div>
+ <div class="voice-body"><div class="voice-state"><div class="voice-orb">🎙</div><strong id="voiceStatus" data-i18n="Tap microphone and speak">Tap microphone and speak</strong><span data-i18n="Try a navigation or AI command">Try a navigation or AI command</span></div><div class="voice-transcript" id="voiceTranscript">...</div><div class="voice-examples"><button onclick="runVoiceText('open files')">Open files</button><button onclick="runVoiceText('show overdue files')">Overdue files</button><button onclick="runVoiceText('summarize this file')">Summarize file</button><button onclick="runVoiceText('read notifications')">Read notifications</button></div></div>
+</div>
+<div class="smart-notify-panel" id="smartNotifyPanel">
+ <div class="sn-head"><div><h3 data-i18n="Smart Notifications">Smart Notifications</h3><span style="font-size:7px;color:var(--muted)" data-i18n="AI-ranked operational alerts">AI-ranked operational alerts</span></div><button class="top-btn" onclick="toggleSmartNotifications()">×</button></div>
+ <div class="sn-tabs"><button onclick="renderSmartNotifications('all')" data-i18n="All">All</button><button onclick="renderSmartNotifications('critical')" data-i18n="Critical">Critical</button><button onclick="renderSmartNotifications('high')" data-i18n="High">High</button><button onclick="markAllNotificationsRead()" data-i18n="Mark all read">Mark all read</button></div>
+ <div id="smartNotifyList"></div>
+</div>
 <button class="ai-fab" onclick="openAI()">✦ ENFORZA AI</button>
 <div class="ai-panel" id="aiPanel"><div class="ai-head"><div><h3>✦ ENFORZA AI Assistant</h3><p>AI Demo Simulation · Context-aware enforcement copilot</p></div><button class="top-btn" onclick="closeAI()">×</button></div><div class="ai-body" id="aiBody"><div class="ai-msg bot">Welcome. I can summarize files, highlight risks, suggest next actions and analyze recovery using demo data.</div></div><div class="ai-quick"><button onclick="askAI('summary')">Summarize file</button><button onclick="askAI('today')">Attention today</button><button onclick="askAI('recovery')">Analyze recovery</button><button onclick="askAI('next')">Next action</button></div><div class="ai-input"><input id="aiInput" placeholder="Ask ENFORZA AI..." onkeydown="if(event.key==='Enter')sendAIInput()"><button onclick="sendAIInput()">→</button></div></div>
 <div class="capture-toolbar" id="captureToolbar"><button onclick="exitCaptureMode()">Exit</button><button class="primary" onclick="window.print()">Print / Save PDF</button></div>
@@ -1086,6 +1113,55 @@ openPage=function(page){if(page==="aiInsights"){hidePages();currentModule=page;d
 Object.assign(I18N.ar,{
 "AI Intelligence":"ذكاء الملف","AI Management Insights":"رؤى الإدارة بالذكاء الاصطناعي","Demo intelligence layer for portfolio risk, recovery and operational priorities.":"طبقة ذكاء تجريبية لتحليل مخاطر المحفظة والتحصيل وأولويات العمل.","Ask ENFORZA AI":"اسأل ENFORZA AI","High Priority Files":"ملفات عالية الأولوية","AI Recovery Opportunity":"فرص التحصيل بالذكاء الاصطناعي","Inactive High-Value Files":"ملفات مرتفعة القيمة بلا حركة","Settlement Risk":"مخاطر التسويات","AI Priority Queue":"قائمة الأولويات الذكية","Files ranked by demo risk and recovery opportunity.":"ترتيب الملفات حسب المخاطر وفرص التحصيل التجريبية.","AI Recommendations":"توصيات الذكاء الاصطناعي","Accelerate bank-response reviews":"تسريع مراجعة ردود البنوك","Prioritize settlement follow-up":"إعطاء الأولوية لمتابعة التسويات","Reassign inactive files":"إعادة توزيع الملفات غير النشطة","AI File Risk Score":"درجة مخاطر الملف بالذكاء الاصطناعي","Risk score is a demo indicator based on outstanding value, recovery ratio, file status and follow-up activity.":"درجة تجريبية تعتمد على الرصيد القائم ونسبة التحصيل وحالة الملف ونشاط المتابعة.","AI Recommended Next Action":"الإجراء التالي المقترح بالذكاء الاصطناعي","Why this action?":"لماذا هذا الإجراء؟","The file has":"يوجد في الملف","outstanding and requires action within the current workflow window.":"كمبلغ قائم ويتطلب إجراء ضمن نافذة المتابعة الحالية.","Recovery Probability":"احتمالية التحصيل","Demo estimate":"تقدير تجريبي","AI ranked":"ترتيب ذكي","Financial exposure":"التعرض المالي","Suggested Review":"المراجعة المقترحة","Follow-up window":"نافذة المتابعة","AI File Brief":"موجز الملف بالذكاء الاصطناعي","The demo AI identifies this file as":"يصنف الذكاء الاصطناعي التجريبي هذا الملف كـ","priority. Current recovery is":"الأولوية. نسبة التحصيل الحالية","Recommended focus":"التركيز المقترح","High":"مرتفع","Medium":"متوسط","Low":"منخفض"
 });
+
+
+const SMART_NOTIFICATIONS=[
+{id:1,priority:"critical",title:"Settlement installment due",text:"ENF-260219 · BHD 5,333 requires follow-up today.",file:"ENF-260219",read:false},
+{id:2,priority:"high",title:"High-value file inactive",text:"ENF-260211 has had no movement for 16 days.",file:"ENF-260211",read:false},
+{id:3,priority:"high",title:"Bank response received",text:"ENF-260184 bank attachment response is ready for review.",file:"ENF-260184",read:false},
+{id:4,priority:"normal",title:"Asset inquiry overdue",text:"ENF-260203 follow-up is overdue.",file:"ENF-260203",read:false}
+];
+function renderSmartNotifications(filter="all"){
+ const el=document.getElementById("smartNotifyList");if(!el)return;
+ const rows=SMART_NOTIFICATIONS.filter(n=>filter==="all"||n.priority===filter);
+ el.innerHTML=rows.map(n=>`<div class="sn-item ${n.read?"":"unread"}" onclick="openNotification(${n.id})"><span class="sn-priority ${n.priority}"></span><div><strong>${t(n.title)}</strong><span>${n.text}</span><small>${n.priority.toUpperCase()} · ${n.file}</small></div></div>`).join("");
+ updateNotifyBadge();
+}
+function updateNotifyBadge(){const n=SMART_NOTIFICATIONS.filter(x=>!x.read).length,b=document.getElementById("notifyBadge");if(b){b.textContent=n;b.style.display=n?"grid":"none"}}
+function toggleSmartNotifications(){const p=document.getElementById("smartNotifyPanel");p.style.display=p.style.display==="block"?"none":"block";renderSmartNotifications("all")}
+function openNotification(id){const n=SMART_NOTIFICATIONS.find(x=>x.id===id);if(!n)return;n.read=true;renderSmartNotifications("all");toggleSmartNotifications();openDetail("files",n.file)}
+function markAllNotificationsRead(){SMART_NOTIFICATIONS.forEach(n=>n.read=true);renderSmartNotifications("all")}
+function notificationSpeechText(){return currentLang==="ar"?"لديك أربعة تنبيهات مهمة. دفعة تسوية مستحقة اليوم. ملف مرتفع القيمة بلا حركة منذ ستة عشر يومًا. تم استلام رد بنك يحتاج إلى مراجعة. ويوجد استعلام أصول متأخر.":"You have four important alerts. A settlement installment is due today. One high-value file has been inactive for sixteen days. A bank response is ready for review, and one asset inquiry is overdue."}
+function speakText(txt){if("speechSynthesis" in window){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(txt);u.lang=currentLang==="ar"?"ar-BH":"en-US";speechSynthesis.speak(u)}}
+function speakMorningBrief(){speakText(currentLang==="ar"?"لديك اليوم تسعة إجراءات مستحقة، وثلاث متابعات متأخرة، ودفعتا تسوية تقتربان من الاستحقاق، وملفان مرتفعا القيمة يحتاجان إلى اهتمام الإدارة.":"Today you have nine actions due, three overdue follow-ups, two settlement installments approaching due date, and two high-value files requiring management attention.")}
+let recognition=null,isListening=false;
+function toggleVoice(){document.getElementById("voicePanel").style.display="block";if(isListening){stopVoice()}else{startVoice()}}
+function closeVoice(){stopVoice();document.getElementById("voicePanel").style.display="none"}
+function startVoice(){
+ const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+ if(!SR){document.getElementById("voiceStatus").textContent=t("Voice recognition is not supported in this browser");return}
+ recognition=new SR();recognition.lang=currentLang==="ar"?"ar-BH":"en-US";recognition.interimResults=false;recognition.continuous=false;
+ recognition.onstart=()=>{isListening=true;document.getElementById("voiceFab").classList.add("listening");document.getElementById("voiceStatus").textContent=t("Listening...")};
+ recognition.onresult=e=>{const s=e.results[0][0].transcript;document.getElementById("voiceTranscript").textContent=s;runVoiceText(s)};
+ recognition.onerror=()=>{document.getElementById("voiceStatus").textContent=t("Could not understand. Try again.")};
+ recognition.onend=()=>{isListening=false;document.getElementById("voiceFab").classList.remove("listening")};recognition.start();
+}
+function stopVoice(){if(recognition&&isListening)recognition.stop();isListening=false;document.getElementById("voiceFab").classList.remove("listening")}
+function runVoiceText(s){
+ document.getElementById("voiceTranscript").textContent=s;const q=s.toLowerCase();document.getElementById("voiceStatus").textContent=t("Executing command...");
+ if(q.includes("notification")||q.includes("إشعار")||q.includes("تنبيه")){toggleSmartNotifications();speakText(notificationSpeechText())}
+ else if(q.includes("overdue")||q.includes("متأخر")){closeVoice();openPage("followupBoard");setTimeout(()=>filterFollowup("overdue"),80)}
+ else if(q.includes("collection")||q.includes("تحصيل")){closeVoice();openPage("collections")}
+ else if(q.includes("settlement")||q.includes("تسوي")){closeVoice();openPage("settlements")}
+ else if(q.includes("report")||q.includes("تقرير")){closeVoice();openPage("reports")}
+ else if(q.includes("file")||q.includes("ملف")){const m=s.match(/ENF[- ]?\d+/i);if(m){let id=m[0].replace(" ","-").toUpperCase();closeVoice();openDetail("files",id)}else{closeVoice();openPage("files")}}
+ else if(q.includes("summar")||q.includes("لخص")||q.includes("ملخص")){closeVoice();openAI();askAI("summary")}
+ else if(q.includes("today")||q.includes("اليوم")){closeVoice();openAI();askAI("today")}
+ else if(q.includes("dashboard")||q.includes("الرئيس")){closeVoice();openPage("dashboard")}
+ else {closeVoice();openAI();aiAdd("user",s);setTimeout(()=>askAI("summary"),150)}
+}
+renderSmartNotifications("all");
+Object.assign(I18N.ar,{"Morning Management Brief":"الموجز الصباحي للإدارة","Read Aloud":"قراءة صوتية","Morning brief text":"لديك اليوم 9 إجراءات مستحقة و3 متابعات متأخرة ودفعتا تسوية تقتربان من الاستحقاق وملفان مرتفعا القيمة يحتاجان إلى اهتمام الإدارة.","Arabic and English voice control":"تحكم صوتي بالعربية والإنجليزية","Tap microphone and speak":"اضغط الميكروفون وتحدث","Try a navigation or AI command":"جرب أمر تنقل أو أمر للذكاء الاصطناعي","Smart Notifications":"الإشعارات الذكية","AI-ranked operational alerts":"تنبيهات تشغيلية مرتبة بالذكاء الاصطناعي","All":"الكل","Critical":"حرج","Mark all read":"تحديد الكل كمقروء","Settlement installment due":"قسط تسوية مستحق","High-value file inactive":"ملف مرتفع القيمة بلا حركة","Bank response received":"تم استلام رد البنك","Asset inquiry overdue":"استعلام أصول متأخر","Listening...":"جاري الاستماع...","Executing command...":"جاري تنفيذ الأمر...","Voice recognition is not supported in this browser":"التعرف الصوتي غير مدعوم في هذا المتصفح","Could not understand. Try again.":"لم يتم فهم الأمر. حاول مرة أخرى."});
 
 renderDashboard();renderUsers();renderAudit();renderPermissions();showReport("executive");applyLanguage();
 </script>
