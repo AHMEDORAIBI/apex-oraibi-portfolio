@@ -2558,7 +2558,114 @@ p35Save=function(){
  else{DATA.evidence=DATA.evidence||[];p37Files.forEach(x=>DATA.evidence.push({id:p34Id("EVD"),file:f.id,description:note,fileName:x.name,fileType:x.type,size:x.size,category:cat,captured:new Date().toISOString()}))}
  p34Persist();p35Close();showToast(currentLang==="ar"?"تم حفظ المرفقات وربطها بالملف.":"Attachments saved and linked to the file.");openDetail("files",f.id);
 }
-</script></body></html>`);w.document.close();
+</script>
+<script id="phase37-login-hotfix">
+/* LOGIN HOTFIX — authoritative controller */
+(function(){
+  const USERS = {
+    management:{username:"admin",password:"demo123",landing:"dashboard"},
+    officer:{username:"officer",password:"demo123",landing:"followupBoard"},
+    creditor:{username:"creditor",password:"demo123",landing:"creditorPortal"}
+  };
+
+  window.selectDemoRole = function(role, el){
+    if(!USERS[role]) role="management";
+    window.selectedDemoRole=role;
+    document.querySelectorAll(".role-option").forEach(x=>x.classList.remove("active"));
+    if(el) el.classList.add("active");
+    else document.querySelector('.role-option[data-role="'+role+'"]')?.classList.add("active");
+    const u=document.getElementById("demoUsername");
+    const p=document.getElementById("demoPassword");
+    if(u) u.value=USERS[role].username;
+    if(p) p.value=USERS[role].password;
+  };
+
+  window.loginDemo = function(){
+    const role=window.selectedDemoRole||"management";
+    const d=USERS[role];
+    const u=(document.getElementById("demoUsername")?.value||"").trim();
+    const p=document.getElementById("demoPassword")?.value||"";
+
+    if(u!==d.username || p!==d.password){
+      if(typeof showToast==="function") showToast(
+        (typeof currentLang!=="undefined" && currentLang==="ar")
+        ?"بيانات الدخول لا تطابق الدور المختار."
+        :"Login details do not match the selected role."
+      );
+      return false;
+    }
+
+    window.activeDemoRole=role;
+    const gate=document.getElementById("loginGate");
+    if(gate) gate.style.display="none";
+
+    try{ if(typeof applyRoleAccess==="function") applyRoleAccess(role); }catch(e){console.warn(e)}
+    try{ if(typeof p29ApplyRoleLabels==="function") p29ApplyRoleLabels(role); }catch(e){console.warn(e)}
+
+    const pill=document.getElementById("activeRolePill");
+    if(pill) pill.textContent=role==="management"?"Management":role==="officer"?"Enforcement Officer":"Creditor";
+
+    try{
+      if(typeof openPage==="function") openPage(d.landing);
+    }catch(e){
+      console.error(e);
+      const pg=document.getElementById(d.landing+"Page");
+      if(pg){
+        document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+        pg.classList.add("active");
+      }
+    }
+
+    try{
+      if(role==="management" && typeof p32Management==="function") setTimeout(p32Management,40);
+      if(role==="officer" && typeof p30Render==="function") setTimeout(p30Render,40);
+      if(role==="creditor" && typeof p31Render==="function") setTimeout(p31Render,40);
+    }catch(e){console.warn(e)}
+
+    if(typeof showToast==="function") showToast(
+      (typeof currentLang!=="undefined" && currentLang==="ar")
+      ?"تم تسجيل الدخول بنجاح."
+      :"Login successful."
+    );
+    return false;
+  };
+
+  function wire(){
+    const gate=document.getElementById("loginGate");
+    if(!gate) return;
+
+    document.querySelectorAll(".role-option").forEach(el=>{
+      el.onclick=function(){ selectDemoRole(this.dataset.role||"management",this); };
+    });
+
+    const btn=[...gate.querySelectorAll("button")].find(b=>{
+      const s=(b.getAttribute("onclick")||"");
+      return s.includes("loginDemo");
+    });
+    if(btn){
+      btn.type="button";
+      btn.onclick=function(e){e.preventDefault();loginDemo();};
+    }
+
+    const form=gate.querySelector("form");
+    if(form) form.onsubmit=function(e){e.preventDefault();loginDemo();return false;};
+
+    ["demoUsername","demoPassword"].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el) el.addEventListener("keydown",e=>{
+        if(e.key==="Enter"){e.preventDefault();loginDemo();}
+      });
+    });
+
+    selectDemoRole("management",document.querySelector('.role-option[data-role="management"]'));
+  }
+
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",wire);
+  else setTimeout(wire,0);
+})();
+</script>
+
+</body></html>`);w.document.close();
 }
 const p36OldSave=p35Save;
 p35Save=function(){
