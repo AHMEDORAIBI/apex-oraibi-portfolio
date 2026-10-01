@@ -4366,5 +4366,111 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 #v2taskRecordKind,#v2taskStatus,#eiRepresent{width:100%}
 .enf-intake-field select{width:100%;min-height:40px;border:1px solid var(--desk-line,#ddd);border-radius:8px;background:transparent;padding:8px;color:inherit}
 </style>
+
+<style id="enforza-calendar-modern-final-css">
+#v2CalendarPage{--cal-border:rgba(20,42,58,.12);--cal-soft:#f6f8fa;--cal-accent:#b27a43;--cal-ink:#142a3a}
+.enf-cal-modern{display:grid;grid-template-columns:245px minmax(0,1fr);gap:14px;min-height:680px}
+.enf-cal-side,.enf-cal-main{background:var(--surface,#fff);border:1px solid var(--cal-border);border-radius:18px;box-shadow:0 8px 28px rgba(20,42,58,.06)}
+.enf-cal-side{padding:14px;height:max-content;position:sticky;top:12px}.enf-cal-side .v2cal-btn{width:100%;justify-content:center;margin-bottom:8px}
+.enf-mini-head{display:flex;justify-content:space-between;align-items:center;margin:14px 0 8px;font-size:11px;font-weight:900}.enf-mini-nav{display:flex;gap:4px}.enf-mini-nav button{border:0;background:transparent;cursor:pointer;color:inherit}
+.enf-mini-week,.enf-mini-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}.enf-mini-week span{font-size:7px;text-align:center;color:var(--muted)}.enf-mini-day{aspect-ratio:1;border:0;border-radius:8px;background:transparent;font-size:8px;cursor:pointer;color:inherit}.enf-mini-day:hover,.enf-mini-day.sel{background:rgba(178,122,67,.15)}.enf-mini-day.today{box-shadow:inset 0 0 0 1px var(--cal-accent);font-weight:900}.enf-mini-day.out{opacity:.3}
+.enf-cal-filter-title{font-size:8px;font-weight:950;letter-spacing:.08em;margin:16px 0 7px;color:var(--muted)}.enf-cal-filter{display:flex;align-items:center;gap:7px;font-size:9px;margin:7px 0}.enf-cal-filter input{accent-color:var(--cal-accent)}
+.enf-cal-main{overflow:hidden}.enf-cal-mainbar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--cal-border)}.enf-cal-nav{display:flex;align-items:center;gap:7px}.enf-cal-nav button{border:1px solid var(--cal-border);background:transparent;border-radius:9px;padding:7px 10px;cursor:pointer;color:inherit}.enf-cal-period{font-size:15px;font-weight:950;min-width:180px}.enf-cal-switch2{display:flex;padding:3px;border:1px solid var(--cal-border);border-radius:10px}.enf-cal-switch2 button{border:0;background:transparent;padding:7px 10px;border-radius:7px;font-size:8px;font-weight:900;cursor:pointer;color:inherit}.enf-cal-switch2 button.active{background:var(--cal-ink);color:#fff}
+.enf-cal-content{overflow:auto;max-height:720px}.enf-month-week,.enf-month-grid{display:grid;grid-template-columns:repeat(7,minmax(115px,1fr))}.enf-month-week{position:sticky;top:0;z-index:4;background:var(--surface,#fff);border-bottom:1px solid var(--cal-border)}.enf-month-week div{padding:10px;text-align:center;font-size:8px;font-weight:950;color:var(--muted)}
+.enf-month-day{min-height:118px;border-inline-end:1px solid var(--cal-border);border-bottom:1px solid var(--cal-border);padding:7px;cursor:pointer;background:var(--surface,#fff)}.enf-month-day:hover{background:var(--cal-soft)}.enf-month-day.out{opacity:.38}.enf-month-day.today{background:rgba(178,122,67,.06)}.enf-daynum{width:25px;height:25px;display:grid;place-items:center;border-radius:50%;font-size:9px;font-weight:900}.enf-month-day.today .enf-daynum{background:var(--cal-accent);color:white}
+.enf-event{position:relative;margin-top:5px;padding:6px 7px 6px 10px;border-radius:7px;background:#eef3f6;font-size:7px;line-height:1.3;cursor:pointer;overflow:hidden}.enf-event:before{content:"";position:absolute;inset-inline-start:0;top:0;bottom:0;width:3px;background:var(--cal-accent)}.enf-event b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.enf-event small{display:block;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.enf-event.calendar{background:#f6efe8}.enf-event.completed{opacity:.5;text-decoration:line-through}
+.enf-week-grid{display:grid;grid-template-columns:58px repeat(7,minmax(130px,1fr));min-width:970px}.enf-week-head{position:sticky;top:0;z-index:3;background:var(--surface,#fff);border-bottom:1px solid var(--cal-border);padding:9px;text-align:center;font-size:8px;font-weight:900}.enf-week-time{font-size:7px;color:var(--muted);text-align:right;padding:6px;border-inline-end:1px solid var(--cal-border);border-bottom:1px solid var(--cal-border)}.enf-week-slot{min-height:48px;border-inline-end:1px solid var(--cal-border);border-bottom:1px solid var(--cal-border);padding:3px;cursor:pointer;position:relative}.enf-week-slot:hover{background:var(--cal-soft)}
+.enf-now-line{position:absolute;left:0;right:0;height:2px;background:#d94d4d;top:50%;z-index:2}.enf-now-line:before{content:"";width:7px;height:7px;border-radius:50%;background:#d94d4d;position:absolute;left:-3px;top:-3px}
+.enf-day-layout{display:grid;grid-template-columns:64px minmax(500px,1fr)}.enf-day-time{font-size:8px;color:var(--muted);text-align:right;padding:8px;border-inline-end:1px solid var(--cal-border);border-bottom:1px solid var(--cal-border)}.enf-day-slot{min-height:58px;border-bottom:1px solid var(--cal-border);padding:4px;cursor:pointer;position:relative}.enf-day-slot:hover{background:var(--cal-soft)}
+.enf-agenda{padding:12px 16px}.enf-agenda-date{font-size:9px;font-weight:950;color:var(--muted);padding:12px 2px 7px;border-bottom:1px solid var(--cal-border)}.enf-agenda-row{display:grid;grid-template-columns:72px 1fr auto;gap:12px;align-items:center;padding:11px 4px;border-bottom:1px solid var(--cal-border);cursor:pointer}.enf-agenda-row:hover{background:var(--cal-soft)}.enf-agenda-row time{font-size:9px;font-weight:900}.enf-agenda-row b{display:block;font-size:10px}.enf-agenda-row small{color:var(--muted);font-size:8px}.enf-agenda-tag{font-size:7px;border:1px solid var(--cal-border);border-radius:999px;padding:5px 7px}
+.enf-cal-empty{display:grid;place-items:center;min-height:360px;text-align:center;color:var(--muted)}
+body.enf-dark #v2CalendarPage{--cal-border:rgba(255,255,255,.11);--cal-soft:rgba(255,255,255,.04);--cal-ink:#e9eef1}
+@media(max-width:980px){.enf-cal-modern{grid-template-columns:1fr}.enf-cal-side{position:static}.enf-cal-mainbar{align-items:flex-start;flex-direction:column}.enf-cal-switch2{width:100%;overflow:auto}.enf-cal-switch2 button{flex:1}.enf-month-week,.enf-month-grid{min-width:800px}}
+</style>
+
+<script id="enforza-calendar-modern-final-js">
+(function(){
+"use strict";
+let modernDate=new Date(),modernView="month",miniDate=new Date();
+function arM(){return (window.currentLang||document.documentElement.lang||"en").toLowerCase().startsWith("ar")}
+function TM(e,a){return arM()?a:e}
+function padM(n){return String(n).padStart(2,"0")}
+function isoM(d){return d.getFullYear()+"-"+padM(d.getMonth()+1)+"-"+padM(d.getDate())}
+function rowsM(){return window.DATA&&Array.isArray(DATA.smartTasks)?DATA.smartTasks:[]}
+function escM(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function dateM(v){if(!v)return null;let d=new Date(v+"T00:00:00");return isNaN(d)?null:d}
+function startWeekM(d){let x=new Date(d);x.setDate(x.getDate()-x.getDay());x.setHours(0,0,0,0);return x}
+function activeM(x){let q=(document.getElementById("enfCalSearch")?.value||"").toLowerCase(),types=[...document.querySelectorAll(".enfCalType:checked")].map(i=>i.value);let text=[x.title,x.task,x.file,x.type,x.assignee,x.location].join(" ").toLowerCase();return(!q||text.includes(q))&&(!types.length||types.includes(x.recordKind||"Task"))}
+function eventM(x){let cls=(x.recordKind==="Calendar"?" calendar":"")+(x.status==="Completed"?" completed":"");return `<div class="enf-event${cls}" onclick="event.stopPropagation();v2OpenTask('', '${escM(x.id)}')"><b>${escM(x.title||x.task||TM("Untitled","بدون عنوان"))}</b><small>${escM(x.time||TM("All day","طوال اليوم"))}${x.file?" · "+escM(x.file):""}</small></div>`}
+function shellM(){
+ let p=document.getElementById("v2CalendarPage");if(!p)return null;
+ let old=p.querySelector(".enf-cal-modern");if(!old){
+   p.innerHTML=`<div class="enf-cal-modern">
+   <aside class="enf-cal-side">
+    <button class="v2cal-btn primary" onclick="v2OpenTask('',null,'task')">＋ ${TM("New Task","مهمة جديدة")}</button>
+    <button class="v2cal-btn" onclick="v2OpenTask('',null,'calendar')">▦ ${TM("Add to Calendar","إضافة في التقويم")}</button>
+    <button class="v2cal-btn" onclick="v2BrowseFiles()">▤ ${TM("Browse Files","استعراض الملفات")}</button>
+    <div class="enf-mini-head"><span id="enfMiniTitle"></span><span class="enf-mini-nav"><button onclick="enfMiniMove(-1)">‹</button><button onclick="enfMiniMove(1)">›</button></span></div>
+    <div class="enf-mini-week" id="enfMiniWeek"></div><div class="enf-mini-grid" id="enfMiniGrid"></div>
+    <div class="enf-cal-filter-title">${TM("SEARCH","بحث")}</div><input id="enfCalSearch" oninput="enfModernCalendarRender()" placeholder="${TM("Task, file, client...","مهمة، ملف، موكل...")}" style="width:100%;box-sizing:border-box">
+    <div class="enf-cal-filter-title">${TM("SHOW","عرض")}</div>
+    <label class="enf-cal-filter"><input class="enfCalType" type="checkbox" value="Task" checked onchange="enfModernCalendarRender()"> ${TM("Tasks","المهام")}</label>
+    <label class="enf-cal-filter"><input class="enfCalType" type="checkbox" value="Calendar" checked onchange="enfModernCalendarRender()"> ${TM("Calendar events","مواعيد التقويم")}</label>
+   </aside>
+   <section class="enf-cal-main"><div class="enf-cal-mainbar">
+    <div class="enf-cal-nav"><button onclick="enfCalMove(-1)">‹</button><button onclick="enfCalToday()">${TM("Today","اليوم")}</button><button onclick="enfCalMove(1)">›</button><span class="enf-cal-period" id="enfCalPeriod"></span></div>
+    <div class="enf-cal-switch2">${[["month","Month","شهر"],["week","Week","أسبوع"],["day","Day","يوم"],["agenda","Agenda","جدول الأعمال"]].map(x=>`<button data-v="${x[0]}" onclick="enfCalView('${x[0]}',this)">${TM(x[1],x[2])}</button>`).join("")}</div>
+   </div><div class="enf-cal-content" id="enfCalContent"></div></section></div>`;
+   old=p.querySelector(".enf-cal-modern");
+ }
+ return old
+}
+function miniM(){
+ let title=document.getElementById("enfMiniTitle"),w=document.getElementById("enfMiniWeek"),g=document.getElementById("enfMiniGrid");if(!g)return;
+ title.textContent=miniDate.toLocaleDateString(arM()?"ar-BH":"en-GB",{month:"long",year:"numeric"});
+ let names=arM()?["ح","ن","ث","ر","خ","ج","س"]:["S","M","T","W","T","F","S"];w.innerHTML=names.map(x=>`<span>${x}</span>`).join("");
+ let first=new Date(miniDate.getFullYear(),miniDate.getMonth(),1),st=startWeekM(first),today=isoM(new Date()),sel=isoM(modernDate),h="";
+ for(let i=0;i<42;i++){let d=new Date(st);d.setDate(st.getDate()+i);let di=isoM(d);h+=`<button class="enf-mini-day${d.getMonth()!==miniDate.getMonth()?" out":""}${di===today?" today":""}${di===sel?" sel":""}" onclick="enfMiniPick('${di}')">${d.getDate()}</button>`}g.innerHTML=h
+}
+function periodM(){
+ let e=document.getElementById("enfCalPeriod");if(!e)return;
+ if(modernView==="month")e.textContent=modernDate.toLocaleDateString(arM()?"ar-BH":"en-GB",{month:"long",year:"numeric"});
+ else if(modernView==="week"){let s=startWeekM(modernDate),e2=new Date(s);e2.setDate(s.getDate()+6);e.textContent=s.toLocaleDateString(arM()?"ar-BH":"en-GB",{day:"numeric",month:"short"})+" — "+e2.toLocaleDateString(arM()?"ar-BH":"en-GB",{day:"numeric",month:"short",year:"numeric"})}
+ else e.textContent=modernDate.toLocaleDateString(arM()?"ar-BH":"en-GB",{dateStyle:"full"})
+}
+function monthM(){
+ let c=document.getElementById("enfCalContent"),first=new Date(modernDate.getFullYear(),modernDate.getMonth(),1),st=startWeekM(first),today=isoM(new Date()),names=arM()?["الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"]:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],r=rowsM().filter(activeM),h=`<div class="enf-month-week">${names.map(x=>`<div>${x}</div>`).join("")}</div><div class="enf-month-grid">`;
+ for(let i=0;i<42;i++){let d=new Date(st);d.setDate(st.getDate()+i);let di=isoM(d),ev=r.filter(x=>(x.due||x.date)===di);h+=`<div class="enf-month-day${d.getMonth()!==modernDate.getMonth()?" out":""}${di===today?" today":""}" onclick="v2OpenTask('${di}',null,'calendar')"><div class="enf-daynum">${d.getDate()}</div>${ev.slice(0,5).map(eventM).join("")}${ev.length>5?`<small>+${ev.length-5} ${TM("more","أخرى")}</small>`:""}</div>`}c.innerHTML=h+"</div>"
+}
+function weekM(){
+ let c=document.getElementById("enfCalContent"),st=startWeekM(modernDate),days=[],r=rowsM().filter(activeM),today=isoM(new Date()),now=new Date();for(let i=0;i<7;i++){let d=new Date(st);d.setDate(st.getDate()+i);days.push(d)}
+ let h=`<div class="enf-week-grid"><div class="enf-week-head"></div>${days.map(d=>`<div class="enf-week-head">${d.toLocaleDateString(arM()?"ar-BH":"en-GB",{weekday:"short",day:"numeric"})}</div>`).join("")}`;
+ for(let hr=7;hr<=21;hr++){h+=`<div class="enf-week-time">${padM(hr)}:00</div>`;days.forEach(d=>{let di=isoM(d),ev=r.filter(x=>(x.due||x.date)===di&&Number((x.time||"00").split(":")[0])===hr),line=(di===today&&now.getHours()===hr)?`<div class="enf-now-line" style="top:${Math.round(now.getMinutes()/60*100)}%"></div>`:"";h+=`<div class="enf-week-slot" onclick="v2OpenTask('${di}',null,'calendar')">${line}${ev.map(eventM).join("")}</div>`})}c.innerHTML=h+"</div>"
+}
+function dayViewM(){
+ let c=document.getElementById("enfCalContent"),di=isoM(modernDate),r=rowsM().filter(activeM),today=isoM(new Date()),now=new Date(),h='<div class="enf-day-layout">';
+ for(let hr=7;hr<=22;hr++){let ev=r.filter(x=>(x.due||x.date)===di&&Number((x.time||"00").split(":")[0])===hr),line=(di===today&&now.getHours()===hr)?`<div class="enf-now-line" style="top:${Math.round(now.getMinutes()/60*100)}%"></div>`:"";h+=`<div class="enf-day-time">${padM(hr)}:00</div><div class="enf-day-slot" onclick="v2OpenTask('${di}',null,'calendar')">${line}${ev.map(eventM).join("")}</div>`}c.innerHTML=h+"</div>"
+}
+function agendaM(){
+ let c=document.getElementById("enfCalContent"),r=[...rowsM().filter(activeM)].sort((a,b)=>String(a.due||a.date||"").localeCompare(String(b.due||b.date||""))||String(a.time||"").localeCompare(String(b.time||"")));if(!r.length){c.innerHTML=`<div class="enf-cal-empty"><div><b>${TM("Nothing scheduled","لا توجد مواعيد")}</b><br>${TM("Add a task or calendar event to begin.","أضف مهمة أو موعدًا للبدء.")}</div></div>`;return}
+ let last="",h='<div class="enf-agenda">';r.forEach(x=>{let d=x.due||x.date||"";if(d!==last){let dd=dateM(d);h+=`<div class="enf-agenda-date">${dd?dd.toLocaleDateString(arM()?"ar-BH":"en-GB",{weekday:"long",day:"numeric",month:"long"}):escM(d)}</div>`;last=d}h+=`<div class="enf-agenda-row" onclick="v2OpenTask('', '${escM(x.id)}')"><time>${escM(x.time||"—")}</time><div><b>${escM(x.title||x.task||"")}</b><small>${escM(x.file||TM("No file linked","غير مرتبط بملف"))}${x.location?" · "+escM(x.location):""}</small></div><span class="enf-agenda-tag">${escM(x.status||"Open")}</span></div>`});c.innerHTML=h+"</div>"
+}
+window.enfModernCalendarRender=function(){if(!shellM())return;document.querySelectorAll(".enf-cal-switch2 button").forEach(b=>b.classList.toggle("active",b.dataset.v===modernView));periodM();miniM();if(modernView==="month")monthM();else if(modernView==="week")weekM();else if(modernView==="day")dayViewM();else agendaM()}
+window.enfCalView=function(v){modernView=v;enfModernCalendarRender()}
+window.enfCalMove=function(n){if(modernView==="month")modernDate=new Date(modernDate.getFullYear(),modernDate.getMonth()+n,1);else if(modernView==="week"){modernDate=new Date(modernDate);modernDate.setDate(modernDate.getDate()+7*n)}else{modernDate=new Date(modernDate);modernDate.setDate(modernDate.getDate()+n)}miniDate=new Date(modernDate);enfModernCalendarRender()}
+window.enfCalToday=function(){modernDate=new Date();miniDate=new Date();enfModernCalendarRender()}
+window.enfMiniMove=function(n){miniDate=new Date(miniDate.getFullYear(),miniDate.getMonth()+n,1);miniM()}
+window.enfMiniPick=function(di){modernDate=dateM(di)||new Date();miniDate=new Date(modernDate);if(modernView==="month")modernView="day";enfModernCalendarRender()}
+const saveM=window.v2SaveTask;window.v2SaveTask=function(){let r=saveM?saveM.apply(this,arguments):undefined;setTimeout(enfModernCalendarRender,0);return r}
+const delM=window.v2DeleteTask;window.v2DeleteTask=function(){let r=delM?delM.apply(this,arguments):undefined;setTimeout(enfModernCalendarRender,0);return r}
+const compM=window.v2CompleteTask;window.v2CompleteTask=function(){let r=compM?compM.apply(this,arguments):undefined;setTimeout(enfModernCalendarRender,0);return r}
+function initM(){
+ let nav=[...document.querySelectorAll(".nav-item")].find(x=>(x.textContent||"").includes("Tasks & Follow-ups")||(x.textContent||"").includes("المهام"));
+ if(nav&&!nav.dataset.modernCal){nav.dataset.modernCal="1";nav.addEventListener("click",()=>setTimeout(enfModernCalendarRender,0))}
+ let p=document.getElementById("v2CalendarPage");if(p){new MutationObserver(()=>{if(getComputedStyle(p).display!=="none"&&!p.querySelector(".enf-cal-modern"))enfModernCalendarRender()}).observe(p,{attributes:true,attributeFilter:["style","class"]})}
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initM);else initM();
+})();
+</script>
 </body>
 </html>
