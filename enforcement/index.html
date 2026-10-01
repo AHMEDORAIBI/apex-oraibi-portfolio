@@ -397,11 +397,49 @@ html[dir="rtl"] .minutes-tools button{text-align:right}
 .template-ai-strip{display:flex;gap:7px;align-items:center;border:1px solid #ead7c6;background:#fffaf6;border-radius:8px;padding:9px;margin-top:10px}.template-ai-strip span{font-size:7px;color:var(--muted);line-height:1.5}.template-ai-strip button{margin-left:auto;white-space:nowrap;border:0;background:var(--bronze);color:#fff;border-radius:7px;padding:7px 9px;font-size:7px}
 @media(max-width:720px){.template-picker{grid-template-columns:1fr 1fr}.minute-section-editor textarea{min-height:105px}}
 
+
+/* ===== ENFORZA PHASE 16 — ACCESSIBILITY TYPOGRAPHY + DOCUMENT INTELLIGENCE ===== */
+/* User-approved readable sizing: body 16px, headings 20px */
+body,button,input,select,textarea,.nav-item,.card p,.list-row span,.badge,.toolbar input,.toolbar select,
+.info-item span,.info-item strong,.ai-chip,.top-title p,.sidebar-footer,.login-form-side p,
+.minutes-field label,.wizard-field label,.sn-item span,.sn-item small,.mfile p,.mfile-kpis span,
+.template-card strong,.template-card span,.minute-section-editor textarea{font-size:16px!important}
+h1,h2,h3,h4,h5,h6,.top-title h1,.hero-row h2,.card-head h3,.login-form-side h2,.minutes-head h2,
+.wizard-main-head h2,.minutes-side h3,.wizard-side h3,.ai-score-meta h3,.ai-rec-card h3,
+.mfile h4,.sn-head h3,.minute-section-head strong{font-size:20px!important;line-height:1.35}
+.nav-icon{font-size:18px!important}.sidebar{width:285px}.main{margin-left:285px}.nav-item{padding:11px 14px}
+.card,.kpi-card{padding:18px}.content{max-width:1600px}.topbar{min-height:74px}
+@media(max-width:980px){.sidebar{width:270px}.main{margin-left:270px}}
+@media(max-width:720px){.main{margin-left:0}.sidebar{width:min(88vw,330px)}body,button,input,select,textarea,.nav-item,.card p,.list-row span,.badge{font-size:16px!important}h1,h2,h3,h4,h5,h6,.top-title h1,.hero-row h2,.card-head h3{font-size:20px!important}}
+
+.doc-intel-modal{position:fixed;inset:0;background:rgba(12,18,23,.62);backdrop-filter:blur(5px);z-index:1140;display:none;place-items:center;padding:16px}
+.doc-intel-shell{width:min(1080px,100%);max-height:94vh;overflow:hidden;background:#fff;border-radius:15px;box-shadow:0 30px 90px rgba(0,0,0,.35);display:grid;grid-template-columns:310px 1fr}
+.doc-preview{background:#182027;padding:20px;color:#fff;overflow:auto}.doc-preview h3{margin-bottom:12px}.doc-preview-box{min-height:420px;border:1px dashed rgba(255,255,255,.25);border-radius:10px;display:grid;place-items:center;text-align:center;padding:15px;background:rgba(255,255,255,.04)}.doc-preview-box img{max-width:100%;max-height:540px;border-radius:7px}.doc-preview-box .placeholder b{display:block;font-size:36px;color:#c9976e}.doc-preview-box .placeholder span{display:block;margin-top:10px;color:#c8cfd4}
+.doc-intel-main{padding:22px;overflow:auto;max-height:94vh}.doc-upload-actions{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0}.doc-upload-actions button{border:1px solid var(--border);background:#fff;border-radius:8px;padding:10px 12px;font-weight:800;color:var(--navy)}.doc-upload-actions .primary{background:var(--bronze);color:#fff;border-color:var(--bronze)}
+.doc-fields{display:grid;grid-template-columns:1fr 1fr;gap:11px}.doc-field.full{grid-column:1/-1}.doc-field label{display:block;color:var(--muted);font-weight:800;margin-bottom:5px}.doc-field input,.doc-field select,.doc-field textarea{width:100%;border:1px solid var(--border);border-radius:8px;padding:11px;font-size:16px}.doc-field textarea{min-height:100px;resize:vertical}
+.doc-ai-results{margin-top:15px;border:1px solid #ead7c6;background:#fffaf6;border-radius:10px;padding:14px}.doc-ai-results h3{color:var(--navy)}.doc-ai-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px}.doc-ai-grid div{background:#fff;border-radius:8px;padding:10px;border:1px solid #f0e2d6}.doc-ai-grid span{display:block;color:var(--muted)}.doc-ai-grid strong{display:block;color:var(--navy);margin-top:4px}
+.doc-card{border:1px solid var(--border);border-radius:10px;background:#fff;padding:14px;margin-bottom:9px;display:flex;justify-content:space-between;gap:12px}.doc-card strong{color:var(--navy)}.doc-card span{display:block;color:var(--muted);margin-top:4px}.doc-card-actions{display:flex;gap:6px;align-items:center}.doc-card-actions button{border:1px solid var(--border);background:#fff;border-radius:7px;padding:8px;color:var(--bronze)}
+@media(max-width:720px){.doc-intel-modal{padding:0}.doc-intel-shell{display:block;width:100%;height:100vh;max-height:none;border-radius:0;overflow:auto}.doc-preview{padding:14px}.doc-preview-box{min-height:220px}.doc-intel-main{max-height:none;padding:16px}.doc-fields,.doc-ai-grid{grid-template-columns:1fr}.doc-field.full{grid-column:auto}.doc-card{display:block}.doc-card-actions{margin-top:10px}}
+html[dir="rtl"] .main{margin-left:0;margin-right:285px}@media(max-width:720px){html[dir="rtl"] .main{margin-right:0}}
+
 </style>
 </head>
 <body>
 
 
+
+<div class="doc-intel-modal" id="docIntelModal"><div class="doc-intel-shell">
+ <aside class="doc-preview"><h3 data-i18n="Document Preview">Document Preview</h3><div class="doc-preview-box" id="docPreviewBox"><div class="placeholder"><b>▧</b><span data-i18n="Capture or upload a document">Capture or upload a document</span></div></div></aside>
+ <main class="doc-intel-main">
+  <div class="minutes-head"><div><h2 data-i18n="Document Intelligence">Document Intelligence</h2><p data-i18n="Capture, classify and link documents to enforcement files.">Capture, classify and link documents to enforcement files.</p></div><button class="top-btn" onclick="closeDocIntel()">×</button></div>
+  <input id="docCameraInput" type="file" accept="image/*" capture="environment" style="display:none" onchange="handleDocFile(this.files[0])">
+  <input id="docUploadInput" type="file" accept="image/*,.pdf" style="display:none" onchange="handleDocFile(this.files[0])">
+  <div class="doc-upload-actions"><button class="primary" onclick="document.getElementById('docCameraInput').click()">📷 <span data-i18n="Camera Scan">Camera Scan</span></button><button onclick="document.getElementById('docUploadInput').click()">＋ <span data-i18n="Upload Document">Upload Document</span></button><button onclick="analyzeDemoDocument()">✦ <span data-i18n="Analyze with AI">Analyze with AI</span></button></div>
+  <div class="doc-fields"><div class="doc-field"><label data-i18n="Related File">Related File</label><select id="docRelatedFile"></select></div><div class="doc-field"><label data-i18n="Document Type">Document Type</label><select id="docType"><option>Court Order</option><option>Bank Response</option><option>Identity Document</option><option>Asset Document</option><option>Settlement Document</option><option>Correspondence</option><option>Other</option></select></div><div class="doc-field full"><label data-i18n="Document Title">Document Title</label><input id="docTitle" placeholder="Document title"></div><div class="doc-field full"><label data-i18n="Notes">Notes</label><textarea id="docNotes"></textarea></div></div>
+  <div class="doc-ai-results"><h3>✦ ENFORZA AI</h3><div class="doc-ai-grid"><div><span data-i18n="Classification">Classification</span><strong id="docAIClass">—</strong></div><div><span data-i18n="Detected Date">Detected Date</span><strong id="docAIDate">—</strong></div><div><span data-i18n="Key Figure">Key Figure</span><strong id="docAIFigure">—</strong></div><div><span data-i18n="Suggested Action">Suggested Action</span><strong id="docAIAction">—</strong></div></div><p id="docAISummary" style="margin-top:10px;color:var(--muted)" data-i18n="Upload a document to prepare the demo intelligence summary.">Upload a document to prepare the demo intelligence summary.</p></div>
+  <div class="minutes-actions"><button onclick="closeDocIntel()" data-i18n="Cancel">Cancel</button><button class="primary" onclick="saveDemoDocument()" data-i18n="Save Document">Save Document</button></div>
+ </main>
+</div></div>
 <div class="minutes-modal" id="minutesModal"><div class="minutes-shell">
  <aside class="minutes-side"><h3 data-i18n="Smart Minutes">Smart Minutes</h3><p data-i18n="Prepare a professional record using typing, voice dictation, images and AI-assisted suggestions.">Prepare a professional record using typing, voice dictation, images and AI-assisted suggestions.</p>
  <div class="minutes-tools"><button class="active">✎ <span data-i18n="Draft">Draft</span></button><button onclick="focusMinuteText()">🎙 <span data-i18n="Voice Dictation">Voice Dictation</span></button><button onclick="document.getElementById('minuteImagesInput').click()">▧ <span data-i18n="Attach Images">Attach Images</span></button><button onclick="analyzeMinute()">✦ <span data-i18n="AI Suggestions">AI Suggestions</span></button></div></aside>
@@ -1561,6 +1599,42 @@ saveMinutes=function(status){
 Object.assign(I18N.ar,{
 "Minutes Template":"قالب المحضر","Template help":"اختر قالبًا لتجهيز أقسام منظمة، ويمكن الإملاء الصوتي داخل كل قسم بصورة مستقلة.","Build Full Minutes":"تجميع نص المحضر","Field Visit":"زيارة ميدانية","Visit and field observations":"زيارة وملاحظات ميدانية","Asset Inspection":"معاينة أصول","Inspection and asset condition":"المعاينة وحالة الأصل","Debtor Contact":"التواصل مع المدين","Call or direct contact record":"محضر اتصال أو تواصل مباشر","Meeting":"اجتماع","Formal meeting record":"محضر اجتماع رسمي","Delivery / Service":"تسليم أو إعلان","Delivery and service record":"محضر التسليم أو الإعلان","General Record":"محضر عام","Flexible enforcement record":"محضر تنفيذ مرن","Structured Minutes Sections":"أقسام المحضر المنظمة","Dictate Section":"إملاء القسم","Type or dictate this section...":"اكتب أو أمْلِ هذا القسم...","Listening to this section...":"جاري الاستماع لهذا القسم...","Complete at least one structured section first.":"أكمل قسمًا واحدًا على الأقل أولًا.","Structured sections added to the minutes text.":"تم تجميع الأقسام داخل نص المحضر.","Purpose of Visit":"غرض الزيارة","Persons Present":"الأشخاص الحاضرون","Actions Performed":"الإجراءات المنفذة","Observations":"الملاحظات","Statements Received":"الإفادات المستلمة","Result & Next Action":"النتيجة والإجراء التالي","Inspection Purpose":"غرض المعاينة","Asset / Site Identification":"تعريف الأصل أو الموقع","Physical Observations":"الملاحظات الميدانية","Images & Evidence":"الصور والأدلة","Result & Recommendation":"النتيجة والتوصية","Contact Method":"وسيلة التواصل","Identity Verification":"التحقق من الهوية","Purpose of Contact":"غرض التواصل","Debtor Statement":"إفادة المدين","Payment / Settlement Discussion":"مناقشة السداد أو التسوية","Agreed Next Step":"الخطوة التالية المتفق عليها","Meeting Purpose":"غرض الاجتماع","Attendees":"الحاضرون","Matters Discussed":"الموضوعات التي تمت مناقشتها","Statements & Positions":"الإفادات والمواقف","Decisions":"القرارات","Actions & Deadlines":"الإجراءات والمواعيد","Document / Item Served":"المستند أو الشيء المسلم","Recipient Identification":"بيانات المستلم","Time & Place":"الوقت والمكان","Method of Service":"طريقة التسليم","Recipient Response":"رد المستلم","Completion Result":"نتيجة الإجراء","Background":"الخلفية","Event / Action":"الواقعة أو الإجراء","Persons Involved":"الأشخاص ذوو الصلة","Attachments":"المرفقات","Conclusion & Next Action":"الخلاصة والإجراء التالي"
 });
+
+
+DATA.smartDocuments=DATA.smartDocuments||[];let activeDocData=null;
+function openDocIntel(){
+ activeDocData=null;const s=document.getElementById("docRelatedFile");s.innerHTML=(DATA.files||[]).map(f=>`<option value="${f.id}">${f.id} · ${f.debtor}</option>`).join("");
+ document.getElementById("docTitle").value="";document.getElementById("docNotes").value="";document.getElementById("docAIClass").textContent="—";document.getElementById("docAIDate").textContent="—";document.getElementById("docAIFigure").textContent="—";document.getElementById("docAIAction").textContent="—";document.getElementById("docAISummary").textContent=t("Upload a document to prepare the demo intelligence summary.");document.getElementById("docPreviewBox").innerHTML=`<div class="placeholder"><b>▧</b><span>${t("Capture or upload a document")}</span></div>`;document.getElementById("docIntelModal").style.display="grid";
+}
+function closeDocIntel(){document.getElementById("docIntelModal").style.display="none"}
+function handleDocFile(file){
+ if(!file)return;activeDocData={name:file.name,type:file.type,data:null};document.getElementById("docTitle").value=file.name.replace(/\.[^.]+$/,"");
+ const box=document.getElementById("docPreviewBox");
+ if(file.type.startsWith("image/")){const r=new FileReader();r.onload=e=>{activeDocData.data=e.target.result;box.innerHTML=`<img src="${e.target.result}" alt="">`};r.readAsDataURL(file)}
+ else box.innerHTML=`<div class="placeholder"><b>PDF</b><span>${file.name}</span></div>`;
+ setTimeout(analyzeDemoDocument,250);
+}
+function analyzeDemoDocument(){
+ const type=document.getElementById("docType").value,file=document.getElementById("docRelatedFile").value;
+ document.getElementById("docAIClass").textContent=type;document.getElementById("docAIDate").textContent=new Date().toLocaleDateString("en-GB");
+ const f=DATA.files.find(x=>x.id===file),out=f?f.claim-f.collected:0;document.getElementById("docAIFigure").textContent=f?money(out):"—";
+ const actions={"Court Order":"Review order and update enforcement workflow","Bank Response":"Review bank response and update attachment status","Identity Document":"Verify party identity","Asset Document":"Update asset register and consider attachment","Settlement Document":"Update settlement schedule","Correspondence":"Create follow-up action","Other":"Manual review required"};
+ document.getElementById("docAIAction").textContent=actions[type]||actions.Other;
+ document.getElementById("docAISummary").textContent=t("Demo AI summary: the document has been classified and linked to the selected enforcement file. Verify names, dates, amounts and legal effect before relying on the extracted information.");
+}
+function saveDemoDocument(){
+ const title=document.getElementById("docTitle").value.trim();if(!title){showToast(t("Enter a document title."));return}
+ const d={id:"DOC-"+String(260100+DATA.smartDocuments.length+1),file:document.getElementById("docRelatedFile").value,type:document.getElementById("docType").value,title,notes:document.getElementById("docNotes").value,name:activeDocData?.name||title,data:activeDocData?.data||null,date:new Date().toISOString(),action:document.getElementById("docAIAction").textContent};
+ DATA.smartDocuments.unshift(d);logDemo(t("Document Added"),`${d.id} · ${d.file} · ${d.type}`);closeDocIntel();renderSmartDocuments();showToast(t("Document saved and linked to the enforcement file."));
+}
+function renderSmartDocuments(){
+ const page=document.getElementById("documentsPage");if(!page)return;let host=document.getElementById("smartDocumentArea");
+ if(!host){host=document.createElement("div");host.id="smartDocumentArea";const c=page.querySelector(".content")||page;const hero=c.querySelector(".hero-row");if(hero)hero.insertAdjacentElement("afterend",host);else c.prepend(host)}
+ host.innerHTML=`<div style="display:flex;justify-content:flex-end;margin:12px 0"><button class="action-btn primary" onclick="openDocIntel()">📷 ${t("Scan / Add Document")}</button></div>`+(DATA.smartDocuments.length?DATA.smartDocuments.map(d=>`<div class="doc-card"><div><strong>${d.id} · ${d.title}</strong><span>${d.file} · ${d.type}</span><span>✦ ${d.action}</span></div><div class="doc-card-actions"><button onclick="openDetail('files','${d.file}')">${t("Open File")}</button></div></div>`).join(""):`<div class="empty-state"><strong>${t("No scanned documents in this demo session.")}</strong></div>`);
+}
+const _openPageP16=openPage;
+openPage=function(page){_openPageP16(page);if(page==="documents")setTimeout(renderSmartDocuments,20)}
+Object.assign(I18N.ar,{"Document Preview":"معاينة المستند","Capture or upload a document":"صوّر المستند أو ارفعه","Document Intelligence":"ذكاء المستندات","Capture, classify and link documents to enforcement files.":"تصوير المستندات وتصنيفها وربطها بملفات التنفيذ.","Camera Scan":"تصوير المستند","Upload Document":"رفع مستند","Analyze with AI":"تحليل بالذكاء الاصطناعي","Document Type":"نوع المستند","Document Title":"عنوان المستند","Notes":"ملاحظات","Classification":"التصنيف","Detected Date":"التاريخ المستخرج","Key Figure":"المبلغ الرئيسي","Suggested Action":"الإجراء المقترح","Upload a document to prepare the demo intelligence summary.":"ارفع مستندًا لإعداد ملخص الذكاء الاصطناعي التجريبي.","Save Document":"حفظ المستند","Demo AI summary: the document has been classified and linked to the selected enforcement file. Verify names, dates, amounts and legal effect before relying on the extracted information.":"ملخص AI تجريبي: تم تصنيف المستند وربطه بملف التنفيذ المختار. يجب التحقق من الأسماء والتواريخ والمبالغ والأثر القانوني قبل الاعتماد على البيانات المستخرجة.","Enter a document title.":"أدخل عنوان المستند.","Document Added":"تمت إضافة المستند","Document saved and linked to the enforcement file.":"تم حفظ المستند وربطه بملف التنفيذ.","Scan / Add Document":"تصوير أو إضافة مستند","No scanned documents in this demo session.":"لا توجد مستندات مصورة في جلسة الديمو الحالية."});
 
 renderDashboard();renderUsers();renderAudit();renderPermissions();showReport("executive");applyLanguage();
 </script>
