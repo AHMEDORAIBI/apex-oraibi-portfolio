@@ -615,6 +615,19 @@ html[dir=rtl] .v2cal-event{border-left:0!important;border-right:3px solid #b77a3
 .v2agenda-date{font-size:11px;font-weight:950;color:#b77a3e;padding:12px 2px 7px}.v2agenda-item{display:grid;grid-template-columns:80px 1fr auto;gap:12px;align-items:center;padding:13px;border:1px solid var(--desk-line);border-radius:11px;margin-bottom:7px}.v2agenda-time{font-weight:950}.v2agenda-item small{display:block;color:var(--desk-muted);margin-top:3px}.v2agenda-status{font-size:9px;font-weight:900;padding:5px 8px;border-radius:999px;background:#f1e7dd;color:#80562f}
 .v2task-panel{width:min(560px,100%)!important}.v2task-head{padding-bottom:13px;border-bottom:1px solid var(--desk-line)}.v2task-grid{margin-top:16px}.v2task-save{margin-top:4px!important}
 @media(max-width:900px){.v2cal-dashboard{grid-template-columns:repeat(2,1fr)}}
+</style><style id="enforza-v2-phase10-command-css">
+/* Phase 10 — final desktop Command Center */
+.v2-command{max-width:1540px!important;margin:0 auto!important;padding:30px 32px!important}
+.v210-hero{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;margin-bottom:18px}
+.v210-hero h1{font-size:31px!important;margin:4px 0 6px}.v210-hero p{margin:0;color:var(--desk-muted);font-size:13px}
+.v210-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.v210-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:13px}.v210-kpi{background:#fff;border:1px solid var(--desk-line);border-radius:15px;padding:17px}.v210-kpi-top{display:flex;justify-content:space-between;align-items:center}.v210-kpi small{color:var(--desk-muted);font-size:10px;font-weight:900}.v210-kpi-icon{width:30px;height:30px;border-radius:9px;background:#f4ece3;color:#a76d36;display:grid;place-items:center;font-size:12px}.v210-kpi b{display:block;font-size:25px;margin:8px 0 3px}.v210-kpi span{font-size:10px;color:#98918a}
+.v210-grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(300px,.65fr);gap:13px}.v210-card{background:#fff;border:1px solid var(--desk-line);border-radius:15px;padding:17px;box-shadow:0 8px 28px rgba(28,24,20,.035)}.v210-card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.v210-card-head h2{font-size:20px!important;margin:0}.v210-link{border:0;background:transparent;color:#9a6433;font-size:11px;font-weight:900;cursor:pointer}
+.v210-empty{min-height:180px;display:grid;place-items:center;text-align:center;border:1px dashed #ddd4ca;border-radius:12px;background:#fbfaf8;padding:20px}.v210-empty b{display:block;font-size:14px;margin-bottom:5px}.v210-empty span{display:block;color:var(--desk-muted);font-size:11px;max-width:360px;line-height:1.55}
+.v210-agenda{display:grid;gap:7px}.v210-task{display:grid;grid-template-columns:58px 1fr auto;gap:10px;align-items:center;padding:11px;border:1px solid var(--desk-line);border-radius:10px}.v210-time{font-size:11px;font-weight:950;color:#9a6433}.v210-task b{display:block;font-size:12px}.v210-task small{color:var(--desk-muted);font-size:10px}.v210-tag{font-size:9px;padding:5px 7px;border-radius:999px;background:#f1e7dd;color:#80562f;font-weight:900}
+.v210-ai{background:linear-gradient(145deg,#151a20,#1d252d);color:#fff;border-color:#27313a}.v210-ai .v210-card-head h2{color:#fff}.v210-ai-state{padding:15px;border-radius:11px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08)}.v210-ai-state b{display:block;font-size:13px;margin-bottom:5px}.v210-ai-state p{margin:0;color:#b9c1c8;font-size:11px;line-height:1.6}.v210-ai-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}.v210-ai-actions button{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.055);color:#fff;border-radius:9px;padding:9px;font-size:10px;font-weight:900;cursor:pointer}
+.v210-bottom{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-top:13px}.v210-progress{height:7px;border-radius:999px;background:#eee9e3;overflow:hidden;margin-top:9px}.v210-progress i{display:block;height:100%;background:#b77a3e;border-radius:inherit}.v210-row{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--desk-line);font-size:11px}.v210-row:last-child{border-bottom:0}.v210-row span{color:var(--desk-muted)}.v210-row b{font-size:11px}
+@media(max-width:1050px){.v210-grid{grid-template-columns:1fr}.v210-kpis{grid-template-columns:repeat(2,1fr)}}@media(max-width:700px){.v210-hero{grid-template-columns:1fr}.v210-actions{justify-content:flex-start}.v210-kpis,.v210-bottom{grid-template-columns:1fr 1fr}.v210-task{grid-template-columns:48px 1fr}.v210-tag{display:none}}
 </style></head>
 <body>
 
@@ -2421,6 +2434,43 @@ const oldComp9=window.v2CompleteTask;window.v2CompleteTask=function(){if(oldComp
 const oldDel9=window.v2DeleteTask;window.v2DeleteTask=function(){if(oldDel9)oldDel9();setTimeout(addStats9,20)}
 function init9(){addStats9();let sw=document.querySelector(".v2cal-switch");if(sw){let labels=ar9()?["شهر","أسبوع","يوم","جدول الأعمال"]:["Month","Week","Day","Agenda"];sw.querySelectorAll("button").forEach((b,i)=>{if(labels[i])b.textContent=labels[i]})}}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init9);else init9();
+})();
+</script><script id="enforza-v2-phase10-command-js">
+(function(){
+"use strict";
+function ar10(){return (window.currentLang||document.documentElement.lang||"en")==="ar"}
+function t10(en,ar){return ar10()?ar:en}
+function A10(n){return window.DATA&&Array.isArray(DATA[n])?DATA[n]:[]}
+function money10(v){return "BHD "+Number(v||0).toFixed(3)}
+function date10(){let d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function go10(page){
+ let nav=[...document.querySelectorAll(".nav-item")].find(x=>(x.dataset.page||x.getAttribute("data-page"))===page);
+ if(nav)nav.click()
+}
+window.v210Go=go10;
+function render10(){
+ let page=document.getElementById("dashboardPage");if(!page)return;
+ let files=A10("files"),tasks=A10("smartTasks"),cols=A10("collections"),today=date10();
+ let active=files.filter(x=>(x.status||"Active")!=="Closed"),claim=files.reduce((a,x)=>a+Number(x.amount||x.outstanding||0),0),collected=files.reduce((a,x)=>a+Number(x.collected||0),0);
+ let td=tasks.filter(x=>(x.due||x.date)===today&&x.status!=="Completed"),over=tasks.filter(x=>(x.due||x.date)<today&&x.status!=="Completed"),up=tasks.filter(x=>(x.due||x.date)>today&&x.status!=="Completed");
+ let pct=claim?Math.min(100,Math.max(0,(collected/claim)*100)):0;
+ page.innerHTML=`<section class="v2-command">
+ <div class="v210-hero"><div><div class="v2-kicker">${t10("COMMAND CENTER","مركز القيادة")}</div><h1>${t10("Enforcement at a glance","التنفيذ في نظرة واحدة")}</h1><p>${t10("Files, deadlines, collections and next actions from one workspace.","الملفات والمواعيد والتحصيلات والإجراءات القادمة في مساحة عمل واحدة.")}</p></div><div class="v210-actions"><button class="v2cal-btn" onclick="v210Go('tasks')">${t10("Open Calendar","فتح التقويم")}</button><button class="v2cal-btn primary" onclick="v2OpenFileWizard()">+ ${t10("New File","ملف جديد")}</button></div></div>
+ <div class="v210-kpis">
+  <div class="v210-kpi"><div class="v210-kpi-top"><small>${t10("ACTIVE FILES","الملفات النشطة")}</small><i class="v210-kpi-icon">▤</i></div><b>${active.length}</b><span>${t10("Current enforcement matters","ملفات التنفيذ الحالية")}</span></div>
+  <div class="v210-kpi"><div class="v210-kpi-top"><small>${t10("OUTSTANDING","المبالغ القائمة")}</small><i class="v210-kpi-icon">◈</i></div><b>${money10(Math.max(0,claim-collected))}</b><span>${t10("Across active files","عبر الملفات النشطة")}</span></div>
+  <div class="v210-kpi"><div class="v210-kpi-top"><small>${t10("COLLECTED","المحصل")}</small><i class="v210-kpi-icon">✓</i></div><b>${money10(collected)}</b><span>${pct.toFixed(1)}% ${t10("of recorded claims","من المطالبات المسجلة")}</span></div>
+  <div class="v210-kpi"><div class="v210-kpi-top"><small>${t10("REQUIRES ATTENTION","تحتاج إلى متابعة")}</small><i class="v210-kpi-icon">!</i></div><b>${over.length}</b><span>${t10("Overdue open tasks","مهام مفتوحة متأخرة")}</span></div>
+ </div>
+ <div class="v210-grid"><div class="v210-card"><div class="v210-card-head"><h2>${t10("My Day","يومي")}</h2><button class="v210-link" onclick="v210Go('tasks')">${t10("View Calendar","عرض التقويم")} →</button></div>${td.length?`<div class="v210-agenda">${td.slice(0,6).map(x=>`<div class="v210-task" onclick="v2OpenTask('', '${x.id}')"><div class="v210-time">${x.time||"—"}</div><div><b>${x.title||x.task||""}</b><small>${x.file||t10("No file linked","غير مرتبط بملف")}</small></div><span class="v210-tag">${x.priority||"Normal"}</span></div>`).join("")}</div>`:`<div class="v210-empty"><div><b>${t10("Your day is clear","لا توجد مهام لليوم")}</b><span>${t10("Today's tasks and enforcement appointments will appear here automatically.","ستظهر مهام اليوم ومواعيد التنفيذ هنا تلقائيًا.")}</span></div></div>`}</div>
+ <div class="v210-card v210-ai"><div class="v210-card-head"><h2>✦ ENFORZA AI</h2></div><div class="v210-ai-state"><b>${t10("Smart brief ready","الملخص الذكي جاهز")}</b><p>${files.length?t10("AI insights will be generated from the real file and task data you enter.","سيتم إنشاء الرؤى الذكية من بيانات الملفات والمهام الفعلية التي تدخلها."):t10("Add your first file to start building AI recommendations and daily priorities.","أضف أول ملف لبدء بناء التوصيات الذكية وأولويات اليوم.")}</p></div><div class="v210-ai-actions"><button onclick="v210Go('files')">${t10("Review Files","مراجعة الملفات")}</button><button onclick="v210Go('tasks')">${t10("Plan Day","تخطيط اليوم")}</button></div></div></div>
+ <div class="v210-bottom"><div class="v210-card"><div class="v210-card-head"><h2>${t10("Collection Progress","تقدم التحصيل")}</h2><span>${pct.toFixed(1)}%</span></div><div class="v210-progress"><i style="width:${pct}%"></i></div><div class="v210-row"><span>${t10("Recorded Claims","المطالبات المسجلة")}</span><b>${money10(claim)}</b></div><div class="v210-row"><span>${t10("Collected","المحصل")}</span><b>${money10(collected)}</b></div></div>
+ <div class="v210-card"><div class="v210-card-head"><h2>${t10("Workload","عبء العمل")}</h2></div><div class="v210-row"><span>${t10("Today","اليوم")}</span><b>${td.length}</b></div><div class="v210-row"><span>${t10("Overdue","متأخرة")}</span><b>${over.length}</b></div><div class="v210-row"><span>${t10("Upcoming","قادمة")}</span><b>${up.length}</b></div></div></div>
+ </section>`;
+}
+window.v210Refresh=render10;
+function init10(){render10();document.addEventListener("click",function(e){if(e.target.closest('.nav-item[data-page="dashboard"]'))setTimeout(render10,10)},true)}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init10);else init10();
 })();
 </script></body>
 </html>
