@@ -654,6 +654,21 @@ body{letter-spacing:0}
 body.enf-dark .enf-creditor-kpi,body.enf-dark .enf-creditor-card,body.enf-dark .enf-creditor-action{background:#171d23;color:#eef2f5;border-color:#2a333b}body.enf-dark .enf-creditor-empty,body.enf-dark .enf-creditor-file:hover{background:#13191f}
 .enf-final-chip{display:inline-flex;align-items:center;gap:6px;font-size:9px;color:#7f8992;font-weight:900}.enf-final-dot{width:6px;height:6px;border-radius:50%;background:#64a874}
 @media(max-width:900px){.enf-creditor-grid{grid-template-columns:1fr}.enf-creditor-kpis{grid-template-columns:1fr 1fr 1fr}}@media(max-width:650px){.enf-creditor-home{padding:18px 13px}.enf-creditor-hero{grid-template-columns:1fr}.enf-creditor-kpis{grid-template-columns:1fr}}
+</style><style id="enforza-v2-phase13-mobile-field-css">
+/* Phase 13 — Mobile Field Mode */
+.enf-mobile-bar{display:none}.enf-field-sheet{position:fixed;inset:0;z-index:95000;background:rgba(8,12,16,.56);display:none}.enf-field-sheet.open{display:block}.enf-field-panel{position:absolute;left:0;right:0;bottom:0;max-height:88vh;overflow:auto;background:#fff;border-radius:22px 22px 0 0;padding:18px 16px 28px;box-shadow:0 -24px 70px rgba(0,0,0,.25)}.enf-field-grab{width:42px;height:4px;border-radius:99px;background:#d6d0c9;margin:0 auto 15px}.enf-field-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.enf-field-head h2{font-size:20px!important;margin:0}.enf-field-close{border:0;background:transparent;font-size:25px}
+.enf-field-file{width:100%;border:1px solid var(--desk-line);border-radius:11px;padding:11px;background:#fff;margin-bottom:13px}.enf-field-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.enf-field-action{min-height:92px;border:1px solid var(--desk-line);border-radius:14px;background:#fff;padding:13px;text-align:left;font-weight:900}.enf-field-action i{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:#f1e7dd;color:#9a6433;font-style:normal;margin-bottom:8px}.enf-field-action small{display:block;color:var(--desk-muted);font-weight:500;margin-top:3px}html[dir=rtl] .enf-field-action{text-align:right}
+.enf-capture{margin-top:14px;border-top:1px solid var(--desk-line);padding-top:14px}.enf-capture label{font-size:11px;font-weight:900;color:var(--desk-muted)}.enf-capture textarea{width:100%;min-height:105px;border:1px solid var(--desk-line);border-radius:11px;padding:11px;margin-top:6px}.enf-capture-tools{display:flex;gap:7px;margin-top:8px}.enf-capture-tools button{flex:1;border:1px solid var(--desk-line);background:#fff;border-radius:10px;padding:10px;font-weight:900}.enf-capture-tools button.active{background:#fff0e1;color:#925715}.enf-mobile-note{font-size:10px;color:var(--desk-muted);line-height:1.5;margin-top:9px}
+body.enf-dark .enf-field-panel,body.enf-dark .enf-field-action,body.enf-dark .enf-field-file,body.enf-dark .enf-capture textarea,body.enf-dark .enf-capture-tools button{background:#171d23;color:#eef2f5;border-color:#2a333b}
+@media(max-width:820px){
+ body{padding-bottom:72px!important}.topbar{height:58px!important;padding:0 13px!important}.enf-top-name small,.enf-top-actions .enf-role-chip,.enf-top-actions .enf-search{display:none!important}.enf-top-actions{gap:5px}.enf-icon-btn{width:33px;height:33px}
+ .sidebar{position:fixed!important;z-index:80000!important;top:0;bottom:0;height:100vh!important}.main{padding-bottom:0!important}
+ .v2-command,.v2files,.v2cal,.v2360,.enf-creditor-home{padding:16px 12px 24px!important}.v210-hero h1,.v2files-head h1,.v2cal-top h1{font-size:25px!important}.v210-kpis,.v2files-grid,.v2cal-dashboard{grid-template-columns:1fr 1fr!important;gap:8px!important}.v210-kpi,.v2files-kpi,.v2cal-mini{padding:13px!important}.v210-kpi b,.v2files-kpi b,.v2cal-mini b{font-size:19px!important}.v210-grid,.v210-bottom{grid-template-columns:1fr!important}
+ .v2files-head,.v2cal-top{gap:12px!important}.v2files-tools{width:100%}.v2files-tools>*{width:100%}.v2cal-toolbar{display:grid!important;grid-template-columns:1fr;gap:8px!important}.v2cal-toolbar>div{justify-content:center}.v2cal-period{order:-1}.v2cal-day{min-height:78px!important}.v2cal-event{font-size:8px!important;padding:4px!important}
+ .v2360-head{padding:17px!important}.v2360-head h1{font-size:22px!important}.v2360-flow{display:flex!important;overflow:auto}.v2360-step{min-width:90px}.v2360-tabs{overflow-x:auto}.v2360-side{position:static!important}
+ .enf-mobile-bar{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:0;right:0;bottom:0;height:67px;background:rgba(255,255,255,.97);border-top:1px solid var(--desk-line);z-index:85000;padding:5px 5px 7px;backdrop-filter:blur(14px)}body.enf-dark .enf-mobile-bar{background:rgba(23,29,35,.97)}
+ .enf-mobile-btn{border:0;background:transparent;color:var(--desk-muted);font-size:9px;font-weight:850;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}.enf-mobile-btn i{font-style:normal;font-size:17px;color:var(--desk-ink)}.enf-mobile-btn.field i{width:39px;height:39px;border-radius:13px;background:#111820;color:#e0ac78;display:grid;place-items:center;margin-top:-19px;box-shadow:0 7px 20px rgba(0,0,0,.2)}
+}
 </style></head>
 <body>
 
@@ -2577,6 +2592,65 @@ function finalShell12(){
  if(role12()==="Creditor")creditorHome12();
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",finalShell12);else finalShell12();
+})();
+</script><nav class="enf-mobile-bar" id="enfMobileBar">
+<button class="enf-mobile-btn" onclick="v210Go('dashboard')"><i>⌂</i><span>Home</span></button>
+<button class="enf-mobile-btn" onclick="v210Go('files')"><i>▤</i><span>Files</span></button>
+<button class="enf-mobile-btn field" onclick="enfOpenFieldMode()"><i>＋</i><span>Field</span></button>
+<button class="enf-mobile-btn" onclick="v210Go('tasks')"><i>□</i><span>Tasks</span></button>
+<button class="enf-mobile-btn" onclick="enfOpenFieldMode('document')"><i>⌁</i><span>Attach</span></button>
+</nav>
+<div class="enf-field-sheet" id="enfFieldSheet" onclick="if(event.target===this)enfCloseFieldMode()"><div class="enf-field-panel"><div class="enf-field-grab"></div><div class="enf-field-head"><h2 id="enfFieldTitle">Field Mode</h2><button class="enf-field-close" onclick="enfCloseFieldMode()">×</button></div>
+<select class="enf-field-file" id="enfFieldFile"></select>
+<div class="enf-field-grid">
+<button class="enf-field-action" onclick="enfFieldCamera()"><i>◉</i><span id="efCam">Take Photo</span><small id="efCamS">Camera / evidence</small></button>
+<button class="enf-field-action" onclick="enfFieldUpload()"><i>↑</i><span id="efUp">Upload File</span><small id="efUpS">Device storage</small></button>
+<button class="enf-field-action" onclick="enfFieldDrive()"><i>◇</i><span id="efDr">Google Drive</span><small id="efDrS">Select from Drive</small></button>
+<button class="enf-field-action" onclick="enfFieldVoice()"><i>●</i><span id="efVo">Voice Note</span><small id="efVoS">Speech to text</small></button>
+<button class="enf-field-action" onclick="enfFieldMinute()"><i>≡</i><span id="efMi">New Minute</span><small id="efMiS">Prepare by voice</small></button>
+<button class="enf-field-action" onclick="enfFieldTask()"><i>✓</i><span id="efTa">New Task</span><small id="efTaS">Follow-up / reminder</small></button>
+</div>
+<div class="enf-capture"><label id="efTextLabel">Voice / field text</label><textarea id="enfFieldText" placeholder="Speak or type here…"></textarea><div class="enf-capture-tools"><button id="enfVoiceBtn" onclick="enfToggleVoice()">● Voice</button><button onclick="enfSaveFieldText()">Save Note</button></div><div class="enf-mobile-note" id="enfVoiceStatus">Voice recognition depends on browser permission and support.</div></div>
+<input type="file" id="enfCameraInput" accept="image/*" capture="environment" hidden><input type="file" id="enfUploadInput" hidden>
+</div></div><script id="enforza-v2-phase13-mobile-field-js">
+(function(){
+"use strict";
+let rec13=null,recording13=false;
+function ar13(){return (window.currentLang||document.documentElement.lang||"en")==="ar"}
+function t13(en,ar){return ar13()?ar:en}
+function files13(){return window.DATA&&Array.isArray(DATA.files)?DATA.files:[]}
+function notes13(){if(!window.DATA)return[];if(!Array.isArray(DATA.activities))DATA.activities=[];return DATA.activities}
+function fillFiles13(){let s=document.getElementById("enfFieldFile");if(!s)return;s.innerHTML=`<option value="">${t13("Select enforcement file","اختر ملف التنفيذ")}</option>`+files13().map(f=>`<option value="${f.id||f.ref||""}">${f.id||f.ref||"—"} · ${f.title||f.caseName||t13("File","ملف")}</option>`).join("")}
+window.enfOpenFieldMode=function(mode){fillFiles13();document.getElementById("enfFieldSheet").classList.add("open");if(mode==="document")setTimeout(enfFieldUpload,150)}
+window.enfCloseFieldMode=function(){document.getElementById("enfFieldSheet").classList.remove("open");if(recording13)enfToggleVoice()}
+window.enfFieldCamera=function(){document.getElementById("enfCameraInput").click()}
+window.enfFieldUpload=function(){document.getElementById("enfUploadInput").click()}
+window.enfFieldDrive=function(){let st=document.getElementById("enfVoiceStatus");st.textContent=t13("Google Drive picker is prepared for connector/API integration in the deployment stage.","تم تجهيز خيار Google Drive للربط مع واجهة Drive عند مرحلة النشر.")}
+window.enfFieldVoice=function(){document.getElementById("enfFieldText").focus();enfToggleVoice()}
+window.enfFieldMinute=function(){let file=document.getElementById("enfFieldFile").value;enfCloseFieldMode();if(typeof openPage==="function")try{openPage("minutes")}catch(e){};setTimeout(()=>{let st=document.getElementById("enfVoiceStatus");if(st)st.textContent=t13("Minute mode selected.","تم اختيار وضع إعداد المحضر.")},0)}
+window.enfFieldTask=function(){let d=new Date(),iso=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");enfCloseFieldMode();if(typeof v2OpenTask==="function")v2OpenTask(iso)}
+window.enfToggleVoice=function(){
+ let SR=window.SpeechRecognition||window.webkitSpeechRecognition,btn=document.getElementById("enfVoiceBtn"),status=document.getElementById("enfVoiceStatus"),box=document.getElementById("enfFieldText");
+ if(!SR){status.textContent=t13("Speech recognition is not supported by this browser. You can still type the note.","التعرف على الصوت غير مدعوم في هذا المتصفح. يمكنك كتابة الملاحظة يدويًا.");return}
+ if(recording13){try{rec13.stop()}catch(e){};recording13=false;btn.classList.remove("active");btn.textContent=t13("● Voice","● صوت");return}
+ rec13=new SR();rec13.lang=ar13()?"ar-BH":"en-US";rec13.continuous=true;rec13.interimResults=true;
+ let finalText=box.value?box.value+" ":"";
+ rec13.onresult=e=>{let interim="";for(let i=e.resultIndex;i<e.results.length;i++){let x=e.results[i][0].transcript;if(e.results[i].isFinal)finalText+=x+" ";else interim+=x}box.value=finalText+interim};
+ rec13.onerror=e=>{status.textContent=t13("Microphone error or permission denied: ","خطأ في الميكروفون أو لم يتم منح الإذن: ")+e.error};
+ rec13.onend=()=>{recording13=false;btn.classList.remove("active");btn.textContent=t13("● Voice","● صوت")};
+ try{rec13.start();recording13=true;btn.classList.add("active");btn.textContent=t13("■ Stop","■ إيقاف");status.textContent=t13("Listening… speak naturally.","جاري الاستماع… تحدث بصورة طبيعية.")}catch(e){status.textContent=e.message}
+}
+window.enfSaveFieldText=function(){let text=document.getElementById("enfFieldText").value.trim(),file=document.getElementById("enfFieldFile").value;if(!text)return;notes13().push({id:"ACT-"+String(notes13().length+1).padStart(4,"0"),file:file,title:t13("Field Note","ملاحظة ميدانية"),notes:text,date:new Date().toISOString().slice(0,10),status:"Recorded"});document.getElementById("enfFieldText").value="";document.getElementById("enfVoiceStatus").textContent=t13("Field note saved in the current session.","تم حفظ الملاحظة الميدانية في الجلسة الحالية.")}
+function wireFiles13(){
+ let cam=document.getElementById("enfCameraInput"),up=document.getElementById("enfUploadInput");
+ [cam,up].forEach(inp=>inp&&inp.addEventListener("change",function(){let st=document.getElementById("enfVoiceStatus");if(this.files&&this.files.length)st.textContent=t13("Selected: ","تم اختيار: ")+[...this.files].map(f=>f.name).join(", ")}))
+}
+function labels13(){
+ let bar=document.getElementById("enfMobileBar");if(bar){let x=bar.querySelectorAll("span"),a=ar13()?["الرئيسية","الملفات","ميداني","المهام","إرفاق"]:["Home","Files","Field","Tasks","Attach"];x.forEach((n,i)=>{if(a[i])n.textContent=a[i]})}
+ let title=document.getElementById("enfFieldTitle");if(title)title.textContent=t13("Field Mode","الوضع الميداني");
+}
+function init13(){wireFiles13();labels13()}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init13);else init13();
 })();
 </script></body>
 </html>
