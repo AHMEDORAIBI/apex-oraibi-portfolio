@@ -627,12 +627,14 @@ html[dir="rtl"] .p27-panel{right:auto;left:0;box-shadow:25px 0 70px rgba(17,25,3
    <div class="login-credit">APEX ORAIBI — SYSTEM DESIGN & DEVELOPMENT</div>
   </section>
   <section class="login-form-side">
-   <h2 data-i18n="Welcome to ENFORZA">Welcome to ENFORZA</h2><p data-i18n="Choose a demo role to experience the system.">Choose a demo role to experience the system.</p>
-   <div class="role-picker"><div class="role-option active" data-role="management" onclick="selectDemoRole('management',this)"><b>◆</b><strong data-i18n="Management">Management</strong></div><div class="role-option" data-role="officer" onclick="selectDemoRole('officer',this)"><b>⚑</b><strong data-i18n="Enforcement Officer">Enforcement Officer</strong></div><div class="role-option" data-role="creditor" onclick="selectDemoRole('creditor',this)"><b>◈</b><strong data-i18n="Creditor">Creditor</strong></div></div>
-   <div class="login-fields"><label data-i18n="Username">Username<input id="demoUsername" value="admin"></label><label data-i18n="Password">Password<input id="demoPassword" type="password" value="demo123"></label></div>
-   <button class="login-submit" onclick="loginDemo()" data-i18n="Enter Demo">Enter Demo</button>
-   <div class="login-demo-note" data-i18n="Demo login note">Demo only. Select any role and enter. No real authentication or client data is used.</div>
-  </section>
+<h2 data-i18n="Welcome to ENFORZA">Welcome to ENFORZA</h2>
+<p data-i18n="Choose a demo role to experience the system.">Choose a demo user to enter instantly. No password is required.</p>
+<div class="demo-user-grid">
+<button type="button" class="demo-user-card" onclick="enterDemoRole('management')"><b>◆</b><strong data-i18n="Administrator">Administrator</strong><small>Full system demo access</small></button>
+<button type="button" class="demo-user-card" onclick="enterDemoRole('officer')"><b>⚑</b><strong data-i18n="Enforcement Officer">Enforcement Officer</strong><small>Operational enforcement workspace</small></button>
+<button type="button" class="demo-user-card" onclick="enterDemoRole('creditor')"><b>◈</b><strong data-i18n="Creditor">Creditor</strong><small>Creditor portal experience</small></button>
+</div><div class="login-demo-note">DEMO · NO PASSWORD</div>
+</section>
  </div>
 </div>
 
@@ -646,6 +648,7 @@ html[dir="rtl"] .p27-panel{right:auto;left:0;box-shadow:25px 0 70px rgba(17,25,3
     <a class="nav-item" data-page="parties" href="#" onclick="openPage('parties');return false;"><span class="nav-icon">♙</span><span data-i18n="Parties">Parties</span></a>
     <a class="nav-item" data-page="claims" href="#" onclick="openPage('claims');return false;"><span class="nav-icon">§</span><span data-i18n="Financial Claims">Financial Claims</span></a>
     <a class="nav-item" data-page="tasks" href="#" onclick="openPage('tasks');return false;"><span class="nav-icon">✓</span><span data-i18n="Tasks & Follow-ups">Tasks & Follow-ups</span></a>
+    <a class="nav-item" data-page="calendar" href="#" onclick="openPage('calendar');return false;"><span class="nav-icon">▦</span><span data-i18n="Advanced Calendar">Advanced Calendar</span></a>
     <a class="nav-item" data-page="actionsCenter" href="#" onclick="openPage('actionsCenter');return false;"><span class="nav-icon">⚑</span><span data-i18n="Execution Action Center">Execution Action Center</span></a>
     <a class="nav-item" data-page="followupBoard" href="#" onclick="openPage('followupBoard');return false;"><span class="nav-icon">◷</span><span data-i18n="Daily Follow-up Board">Daily Follow-up Board</span></a>
   </div>
@@ -667,6 +670,9 @@ html[dir="rtl"] .p27-panel{right:auto;left:0;box-shadow:25px 0 70px rgba(17,25,3
     <a class="nav-item" data-page="reports" href="#" onclick="openPage('reports');return false;"><span class="nav-icon">◩</span><span data-i18n="Reports & Analytics">Reports & Analytics</span></a>
     <a class="nav-item" data-page="users" href="#" onclick="openPage('users');return false;"><span class="nav-icon">♙</span><span data-i18n="Users & Permissions">Users & Permissions</span></a>
     <a class="nav-item" data-page="presentation" href="#" onclick="openPage('presentation');return false;"><span class="nav-icon">◉</span><span data-i18n="Demo Presentation Mode">Demo Presentation Mode</span></a>
+    <a class="nav-item" data-page="hr" href="#" onclick="openPage('hr');return false;"><span class="nav-icon">♙</span><span data-i18n="Human Resources">Human Resources</span></a>
+    <a class="nav-item" data-page="accounting" href="#" onclick="openPage('accounting');return false;"><span class="nav-icon">▧</span><span data-i18n="Accounting">Accounting</span></a>
+    <a class="nav-item" data-page="tax" href="#" onclick="openPage('tax');return false;"><span class="nav-icon">%</span><span data-i18n="Tax">Tax</span></a>
     <a class="nav-item" data-page="settings" href="#" onclick="openPage('settings');return false;"><span class="nav-icon">⚙</span><span data-i18n="Settings">Settings</span></a>
     <a class="nav-item" data-page="audit" href="#" onclick="openPage('audit');return false;"><span class="nav-icon">⊙</span><span data-i18n="Audit Log">Audit Log</span></a>
   </div>
@@ -840,6 +846,8 @@ html[dir="rtl"] .p27-panel{right:auto;left:0;box-shadow:25px 0 70px rgba(17,25,3
  <div class="hero-row"><div><h2 data-i18n="Minutes & Field Records">Minutes & Field Records</h2><p data-i18n="Create, dictate, edit and attach images to enforcement minutes.">Create, dictate, edit and attach images to enforcement minutes.</p></div><button class="action-btn primary" onclick="openMinutesModal()">＋ <span data-i18n="New Minutes">New Minutes</span></button></div>
  <div id="minutesList"></div>
 </div></section>
+<section id="calendarPage" class="page hidden"><div class="calendar-shell"><div class="calendar-toolbar"><div><span class="eyebrow">SMART SCHEDULING</span><h2 data-i18n="Advanced Calendar">Advanced Calendar</h2><p data-i18n="Calendar description">Tasks, follow-ups, deadlines and appointments in one operational calendar.</p></div><div class="calendar-actions"><button onclick="calendarShift(-1)">‹</button><button onclick="calendarToday()" data-i18n="Today">Today</button><button onclick="calendarShift(1)">›</button><button class="primary" onclick="openSmartTaskModal('')" data-i18n="New Task">New Task</button></div></div><div class="calendar-title" id="calendarTitle"></div><div class="calendar-weekdays" id="calendarWeekdays"></div><div class="calendar-grid" id="calendarGrid"></div></div></section>
+<section id="comingSoonPage" class="page hidden"><div class="coming-soon-card"><div class="coming-icon" id="comingIcon">◇</div><span class="eyebrow">ENFORZA MODULE</span><h2 id="comingTitle">Coming Soon</h2><p id="comingText">This module is reserved for the next operational release.</p><div class="coming-pill">COMING SOON</div></div></section>
 <section id="reportsPage" class="page hidden"><div class="content">
   <div class="hero-row"><div><h2 data-i18n="Reports & Analytics">Reports & Analytics</h2><p data-i18n="Executive, enforcement and financial intelligence.">Executive, enforcement and financial intelligence.</p></div><div class="hero-actions"><button class="action-btn">PDF</button><button class="action-btn primary" onclick="window.print()" data-i18n="Print">Print</button></div></div>
   <div class="kpi-grid"><div class="kpi-card"><span class="kpi-label" data-i18n="Total Claims">Total Claims</span><strong class="kpi-value">BHD 1.84M</strong></div><div class="kpi-card"><span class="kpi-label" data-i18n="Collections">Collections</span><strong class="kpi-value">BHD 742.6K</strong></div><div class="kpi-card"><span class="kpi-label" data-i18n="Expenses">Expenses</span><strong class="kpi-value">BHD 38.4K</strong></div><div class="kpi-card"><span class="kpi-label" data-i18n="Net Recovery">Net Recovery</span><strong class="kpi-value">BHD 704.2K</strong></div><div class="kpi-card"><span class="kpi-label" data-i18n="Recovery Rate">Recovery Rate</span><strong class="kpi-value">40.4%</strong></div><div class="kpi-card"><span class="kpi-label" data-i18n="Settled Files">Settled Files</span><strong class="kpi-value">18</strong></div></div>
@@ -1528,6 +1536,9 @@ Object.assign(I18N.ar,{
 });
 
 
+/* CLEAN DEMO DATASET */
+Object.keys(DATA).forEach(function(k){if(Array.isArray(DATA[k]))DATA[k].length=0;});
+if(typeof ENF_ACTIONS!=="undefined"&&Array.isArray(ENF_ACTIONS))ENF_ACTIONS.length=0;
 const DEMO_ORIGINAL=JSON.parse(JSON.stringify(DATA));
 let DEMO_SESSION_LOG=[];
 function logDemo(action,detail){DEMO_SESSION_LOG.unshift({time:new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"}),action,detail});renderSessionLog()}
@@ -2304,5 +2315,25 @@ Object.assign(I18N.ar,{"Add Attachment":"إضافة مرفق","Choose where you 
 
 renderDashboard();renderUsers();renderAudit();renderPermissions();showReport("executive");applyLanguage();
 </script>
-</body>
+<style id="enforza-consolidated-demo-css">
+.demo-user-grid{display:grid;gap:10px;margin-top:18px}.demo-user-card{display:grid;grid-template-columns:42px 1fr;grid-template-rows:auto auto;column-gap:12px;align-items:center;text-align:start;border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:14px;cursor:pointer;color:inherit}.demo-user-card:hover{border-color:var(--bronze);transform:translateY(-1px)}.demo-user-card>b{grid-row:1/3;width:42px;height:42px;border-radius:12px;background:var(--navy);color:var(--bronze);display:grid;place-items:center}.demo-user-card strong{font-size:12px}.demo-user-card small{font-size:8px;color:var(--muted)}
+.calendar-shell{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px}.calendar-toolbar{display:flex;justify-content:space-between;gap:18px;align-items:flex-end;margin-bottom:18px}.calendar-toolbar h2{margin:3px 0 4px}.calendar-toolbar p{margin:0;color:var(--muted);font-size:9px}.calendar-actions{display:flex;gap:7px;flex-wrap:wrap}.calendar-actions button{border:1px solid var(--line);background:var(--surface);border-radius:9px;padding:8px 10px;cursor:pointer}.calendar-actions .primary{background:var(--navy);color:white}.calendar-title{font-weight:900;font-size:14px;margin:10px 0}.calendar-weekdays,.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr)}.calendar-weekdays div{text-align:center;padding:8px;font-size:8px;font-weight:900;color:var(--muted)}.calendar-day{min-height:105px;border:1px solid var(--line);padding:7px;background:var(--surface)}.calendar-day.muted{opacity:.42}.calendar-day.today{box-shadow:inset 0 0 0 2px var(--bronze)}.calendar-num{font-size:9px;font-weight:900}.calendar-event{display:block;width:100%;margin-top:5px;border:0;border-radius:6px;padding:5px;text-align:start;background:rgba(174,117,65,.12);font-size:7px;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.coming-soon-card{min-height:58vh;display:grid;place-items:center;align-content:center;text-align:center;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:30px}.coming-icon{width:58px;height:58px;border-radius:18px;background:var(--navy);color:var(--bronze);display:grid;place-items:center;font-size:22px;margin-bottom:14px}.coming-soon-card h2{font-size:28px!important;margin:6px 0}.coming-soon-card p{color:var(--muted);max-width:460px}.coming-pill{margin-top:12px;border:1px solid var(--line);border-radius:999px;padding:6px 10px;font-size:8px;font-weight:950}
+@media(max-width:760px){.calendar-toolbar{align-items:stretch;flex-direction:column}.calendar-day{min-height:78px}.calendar-event{font-size:6px}.calendar-shell{padding:10px}}
+</style>
+<script id="enforza-consolidated-demo-js">
+(function(){"use strict";
+window.enterDemoRole=function(role){selectedDemoRole=role;applyRoleAccess(role);let g=document.getElementById("loginGate");if(g)g.style.display="none";if(role==="creditor")openPage("creditorPortal");else if(role==="officer")openPage("followupBoard");else openPage("dashboard");if(typeof showToast==="function")showToast(t("Demo session started"))};
+let calDate=new Date();
+function taskRows(){let a=[];if(window.DATA&&Array.isArray(DATA.tasks))a=a.concat(DATA.tasks);if(window.DATA&&Array.isArray(DATA.smartTasks))a=a.concat(DATA.smartTasks);return a}
+function parseDate(v){if(!v)return null;let d=new Date(v);if(!isNaN(d))return d;return null}
+window.renderAdvancedCalendar=function(){let g=document.getElementById("calendarGrid"),w=document.getElementById("calendarWeekdays"),title=document.getElementById("calendarTitle");if(!g||!w||!title)return;let ar=window.currentLang==="ar",days=ar?["أحد","اثنين","ثلاثاء","أربعاء","خميس","جمعة","سبت"]:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];w.innerHTML=days.map(x=>"<div>"+x+"</div>").join("");title.textContent=calDate.toLocaleDateString(ar?"ar-BH":"en-GB",{month:"long",year:"numeric"});let y=calDate.getFullYear(),m=calDate.getMonth(),first=new Date(y,m,1),start=new Date(y,m,1-first.getDay()),today=new Date(),tasks=taskRows(),html="";for(let i=0;i<42;i++){let d=new Date(start);d.setDate(start.getDate()+i);let key=d.toDateString(),ev=tasks.filter(x=>{let q=parseDate(x.due||x.date||x.start);return q&&q.toDateString()===key}),cls="calendar-day"+(d.getMonth()!==m?" muted":"")+(d.toDateString()===today.toDateString()?" today":"");html+=`<div class="${cls}"><div class="calendar-num">${d.getDate()}</div>${ev.slice(0,4).map(x=>`<button class="calendar-event" onclick="calendarOpenTask('${String(x.id||"").replace(/'/g,"")}')">${x.title||x.type||"Task"}</button>`).join("")}</div>`}g.innerHTML=html};
+window.calendarShift=n=>{calDate=new Date(calDate.getFullYear(),calDate.getMonth()+n,1);renderAdvancedCalendar()};
+window.calendarToday=()=>{calDate=new Date();renderAdvancedCalendar()};
+window.calendarOpenTask=function(id){let x=taskRows().find(v=>String(v.id||"")===String(id));if(x&&DATA.tasks?.some(v=>v.id===x.id)&&typeof openDetail==="function")openDetail("tasks",x.id);else if(typeof openSmartTaskModal==="function")openSmartTaskModal(x?.file||"")};
+function showSoon(page){let names={hr:["Human Resources","الموارد البشرية","♙"],accounting:["Accounting","المحاسبة","▧"],tax:["Tax","الضريبة","%"]},v=names[page];hidePages();currentModule=page;document.querySelectorAll(".nav-item").forEach(el=>el.classList.toggle("active",el.dataset.page===page));document.getElementById("comingSoonPage").classList.remove("hidden");document.getElementById("comingTitle").textContent=currentLang==="ar"?v[1]:v[0];document.getElementById("comingIcon").textContent=v[2];document.getElementById("comingText").textContent=currentLang==="ar"?"هذا القسم محفوظ للمرحلة التشغيلية القادمة من ENFORZA.":"This module is reserved for the next operational release of ENFORZA.";setHeading(v[0],"COMING SOON");document.getElementById("sidebar").classList.remove("open");window.scrollTo(0,0)}
+const oldOpen=window.openPage;
+window.openPage=function(page){if(page==="calendar"){hidePages();currentModule=page;document.querySelectorAll(".nav-item").forEach(el=>el.classList.toggle("active",el.dataset.page===page));document.getElementById("calendarPage").classList.remove("hidden");setHeading("Advanced Calendar","Tasks, follow-ups, deadlines and appointments.");renderAdvancedCalendar();document.getElementById("sidebar").classList.remove("open");window.scrollTo(0,0);applyLanguage();return}if(["hr","accounting","tax"].includes(page)){showSoon(page);return}return oldOpen(page)};
+Object.assign(I18N.ar,{"Administrator":"مدير النظام","Advanced Calendar":"التقويم المتطور","Calendar description":"المهام والمتابعات والمواعيد والاستحقاقات في تقويم تشغيلي واحد.","Today":"اليوم","New Task":"مهمة جديدة","Human Resources":"الموارد البشرية","Accounting":"المحاسبة","Tax":"الضريبة"});
+})();
+</script></body>
 </html>
