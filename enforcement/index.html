@@ -712,7 +712,14 @@ body.role-management .sidebar .nav-item{transition:.15s ease}
 @media(max-width:900px){.cp38-kpis{grid-template-columns:1fr 1fr}.cp38-grid{grid-template-columns:1fr}.cp38{padding:12px}.cp38-hero{display:block}.cp38-badge{display:inline-block;margin-top:15px}}
 @media(max-width:520px){.cp38-kpis{grid-template-columns:1fr 1fr}.cp38-hero{border-radius:16px;padding:20px}.cp38-filetop{display:block}}
 </style>
-</head>
+<style id="phase39-smart-workflow">
+/* PHASE 39 — SMART ENFORCEMENT WORKFLOW */
+.p39-wrap{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:16px;margin:12px 0}
+.p39-head{display:flex;justify-content:space-between;gap:10px;align-items:center}.p39-head h3{font-size:20px!important;margin:0}.p39-head span{color:var(--muted)}
+.p39-flow{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;margin-top:14px}.p39-step{position:relative;border:1px solid var(--border);border-radius:12px;padding:12px 8px;min-height:92px;background:var(--white);cursor:pointer}.p39-step b{display:grid;width:28px;height:28px;border-radius:50%;place-items:center;background:color-mix(in srgb,var(--border) 70%,transparent);margin-bottom:7px}.p39-step strong{display:block;font-size:14px}.p39-step span{display:block;color:var(--muted);font-size:12px;margin-top:4px}.p39-step.done{border-color:color-mix(in srgb,#3b8b65 50%,var(--border));background:color-mix(in srgb,#3b8b65 5%,var(--white))}.p39-step.done b{background:#3b8b65;color:#fff}.p39-step.current{border:2px solid var(--p29-accent);box-shadow:0 8px 22px color-mix(in srgb,var(--p29-accent) 12%,transparent)}.p39-step.current b{background:var(--p29-accent);color:#fff}
+.p39-bottom{display:grid;grid-template-columns:1fr .9fr;gap:10px;margin-top:11px}.p39-next,.p39-ai{border:1px solid var(--border);border-radius:12px;padding:13px}.p39-ai{background:color-mix(in srgb,var(--p29-accent) 6%,var(--white));border-color:color-mix(in srgb,var(--p29-accent) 35%,var(--border))}.p39-next h4,.p39-ai h4{margin:0 0 6px;font-size:17px}.p39-next p,.p39-ai p{margin:0;color:var(--muted);line-height:1.55}.p39-buttons{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.p39-buttons button{border:1px solid var(--border);background:var(--white);color:var(--text);border-radius:9px;padding:9px 11px;font-weight:900}.p39-buttons .primary{background:var(--p29-accent);border-color:var(--p29-accent);color:#fff}
+@media(max-width:1050px){.p39-flow{grid-template-columns:repeat(4,1fr)}}@media(max-width:700px){.p39-flow{grid-template-columns:1fr 1fr}.p39-bottom{grid-template-columns:1fr}.p39-step{min-height:82px}}
+</style></head>
 <div class="exec-action-sheet" id="execActionSheet"><div class="exec-action-box"><div class="minutes-head"><div><h2>New Action</h2><p>Choose what you want to add to this enforcement file.</p></div><button class="top-btn" onclick="closeExecActionSheet()">×</button></div><div class="exec-action-grid">
 <div class="exec-action-card" onclick="execAction('task')"><b>✓</b><strong>Task</strong></div><div class="exec-action-card" onclick="execAction('minutes')"><b>✎</b><strong>Minutes</strong></div><div class="exec-action-card" onclick="execAction('collection')"><b>◉</b><strong>Collection</strong></div><div class="exec-action-card" onclick="execAction('document')"><b>▧</b><strong>Document</strong></div><div class="exec-action-card" onclick="execAction('camera')"><b>📷</b><strong>Camera / Evidence</strong></div><div class="exec-action-card" onclick="execAction('settlement')"><b>◇</b><strong>Settlement</strong></div></div></div></div>
 <button class="exec-ai-fab" onclick="openAI()">✦ AI</button><div class="p27-drawer" id="p27Drawer" onclick="if(event.target===this)closeP27Notifications()"><aside class="p27-panel"><div class="p27-head"><div class="p27-head-row"><div><h2 id="p27Title">Notifications</h2><p id="p27Subtitle">Important items that need your attention.</p></div><button onclick="closeP27Notifications()">×</button></div></div><div class="p27-filters" id="p27Filters"></div><div class="p27-list" id="p27List"></div><div class="p27-footer"><button onclick="p27MarkViewed()">✓ <span id="p27ViewedText">Mark Viewed</span></button><button onclick="openPage('smarttasks');closeP27Notifications()">▧ <span id="p27TasksText">Tasks</span></button></div></aside></div><body>
@@ -2771,7 +2778,53 @@ p35Save=function(){
  setTimeout(()=>{if(window.activeDemoRole)p38ApplyRBAC(window.activeDemoRole)},150);
 })();
 </script>
-</body></html>`);w.document.close();
+<script id="phase39-smart-workflow-js">
+const P39_STEPS=[
+ {id:"received",en:"File Received",ar:"استلام الملف",nextEn:"Review the enforcement instrument and core file data.",nextAr:"مراجعة السند التنفيذي والبيانات الأساسية للملف."},
+ {id:"review",en:"Instrument Review",ar:"مراجعة السند",nextEn:"Confirm readiness and prepare/open the enforcement proceeding.",nextAr:"التأكد من الجاهزية والبدء في إجراءات فتح التنفيذ."},
+ {id:"opened",en:"Execution Opened",ar:"فتح التنفيذ",nextEn:"Record the first enforcement action and required service.",nextAr:"تسجيل أول إجراء تنفيذي ومتطلبات التبليغ."},
+ {id:"service",en:"Service / Notice",ar:"التبليغ",nextEn:"Follow service outcome and determine attachment or recovery action.",nextAr:"متابعة نتيجة التبليغ وتحديد إجراء الحجز أو التحصيل."},
+ {id:"recovery",en:"Attachment / Recovery",ar:"الحجز / التحصيل",nextEn:"Continue recovery or prepare settlement where appropriate.",nextAr:"استكمال التحصيل أو إعداد التسوية عند الحاجة."},
+ {id:"settlement",en:"Settlement",ar:"التسوية",nextEn:"Verify all obligations, collections and documents before closure.",nextAr:"مراجعة الالتزامات والتحصيل والمستندات قبل الإقفال."},
+ {id:"closed",en:"Closure",ar:"الإقفال",nextEn:"File workflow completed.",nextAr:"اكتمل مسار الملف."}
+];
+function p39State(f){
+ let s=f.workflowStage||"received",idx=P39_STEPS.findIndex(x=>x.id===s);return idx<0?0:idx;
+}
+function p39Render(f){
+ if(!f||activeDemoRole==="creditor")return;
+ let host=document.getElementById("execWorkspacePanel");if(!host)return;
+ document.getElementById("p39Workflow")?.remove();
+ let idx=p39State(f),cur=P39_STEPS[idx];
+ let box=document.createElement("div");box.id="p39Workflow";box.className="p39-wrap";
+ box.innerHTML=`<div class="p39-head"><div><h3>${currentLang==="ar"?"مسار التنفيذ الذكي":"Smart Enforcement Workflow"}</h3><span>${f.id} · ${currentLang==="ar"?"المرحلة الحالية":"Current stage"}: ${currentLang==="ar"?cur.ar:cur.en}</span></div></div>
+ <div class="p39-flow">${P39_STEPS.map((s,i)=>`<div class="p39-step ${i<idx?"done":i===idx?"current":""}" onclick="p39Select('${f.id}',${i})"><b>${i<idx?"✓":i+1}</b><strong>${currentLang==="ar"?s.ar:s.en}</strong><span>${i<idx?(currentLang==="ar"?"مكتمل":"Completed"):i===idx?(currentLang==="ar"?"حالي":"Current"):(currentLang==="ar"?"قادم":"Upcoming")}</span></div>`).join("")}</div>
+ <div class="p39-bottom"><div class="p39-next"><h4>${currentLang==="ar"?"الإجراء التالي":"Next Recommended Action"}</h4><p>${currentLang==="ar"?cur.nextAr:cur.nextEn}</p><div class="p39-buttons"><button class="primary" onclick="p39Advance('${f.id}')">${idx===P39_STEPS.length-1?(currentLang==="ar"?"مكتمل":"Completed"):(currentLang==="ar"?"إكمال المرحلة والانتقال":"Complete & Advance")}</button><button onclick="p35Open('${f.id}','task')">＋ ${currentLang==="ar"?"مهمة":"Task"}</button><button onclick="p35Open('${f.id}','minute')">📝 ${currentLang==="ar"?"محضر":"Minutes"}</button></div></div>
+ <div class="p39-ai"><h4>✦ ENFORZA AI Workflow</h4><p>${p39AISuggestion(f,idx)}</p><div class="p39-buttons"><button onclick="p39AITask('${f.id}')">${currentLang==="ar"?"إنشاء مهمة مقترحة":"Create Suggested Task"}</button></div></div></div>`;
+ host.prepend(box);
+}
+function p39AISuggestion(f,idx){
+ let s=P39_STEPS[idx],out=Math.max(0,+(f.claim||0)-+(f.collected||0));
+ if(currentLang==="ar")return `الملف في مرحلة «${s.ar}». الرصيد القائم ${money(out)}. يقترح النظام: ${s.nextAr} الاقتراح للمساعدة فقط ويظل اعتماد الإجراء بيد المستخدم.`;
+ return `The file is at “${s.en}”. Outstanding balance is ${money(out)}. Suggested next step: ${s.nextEn} This is decision support only; the user remains responsible for approval.`;
+}
+function p39Select(id,idx){
+ let f=(DATA.files||[]).find(x=>x.id===id);if(!f||activeDemoRole!=="management")return showToast(currentLang==="ar"?"تغيير المرحلة يدويًا متاح للإدارة فقط.":"Manual stage change is available to Management only.");
+ f.workflowStage=P39_STEPS[idx].id;f.next=currentLang==="ar"?P39_STEPS[idx].nextAr:P39_STEPS[idx].nextEn;p34Persist();p39Render(f);showToast(currentLang==="ar"?"تم تحديث مرحلة الملف.":"Workflow stage updated.");
+}
+function p39Advance(id){
+ let f=(DATA.files||[]).find(x=>x.id===id);if(!f)return;let idx=p39State(f);if(idx>=P39_STEPS.length-1)return;
+ f.workflowStage=P39_STEPS[idx+1].id;f.next=currentLang==="ar"?P39_STEPS[idx+1].nextAr:P39_STEPS[idx+1].nextEn;
+ DATA.smartTasks=DATA.smartTasks||[];DATA.smartTasks.push({id:p34Id("TSK"),file:f.id,title:f.next,status:"Open",priority:"Normal",assignee:f.officer||"Unassigned",due:new Date().toISOString().slice(0,10),created:new Date().toISOString().slice(0,10),source:"Workflow"});
+ p34Persist();p39Render(f);showToast(currentLang==="ar"?"اكتملت المرحلة وتم إنشاء مهمة للخطوة التالية.":"Stage completed and a next-step task was created.");
+}
+function p39AITask(id){
+ let f=(DATA.files||[]).find(x=>x.id===id);if(!f)return,idx=p39State(f),s=P39_STEPS[idx];
+ DATA.smartTasks=DATA.smartTasks||[];DATA.smartTasks.push({id:p34Id("TSK"),file:f.id,title:currentLang==="ar"?s.nextAr:s.nextEn,status:"Open",priority:"High",assignee:f.officer||"Unassigned",due:new Date().toISOString().slice(0,10),created:new Date().toISOString().slice(0,10),source:"ENFORZA AI Suggestion"});
+ p34Persist();showToast(currentLang==="ar"?"تم إنشاء المهمة المقترحة.":"Suggested task created.");
+}
+if(typeof p26Workspace==="function"){const p39old=p26Workspace;p26Workspace=function(f){p39old(f);setTimeout(()=>p39Render(f),40)}}
+</script></body></html>`);w.document.close();
 }
 const p36OldSave=p35Save;
 p35Save=function(){
