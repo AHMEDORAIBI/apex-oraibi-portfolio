@@ -502,6 +502,20 @@ html[dir="rtl"] .main{margin-left:0!important;margin-right:260px!important}.nav-
 .exec-workspace-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:13px}.exec-mini-card{border:1px solid #ebe5de;border-radius:11px;padding:13px;margin-bottom:9px}.exec-mini-card strong{display:block;color:#111923}.exec-mini-card span{display:block;color:var(--muted);margin-top:4px}
 @media(max-width:900px){.exec-file-kpis{grid-template-columns:1fr 1fr}.exec-file-toolbar{grid-template-columns:1fr 1fr}.exec-file-card{grid-template-columns:1fr 1fr}.exec-workspace-grid{grid-template-columns:1fr}}
 @media(max-width:600px){.exec-files-hero{display:block}.exec-files-hero button{width:100%;margin-top:13px}.exec-file-toolbar{grid-template-columns:1fr}.exec-file-card{grid-template-columns:1fr}.exec-file-kpis{grid-template-columns:1fr 1fr}}
+</style><style id="phase25-premium-wizard">
+/* PHASE 25 — PREMIUM NEW FILE WIZARD */
+#wizardModal .wizard-box{width:min(1040px,96vw)!important;max-height:94vh!important;border-radius:18px!important;padding:0!important;overflow:hidden!important;background:#f6f4f1!important}
+.p25-wizard-head{background:linear-gradient(135deg,#111923,#253440);padding:22px 24px;color:#fff;display:flex;justify-content:space-between;gap:16px;align-items:center}
+.p25-wizard-head h2{color:#fff!important;margin:0}.p25-wizard-head p{color:#cbd2d8;margin:6px 0 0}.p25-wizard-head button{border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);color:#fff;border-radius:9px;width:40px;height:40px;font-size:22px}
+.p25-stepper{display:grid;grid-template-columns:repeat(4,1fr);background:#fff;border-bottom:1px solid #e5ded6;padding:14px 22px;gap:8px}
+.p25-step{display:flex;gap:9px;align-items:center;color:#8a949e}.p25-step b{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:#edf0f2;color:#64717c}.p25-step strong{font-size:15px!important}.p25-step.active b,.p25-step.done b{background:#b78a5d;color:#fff}.p25-step.active strong{color:#111923}.p25-step.done strong{color:#8a633f}
+.p25-body{padding:22px;max-height:64vh;overflow:auto}.p25-panel{display:none}.p25-panel.active{display:block}.p25-section{background:#fff;border:1px solid #e5ded6;border-radius:13px;padding:17px;margin-bottom:12px}.p25-section h3{margin:0 0 12px;color:#111923}
+.p25-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.p25-field.full{grid-column:1/-1}.p25-field label{display:block;color:#596570;font-weight:800;margin-bottom:6px}.p25-field input,.p25-field select,.p25-field textarea{width:100%;border:1px solid #ddd6cf;border-radius:9px;padding:11px 12px;font-size:16px;background:#fff}.p25-field textarea{min-height:90px;resize:vertical}
+.p25-review{display:grid;grid-template-columns:1fr 1fr;gap:10px}.p25-review-card{border:1px solid #e5ded6;border-radius:11px;padding:13px;background:#fff}.p25-review-card span{display:block;color:#7a858f}.p25-review-card strong{display:block;color:#111923;margin-top:5px}
+.p25-ai-review{border:1px solid #dbc3ad;background:linear-gradient(135deg,#fff9f3,#fff);border-radius:12px;padding:15px;margin-top:12px}.p25-ai-review strong{color:#111923}.p25-ai-review p{color:#66727d;line-height:1.6;margin:7px 0 0}
+.p25-footer{background:#fff;border-top:1px solid #e5ded6;padding:14px 22px;display:flex;justify-content:space-between;align-items:center;gap:10px}.p25-footer-left{color:#7b858e}.p25-footer-actions{display:flex;gap:8px}.p25-footer button{border:1px solid #ddd6cf;background:#fff;border-radius:9px;padding:10px 15px;font-size:16px;font-weight:900}.p25-footer .primary{background:#b78a5d;color:#fff;border-color:#b78a5d}
+.p25-save{font-size:14px!important;color:#7d8790}.p25-mobile-title{display:none}
+@media(max-width:720px){#wizardModal{padding:0!important}#wizardModal .wizard-box{width:100%!important;height:100vh!important;max-height:none!important;border-radius:0!important}.p25-wizard-head{padding:16px}.p25-wizard-head p{display:none}.p25-stepper{padding:10px;gap:4px}.p25-step{justify-content:center}.p25-step strong{display:none}.p25-body{padding:12px;max-height:calc(100vh - 190px)}.p25-grid,.p25-review{grid-template-columns:1fr}.p25-field.full{grid-column:auto}.p25-footer{padding:10px 12px}.p25-footer-left{display:none}.p25-footer-actions{width:100%}.p25-footer-actions button{flex:1}.p25-mobile-title{display:block;color:#8a633f;font-weight:900;margin-bottom:10px}}
 </style></head>
 <div class="exec-action-sheet" id="execActionSheet"><div class="exec-action-box"><div class="minutes-head"><div><h2>New Action</h2><p>Choose what you want to add to this enforcement file.</p></div><button class="top-btn" onclick="closeExecActionSheet()">×</button></div><div class="exec-action-grid">
 <div class="exec-action-card" onclick="execAction('task')"><b>✓</b><strong>Task</strong></div><div class="exec-action-card" onclick="execAction('minutes')"><b>✎</b><strong>Minutes</strong></div><div class="exec-action-card" onclick="execAction('collection')"><b>◉</b><strong>Collection</strong></div><div class="exec-action-card" onclick="execAction('document')"><b>▧</b><strong>Document</strong></div><div class="exec-action-card" onclick="execAction('camera')"><b>📷</b><strong>Camera / Evidence</strong></div><div class="exec-action-card" onclick="execAction('settlement')"><b>◇</b><strong>Settlement</strong></div></div></div></div>
@@ -1720,6 +1734,127 @@ function phase24RenderPanel(f,type){
 }
 if(typeof renderUnifiedFile360==="function"){let p24old=renderUnifiedFile360;renderUnifiedFile360=function(f){p24old(f);setTimeout(()=>phase24Workspace(f),15)}}
 if(typeof openPage==="function"){let p24open=openPage;openPage=function(p){p24open(p);if(p==="files")setTimeout(renderExecutiveFiles,10)}}
+</script><script id="phase25-premium-wizard-js">
+let p25Step=1,p25DraftTimer=null;
+const P25_DRAFT_KEY="ENFORZA_NEW_FILE_DRAFT_V25";
+
+function p25Val(id){return document.getElementById(id)?.value||""}
+function p25Set(id,v){let e=document.getElementById(id);if(e&&v!==undefined&&v!==null)e.value=v}
+function p25DraftObject(){
+ return {wfRef:p25Val("wfRef"),wfOrigin:p25Val("wfOrigin"),wfSource:p25Val("wfSource"),wfCaseNo:p25Val("wfCaseNo"),wfCourt:p25Val("wfCourt"),wfExternalRef:p25Val("wfExternalRef"),
+ wfCreditor:p25Val("wfCreditor"),wfDebtor:p25Val("wfDebtor"),wfCreditorID:p25Val("wfCreditorID"),wfDebtorID:p25Val("wfDebtorID"),wfLawFirm:p25Val("wfLawFirm"),wfOfficer:p25Val("wfOfficer"),
+ wfEnforcementNo:p25Val("wfEnforcementNo"),wfInstrument:p25Val("wfInstrument"),wfJudgmentDate:p25Val("wfJudgmentDate"),wfJudgmentAmount:p25Val("wfJudgmentAmount"),wfFees:p25Val("wfFees"),wfPreviousCollection:p25Val("wfPreviousCollection"),wfClaim:p25Val("wfClaim"),wfNote:p25Val("wfNote")};
+}
+function p25SaveDraft(){
+ try{localStorage.setItem(P25_DRAFT_KEY,JSON.stringify(p25DraftObject()));let e=document.getElementById("p25SaveState");if(e)e.textContent=currentLang==="ar"?"تم حفظ المسودة تلقائيًا":"Draft autosaved"}catch(e){}
+}
+function p25LoadDraft(){
+ try{let d=JSON.parse(localStorage.getItem(P25_DRAFT_KEY)||"null");if(!d)return;Object.entries(d).forEach(([k,v])=>p25Set(k,v))}catch(e){}
+}
+function p25ClearDraft(){try{localStorage.removeItem(P25_DRAFT_KEY)}catch(e){}}
+function p25Field(label,id,type="text",opts=""){
+ if(type==="select")return `<div class="p25-field"><label>${label}</label><select id="${id}">${opts}</select></div>`;
+ return `<div class="p25-field"><label>${label}</label><input id="${id}" type="${type}" ${type==="number"?'step="0.001"':""}></div>`;
+}
+function p25BuildWizard(){
+ let m=document.getElementById("wizardModal");if(!m||m.dataset.p25==="1")return;
+ m.dataset.p25="1";
+ let box=m.querySelector(".wizard-box")||m.firstElementChild;if(!box)return;
+ box.innerHTML=`<div class="p25-wizard-head"><div><h2>${currentLang==="ar"?"فتح ملف تنفيذ جديد":"Open New Enforcement File"}</h2><p>${currentLang==="ar"?"أدخل المعلومات الأساسية فقط. يمكنك استكمال التفاصيل لاحقًا من داخل الملف.":"Enter the essential information only. Details can be completed later inside the file."}</p></div><button onclick="closeWizard()">×</button></div>
+ <div class="p25-stepper">
+  <div class="p25-step active" data-p25step="1"><b>1</b><strong>${currentLang==="ar"?"المصدر والقضية":"Origin & Case"}</strong></div>
+  <div class="p25-step" data-p25step="2"><b>2</b><strong>${currentLang==="ar"?"الأطراف":"Parties"}</strong></div>
+  <div class="p25-step" data-p25step="3"><b>3</b><strong>${currentLang==="ar"?"المطالبة والتنفيذ":"Claim & Enforcement"}</strong></div>
+  <div class="p25-step" data-p25step="4"><b>4</b><strong>${currentLang==="ar"?"المراجعة و AI":"Review & AI"}</strong></div>
+ </div>
+ <div class="p25-body">
+  <section class="p25-panel active" data-panel="1"><div class="p25-mobile-title">${currentLang==="ar"?"المصدر والقضية":"Origin & Case"}</div>
+   <div class="p25-section"><h3>${currentLang==="ar"?"تعريف الملف":"File Identity"}</h3><div class="p25-grid">
+    ${p25Field(currentLang==="ar"?"رقم / مرجع الملف":"File Reference","wfRef")}
+    ${p25Field(currentLang==="ar"?"مصدر الملف":"File Origin","wfOrigin","select",`<option>New Direct File</option><option>Transferred from Law Firm</option><option>Transferred from Collection</option><option>Internal Referral</option>`)}
+    ${p25Field(currentLang==="ar"?"الجهة المحيلة":"Source / Referrer","wfSource")}
+    ${p25Field(currentLang==="ar"?"المرجع الخارجي":"External Reference","wfExternalRef")}
+   </div></div>
+   <div class="p25-section"><h3>${currentLang==="ar"?"بيانات القضية":"Case Link"}</h3><div class="p25-grid">
+    ${p25Field(currentLang==="ar"?"رقم القضية":"Court Case Number","wfCaseNo")}
+    ${p25Field(currentLang==="ar"?"المحكمة / الدائرة":"Court / Chamber","wfCourt")}
+   </div></div>
+  </section>
+  <section class="p25-panel" data-panel="2"><div class="p25-mobile-title">${currentLang==="ar"?"الأطراف":"Parties"}</div>
+   <div class="p25-section"><h3>${currentLang==="ar"?"الدائن والمدين":"Creditor & Debtor"}</h3><div class="p25-grid">
+    ${p25Field(currentLang==="ar"?"الدائن":"Creditor","wfCreditor")}
+    ${p25Field(currentLang==="ar"?"رقم الهوية / السجل للدائن":"Creditor ID / CR","wfCreditorID")}
+    ${p25Field(currentLang==="ar"?"المدين":"Debtor","wfDebtor")}
+    ${p25Field(currentLang==="ar"?"رقم الهوية / السجل للمدين":"Debtor ID / CR","wfDebtorID")}
+    ${p25Field(currentLang==="ar"?"مكتب المحاماة المحيل":"Referring Law Firm","wfLawFirm")}
+    ${p25Field(currentLang==="ar"?"المسؤول عن الملف":"Assigned Officer","wfOfficer","select",`<option>Ali Hassan</option><option>Fatima Ahmed</option><option>Mohammed Ali</option>`)}
+   </div></div>
+  </section>
+  <section class="p25-panel" data-panel="3"><div class="p25-mobile-title">${currentLang==="ar"?"المطالبة والتنفيذ":"Claim & Enforcement"}</div>
+   <div class="p25-section"><h3>${currentLang==="ar"?"السند والمبالغ":"Instrument & Amounts"}</h3><div class="p25-grid">
+    ${p25Field(currentLang==="ar"?"رقم ملف التنفيذ":"Enforcement File Number","wfEnforcementNo")}
+    ${p25Field(currentLang==="ar"?"السند التنفيذي":"Enforcement Instrument","wfInstrument","select",`<option>Final Judgment</option><option>Executable Judgment</option><option>Settlement Agreement</option><option>Cheque / Commercial Paper</option><option>Notarial Instrument</option><option>Other</option>`)}
+    ${p25Field(currentLang==="ar"?"تاريخ الحكم":"Judgment Date","wfJudgmentDate","date")}
+    ${p25Field(currentLang==="ar"?"مبلغ الحكم":"Judgment Amount","wfJudgmentAmount","number")}
+    ${p25Field(currentLang==="ar"?"قيمة المطالبة":"Claim Amount","wfClaim","number")}
+    ${p25Field(currentLang==="ar"?"الرسوم والمصاريف":"Fees & Expenses","wfFees","number")}
+    ${p25Field(currentLang==="ar"?"المحصل سابقًا":"Previous Collection","wfPreviousCollection","number")}
+    <div class="p25-field full"><label>${currentLang==="ar"?"ملاحظة داخلية":"Internal Note"}</label><textarea id="wfNote"></textarea></div>
+   </div></div>
+  </section>
+  <section class="p25-panel" data-panel="4"><div class="p25-mobile-title">${currentLang==="ar"?"المراجعة و AI":"Review & AI"}</div><div id="p25Review"></div></section>
+ </div>
+ <div class="p25-footer"><div class="p25-footer-left"><span id="p25SaveState" class="p25-save">${currentLang==="ar"?"حفظ تلقائي للمسودة":"Draft autosave enabled"}</span></div><div class="p25-footer-actions"><button id="p25Back" onclick="p25Go(-1)">${currentLang==="ar"?"السابق":"Back"}</button><button class="primary" id="p25Next" onclick="p25Go(1)">${currentLang==="ar"?"التالي":"Next"}</button></div></div>`;
+ box.addEventListener("input",()=>{clearTimeout(p25DraftTimer);p25DraftTimer=setTimeout(p25SaveDraft,350)});
+ box.addEventListener("change",()=>{clearTimeout(p25DraftTimer);p25DraftTimer=setTimeout(p25SaveDraft,200)});
+ p25LoadDraft();p25ShowStep(1);
+}
+function p25ShowStep(n){
+ p25Step=Math.max(1,Math.min(4,n));
+ document.querySelectorAll(".p25-panel").forEach(x=>x.classList.toggle("active",+x.dataset.panel===p25Step));
+ document.querySelectorAll(".p25-step").forEach(x=>{let s=+x.dataset.p25step;x.classList.toggle("active",s===p25Step);x.classList.toggle("done",s<p25Step)});
+ let b=document.getElementById("p25Back"),nx=document.getElementById("p25Next");if(b)b.style.visibility=p25Step===1?"hidden":"visible";
+ if(nx)nx.textContent=p25Step===4?(currentLang==="ar"?"إنشاء الملف":"Create File"):(currentLang==="ar"?"التالي":"Next");
+ if(p25Step===4)p25RenderReview();
+}
+function p25Go(d){
+ if(d>0&&p25Step===4){p25CreateFile();return}
+ if(d>0&&!p25Validate(p25Step))return;p25SaveDraft();p25ShowStep(p25Step+d);
+}
+function p25Validate(step){
+ if(step===1&&!p25Val("wfRef")){showToast(currentLang==="ar"?"أدخل مرجع الملف":"Enter file reference");return false}
+ if(step===2&&(!p25Val("wfCreditor")||!p25Val("wfDebtor"))){showToast(currentLang==="ar"?"أدخل الدائن والمدين":"Enter creditor and debtor");return false}
+ return true;
+}
+function p25RenderReview(){
+ let e=document.getElementById("p25Review");if(!e)return;
+ let claim=+(p25Val("wfClaim")||p25Val("wfJudgmentAmount")||0),prev=+(p25Val("wfPreviousCollection")||0),net=Math.max(0,claim-prev);
+ e.innerHTML=`<div class="p25-section"><h3>${currentLang==="ar"?"مراجعة الملف":"File Review"}</h3><div class="p25-review">
+ ${[[currentLang==="ar"?"مرجع الملف":"File",p25Val("wfRef")],[currentLang==="ar"?"المصدر":"Origin",p25Val("wfOrigin")],[currentLang==="ar"?"القضية":"Case",p25Val("wfCaseNo")||"—"],[currentLang==="ar"?"الدائن":"Creditor",p25Val("wfCreditor")],[currentLang==="ar"?"المدين":"Debtor",p25Val("wfDebtor")],[currentLang==="ar"?"القائم المبدئي":"Initial Outstanding",money(net)]].map(x=>`<div class="p25-review-card"><span>${x[0]}</span><strong>${x[1]||"—"}</strong></div>`).join("")}</div>
+ <div class="p25-ai-review"><strong>✦ ENFORZA AI</strong><p>${p25AIReviewText(claim,prev)}</p></div></div>`;
+}
+function p25AIReviewText(claim,prev){
+ let origin=p25Val("wfOrigin"),parts=[];
+ parts.push(currentLang==="ar"?"سيتم إنشاء الملف وربطه ببيانات القضية والأطراف.":"The file will be created and linked to its case and parties.");
+ if(origin==="Transferred from Law Firm")parts.push(currentLang==="ar"?"يوصى بمراجعة مستندات وإجراءات مكتب المحاماة السابقة.":"Review prior law-firm documents and actions.");
+ if(origin==="Transferred from Collection")parts.push(currentLang==="ar"?"يوصى بمطابقة التحصيل السابق قبل بدء إجراءات جديدة.":"Reconcile previous collections before new action.");
+ if(claim-prev>0)parts.push((currentLang==="ar"?"الرصيد المبدئي القائم ":"Initial outstanding ")+money(Math.max(0,claim-prev))+".");
+ parts.push(currentLang==="ar"?"بعد الإنشاء يمكن لـ AI اقتراح خطة التنفيذ وتحويل خطواتها إلى مهام.":"After creation, AI can suggest an enforcement plan and convert steps into tasks.");
+ return parts.join(" ");
+}
+function p25CreateFile(){
+ p25SaveDraft();
+ if(typeof commitWizardFile==="function"){commitWizardFile();p25ClearDraft();return}
+ showToast(currentLang==="ar"?"تعذر إنشاء الملف":"Unable to create file");
+}
+if(typeof openWizard==="function"){
+ let p25OldOpenWizard=openWizard;
+ openWizard=function(){p25OldOpenWizard();setTimeout(()=>{p25BuildWizard();p25ShowStep(1)},20)}
+}
+if(typeof commitWizardFile==="function"){
+ let p25OldCommit=commitWizardFile;
+ commitWizardFile=function(){p25OldCommit();p25ClearDraft()}
+}
 </script></body></html>`);w.document.close();
 }
 Object.assign(I18N.ar,{"Attendees & Capacities":"الحاضرون وصفاتهم","Add Attendee":"إضافة حاضر","Name":"الاسم","Capacity":"الصفة","Location / Site":"الموقع","Prepared By":"أعد المحضر","Officer Signature":"توقيع المنفذ","Sign using mouse or touch.":"وقع باستخدام الفأرة أو شاشة اللمس.","Clear Signature":"مسح التوقيع","Final Approval & Lock":"الاعتماد النهائي وقفل المحضر","Once approved, the original minutes are locked. Later changes are recorded as amendments.":"بعد الاعتماد يقفل أصل المحضر، وأي تعديل لاحق يسجل كملحق تعديل مستقل.","Approve & Lock":"اعتماد وقفل","Image":"صورة","Minutes Approved & Locked":"تم اعتماد وقفل المحضر","Minutes approved and locked.":"تم اعتماد المحضر وقفل النسخة الأصلية.","Enter the minutes text before approval.":"أدخل نص المحضر قبل الاعتماد.","Enter amendment / additional note":"أدخل ملحق التعديل أو الملاحظة الإضافية","Minutes Amendment Added":"تمت إضافة ملحق للمحضر","Amendment added without changing the approved original.":"تمت إضافة الملحق دون تغيير أصل المحضر المعتمد.","APPROVED":"معتمد","attendees":"حاضرين","amendments recorded":"ملحقات تعديل مسجلة","Add Amendment":"إضافة ملحق","Print":"طباعة","Enforcement Minutes":"محضر تنفيذ","Amendment":"ملحق تعديل"});
