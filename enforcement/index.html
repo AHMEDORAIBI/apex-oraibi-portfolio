@@ -2822,7 +2822,7 @@ function financial(f){let claim=Number(f?.amount||f?.claimAmount||0)+tx().filter
 function list(items,fn){return items.length?`<div class="enf360-list">${items.map(fn).join("")}</div>`:`<div class="enf360-empty">${t("No records yet.","لا توجد سجلات حتى الآن.")}</div>`}
 function main(f){
  let F=financial(f);
- if(tab==="overview")return `<div class="enf360-card"><h2>${t("Case & File Information","بيانات القضية والملف")}</h2><div class="enf360-info">${info(t("Case Number","رقم القضية"),f.caseNumber)}${info(t("Court / Authority","المحكمة / الجهة"),f.court)}${info(t("Case Type","نوع القضية"),f.caseType)}${info(t("Judgment Reference","مرجع الحكم"),f.judgmentRef)}${info(t("Creditor","الدائن"),f.creditor)}${info(t("Debtor","المدين"),f.debtor)}${info(t("Intake Source","مصدر الملف"),f.intakeType)}${info(t("Assigned Officer","المسؤول"),f.assignedOfficer)}</div></div>`;
+ if(tab==="overview")return `<div class="enf360-card"><h2>${t("Case & File Information","بيانات القضية والملف")}</h2><div class="enf360-info">${info(t("Case Number","رقم القضية"),f.caseNumber)}${info(t("Court / Authority","المحكمة / الجهة"),f.court)}${info(t("Case Type","نوع القضية"),f.caseType)}${info(t("Judgment Reference","مرجع الحكم"),f.judgmentRef)}${info(t("Client / Customer","الموكل / العميل"),f.clientName||((f.clientSide==="Creditor")?f.creditor:(f.clientSide==="Debtor")?f.debtor:""))}${info(t("We Represent","نمثل"),f.clientSide)}${info(t("Client ID / CR","هوية / سجل الموكل"),f.clientId)}${info(t("Client Contact","تواصل الموكل"),f.clientContact)}${info(t("Creditor","الدائن"),f.creditor)}${info(t("Debtor","المدين"),f.debtor)}${info(t("Intake Source","مصدر الملف"),f.intakeType)}${info(t("Assigned Officer","المسؤول"),f.assignedOfficer)}</div></div>`;
  if(tab==="financial")return `<div class="enf360-card"><h2>${t("Financial Position","المركز المالي")}</h2><div class="enf360-kpis"><div class="enf360-kpi"><small>${t("CLAIM","المطالبة")}</small><b>${money(F.claim)}</b></div><div class="enf360-kpi"><small>${t("COLLECTED","المحصل")}</small><b>${money(F.col)}</b></div><div class="enf360-kpi"><small>${t("OUTSTANDING","المتبقي")}</small><b>${money(F.out)}</b></div></div><div class="enf360-progress"><i style="width:${F.pct}%"></i></div><div style="margin-top:12px">${list(tx().slice().reverse(),x=>`<div class="enf360-item"><b>${x.type} · ${money(x.amount)}</b><small>${x.date||""} · ${x.reference||""} · ${x.notes||""}</small></div>`)}</div></div>`;
  if(tab==="tasks")return `<div class="enf360-card"><h2>${t("Tasks & Calendar","المهام والتقويم")}</h2>${list(tasks(),x=>`<div class="enf360-item" onclick="v2OpenTask('', '${x.id}')"><b>${x.title||x.task||t("Task","مهمة")}</b><small>${x.due||x.date||""} · ${x.priority||"Normal"} · ${x.status||"Open"}</small></div>`)}</div>`;
  if(tab==="minutes")return `<div class="enf360-card"><h2>${t("Minutes","المحاضر")}</h2>${list(mins(),x=>`<div class="enf360-item"><b>${x.title||t("Minute","محضر")}</b><small>${x.date||""} · ${x.type||""}</small></div>`)}</div>`;
@@ -3980,6 +3980,82 @@ function startDirect(){
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",startDirect,{once:true});
 else startDirect();
+})();
+</script>
+
+<style id="enforza-files-client360-css">
+.enf-files360{padding:18px}.enf-files360-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;margin-bottom:14px}.enf-files360-head h2{margin:0 0 4px;font-size:24px}.enf-files360-head p{margin:0;color:var(--muted)}
+.enf-files360-actions{display:flex;gap:8px;flex-wrap:wrap}.enf-files360-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}.enf-files360-kpi{padding:13px;border:1px solid var(--line);border-radius:14px;background:var(--surface)}.enf-files360-kpi small{display:block;color:var(--muted);font-size:8px;font-weight:900}.enf-files360-kpi b{font-size:18px}
+.enf-files360-tools{display:grid;grid-template-columns:minmax(220px,1fr) repeat(3,minmax(130px,.3fr));gap:8px;padding:11px;border:1px solid var(--line);border-radius:14px;background:var(--surface);margin-bottom:10px}.enf-files360-tools input,.enf-files360-tools select{width:100%;box-sizing:border-box}
+.enf-files360-table{border:1px solid var(--line);border-radius:14px;overflow:auto;background:var(--surface)}.enf-files360-table table{width:100%;border-collapse:collapse;min-width:1050px}.enf-files360-table th,.enf-files360-table td{padding:11px 10px;border-bottom:1px solid var(--line);text-align:start;font-size:9px}.enf-files360-table th{font-size:7px;color:var(--muted);letter-spacing:.05em;position:sticky;top:0;background:var(--surface);z-index:2}.enf-files360-table tr{cursor:pointer}.enf-files360-table tbody tr:hover{background:rgba(178,122,67,.06)}
+.enf-client-chip{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);border-radius:999px;padding:4px 7px;font-size:7px}.enf-client-chip i{width:6px;height:6px;border-radius:50%;background:var(--bronze)}
+.enf-files-empty{padding:45px;text-align:center;color:var(--muted)}
+.enf-client360-panel{position:fixed;inset:0;z-index:2500;display:none;background:rgba(8,18,25,.46);align-items:stretch;justify-content:flex-end}.enf-client360-panel.open{display:flex}.enf-client360-sheet{width:min(560px,96vw);background:var(--surface);height:100%;overflow:auto;padding:18px;box-shadow:-18px 0 50px rgba(0,0,0,.18)}.enf-client360-top{display:flex;justify-content:space-between;gap:10px}.enf-client360-top h2{margin:0}.enf-client360-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}.enf-client360-stat{border:1px solid var(--line);border-radius:12px;padding:10px}.enf-client360-stat small{display:block;color:var(--muted);font-size:7px}.enf-client360-stat b{font-size:14px}.enf-client360-list{display:grid;gap:7px}.enf-client360-file{border:1px solid var(--line);border-radius:11px;padding:10px;cursor:pointer}.enf-client360-file:hover{border-color:var(--bronze)}
+@media(max-width:900px){.enf-files360-kpis{grid-template-columns:repeat(2,1fr)}.enf-files360-tools{grid-template-columns:1fr 1fr}.enf-files360-head{flex-direction:column}.enf-client360-grid{grid-template-columns:1fr 1fr}}
+</style>
+
+<section class="page" id="enfFilesClient360Page" style="display:none">
+<div class="enf-files360">
+ <div class="enf-files360-head"><div><h2 id="ef360Title">Enforcement Files</h2><p id="ef360Sub">Files, clients, financial position and next actions in one workspace.</p></div>
+ <div class="enf-files360-actions"><button class="action-btn" onclick="enfClientDirectory()">Clients</button><button class="action-btn primary" onclick="enfIntakeOpen()">+ New Enforcement File</button></div></div>
+ <div class="enf-files360-kpis" id="ef360Kpis"></div>
+ <div class="enf-files360-tools">
+  <input id="ef360Search" oninput="enfFiles360Render()" placeholder="Search file, client, party, case, CPR/CR, phone...">
+  <select id="ef360Side" onchange="enfFiles360Render()"><option value="">All client sides</option><option value="Creditor">Creditor client</option><option value="Debtor">Debtor client</option><option value="Other">Other client</option></select>
+  <select id="ef360Status" onchange="enfFiles360Render()"><option value="">All statuses</option></select>
+  <select id="ef360Officer" onchange="enfFiles360Render()"><option value="">All officers</option></select>
+ </div>
+ <div class="enf-files360-table"><table><thead><tr><th>FILE</th><th>CLIENT / REPRESENT</th><th>OPPOSING PARTY</th><th>CASE</th><th>CLAIM</th><th>COLLECTED</th><th>OUTSTANDING</th><th>NEXT ACTION</th><th>OFFICER</th><th>STATUS</th></tr></thead><tbody id="ef360Body"></tbody></table></div>
+</div>
+</section>
+<div class="enf-client360-panel" id="enfClient360Panel"><div class="enf-client360-sheet"><div class="enf-client360-top"><div><small id="ec360Kicker">CLIENT 360°</small><h2 id="ec360Name">Client</h2><p id="ec360Meta"></p></div><button class="action-btn" onclick="enfClient360Close()">✕</button></div><div id="ec360Content"></div></div></div>
+
+<script id="enforza-files-client360-js">
+(function(){
+"use strict";
+function arF(){return (window.currentLang||document.documentElement.lang||"en").toLowerCase().startsWith("ar")}
+function TF(e,a){return arF()?a:e}
+function A(n){return window.DATA&&Array.isArray(DATA[n])?DATA[n]:[]}
+function fid(f){return f.id||f.ref||""}
+function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function money(v){return "BHD "+Number(v||0).toLocaleString("en-BH",{minimumFractionDigits:3,maximumFractionDigits:3})}
+function tx(file){return A("financialTransactions").filter(x=>x.file===fid(file))}
+function fin(f){let claim=Number(f.amount||f.claimAmount||0)+tx(f).filter(x=>x.type==="Claim Adjustment").reduce((a,x)=>a+Number(x.amount||0),0),col=tx(f).filter(x=>x.type==="Collection").reduce((a,x)=>a+Number(x.amount||0),0);return{claim,col,out:Math.max(0,claim-col)}}
+function tasks(f){return A("smartTasks").filter(x=>x.file===fid(f))}
+function nextTask(f){return tasks(f).filter(x=>!["Completed","Cancelled"].includes(x.status)).sort((a,b)=>String(a.due||a.date||"").localeCompare(String(b.due||b.date||"")))[0]}
+function clientName(f){return f.clientName||((f.clientSide==="Creditor")?f.creditor:(f.clientSide==="Debtor")?f.debtor:"")||f.creditor||"—"}
+function opposing(f){if(f.clientSide==="Creditor")return f.debtor||"—";if(f.clientSide==="Debtor")return f.creditor||"—";return [f.creditor,f.debtor].filter(Boolean).join(" / ")||"—"}
+function statusF(f){return f.status||f.stage||"Active"}
+function setOptions(id,vals,label){let e=document.getElementById(id);if(!e)return;let old=e.value;e.innerHTML=`<option value="">${label}</option>`+[...new Set(vals.filter(Boolean))].sort().map(x=>`<option>${esc(x)}</option>`).join("");e.value=old}
+function filtered(){
+ let q=(document.getElementById("ef360Search")?.value||"").trim().toLowerCase(),side=document.getElementById("ef360Side")?.value||"",st=document.getElementById("ef360Status")?.value||"",off=document.getElementById("ef360Officer")?.value||"";
+ return A("files").filter(f=>{
+  let hay=[fid(f),f.clientName,f.clientId,f.clientContact,f.clientSide,f.creditor,f.creditorId,f.debtor,f.debtorId,f.caseNumber,f.court,f.caseType,f.assignedOfficer,statusF(f)].join(" ").toLowerCase();
+  return(!q||hay.includes(q))&&(!side||f.clientSide===side)&&(!st||statusF(f)===st)&&(!off||f.assignedOfficer===off)
+ })
+}
+window.enfFiles360Render=function(){
+ let files=A("files"),body=document.getElementById("ef360Body");if(!body)return;
+ setOptions("ef360Status",files.map(statusF),TF("All statuses","كل الحالات"));setOptions("ef360Officer",files.map(f=>f.assignedOfficer),TF("All officers","كل المسؤولين"));
+ let claim=0,col=0,out=0;files.forEach(f=>{let z=fin(f);claim+=z.claim;col+=z.col;out+=z.out});
+ document.getElementById("ef360Kpis").innerHTML=[
+  [TF("FILES","الملفات"),files.length],[TF("TOTAL CLAIMS","إجمالي المطالبات"),money(claim)],[TF("COLLECTED","المحصل"),money(col)],[TF("OUTSTANDING","المتبقي"),money(out)]
+ ].map(x=>`<div class="enf-files360-kpi"><small>${x[0]}</small><b>${x[1]}</b></div>`).join("");
+ let rows=filtered();body.innerHTML=rows.length?rows.map(f=>{let z=fin(f),n=nextTask(f);return `<tr onclick="openFile360('${esc(fid(f))}')"><td><b>${esc(fid(f))}</b><br><small>${esc(f.openedDate||"")}</small></td><td><b>${esc(clientName(f))}</b><br><span class="enf-client-chip" onclick="event.stopPropagation();enfClient360Open('${esc(clientName(f))}')"><i></i>${esc(f.clientSide||TF("Client","موكل"))}</span></td><td>${esc(opposing(f))}</td><td><b>${esc(f.caseNumber||"—")}</b><br><small>${esc(f.court||f.caseType||"")}</small></td><td>${money(z.claim)}</td><td>${money(z.col)}</td><td><b>${money(z.out)}</b></td><td>${n?`<b>${esc(n.title||n.task||"")}</b><br><small>${esc(n.due||n.date||"")}</small>`:"—"}</td><td>${esc(f.assignedOfficer||"—")}</td><td><span class="badge active">${esc(statusF(f))}</span></td></tr>`}).join(""):`<tr><td colspan="10"><div class="enf-files-empty">${TF("No matching files.","لا توجد ملفات مطابقة.")}</div></td></tr>`
+}
+window.enfFiles360Open=function(){document.querySelectorAll(".page").forEach(p=>{p.classList.add("hidden");p.style.display="none"});let p=document.getElementById("enfFilesClient360Page");p.classList.remove("hidden");p.style.display="block";enfFiles360Render()}
+window.enfClient360Open=function(name){
+ let fs=A("files").filter(f=>clientName(f)===name),panel=document.getElementById("enfClient360Panel");if(!panel)return;let claim=0,col=0,out=0;fs.forEach(f=>{let z=fin(f);claim+=z.claim;col+=z.col;out+=z.out});
+ let f0=fs[0]||{};document.getElementById("ec360Name").textContent=name||TF("Client","الموكل");document.getElementById("ec360Meta").textContent=[f0.clientSide,f0.clientId,f0.clientContact].filter(Boolean).join(" · ");
+ document.getElementById("ec360Content").innerHTML=`<div class="enf-client360-grid"><div class="enf-client360-stat"><small>${TF("FILES","الملفات")}</small><b>${fs.length}</b></div><div class="enf-client360-stat"><small>${TF("CLAIMS","المطالبات")}</small><b>${money(claim)}</b></div><div class="enf-client360-stat"><small>${TF("OUTSTANDING","المتبقي")}</small><b>${money(out)}</b></div></div><h3>${TF("Client Files","ملفات الموكل")}</h3><div class="enf-client360-list">${fs.map(f=>{let z=fin(f);return `<div class="enf-client360-file" onclick="enfClient360Close();openFile360('${esc(fid(f))}')"><b>${esc(fid(f))} · ${esc(f.caseNumber||TF("No case number","بدون رقم قضية"))}</b><small style="display:block">${esc(opposing(f))} · ${money(z.out)} · ${esc(statusF(f))}</small></div>`}).join("")||TF("No files.","لا توجد ملفات.")}</div>`;
+ panel.classList.add("open")
+}
+window.enfClient360Close=function(){document.getElementById("enfClient360Panel")?.classList.remove("open")}
+window.enfClientDirectory=function(){let names=[...new Set(A("files").map(clientName).filter(x=>x&&x!=="—"))];if(names.length===1)return enfClient360Open(names[0]);let q=prompt(TF("Enter client name to open Client 360°:","أدخل اسم الموكل لفتح Client 360°:"),names[0]||"");if(q){let hit=names.find(x=>x.toLowerCase().includes(q.toLowerCase()));if(hit)enfClient360Open(hit)}}
+function wire(){
+ let nav=document.querySelector('.nav-item[data-page="files"]');if(nav&&!nav.dataset.client360){nav.dataset.client360="1";nav.onclick=function(e){e.preventDefault();enfFiles360Open();return false}}
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",wire);else wire();
 })();
 </script>
 </body>
