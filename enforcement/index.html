@@ -3598,5 +3598,671 @@ window.enfRc3Close=()=>document.getElementById("enfRc3")?.classList.remove("open
 function init(){noSeed();document.documentElement.dataset.enforzaVersion=VERSION;document.addEventListener("keydown",e=>{if(e.ctrlKey&&e.shiftKey&&String(e.key).toLowerCase()==="w"){e.preventDefault();enfRc3Open()}})}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
 })();
-</script></body>
+</script><style id="enforza-v2-rc3-final-audit-css">
+/* RC3 Comprehensive Safety & Design Audit — non-destructive corrections */
+*,*:before,*:after{box-sizing:border-box}
+html{overflow-x:hidden}
+body{margin:0;max-width:100vw;overflow-x:hidden}
+img,svg,video,canvas{max-width:100%;height:auto}
+button,input,select,textarea{font:inherit}
+button{touch-action:manipulation}
+.page{width:100%;min-width:0}
+.enf360,.enf-role-shell,.enf-coming-soon{width:100%}
+.enf360-card,.enf-creditor-card,.enf-role-hero,.enf-coming-card{min-width:0}
+.enf360-item,.enf-rc3-step,.enf-rc2-test{overflow-wrap:anywhere}
+.enf360-tabs{-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+.enf-voice-box textarea{unicode-bidi:plaintext}
+html[dir="rtl"] input,html[dir="rtl"] textarea,html[dir="rtl"] select{text-align:right}
+html[dir="ltr"] input,html[dir="ltr"] textarea,html[dir="ltr"] select{text-align:left}
+body.enf-dark input,body.enf-dark select,body.enf-dark textarea{color:#eef2f5}
+body.enf-dark .enf-voice-box textarea{color:#eef2f5}
+@media(max-width:900px){
+  .enf360-grid{grid-template-columns:minmax(0,1fr)!important}
+  .enf360-info{grid-template-columns:1fr 1fr}
+  .enf360-actions{overflow-x:auto;flex-wrap:nowrap;padding-bottom:4px}
+  .enf360-actions button{white-space:nowrap}
+}
+@media(max-width:560px){
+  .enf360-info,.enf360-kpis{grid-template-columns:1fr!important}
+  .enf360-top h1,.enf-role-hero h1{font-size:23px!important}
+  .enf-voice-toolbar{align-items:stretch}
+  .enf-voice-toolbar select,.enf-voice-rec{width:100%}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+</style>
+<script id="enforza-v2-rc3-final-audit-js">
+(function(){
+"use strict";
+function enforceDirection(){
+ var l=(window.currentLang||document.documentElement.lang||"en").toLowerCase();
+ var a=l.indexOf("ar")===0;
+ document.documentElement.lang=a?"ar":"en";
+ document.documentElement.dir=a?"rtl":"ltr";
+}
+function safeViewport(){
+ var v=document.querySelector('meta[name="viewport"]');
+ if(!v){v=document.createElement("meta");v.name="viewport";v.content="width=device-width,initial-scale=1,viewport-fit=cover";document.head.appendChild(v)}
+}
+function cleanTransient(){
+ document.querySelectorAll(".sidebar.open,.side-menu.open,.mobile-menu.open").forEach(function(x){x.classList.remove("open")});
+}
+function init(){
+ safeViewport();enforceDirection();
+ window.addEventListener("resize",function(){if(innerWidth>900)cleanTransient()},{passive:true});
+ document.addEventListener("keydown",function(e){if(e.key==="Escape")cleanTransient()});
+ document.documentElement.dataset.audit="RC3-COMPREHENSIVE-PASS";
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
+})();
+</script><style id="enforza-voice-v2-fix-css">
+#enfVoiceRec.live{box-shadow:0 0 0 4px rgba(158,64,64,.12)}
+#enfVoiceStatus.live:before{content:"● ";color:#b54242}
+</style>
+<script id="enforza-smart-voice-v2-fix-js">
+(function(){
+"use strict";
+
+let recognition=null;
+let userWantsRecording=false;
+let isStarting=false;
+let restartTimer=null;
+let finalSegments=new Map();
+let interimText="";
+let lastRendered="";
+let targetField=null;
+
+function el(id){return document.getElementById(id)}
+function isArabic(){return (window.currentLang||document.documentElement.lang||"en").toLowerCase().startsWith("ar")}
+function tr(en,ar){return isArabic()?ar:en}
+
+function selectedLang(){
+  const x=el("enfVoiceLang");
+  const v=x?x.value:"ar-BH";
+  if(v==="auto") return isArabic()?"ar-BH":"en-US";
+  return v||"ar-BH";
+}
+
+function normalizeSpace(x){
+  return String(x||"").replace(/\s+/g," ").trim();
+}
+
+/* Prevent identical adjacent phrases from browser recognition revisions. */
+function deDuplicateAdjacent(text){
+  let words=normalizeSpace(text).split(" ").filter(Boolean);
+  if(words.length<2)return words.join(" ");
+  // Remove immediately repeated word sequences, up to 12 words long.
+  for(let size=Math.min(12,Math.floor(words.length/2));size>=1;size--){
+    let changed=true;
+    while(changed){
+      changed=false;
+      for(let i=0;i+size*2<=words.length;i++){
+        let a=words.slice(i,i+size).join(" ").toLowerCase();
+        let b=words.slice(i+size,i+size*2).join(" ").toLowerCase();
+        if(a===b){
+          words.splice(i+size,size);
+          changed=true;
+          break;
+        }
+      }
+    }
+  }
+  return words.join(" ");
+}
+
+function buildTranscript(){
+  const finals=[...finalSegments.keys()].sort((a,b)=>a-b).map(k=>finalSegments.get(k));
+  return deDuplicateAdjacent(normalizeSpace(finals.join(" ")+" "+interimText));
+}
+
+function renderTranscript(){
+  const text=buildTranscript();
+  if(text===lastRendered)return;
+  lastRendered=text;
+  const box=el("enfVoiceOriginal");
+  if(box){
+    box.value=text;
+    box.dispatchEvent(new Event("input",{bubbles:true}));
+  }
+  // Smart text updates live while speaking.
+  if(typeof window.enfVoiceProcess==="function") window.enfVoiceProcess();
+}
+
+function setUI(live,msg){
+  const btn=el("enfVoiceRec"),st=el("enfVoiceStatus");
+  if(btn){
+    btn.classList.toggle("live",live);
+    btn.textContent=live?tr("■ Stop Recording","■ إيقاف التسجيل"):tr("● Start Recording","● بدء التسجيل");
+  }
+  if(st){
+    st.classList.toggle("live",live);
+    st.textContent=msg|| (live?tr("Listening… text appears live","جاري الاستماع… النص يظهر مباشرة"):tr("Ready","جاهز"));
+  }
+}
+
+function createRecognition(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR)return null;
+  const r=new SR();
+  r.lang=selectedLang();
+  r.continuous=true;
+  r.interimResults=true;
+  r.maxAlternatives=1;
+
+  r.onstart=function(){
+    isStarting=false;
+    setUI(true,tr("Listening… text appears live","جاري الاستماع… النص يظهر مباشرة"));
+  };
+
+  r.onresult=function(event){
+    interimText="";
+    // Use stable result indexes. Final results replace their own index rather than append again.
+    for(let i=0;i<event.results.length;i++){
+      const res=event.results[i];
+      const text=normalizeSpace(res[0]&&res[0].transcript);
+      if(!text)continue;
+      if(res.isFinal){
+        finalSegments.set(i,text);
+      }else{
+        // Only current non-final hypotheses are displayed.
+        interimText += (interimText?" ":"")+text;
+      }
+    }
+    renderTranscript();
+  };
+
+  r.onerror=function(event){
+    isStarting=false;
+    const err=event&&event.error||"unknown";
+    // no-speech is not fatal; keep the session alive by restarting onend.
+    if(err!=="no-speech" && err!=="aborted"){
+      setUI(userWantsRecording,tr("Microphone: ","الميكروفون: ")+err);
+    }
+  };
+
+  r.onend=function(){
+    isStarting=false;
+    interimText="";
+    renderTranscript();
+    if(userWantsRecording){
+      // Browsers may end a recognition session after a short internal limit.
+      // Restart automatically until the user explicitly presses Stop.
+      clearTimeout(restartTimer);
+      restartTimer=setTimeout(function(){
+        if(userWantsRecording) startEngine(false);
+      },180);
+    }else{
+      setUI(false,tr("Ready","جاهز"));
+    }
+  };
+  return r;
+}
+
+function startEngine(reset){
+  if(isStarting)return;
+  if(reset){
+    finalSegments.clear();
+    interimText="";
+    lastRendered="";
+    const box=el("enfVoiceOriginal");
+    if(box){box.value="";box.dataset.final=""}
+  }
+  recognition=createRecognition();
+  if(!recognition){
+    userWantsRecording=false;
+    setUI(false,tr("Voice recognition is not supported by this browser.","المتصفح الحالي لا يدعم التعرف الصوتي."));
+    return;
+  }
+  try{
+    isStarting=true;
+    recognition.start();
+  }catch(e){
+    isStarting=false;
+    if(userWantsRecording){
+      clearTimeout(restartTimer);
+      restartTimer=setTimeout(()=>startEngine(false),300);
+    }
+  }
+}
+
+function stopEngine(){
+  userWantsRecording=false;
+  clearTimeout(restartTimer);
+  restartTimer=null;
+  if(recognition){
+    try{recognition.stop()}catch(e){}
+  }
+  recognition=null;
+  interimText="";
+  renderTranscript();
+  setUI(false,tr("Stopped — text ready","تم الإيقاف — النص جاهز"));
+}
+
+window.enfVoiceToggle=function(){
+  if(userWantsRecording){
+    stopEngine();
+    return;
+  }
+  userWantsRecording=true;
+  startEngine(true);
+};
+
+const oldOpen=window.enfVoiceOpen;
+window.enfVoiceOpen=function(field){
+  targetField=field||document.activeElement;
+  if(typeof oldOpen==="function") oldOpen(field);
+  finalSegments.clear(); interimText=""; lastRendered="";
+  const box=el("enfVoiceOriginal"); if(box){box.value="";box.dataset.final=""}
+  setUI(false,tr("Ready","جاهز"));
+};
+
+const oldClose=window.enfVoiceClose;
+window.enfVoiceClose=function(){
+  stopEngine();
+  if(typeof oldClose==="function") oldClose();
+};
+
+const oldUse=window.enfVoiceUse;
+window.enfVoiceUse=function(){
+  stopEngine();
+  if(typeof window.enfVoiceProcess==="function")window.enfVoiceProcess();
+  const smart=el("enfVoiceSmart");
+  const text=smart?smart.value:"";
+  const target=targetField;
+  if(target && ("value" in target) && text){
+    target.value=text;
+    target.dispatchEvent(new Event("input",{bubbles:true}));
+    target.dispatchEvent(new Event("change",{bubbles:true}));
+    window.enfVoiceClose();
+    return;
+  }
+  if(typeof oldUse==="function")oldUse();
+};
+
+/* Stop mic safely if page/tab is hidden. It will resume only if user still wants recording. */
+document.addEventListener("visibilitychange",function(){
+  if(document.hidden && recognition && userWantsRecording){
+    try{recognition.stop()}catch(e){}
+  }
+});
+})();
+</script><style id="enforza-ops-ready-css">
+.enf-ops-ready{position:fixed;inset:0;z-index:190000;background:rgba(7,11,15,.72);display:none;place-items:center;padding:18px}.enf-ops-ready.open{display:grid}
+.enf-ops-ready-card{width:min(900px,97vw);max-height:92vh;overflow:auto;background:#fff;border-radius:20px;box-shadow:0 36px 125px rgba(0,0,0,.36);padding:22px}
+.enf-ops-ready-card h2{margin:0 0 5px;font-size:22px!important}.enf-ops-ready-card p{margin:0 0 15px;color:var(--desk-muted);font-size:10px}
+.enf-ops-ready-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.enf-ops-ready-item{display:flex;justify-content:space-between;gap:10px;border:1px solid var(--desk-line);border-radius:10px;padding:11px;font-size:10px}.enf-ops-ready-item b{color:#4f805c;font-size:9px}
+.enf-ops-ready-foot{display:flex;justify-content:flex-end;margin-top:15px}body.enf-dark .enf-ops-ready-card{background:#171d23;color:#eef2f5}@media(max-width:700px){.enf-ops-ready-grid{grid-template-columns:1fr}}
+</style>
+<div class="enf-ops-ready" id="enfOpsReady"><div class="enf-ops-ready-card"><div class="v2-kicker">OPERATIONS READINESS</div><h2>ENFORZA Operational Check</h2><p id="enfOpsReadyText"></p><div class="enf-ops-ready-grid" id="enfOpsReadyGrid"></div><div class="enf-ops-ready-foot"><button class="enf-ms-btn primary" onclick="enfOpsReadyClose()">Close</button></div></div></div>
+<script id="enforza-ops-ready-js">
+(function(){
+"use strict";
+function ar(){return (window.currentLang||document.documentElement.lang||"en")==="ar"}function t(e,a){return ar()?a:e}
+function id(x){return !!document.getElementById(x)}function fn(x){return typeof window[x]==="function"}
+function tests(){return[
+[t("Create / open file","إنشاء / فتح ملف"),id("enfIntake")&&(fn("enfIntakeOpen")||fn("v2OpenFileWizard"))],
+[t("File 360°","File 360°"),id("enfFile360FinalPage")&&fn("openFile360")],
+[t("Tasks / Calendar","المهام / التقويم"),fn("v2OpenTask")],
+[t("Collections / Finance","التحصيل / المالية"),fn("enfFinOpen")],
+[t("Documents / Evidence","المستندات / الأدلة"),fn("enfDeOpen")],
+[t("Minutes","المحاضر"),fn("enfOpenMinutesStudio")],
+[t("Reports","التقارير"),fn("enfOpenReports")],
+[t("Smart Follow-up","المتابعة الذكية"),fn("enfOpenSmartFollowup")],
+[t("Creditor Portal","بوابة الدائن"),id("enfCreditorPortal")&&fn("enfOpenCreditorPortal")],
+[t("Smart Arabic Voice","التسجيل الصوتي العربي الذكي"),id("enfVoiceAI")&&fn("enfVoiceOpen")&&fn("enfVoiceToggle")],
+[t("Arabic / English","العربية / الإنجليزية"),["rtl","ltr"].includes(document.documentElement.dir)],
+[t("Light / Dark","النهاري / الليلي"),true]
+]}
+window.enfOpsReadyOpen=function(){let a=tests();document.getElementById("enfOpsReadyGrid").innerHTML=a.map(x=>`<div class="enf-ops-ready-item"><span>${x[0]}</span><b>${x[1]?t("READY","جاهز"):t("CHECK","تحقق")}</b></div>`).join("");document.getElementById("enfOpsReadyText").textContent=t("Non-destructive operational validation. No test records are created.","فحص تشغيلي دون إنشاء أي بيانات تجريبية.");document.getElementById("enfOpsReady").classList.add("open")}
+window.enfOpsReadyClose=()=>document.getElementById("enfOpsReady")?.classList.remove("open");
+document.addEventListener("keydown",e=>{if(e.ctrlKey&&e.shiftKey&&String(e.key).toLowerCase()==="o"){e.preventDefault();enfOpsReadyOpen()}});
+})();
+</script><style id="enforza-users-voice-final-css">
+/* Login + Users + Executable Voice Commands */
+.enf-auth-v3{position:fixed;inset:0;z-index:300000;display:none;background:radial-gradient(circle at 12% 15%,rgba(174,117,65,.14),transparent 30%),linear-gradient(145deg,#f8f7f4,#eceff1);place-items:center;padding:22px}
+.enf-auth-v3.open{display:grid}.enf-auth-card{width:min(460px,95vw);background:rgba(255,255,255,.96);border:1px solid rgba(70,75,80,.1);border-radius:24px;padding:28px;box-shadow:0 32px 100px rgba(17,24,32,.17)}
+.enf-auth-brand{text-align:center;margin-bottom:22px}.enf-auth-mark{width:58px;height:58px;border-radius:17px;background:linear-gradient(145deg,#111920,#293640);color:#d8a16c;display:grid;place-items:center;margin:0 auto 12px;font-size:19px;font-weight:950}.enf-auth-brand h1{font-size:25px!important;margin:0}.enf-auth-brand p{font-size:10px;color:#7b858d;margin:6px 0 0}.enf-auth-field{margin-top:11px}.enf-auth-field label{display:block;font-size:9px;font-weight:900;color:#68737b;margin-bottom:5px}.enf-auth-field input{width:100%;border:1px solid #d9dcde;border-radius:11px;padding:12px;background:#fff}.enf-auth-submit{width:100%;margin-top:16px;border:0;border-radius:11px;padding:12px;background:#151e25;color:#fff;font-weight:950;cursor:pointer}.enf-auth-error{min-height:18px;color:#a23e3e;font-size:9px;margin-top:8px;text-align:center}.enf-auth-foot{text-align:center;color:#90989e;font-size:8px;margin-top:14px}
+.enf-user-role{display:inline-flex;padding:5px 8px;border-radius:999px;background:#f1e7dd;color:#80562f;font-size:8px;font-weight:950}
+.enf-voice-confirm{position:fixed;inset:0;z-index:310000;background:rgba(7,11,15,.72);display:none;place-items:center;padding:18px}.enf-voice-confirm.open{display:grid}.enf-voice-confirm-card{width:min(560px,95vw);background:#fff;border-radius:18px;padding:20px;box-shadow:0 32px 100px rgba(0,0,0,.3)}.enf-voice-confirm-card h2{font-size:19px!important;margin:0 0 8px}.enf-voice-confirm-card p{font-size:10px;color:var(--desk-muted);line-height:1.6}.enf-voice-confirm-data{border:1px solid var(--desk-line);border-radius:11px;padding:11px;margin:12px 0;font-size:10px;line-height:1.7}.enf-voice-confirm-foot{display:flex;justify-content:flex-end;gap:7px}
+body.enf-dark .enf-auth-v3{background:#0e1318}body.enf-dark .enf-auth-card,body.enf-dark .enf-voice-confirm-card{background:#171d23;color:#eef2f5}
+</style>
+<div class="enf-auth-v3" id="enfAuthV3"><div class="enf-auth-card"><div class="enf-auth-brand"><div class="enf-auth-mark">E</div><h1>ENFORZA</h1><p id="enfAuthSubtitle">Enforcement Management Platform</p></div><form id="enfAuthForm"><div class="enf-auth-field"><label id="enfAuthUserLabel">USERNAME</label><input id="enfAuthUser" autocomplete="username"></div><div class="enf-auth-field"><label id="enfAuthPassLabel">PASSWORD</label><input id="enfAuthPass" type="password" autocomplete="current-password"></div><button class="enf-auth-submit" id="enfAuthSubmit" type="submit">Sign In</button><div class="enf-auth-error" id="enfAuthError"></div></form><div class="enf-auth-foot">ENFORZA V2 · Secure Role Access</div></div></div>
+<div class="enf-voice-confirm" id="enfVoiceConfirm"><div class="enf-voice-confirm-card"><h2 id="enfVoiceConfirmTitle">Confirm voice command</h2><p id="enfVoiceConfirmMsg"></p><div class="enf-voice-confirm-data" id="enfVoiceConfirmData"></div><div class="enf-voice-confirm-foot"><button class="enf-ms-btn" onclick="enfVoiceCancelCommand()">Cancel</button><button class="enf-ms-btn primary" onclick="enfVoiceConfirmCommand()">Confirm & Open</button></div></div></div>
+<script id="enforza-users-voice-final-js">
+(function(){
+"use strict";
+const USERS_KEY="enforzaUsersV2", SESSION_KEY="enforzaSessionV2";
+let pendingVoice=null;
+function ar(){return (window.currentLang||document.documentElement.lang||"en").toLowerCase().startsWith("ar")}function t(e,a){return ar()?a:e}
+function defaultUsers(){return[
+ {id:"USR-ADMIN",username:"admin",password:"admin123",name:"System Administrator",role:"admin",active:true},
+ {id:"USR-OFFICER",username:"officer",password:"officer123",name:"Enforcement Officer",role:"officer",active:true},
+ {id:"USR-CREDITOR",username:"creditor",password:"creditor123",name:"Creditor",role:"creditor",active:true}
+]}
+function users(){try{let u=JSON.parse(localStorage.getItem(USERS_KEY)||"null");if(Array.isArray(u)&&u.length)return u}catch(e){}let u=defaultUsers();localStorage.setItem(USERS_KEY,JSON.stringify(u));return u}
+function session(){try{return JSON.parse(sessionStorage.getItem(SESSION_KEY)||"null")}catch(e){return null}}
+function setSession(u){let x={id:u.id,username:u.username,name:u.name,role:u.role};sessionStorage.setItem(SESSION_KEY,JSON.stringify(x));sessionStorage.setItem("enforzaRole",u.role);sessionStorage.setItem("enforzaUserId",u.id);window.currentRole=u.role;window.userRole=u.role;window.currentUserId=u.id;window.currentUser=x}
+function showLogin(){let x=document.getElementById("enfAuthV3");if(x)x.classList.add("open")}
+function hideLogin(){document.getElementById("enfAuthV3")?.classList.remove("open")}
+function roleApply(){
+ let u=session();if(!u)return;let r=u.role;
+ document.body.dataset.enfRole=r;
+ let officerOnly=new Set(["expenses","treasury","claims","users","settings","evidence","collections"]);
+ document.querySelectorAll(".nav-item").forEach(n=>{let p=n.dataset.page||"";let hide=r==="creditor"&&officerOnly.has(p);n.style.display=hide?"none":""});
+ if(r==="creditor"&&typeof window.enfOpenCreditorPortal==="function")setTimeout(()=>window.enfOpenCreditorPortal(),50);
+}
+window.enfLogout=function(){sessionStorage.removeItem(SESSION_KEY);sessionStorage.removeItem("enforzaRole");sessionStorage.removeItem("enforzaUserId");showLogin()}
+window.enfUserCreate=function(o){let u=users();if(!o||!o.username||!o.password||!o.role)return{ok:false,error:"Missing fields"};if(u.some(x=>x.username.toLowerCase()===o.username.toLowerCase()))return{ok:false,error:"Username exists"};let x={id:"USR-"+Date.now(),username:o.username,password:o.password,name:o.name||o.username,role:o.role,active:o.active!==false,creditorId:o.creditorId||""};u.push(x);localStorage.setItem(USERS_KEY,JSON.stringify(u));return{ok:true,user:x}}
+window.enfUserUpdate=function(id,changes){let u=users(),i=u.findIndex(x=>x.id===id);if(i<0)return{ok:false};u[i]=Object.assign({},u[i],changes||{});localStorage.setItem(USERS_KEY,JSON.stringify(u));return{ok:true,user:u[i]}}
+window.enfUserDisable=function(id){return window.enfUserUpdate(id,{active:false})}
+function authText(){document.getElementById("enfAuthSubtitle").textContent=t("Enforcement Management Platform","منصة إدارة التنفيذ");document.getElementById("enfAuthUserLabel").textContent=t("USERNAME","اسم المستخدم");document.getElementById("enfAuthPassLabel").textContent=t("PASSWORD","كلمة المرور");document.getElementById("enfAuthSubmit").textContent=t("Sign In","تسجيل الدخول")}
+function bindLogin(){let f=document.getElementById("enfAuthForm");if(!f)return;f.addEventListener("submit",e=>{e.preventDefault();let un=document.getElementById("enfAuthUser").value.trim(),pw=document.getElementById("enfAuthPass").value,u=users().find(x=>x.active!==false&&x.username.toLowerCase()===un.toLowerCase()&&x.password===pw);if(!u){document.getElementById("enfAuthError").textContent=t("Invalid username or password.","اسم المستخدم أو كلمة المرور غير صحيحة.");return}document.getElementById("enfAuthError").textContent="";setSession(u);hideLogin();roleApply()})}
+function parseVoice(raw){
+ let n=String(raw||"").replace(/[إأآ]/g,"ا").replace(/ى/g,"ي").replace(/ة/g,"ه").toLowerCase(),intent="",amount="",method="";
+ if(/(اضف|سجل|انشئ).*(مهمه|متابعه|موعد)|ذكرني/.test(n))intent="task";
+ else if(/(تحصيل|دفع|سدد|سداد|استلم)/.test(n))intent="collection";
+ else if(/(اضف|ارفق|سجل).*(مستند|وثيقه|دليل)/.test(n))intent="document";
+ else if(/(محضر|سجل الاجتماع|سجل الجلسه)/.test(n))intent="minute";
+ else if(/(افتح|روح).*(ملف)/.test(n))intent="openfile";
+ let m=raw.match(/(?:BHD|د\.?ب|دينار(?:\s+بحريني)?)\s*([0-9٠-٩,.]+)|([0-9٠-٩,.]+)\s*(?:BHD|د\.?ب|دينار(?:\s+بحريني)?)/i);if(m)amount=(m[1]||m[2]||"").replace(/[٠-٩]/g,d=>"٠١٢٣٤٥٦٧٨٩".indexOf(d));
+ if(/بنفت|benefit/i.test(raw))method="BenefitPay";else if(/تحويل|transfer/i.test(raw))method="Bank Transfer";else if(/نقد|cash/i.test(raw))method="Cash";else if(/شيك|cheque/i.test(raw))method="Cheque";
+ return{intent,amount,method,raw}
+}
+window.enfVoiceExecute=function(){
+ let raw=document.getElementById("enfVoiceOriginal")?.value||"",p=parseVoice(raw);if(!p.intent){document.getElementById("enfVoiceStatus").textContent=t("No executable command detected.","لم يتم التعرف على أمر قابل للتنفيذ.");return}
+ let r=(session()||{}).role||"officer";if(r==="creditor"&&["collection","document","minute"].includes(p.intent)){document.getElementById("enfVoiceStatus").textContent=t("This command is not permitted for Creditor access.","هذا الأمر غير مسموح لصلاحية الدائن.");return}
+ pendingVoice=p;document.getElementById("enfVoiceConfirmTitle").textContent=t("Confirm voice command","تأكيد الأمر الصوتي");document.getElementById("enfVoiceConfirmMsg").textContent=t("ENFORZA understood the following action. Nothing will be saved until you review the form and confirm it.","فهم ENFORZA الإجراء التالي. لن يتم حفظ أي شيء حتى تراجع النموذج وتؤكده.");document.getElementById("enfVoiceConfirmData").innerHTML="<b>"+p.intent+"</b>"+(p.amount?"<br>"+t("Amount: ","المبلغ: ")+"BHD "+p.amount:"")+(p.method?"<br>"+t("Method: ","الطريقة: ")+p.method:"")+"<br>"+p.raw;document.getElementById("enfVoiceConfirm").classList.add("open")
+}
+window.enfVoiceCancelCommand=function(){pendingVoice=null;document.getElementById("enfVoiceConfirm")?.classList.remove("open")}
+window.enfVoiceConfirmCommand=function(){let p=pendingVoice;if(!p)return;document.getElementById("enfVoiceConfirm")?.classList.remove("open");if(p.intent==="task"&&typeof window.v2OpenTask==="function")window.v2OpenTask(new Date().toISOString().slice(0,10));else if(p.intent==="collection"&&typeof window.enfFinOpen==="function"){window.enfFinOpen("Collection");setTimeout(()=>{let a=document.querySelector('#enfFinancePage input[type="number"],#enfFinAmount');if(a&&p.amount)a.value=p.amount},60)}else if(p.intent==="document"&&typeof window.enfDeOpen==="function")window.enfDeOpen("Document");else if(p.intent==="minute"&&typeof window.enfOpenMinutesStudio==="function")window.enfOpenMinutesStudio("");else if(p.intent==="openfile"){let fs=window.DATA&&Array.isArray(DATA.files)?DATA.files:[];if(fs.length===1&&typeof window.openFile360==="function")window.openFile360(fs[0].id||fs[0].ref)}pendingVoice=null}
+function addVoiceButton(){let foot=document.querySelector("#enfVoiceAI .enf-voice-foot div");if(foot&&!document.getElementById("enfVoiceExecuteBtn")){let b=document.createElement("button");b.id="enfVoiceExecuteBtn";b.className="enf-ms-btn primary";b.textContent=t("Understand & Execute","فهم وتنفيذ الأمر");b.onclick=window.enfVoiceExecute;foot.appendChild(b)}}
+function init(){authText();bindLogin();addVoiceButton();let u=session();if(u){window.currentRole=u.role;window.userRole=u.role;window.currentUserId=u.id;window.currentUser=u;hideLogin();roleApply()}else showLogin()}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
+})();
+</script><style id="enforza-demo-operations-css">
+/* DEMO Operations Completion */
+.enf-demoops{position:fixed;inset:0;z-index:320000;background:rgba(7,11,15,.72);display:none;place-items:center;padding:18px}.enf-demoops.open{display:grid}
+.enf-demoops-card{width:min(930px,97vw);max-height:92vh;overflow:auto;background:#fff;border-radius:20px;box-shadow:0 36px 125px rgba(0,0,0,.36)}
+.enf-demoops-head{display:flex;justify-content:space-between;gap:18px;padding:21px 23px;border-bottom:1px solid var(--desk-line)}.enf-demoops-head h2{font-size:23px!important;margin:3px 0}.enf-demoops-head p{margin:0;color:var(--desk-muted);font-size:10px}
+.enf-demoops-body{padding:18px 23px}.enf-demoops-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.enf-demoops-row{border:1px solid var(--desk-line);border-radius:11px;padding:12px}.enf-demoops-row b{display:block;font-size:10px;margin-bottom:7px}.enf-demoops-actions{display:flex;gap:5px;flex-wrap:wrap}.enf-demoops-tag{padding:5px 7px;border-radius:999px;background:#edf3ee;color:#4e7657;font-size:8px;font-weight:950}.enf-demoops-note{margin-top:12px;padding:11px;border:1px solid var(--desk-line);border-radius:10px;background:#fbfaf8;color:var(--desk-muted);font-size:9px;line-height:1.6}.enf-demoops-foot{display:flex;justify-content:flex-end;padding:14px 23px;border-top:1px solid var(--desk-line)}
+.enf-demo-search{display:flex;gap:7px;margin-bottom:12px}.enf-demo-search input{flex:1;border:1px solid var(--desk-line);border-radius:10px;padding:10px}.enf-demo-search select{border:1px solid var(--desk-line);border-radius:10px;padding:10px;background:#fff}
+body.enf-dark .enf-demoops-card,body.enf-dark .enf-demo-search select{background:#171d23;color:#eef2f5}
+@media(max-width:700px){.enf-demoops{padding:0}.enf-demoops-card{width:100%;height:100%;max-height:none;border-radius:0}.enf-demoops-grid{grid-template-columns:1fr}.enf-demo-search{flex-direction:column}}
+</style>
+<div class="enf-demoops" id="enfDemoOps"><div class="enf-demoops-card">
+<div class="enf-demoops-head"><div><div class="v2-kicker">DEMO · OPERATIONS COMPLETION</div><h2 id="enfDemoOpsTitle">Operational Demo Readiness</h2><p id="enfDemoOpsSub">Add · View · Edit · Search · Filter · Delete/Archive</p></div><button class="enf-field-close" onclick="enfDemoOpsClose()">×</button></div>
+<div class="enf-demoops-body"><div class="enf-demo-search"><input id="enfGlobalDemoSearch" placeholder="Search files, tasks, documents…"><select id="enfGlobalDemoType"><option value="all">All</option><option value="files">Files</option><option value="tasks">Tasks</option><option value="documents">Documents</option><option value="finance">Finance</option></select></div><div class="enf-demoops-grid" id="enfDemoOpsGrid"></div><div class="enf-demoops-note" id="enfDemoOpsNote"></div></div>
+<div class="enf-demoops-foot"><button class="enf-ms-btn primary" onclick="enfDemoOpsClose()">Close</button></div></div></div>
+<script id="enforza-demo-operations-js">
+(function(){
+"use strict";
+function ar(){return (window.currentLang||document.documentElement.lang||"en").toLowerCase().startsWith("ar")}function t(e,a){return ar()?a:e}
+function A(n){return window.DATA&&Array.isArray(DATA[n])?DATA[n]:[]}
+function save(){try{localStorage.setItem("enforzaDemoDataV2",JSON.stringify(window.DATA||{}));return true}catch(e){return false}}
+function load(){try{let x=JSON.parse(localStorage.getItem("enforzaDemoDataV2")||"null");if(x&&window.DATA)Object.keys(x).forEach(k=>{if(Array.isArray(x[k]))DATA[k]=x[k]})}catch(e){}}
+window.enfDemoArchive=function(kind,id){let a=A(kind),x=a.find(v=>String(v.id||v.ref)===String(id));if(!x)return false;x.status="Archived";x.archived=true;save();return true}
+window.enfDemoDelete=function(kind,id){let a=A(kind),i=a.findIndex(v=>String(v.id||v.ref)===String(id));if(i<0)return false;if(!confirm(t("Delete this demo record?","حذف هذا السجل من الديمو؟")))return false;a.splice(i,1);save();return true}
+window.enfDemoUpdate=function(kind,id,changes){let x=A(kind).find(v=>String(v.id||v.ref)===String(id));if(!x)return false;Object.assign(x,changes||{}, {updatedAt:new Date().toISOString()});save();return true}
+window.enfDemoSearch=function(q,type){q=String(q||"").toLowerCase().trim();let kinds=type&&type!=="all"?[type]:["files","smartTasks","documents","financialTransactions"];let out=[];kinds.forEach(k=>A(k).forEach(x=>{let blob=Object.values(x||{}).join(" ").toLowerCase();if(!q||blob.includes(q))out.push({kind:k,item:x})}));return out}
+function wrapPersistence(){
+ ["enfIntakeSave","v2SaveTask","enfFinSave","enfDeSave","enfMinutesSave"].forEach(n=>{let f=window[n];if(typeof f!=="function"||f.__demoPersist)return;let w=function(){let r=f.apply(this,arguments);setTimeout(save,0);return r};w.__demoPersist=true;window[n]=w})
+}
+function rows(){
+ return[
+ [t("Enforcement Files","ملفات التنفيذ"),["Add","View","Edit","Search","Filter","Archive"]],
+ [t("Tasks & Calendar","المهام والتقويم"),["Add","View","Edit","Search","Filter","Delete"]],
+ [t("Collections & Finance","التحصيل والمالية"),["Add","View","Edit","Search","Filter","Delete"]],
+ [t("Documents & Evidence","المستندات والأدلة"),["Add","View","Edit","Search","Filter","Delete"]],
+ [t("Minutes","المحاضر"),["Add","View","Edit","Search","Delete"]],
+ [t("Creditor View","واجهة الدائن"),["View","Search","Filter"]]
+ ]}
+window.enfDemoOpsOpen=function(){let g=document.getElementById("enfDemoOpsGrid");g.innerHTML=rows().map(r=>`<div class="enf-demoops-row"><b>${r[0]}</b><div class="enf-demoops-actions">${r[1].map(a=>`<span class="enf-demoops-tag">${a}</span>`).join("")}</div></div>`).join("");document.getElementById("enfDemoOpsNote").textContent=t("This is DEMO persistence only. Records entered by you are stored locally in this browser. No sample records are inserted automatically.","هذا تخزين خاص بالديمو فقط. البيانات التي تدخلها أنت تحفظ محليًا في هذا المتصفح، ولا تتم إضافة أي سجلات افتراضية تلقائيًا.");document.getElementById("enfDemoOps").classList.add("open")}
+window.enfDemoOpsClose=()=>document.getElementById("enfDemoOps")?.classList.remove("open");
+function bindSearch(){let q=document.getElementById("enfGlobalDemoSearch"),ty=document.getElementById("enfGlobalDemoType");if(!q||!ty)return;let go=()=>{let type=ty.value==="tasks"?"smartTasks":ty.value==="finance"?"financialTransactions":ty.value;let r=enfDemoSearch(q.value,type);document.getElementById("enfDemoOpsNote").textContent=t("Matching demo records: ","السجلات المطابقة في الديمو: ")+r.length};q.addEventListener("input",go);ty.addEventListener("change",go)}
+function init(){load();wrapPersistence();bindSearch();document.addEventListener("keydown",e=>{if(e.ctrlKey&&e.shiftKey&&String(e.key).toLowerCase()==="d"){e.preventDefault();enfDemoOpsOpen()}})}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
+})();
+</script><style id="enforza-demo-users-roles-css">
+/* DEMO — Users & Roles Completion */
+.enf-users-page{position:fixed;inset:0;z-index:325000;background:rgba(7,11,15,.72);display:none;place-items:center;padding:18px}.enf-users-page.open{display:grid}
+.enf-users-card{width:min(1040px,98vw);max-height:94vh;overflow:auto;background:#fff;border-radius:21px;box-shadow:0 38px 130px rgba(0,0,0,.36)}
+.enf-users-head{display:flex;justify-content:space-between;gap:18px;padding:21px 24px;border-bottom:1px solid var(--desk-line)}.enf-users-head h2{font-size:23px!important;margin:3px 0}.enf-users-head p{margin:0;color:var(--desk-muted);font-size:10px}
+.enf-users-body{padding:18px 24px}.enf-users-toolbar{display:flex;gap:8px;margin-bottom:12px}.enf-users-toolbar input{flex:1;border:1px solid var(--desk-line);border-radius:10px;padding:10px}.enf-users-table{display:grid;gap:7px}.enf-user-row{display:grid;grid-template-columns:1.4fr 1fr 1fr .8fr auto;gap:9px;align-items:center;border:1px solid var(--desk-line);border-radius:11px;padding:11px}.enf-user-row small{display:block;color:var(--desk-muted);font-size:8px}.enf-user-row b{font-size:10px}.enf-user-actions{display:flex;gap:5px}.enf-user-status{font-size:8px;font-weight:950}.enf-user-status.on{color:#4f805c}.enf-user-status.off{color:#9d4545}
+.enf-user-editor{display:none;margin-top:14px;border:1px solid var(--desk-line);border-radius:13px;padding:14px}.enf-user-editor.open{display:block}.enf-user-form{display:grid;grid-template-columns:1fr 1fr;gap:9px}.enf-user-form label{font-size:8px;font-weight:900;color:var(--desk-muted)}.enf-user-form input,.enf-user-form select{width:100%;margin-top:4px;border:1px solid var(--desk-line);border-radius:9px;padding:10px;background:#fff}.enf-user-editor-foot{display:flex;justify-content:flex-end;gap:7px;margin-top:11px}
+.enf-users-note{margin-top:12px;padding:10px;border-radius:10px;background:#fbfaf8;border:1px solid var(--desk-line);font-size:9px;color:var(--desk-muted);line-height:1.55}
+body.enf-dark .enf-users-card,body.enf-dark .enf-user-form input,body.enf-dark .enf-user-form select{background:#171d23;color:#eef2f5}
+@media(max-width:760px){.enf-users-page{padding:0}.enf-users-card{width:100%;height:100%;max-height:none;border-radius:0}.enf-user-row{grid-template-columns:1fr 1fr}.enf-user-actions{grid-column:1/-1}.enf-user-form{grid-template-columns:1fr}}
+</style>
+<div class="enf-users-page" id="enfUsersManager"><div class="enf-users-card">
+<div class="enf-users-head"><div><div class="v2-kicker">DEMO · USERS & ROLES</div><h2 id="enfUsersTitle">Users & Access</h2><p id="enfUsersSub">Admin · Enforcement Officer · Creditor</p></div><button class="enf-field-close" onclick="enfUsersClose()">×</button></div>
+<div class="enf-users-body"><div class="enf-users-toolbar"><input id="enfUsersSearch" placeholder="Search users…"><button class="enf-ms-btn primary" onclick="enfUserEditorOpen()">+ Add User</button></div><div class="enf-users-table" id="enfUsersTable"></div>
+<div class="enf-user-editor" id="enfUserEditor"><div class="enf-user-form"><div><label>FULL NAME</label><input id="euName"></div><div><label>USERNAME</label><input id="euUsername"></div><div><label>PASSWORD</label><input id="euPassword" type="password"></div><div><label>ROLE</label><select id="euRole"><option value="admin">Admin</option><option value="officer">Enforcement Officer</option><option value="creditor">Creditor</option></select></div><div><label>CREDITOR REFERENCE</label><input id="euCreditor" placeholder="Optional — for Creditor role"></div><div><label>STATUS</label><select id="euActive"><option value="true">Active</option><option value="false">Disabled</option></select></div></div><div class="enf-user-editor-foot"><button class="enf-ms-btn" onclick="enfUserEditorClose()">Cancel</button><button class="enf-ms-btn primary" onclick="enfUserEditorSave()">Save User</button></div></div>
+<div class="enf-users-note" id="enfUsersNote"></div></div></div></div>
+<script id="enforza-demo-users-roles-js">
+(function(){
+"use strict";
+const KEY="enforzaUsersV2";let editing=null;
+function ar(){return (window.currentLang||document.documentElement.lang||"en").toLowerCase().startsWith("ar")}function t(e,a){return ar()?a:e}
+function list(){try{return JSON.parse(localStorage.getItem(KEY)||"[]")}catch(e){return[]}}
+function put(a){localStorage.setItem(KEY,JSON.stringify(a))}
+function current(){try{return JSON.parse(sessionStorage.getItem("enforzaSessionV2")||"null")}catch(e){return null}}
+function esc(x){return String(x??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+function roleName(r){return r==="admin"?t("Admin","مدير النظام"):r==="creditor"?t("Creditor","دائن"):t("Enforcement Officer","موظف تنفيذ")}
+function admin(){return current()?.role==="admin"}
+function render(q=""){let a=list().filter(x=>!q||[x.name,x.username,x.role,x.creditorId].join(" ").toLowerCase().includes(q.toLowerCase()));let box=document.getElementById("enfUsersTable");box.innerHTML=a.length?a.map(x=>`<div class="enf-user-row"><div><b>${esc(x.name||x.username)}</b><small>${esc(x.username)}</small></div><div><b>${roleName(x.role)}</b><small>${x.role==="creditor"?esc(x.creditorId||t("Not linked","غير مربوط")):""}</small></div><div><span class="enf-user-status ${x.active!==false?"on":"off"}">${x.active!==false?t("ACTIVE","نشط"):t("DISABLED","موقوف")}</span></div><div><small>${esc(x.id)}</small></div><div class="enf-user-actions"><button class="enf-ms-btn" onclick="enfUserEdit('${esc(x.id)}')">${t("Edit","تعديل")}</button><button class="enf-ms-btn" onclick="enfUserToggle('${esc(x.id)}')">${x.active!==false?t("Disable","إيقاف"):t("Enable","تفعيل")}</button></div></div>`).join(""):`<div class="enf360-empty">${t("No users found.","لا يوجد مستخدمون.")}</div>`}
+window.enfUsersOpen=function(){if(!admin()){alert(t("Admin access only.","هذه الشاشة لمدير النظام فقط."));return}document.getElementById("enfUsersManager").classList.add("open");document.getElementById("enfUsersNote").textContent=t("DEMO users are stored locally in this browser. Creditor users can be linked to a creditor reference for isolated presentation.","مستخدمو الديمو محفوظون محليًا في هذا المتصفح. يمكن ربط مستخدم الدائن بمرجع دائن لعرض بياناته بصورة مستقلة.");render()}
+window.enfUsersClose=()=>document.getElementById("enfUsersManager")?.classList.remove("open");
+window.enfUserEditorOpen=function(){editing=null;["euName","euUsername","euPassword","euCreditor"].forEach(id=>document.getElementById(id).value="");document.getElementById("euRole").value="officer";document.getElementById("euActive").value="true";document.getElementById("enfUserEditor").classList.add("open")}
+window.enfUserEditorClose=()=>document.getElementById("enfUserEditor")?.classList.remove("open");
+window.enfUserEdit=function(id){let x=list().find(u=>u.id===id);if(!x)return;editing=id;document.getElementById("euName").value=x.name||"";document.getElementById("euUsername").value=x.username||"";document.getElementById("euPassword").value=x.password||"";document.getElementById("euRole").value=x.role||"officer";document.getElementById("euCreditor").value=x.creditorId||"";document.getElementById("euActive").value=String(x.active!==false);document.getElementById("enfUserEditor").classList.add("open")}
+window.enfUserEditorSave=function(){let a=list(),o={name:document.getElementById("euName").value.trim(),username:document.getElementById("euUsername").value.trim(),password:document.getElementById("euPassword").value,role:document.getElementById("euRole").value,creditorId:document.getElementById("euCreditor").value.trim(),active:document.getElementById("euActive").value==="true"};if(!o.name||!o.username||!o.password){alert(t("Name, username and password are required.","الاسم واسم المستخدم وكلمة المرور مطلوبة."));return}if(a.some(x=>x.username.toLowerCase()===o.username.toLowerCase()&&x.id!==editing)){alert(t("Username already exists.","اسم المستخدم موجود مسبقًا."));return}if(editing){let i=a.findIndex(x=>x.id===editing);if(i>=0)a[i]=Object.assign({},a[i],o)}else a.push(Object.assign({id:"USR-"+Date.now()},o));put(a);enfUserEditorClose();render()}
+window.enfUserToggle=function(id){let a=list(),x=a.find(u=>u.id===id);if(!x)return;let me=current();if(me&&me.id===id&&x.active!==false){alert(t("You cannot disable your own active session.","لا يمكنك إيقاف حساب جلستك الحالية."));return}x.active=x.active===false;put(a);render()}
+function nav(){let me=current();if(!me)return;document.body.dataset.enfRole=me.role;document.querySelectorAll(".nav-item").forEach(n=>{let p=n.dataset.page||"";if(p==="users"){n.style.display=me.role==="admin"?"":"none";if(me.role==="admin"&&!n.dataset.usersBound){n.dataset.usersBound="1";n.addEventListener("click",e=>{e.preventDefault();e.stopImmediatePropagation();enfUsersOpen()},true);}}});}
+function init(){document.getElementById("enfUsersSearch")?.addEventListener("input",e=>render(e.target.value));nav();document.addEventListener("keydown",e=>{if(e.ctrlKey&&e.shiftKey&&String(e.key).toLowerCase()==="u"){e.preventDefault();enfUsersOpen()}})}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
+})();
+</script><style id="enforza-smart-voice-demo-complete-css">
+/* DEMO — Smart Voice Completion */
+.enf-vcmd-preview{margin-top:10px;border:1px solid var(--desk-line);border-radius:12px;padding:12px;background:#fbfaf8}
+.enf-vcmd-preview h4{margin:0 0 8px;font-size:11px}.enf-vcmd-fields{display:grid;grid-template-columns:1fr 1fr;gap:7px}.enf-vcmd-field{padding:8px;border:1px solid var(--desk-line);border-radius:9px;background:#fff}.enf-vcmd-field small{display:block;color:var(--desk-muted);font-size:8px}.enf-vcmd-field b{display:block;font-size:10px;margin-top:3px}
+body.enf-dark .enf-vcmd-preview,body.enf-dark .enf-vcmd-field{background:#171d23;color:#eef2f5}
+@media(max-width:600px){.enf-vcmd-fields{grid-template-columns:1fr}}
+</style>
+<script id="enforza-smart-voice-demo-complete-js">
+(function(){
+"use strict";let command=null;
+function ar(){return (window.currentLang||document.documentElement.lang||"en").toLowerCase().startsWith("ar")}function t(e,a){return ar()?a:e}
+function norm(x){return String(x||"").replace(/[إأآ]/g,"ا").replace(/ى/g,"ي").replace(/ة/g,"ه").replace(/[٠-٩]/g,d=>"٠١٢٣٤٥٦٧٨٩".indexOf(d)).toLowerCase().replace(/\s+/g," ").trim()}
+function files(){return window.DATA&&Array.isArray(DATA.files)?DATA.files:[]}
+function findFile(raw){
+ let n=norm(raw),m=n.match(/(?:ملف|قضيه|قضية|file|case)\s*(?:رقم)?\s*([a-z0-9\/_-]+)/i);
+ if(m){let q=m[1];return files().find(f=>[f.id,f.ref,f.caseNumber,f.fileNumber].some(v=>norm(v)===q))||null}
+ return files().find(f=>{let name=norm(f.title||f.creditorName||f.debtorName||f.name||"");return name&&n.includes(name)})||null
+}
+function amount(raw){let m=String(raw).match(/(?:BHD|د\.?ب|دينار(?:\s+بحريني)?)\s*([0-9٠-٩,.]+)|([0-9٠-٩,.]+)\s*(?:BHD|د\.?ب|دينار(?:\s+بحريني)?)/i);return m?(m[1]||m[2]||"").replace(/[٠-٩]/g,d=>"٠١٢٣٤٥٦٧٨٩".indexOf(d)):""}
+function method(raw){return /بنفت|benefit/i.test(raw)?"BenefitPay":/تحويل|transfer/i.test(raw)?"Bank Transfer":/نقد|cash/i.test(raw)?"Cash":/شيك|cheque|check/i.test(raw)?"Cheque":""}
+function time(raw){let m=norm(raw).match(/(?:الساعه|الساعة|at)\s*(\d{1,2})(?::(\d{2}))?\s*(صباحا|صباحًا|am|مساء|مساءً|pm)?/);if(!m)return"";let h=+m[1],mi=m[2]||"00",p=m[3]||"";if(/مساء|pm/.test(p)&&h<12)h+=12;if(/صباح|am/.test(p)&&h===12)h=0;return String(h).padStart(2,"0")+":"+mi}
+function date(raw){
+ let n=norm(raw),d=new Date(),days={"الاحد":0,"الاثنين":1,"الثلاثاء":2,"الاربعاء":3,"الخميس":4,"الجمعه":5,"السبت":6};
+ if(/غدا|بكره|بكرة|tomorrow/.test(n))d.setDate(d.getDate()+1);
+ else{for(let k in days)if(n.includes(k)){let add=(days[k]-d.getDay()+7)%7;if(add===0)add=7;d.setDate(d.getDate()+add);break}}
+ return d.toISOString().slice(0,10)
+}
+function parse(raw){
+ let n=norm(raw),intent="dictation";
+ if(/(اضف|انشئ|سجل|ذكرني).*(مهمه|متابعه|موعد)|ذكرني/.test(n))intent="task";
+ else if(/(سجل|اضف|استلم|تحصيل|دفع|سدد).*(تحصيل|دفع|سداد|دينار)|تحصيل/.test(n))intent="collection";
+ else if(/(اضف|ارفق|سجل).*(مستند|وثيقه|دليل)/.test(n))intent="document";
+ else if(/(انشئ|سجل|افتح).*(محضر|اجتماع|جلسه)/.test(n))intent="minute";
+ else if(/(افتح|اعرض).*(ملف|قضيه)/.test(n))intent="openfile";
+ else if(/(اعرض|اظهر).*(متاخر|متأخر|overdue)/.test(n))intent="overdue";
+ let f=findFile(raw);
+ return{intent,raw,file:f,fileId:f?(f.id||f.ref||""):"",amount:amount(raw),method:method(raw),date:date(raw),time:time(raw)}
+}
+function preview(p){
+ let box=document.getElementById("enfVoiceConfirmData");if(!box)return;
+ let fields=[[t("Action","الإجراء"),p.intent],[t("File","الملف"),p.fileId||t("Not identified","لم يتم تحديده")]];
+ if(p.amount)fields.push([t("Amount","المبلغ"),"BHD "+p.amount]);if(p.method)fields.push([t("Method","الطريقة"),p.method]);if(p.intent==="task"){fields.push([t("Date","التاريخ"),p.date]);if(p.time)fields.push([t("Time","الوقت"),p.time])}
+ box.innerHTML=`<div class="enf-vcmd-preview"><h4>${t("ENFORZA understood","فهم ENFORZA")}</h4><div class="enf-vcmd-fields">${fields.map(x=>`<div class="enf-vcmd-field"><small>${x[0]}</small><b>${x[1]}</b></div>`).join("")}</div></div><div style="margin-top:9px">${p.raw}</div>`
+}
+window.enfVoiceExecute=function(){
+ let raw=document.getElementById("enfVoiceOriginal")?.value||"";command=parse(raw);
+ if(command.intent==="dictation"){document.getElementById("enfVoiceStatus").textContent=t("Dictation captured. No executable command detected.","تم التقاط الإملاء، ولم يتم التعرف على أمر تنفيذي.");return}
+ let role=(window.currentUser||{}).role||window.currentRole||sessionStorage.getItem("enforzaRole")||"officer";
+ if(role==="creditor"&&!["openfile","overdue","task"].includes(command.intent)){document.getElementById("enfVoiceStatus").textContent=t("This voice action is not permitted for Creditor access.","هذا الأمر الصوتي غير مسموح لصلاحية الدائن.");return}
+ document.getElementById("enfVoiceConfirmTitle").textContent=t("Confirm smart voice command","تأكيد الأمر الصوتي الذكي");
+ document.getElementById("enfVoiceConfirmMsg").textContent=t("Review what ENFORZA understood. The form will open pre-filled; final saving remains under your control.","راجع ما فهمه ENFORZA. سيتم فتح النموذج وتعبئته مبدئيًا، ويبقى الحفظ النهائي تحت سيطرتك.");
+ preview(command);document.getElementById("enfVoiceConfirm").classList.add("open")
+}
+function setVal(selectors,val){if(!val)return;for(let q of selectors){let x=document.querySelector(q);if(x){x.value=val;x.dispatchEvent(new Event("input",{bubbles:true}));x.dispatchEvent(new Event("change",{bubbles:true}));return}}}
+window.enfVoiceConfirmCommand=function(){
+ let p=command;if(!p)return;document.getElementById("enfVoiceConfirm")?.classList.remove("open");
+ if(p.intent==="task"&&typeof window.v2OpenTask==="function"){window.v2OpenTask(p.date);setTimeout(()=>{setVal(["#taskDate","#v2TaskDate",'input[name="date"]'],p.date);setVal(["#taskTime","#v2TaskTime",'input[type="time"]'],p.time);setVal(["#taskFile","#v2TaskFile",'select[name="file"]'],p.fileId)},100)}
+ else if(p.intent==="collection"&&typeof window.enfFinOpen==="function"){window.enfFinOpen("Collection");setTimeout(()=>{setVal(["#enfFinAmount",'#enfFinancePage input[type="number"]'],p.amount);setVal(["#enfFinMethod",'select[name="method"]'],p.method);setVal(["#enfFinFile",'select[name="file"]'],p.fileId)},100)}
+ else if(p.intent==="document"&&typeof window.enfDeOpen==="function"){window.enfDeOpen("Document");setTimeout(()=>setVal(["#enfDeFile",'select[name="file"]'],p.fileId),100)}
+ else if(p.intent==="minute"&&typeof window.enfOpenMinutesStudio==="function")window.enfOpenMinutesStudio(p.fileId||"");
+ else if(p.intent==="openfile"&&p.fileId&&typeof window.openFile360==="function")window.openFile360(p.fileId);
+ else if(p.intent==="overdue"){if(typeof window.v2ShowPage==="function")window.v2ShowPage("tasks");setTimeout(()=>{let q=document.querySelector('select[name="status"],#taskStatusFilter');if(q){let o=[...q.options].find(x=>/overdue|متأخر/i.test(x.text));if(o){q.value=o.value;q.dispatchEvent(new Event("change",{bubbles:true}))}}},100)}
+ command=null;
+}
+function examples(){
+ let box=document.querySelector("#enfVoiceAI .enf-voice-warning");if(box)box.innerHTML=t(
+ "Try: “Add a task for file 25 tomorrow at 10” · “Record a BHD 500 collection by BenefitPay” · “Open file 25” · “Show overdue files”.",
+ "جرّب: «أضف مهمة للملف 25 غدًا الساعة 10» · «سجل تحصيل 500 دينار بنفت» · «افتح ملف 25» · «اعرض الملفات المتأخرة»."
+ )}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",examples);else examples();
+})();
+</script><style id="enforza-creditor-experience-css">
+/* DEMO — Creditor Experience Completion */
+.enf-cx{position:fixed;inset:0;z-index:330000;background:#f4f5f5;display:none;overflow:auto;color:#172028}.enf-cx.open{display:block}
+.enf-cx-top{position:sticky;top:0;z-index:5;background:rgba(255,255,255,.95);backdrop-filter:blur(14px);border-bottom:1px solid #e1e4e5;padding:13px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.enf-cx-brand{display:flex;align-items:center;gap:10px}.enf-cx-logo{width:37px;height:37px;border-radius:11px;background:#172129;color:#d4a16e;display:grid;place-items:center;font-weight:950}.enf-cx-brand b{display:block;font-size:12px}.enf-cx-brand small{display:block;color:#7d878e;font-size:8px;margin-top:2px}.enf-cx-user{display:flex;align-items:center;gap:8px;font-size:9px}.enf-cx-user button{border:1px solid #dadddf;background:#fff;border-radius:9px;padding:8px 10px;cursor:pointer}
+.enf-cx-wrap{width:min(1180px,94vw);margin:0 auto;padding:28px 0 48px}.enf-cx-hero{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:18px}.enf-cx-kicker{font-size:8px;font-weight:950;letter-spacing:.13em;color:#9b6a3c}.enf-cx-hero h1{font-size:30px!important;margin:5px 0}.enf-cx-hero p{margin:0;color:#77828a;font-size:10px}
+.enf-cx-select{min-width:220px;border:1px solid #dadddf;border-radius:10px;padding:10px;background:#fff}
+.enf-cx-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}.enf-cx-kpi{background:#fff;border:1px solid #e0e3e4;border-radius:14px;padding:16px}.enf-cx-kpi small{display:block;color:#7d878e;font-size:8px;font-weight:900}.enf-cx-kpi b{display:block;font-size:21px;margin-top:6px}.enf-cx-kpi span{display:block;color:#8a9399;font-size:8px;margin-top:4px}
+.enf-cx-grid{display:grid;grid-template-columns:1.5fr .85fr;gap:12px}.enf-cx-panel{background:#fff;border:1px solid #e0e3e4;border-radius:14px;padding:16px;margin-bottom:12px}.enf-cx-panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:11px}.enf-cx-panel h3{font-size:13px!important;margin:0}.enf-cx-status{padding:5px 8px;border-radius:999px;background:#edf3ee;color:#52735a;font-size:8px;font-weight:950}
+.enf-cx-info{display:grid;grid-template-columns:1fr 1fr;gap:8px}.enf-cx-info div{padding:9px;border-radius:9px;background:#f7f8f8}.enf-cx-info small{display:block;color:#879097;font-size:8px}.enf-cx-info b{display:block;font-size:10px;margin-top:3px}
+.enf-cx-timeline{display:grid;gap:10px}.enf-cx-event{position:relative;padding-inline-start:19px}.enf-cx-event:before{content:"";position:absolute;inset-inline-start:2px;top:5px;width:7px;height:7px;border-radius:50%;background:#b9814c}.enf-cx-event:after{content:"";position:absolute;inset-inline-start:5px;top:14px;bottom:-12px;width:1px;background:#e1e3e4}.enf-cx-event:last-child:after{display:none}.enf-cx-event b{display:block;font-size:9px}.enf-cx-event small{display:block;color:#8a9399;font-size:8px;margin-top:2px}
+.enf-cx-doc{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid #edf0f1}.enf-cx-doc:last-child{border-bottom:0}.enf-cx-doc b{font-size:9px}.enf-cx-doc small{font-size:8px;color:#8a9399}.enf-cx-empty{padding:20px;text-align:center;color:#8a9399;font-size:9px}
+body.enf-dark .enf-cx{background:#0f151a;color:#eef2f5}body.enf-dark .enf-cx-top,body.enf-dark .enf-cx-panel,body.enf-dark .enf-cx-kpi,body.enf-dark .enf-cx-select,body.enf-dark .enf-cx-user button{background:#171d23;color:#eef2f5;border-color:#2a333b}body.enf-dark .enf-cx-info div{background:#11171c}
+@media(max-width:800px){.enf-cx-wrap{width:min(94vw,650px);padding-top:20px}.enf-cx-hero{align-items:stretch;flex-direction:column}.enf-cx-select{width:100%}.enf-cx-kpis{grid-template-columns:1fr 1fr}.enf-cx-grid{grid-template-columns:1fr}.enf-cx-top{padding:11px 14px}}
+@media(max-width:480px){.enf-cx-kpis,.enf-cx-info{grid-template-columns:1fr}.enf-cx-hero h1{font-size:24px!important}}
+</style>
+<div class="enf-cx" id="enfCreditorExperience">
+<header class="enf-cx-top"><div class="enf-cx-brand"><div class="enf-cx-logo">E</div><div><b>ENFORZA</b><small id="cxBrandSub">Creditor Access</small></div></div><div class="enf-cx-user"><span id="cxUser"></span><button onclick="enfCreditorExit()" id="cxExit">Sign Out</button></div></header>
+<main class="enf-cx-wrap"><section class="enf-cx-hero"><div><div class="enf-cx-kicker">ENFORCEMENT PORTFOLIO</div><h1 id="cxHello">Your enforcement files</h1><p id="cxIntro">A clear view of your claims, collections and latest case activity.</p></div><select class="enf-cx-select" id="cxFileSelect"></select></section>
+<section class="enf-cx-kpis" id="cxKpis"></section><div class="enf-cx-grid"><div><section class="enf-cx-panel"><div class="enf-cx-panel-head"><h3 id="cxFileTitle">File overview</h3><span class="enf-cx-status" id="cxStatus"></span></div><div class="enf-cx-info" id="cxInfo"></div></section><section class="enf-cx-panel"><div class="enf-cx-panel-head"><h3 id="cxTimelineTitle">Latest activity</h3></div><div class="enf-cx-timeline" id="cxTimeline"></div></section></div><aside><section class="enf-cx-panel"><div class="enf-cx-panel-head"><h3 id="cxDocsTitle">Documents</h3></div><div id="cxDocs"></div></section><section class="enf-cx-panel"><div class="enf-cx-panel-head"><h3 id="cxUpdateTitle">Current position</h3></div><div id="cxPosition"></div></section></aside></div></main></div>
+<script id="enforza-creditor-experience-js">
+(function(){
+"use strict";
+function ar(){return (window.currentLang||document.documentElement.lang||"en").toLowerCase().startsWith("ar")}function t(e,a){return ar()?a:e}
+function A(n){return window.DATA&&Array.isArray(DATA[n])?DATA[n]:[]}
+function sess(){try{return JSON.parse(sessionStorage.getItem("enforzaSessionV2")||"null")}catch(e){return null}}
+function num(v){v=Number(String(v??0).replace(/,/g,""));return Number.isFinite(v)?v:0}function money(v){return "BHD "+num(v).toLocaleString("en-US",{minimumFractionDigits:3,maximumFractionDigits:3})}
+function fid(f){return String(f.id||f.ref||f.fileNumber||f.caseNumber||"")}
+function creditorFiles(){
+ let u=sess()||window.currentUser||{},ref=String(u.creditorId||"").trim();
+ let fs=A("files").filter(f=>!f.archived);
+ if(ref)fs=fs.filter(f=>[f.creditorId,f.creditorRef,f.clientId,f.creditorName].some(v=>String(v||"")===ref));
+ return u.role==="creditor"?fs:A("files").filter(f=>!f.archived)
+}
+function transactions(id){return A("financialTransactions").filter(x=>String(x.fileId||x.fileRef||"")===id)}
+function docs(id){return A("documents").filter(x=>String(x.fileId||x.fileRef||"")===id)}
+function tasks(id){return A("smartTasks").filter(x=>String(x.fileId||x.fileRef||"")===id)}
+function claim(f){return num(f.claimAmount||f.amount||f.totalClaim||f.principal)}
+function collected(f,id){let explicit=f.collectedAmount;if(explicit!==undefined&&explicit!=="")return num(explicit);return transactions(id).filter(x=>/collection|payment|receipt|تحصيل|سداد/i.test(String(x.type||x.category||""))).reduce((a,x)=>a+num(x.amount),0)}
+function events(f,id){
+ let e=[];tasks(id).forEach(x=>e.push({date:x.date||x.dueDate||x.createdAt,title:x.title||x.subject||t("Task update","تحديث مهمة")}));
+ transactions(id).forEach(x=>e.push({date:x.date||x.createdAt,title:(x.type||t("Financial update","تحديث مالي"))+(x.amount?" · "+money(x.amount):"")}));
+ docs(id).forEach(x=>e.push({date:x.date||x.createdAt,title:t("Document added: ","تمت إضافة مستند: ")+(x.name||x.title||x.type||"")}));
+ return e.sort((a,b)=>String(b.date||"").localeCompare(String(a.date||""))).slice(0,6)
+}
+function render(id){
+ let fs=creditorFiles(),f=fs.find(x=>fid(x)===String(id))||fs[0],u=sess()||{};
+ document.getElementById("cxUser").textContent=u.name||u.username||t("Creditor","الدائن");
+ if(!f){["cxKpis","cxInfo","cxTimeline","cxDocs","cxPosition"].forEach(x=>document.getElementById(x).innerHTML=`<div class="enf-cx-empty">${t("No enforcement files are linked to this account.","لا توجد ملفات تنفيذ مرتبطة بهذا الحساب.")}</div>`);return}
+ let idd=fid(f),cl=claim(f),co=collected(f,idd),bal=Math.max(0,cl-co),ev=events(f,idd),ds=docs(idd);
+ document.getElementById("cxStatus").textContent=f.status||t("Active","نشط");
+ document.getElementById("cxKpis").innerHTML=[[t("Claim Amount","مبلغ المطالبة"),money(cl),t("Original claim","أصل المطالبة")],[t("Collected","المحصل"),money(co),t("Received to date","المحصل حتى تاريخه")],[t("Outstanding","المتبقي"),money(bal),t("Current balance","الرصيد الحالي")],[t("Progress","نسبة التحصيل"),cl?Math.min(100,(co/cl)*100).toFixed(1)+"%":"0%",t("Collection progress","تقدم التحصيل")]].map(x=>`<div class="enf-cx-kpi"><small>${x[0]}</small><b>${x[1]}</b><span>${x[2]}</span></div>`).join("");
+ document.getElementById("cxInfo").innerHTML=[[t("File Reference","مرجع الملف"),idd||"-"],[t("Case Number","رقم القضية"),f.caseNumber||"-"],[t("Debtor","المدين"),f.debtorName||f.debtor||"-"],[t("Creditor","الدائن"),f.creditorName||f.creditor||"-"],[t("Opened","تاريخ الفتح"),f.openDate||f.createdAt||"-"],[t("Officer","موظف التنفيذ"),f.officerName||f.officer||"-"]].map(x=>`<div><small>${x[0]}</small><b>${x[1]}</b></div>`).join("");
+ document.getElementById("cxTimeline").innerHTML=ev.length?ev.map(x=>`<div class="enf-cx-event"><b>${x.title}</b><small>${x.date||""}</small></div>`).join(""):`<div class="enf-cx-empty">${t("No activity yet.","لا توجد تحديثات حتى الآن.")}</div>`;
+ document.getElementById("cxDocs").innerHTML=ds.length?ds.slice(0,6).map(x=>`<div class="enf-cx-doc"><div><b>${x.name||x.title||x.type||t("Document","مستند")}</b><small>${x.date||x.createdAt||""}</small></div><span>›</span></div>`).join(""):`<div class="enf-cx-empty">${t("No documents available.","لا توجد مستندات متاحة.")}</div>`;
+ document.getElementById("cxPosition").innerHTML=`<div class="enf-cx-info"><div><small>${t("Last Update","آخر تحديث")}</small><b>${ev[0]?.date||f.updatedAt||"-"}</b></div><div><small>${t("Status","الحالة")}</small><b>${f.status||t("Active","نشط")}</b></div></div>`;
+}
+function text(){document.getElementById("cxBrandSub").textContent=t("Creditor Access","بوابة الدائن");document.getElementById("cxHello").textContent=t("Your enforcement files","ملفات التنفيذ الخاصة بك");document.getElementById("cxIntro").textContent=t("A clear view of your claims, collections and latest case activity.","عرض واضح للمطالبات والتحصيلات وآخر تطورات ملفات التنفيذ.");document.getElementById("cxFileTitle").textContent=t("File overview","نظرة عامة على الملف");document.getElementById("cxTimelineTitle").textContent=t("Latest activity","آخر الإجراءات");document.getElementById("cxDocsTitle").textContent=t("Documents","المستندات");document.getElementById("cxUpdateTitle").textContent=t("Current position","الموقف الحالي");document.getElementById("cxExit").textContent=t("Sign Out","تسجيل الخروج")}
+window.enfOpenCreditorExperience=function(){text();let fs=creditorFiles(),sel=document.getElementById("cxFileSelect");sel.innerHTML=fs.length?fs.map(f=>`<option value="${fid(f)}">${fid(f)} · ${f.debtorName||f.debtor||f.title||t("Enforcement File","ملف تنفيذ")}</option>`).join(""):`<option>${t("No linked files","لا توجد ملفات مرتبطة")}</option>`;document.getElementById("enfCreditorExperience").classList.add("open");render(sel.value)}
+window.enfCreditorExit=function(){document.getElementById("enfCreditorExperience")?.classList.remove("open");if(typeof window.enfLogout==="function")window.enfLogout()}
+function init(){document.getElementById("cxFileSelect")?.addEventListener("change",e=>render(e.target.value));let u=sess();if(u?.role==="creditor")setTimeout(()=>window.enfOpenCreditorExperience(),180)}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
+})();
+</script><style id="enforza-fast-login-css">
+/* FAST LOGIN — instant visual transition */
+#enfAuthV3.enf-auth-leaving{opacity:0;pointer-events:none;transition:opacity .12s ease}
+.enf-login-progress{height:2px;position:absolute;left:0;right:0;top:0;overflow:hidden;border-radius:24px 24px 0 0}
+.enf-login-progress:after{content:"";display:block;width:45%;height:100%;background:#b77d48;transform:translateX(-110%);animation:enfFastLogin .45s ease infinite}
+@keyframes enfFastLogin{to{transform:translateX(260%)}}
+</style>
+<script id="enforza-fast-login-js">
+(function(){
+"use strict";
+const SESSION="enforzaSessionV2", USERS="enforzaUsersV2";
+function ar(){return (window.currentLang||document.documentElement.lang||"en").toLowerCase().startsWith("ar")}
+function t(e,a){return ar()?a:e}
+function readUsers(){try{return JSON.parse(localStorage.getItem(USERS)||"[]")}catch(e){return[]}}
+function showAppImmediately(user){
+  window.currentRole=user.role;window.userRole=user.role;window.currentUserId=user.id;
+  window.currentUser={id:user.id,username:user.username,name:user.name,role:user.role,creditorId:user.creditorId||""};
+  sessionStorage.setItem(SESSION,JSON.stringify(window.currentUser));
+  sessionStorage.setItem("enforzaRole",user.role);
+  sessionStorage.setItem("enforzaUserId",user.id);
+  const auth=document.getElementById("enfAuthV3");
+  if(auth){auth.classList.add("enf-auth-leaving");requestAnimationFrame(()=>auth.classList.remove("open"))}
+  document.body.dataset.enfRole=user.role;
+}
+function applyRoleLight(user){
+  const creditor=user.role==="creditor", admin=user.role==="admin";
+  document.querySelectorAll(".nav-item").forEach(n=>{
+    const p=n.dataset.page||"";
+    if(p==="users") n.style.display=admin?"":"none";
+    else if(creditor && ["expenses","treasury","claims","users","settings","evidence","collections"].includes(p)) n.style.display="none";
+  });
+}
+function route(user){
+  if(user.role==="creditor" && typeof window.enfOpenCreditorExperience==="function"){
+    window.enfOpenCreditorExperience(); return;
+  }
+  if(typeof window.v2ShowPage==="function"){window.v2ShowPage("dashboard");return}
+  const nav=document.querySelector('.nav-item[data-page="dashboard"]'); if(nav)nav.click();
+}
+function deferHeavy(){
+  // Allow first paint before optional demo modules do any work.
+  setTimeout(()=>{
+    try{if(typeof window.enfDemoOpsRefresh==="function")window.enfDemoOpsRefresh()}catch(e){}
+  },250);
+}
+function install(){
+ const form=document.getElementById("enfAuthForm"); if(!form||form.dataset.fastLogin==="1")return;
+ form.dataset.fastLogin="1";
+ // Capture phase prevents the older accumulated login handler from doing duplicate routing.
+ form.addEventListener("submit",function(e){
+   e.preventDefault();e.stopImmediatePropagation();
+   const un=(document.getElementById("enfAuthUser")?.value||"").trim();
+   const pw=document.getElementById("enfAuthPass")?.value||"";
+   const err=document.getElementById("enfAuthError");
+   const btn=document.getElementById("enfAuthSubmit");
+   const u=readUsers().find(x=>x.active!==false&&String(x.username||"").toLowerCase()===un.toLowerCase()&&x.password===pw);
+   if(!u){if(err)err.textContent=t("Invalid username or password.","اسم المستخدم أو كلمة المرور غير صحيحة.");return}
+   if(err)err.textContent="";
+   if(btn){btn.disabled=true;btn.textContent=t("Opening…","جاري الفتح…")}
+   showAppImmediately(u);
+   applyRoleLight(u);
+   requestAnimationFrame(()=>requestAnimationFrame(()=>route(u)));
+   deferHeavy();
+   setTimeout(()=>{if(btn){btn.disabled=false;btn.textContent=t("Sign In","تسجيل الدخول")}},350);
+ },true);
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",install,{once:true});else install();
+})();
+</script>\n\n<!-- =========================================================\n ENFORZA V2.1 — ADVANCED CALENDAR + UNIFIED VOICE COMMAND ENGINE\n Non-destructive upgrade layer\n========================================================= -->\n<style id="enforza-v21-calendar-voice-css">\n.enf-cal21-actions{display:flex;gap:8px;flex-wrap:wrap}.enf-cal21-filterbar{display:grid;grid-template-columns:1.4fr repeat(4,minmax(120px,.7fr));gap:8px;margin:0 0 12px}.enf-cal21-filterbar input,.enf-cal21-filterbar select{width:100%;border:1px solid var(--desk-line,var(--border));background:#fff;border-radius:10px;padding:10px;font:inherit}.enf-cal21-now{position:relative}.enf-cal21-now:after{content:"";position:absolute;left:0;right:0;top:50%;height:2px;background:#b54242;pointer-events:none}.enf-cal21-event{cursor:pointer}.enf-cal21-event[data-type="Hearing"]{border-inline-start-color:#9b2e2e!important}.enf-cal21-event[data-type="Collection"]{border-inline-start-color:#4f805c!important}.enf-cal21-event[data-type="Meeting"]{border-inline-start-color:#526f9d!important}.enf-cal21-event[data-type="Deadline"]{border-inline-start-color:#d18a2f!important}.enf-cal21-badge{font-size:9px;padding:3px 6px;border-radius:999px;background:#f1e7dd;color:#80562f;font-weight:900}.enf-cal21-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.enf-cal21-check{display:flex!important;align-items:center;gap:7px;color:var(--text)!important}.enf-cal21-check input{width:auto!important}.enf-cal21-extra{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:12px}.enf-cal21-voice{display:flex;gap:7px}.enf-cal21-voice button{white-space:nowrap}.enf-cal21-preview{margin-top:8px;padding:9px 10px;border:1px solid var(--desk-line,var(--border));border-radius:9px;background:#fbfaf8;font-size:11px;color:var(--muted)}\nbody.enf-dark .enf-cal21-filterbar input,body.enf-dark .enf-cal21-filterbar select{background:#171d23;color:#eef2f5;border-color:#2a333b}\n@media(max-width:900px){.enf-cal21-filterbar{grid-template-columns:1fr 1fr}.enf-cal21-extra{grid-template-columns:1fr}}@media(max-width:600px){.enf-cal21-filterbar{grid-template-columns:1fr}}\n</style>\n<script id="enforza-v21-calendar-voice-js">\n(function(){\n'use strict';\nconst V='ENFORZA V2.1';\nlet focusDate=new Date(), view='month', editing=null;\nlet voiceRec=null, voiceWanted=false, voiceStarting=false, voiceTimer=null, voiceFinal=new Map(), voiceInterim='';\nfunction ar(){return (window.currentLang||document.documentElement.lang||'en').toLowerCase().startsWith('ar')}\nfunction tr(e,a){return ar()?a:e}\nfunction E(id){return document.getElementById(id)}\nfunction A(n){if(!window.DATA)window.DATA={};if(!Array.isArray(DATA[n]))DATA[n]=[];return DATA[n]}\nfunction pad(n){return String(n).padStart(2,'0')} function iso(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}\nfunction esc(x){return String(x??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]))}\nfunction norm(x){return String(x||'').replace(/[إأآ]/g,'ا').replace(/ى/g,'ي').replace(/ة/g,'ه').replace(/\s+/g,' ').trim()}\nfunction today(){return iso(new Date())}\nfunction tasks(){return A('smartTasks')}\nfunction files(){return A('files')}\nfunction ensureFields(){\n const drawer=E('v2TaskDrawer'); if(!drawer||drawer.dataset.v21)return; drawer.dataset.v21='1';\n const grid=drawer.querySelector('.v2task-grid'); if(!grid)return;\n grid.insertAdjacentHTML('beforeend',`\n <div class="v2task-field"><label>${tr('End time','وقت النهاية')}</label><input id="v21EndTime" type="time"></div>\n <div class="v2task-field"><label>${tr('Status','الحالة')}</label><select id="v21Status"><option>Open</option><option>In Progress</option><option>Completed</option><option>Cancelled</option></select></div>\n <div class="v2task-field"><label>${tr('Assigned to','المسؤول')}</label><input id="v21Assignee" placeholder="${tr('Officer / user','الموظف / المستخدم')}"></div>\n <div class="v2task-field"><label>${tr('Location','الموقع')}</label><input id="v21Location"></div>\n <div class="v2task-field"><label>${tr('Repeat','التكرار')}</label><select id="v21Repeat"><option>None</option><option>Daily</option><option>Weekly</option><option>Monthly</option><option>Yearly</option></select></div>\n <div class="v2task-field"><label class="enf-cal21-check"><input id="v21AllDay" type="checkbox"> ${tr('All day','طوال اليوم')}</label></div>\n <div class="v2task-field full"><label>${tr('Participants / contacts','الأشخاص / جهات الاتصال')}</label><input id="v21People"></div>\n <div class="v2task-field full"><label>${tr('Description','الوصف')}</label><textarea id="v21Description"></textarea></div>`);\n let type=E('v2taskType'); if(type){type.innerHTML=['Follow-up','Collection','Hearing','Meeting','Deadline','Service','Field Visit','Call','Document Due','Reminder','Other'].map(x=>`<option>${x}</option>`).join('')}\n let rem=E('v2taskReminder'); if(rem){rem.innerHTML=['None','10 minutes before','30 minutes before','1 hour before','2 hours before','1 day before','2 days before','1 week before'].map(x=>`<option>${x}</option>`).join('')}\n const ai=drawer.querySelector('.v2-ai-assist'); if(ai&&!ai.querySelector('.enf-cal21-voice')) ai.insertAdjacentHTML('beforeend',`<div class="enf-cal21-voice" style="margin-top:8px"><button class="v2task-action" onclick="enfVoiceCommandOpen()">● ${tr('Voice Command','أمر صوتي')}</button></div><div id="v21ParsePreview" class="enf-cal21-preview">${tr('You can say: create a task tomorrow at 10 for file ENF-001.','يمكنك القول: أنشئ مهمة غدًا الساعة 10 للملف ENF-001.')}</div>`);\n}\nfunction filters(){\n const root=E('v2CalendarPage')?.querySelector('.v2cal'); if(!root||root.querySelector('.enf-cal21-filterbar'))return;\n const toolbar=root.querySelector('.v2cal-toolbar'); if(!toolbar)return;\n toolbar.insertAdjacentHTML('afterend',`<div class="enf-cal21-filterbar"><input id="v21Search" placeholder="${tr('Search calendar…','بحث في التقويم…')}"><select id="v21FileFilter"><option value="">${tr('All files','كل الملفات')}</option></select><select id="v21TypeFilter"><option value="">${tr('All types','كل الأنواع')}</option></select><select id="v21StatusFilter"><option value="">${tr('All statuses','كل الحالات')}</option><option>Open</option><option>In Progress</option><option>Completed</option><option>Cancelled</option></select><select id="v21PriorityFilter"><option value="">${tr('All priorities','كل الأولويات')}</option><option>Normal</option><option>High</option><option>Critical</option></select></div>`);\n ['v21Search','v21FileFilter','v21TypeFilter','v21StatusFilter','v21PriorityFilter'].forEach(id=>E(id)?.addEventListener('input',render));\n}\nfunction fillFilters(){let fs=E('v21FileFilter'),ty=E('v21TypeFilter');if(fs){let v=fs.value;fs.innerHTML=`<option value="">${tr('All files','كل الملفات')}</option>`+files().map(f=>{let id=f.id||f.ref||f.fileNo||'';return `<option value="${esc(id)}">${esc(id)} · ${esc(f.title||f.caseName||'')}</option>`}).join('');fs.value=v}if(ty){let v=ty.value,types=[...new Set(tasks().map(x=>x.type).filter(Boolean))];ty.innerHTML=`<option value="">${tr('All types','كل الأنواع')}</option>`+types.map(x=>`<option>${esc(x)}</option>`).join('');ty.value=v}}\nfunction visible(){let q=(E('v21Search')?.value||'').toLowerCase(),f=E('v21FileFilter')?.value||'',ty=E('v21TypeFilter')?.value||'',st=E('v21StatusFilter')?.value||'',p=E('v21PriorityFilter')?.value||'';return tasks().filter(x=>(!q||[x.title,x.task,x.notes,x.description,x.file,x.location,x.assignee].join(' ').toLowerCase().includes(q))&&(!f||x.file===f)&&(!ty||x.type===ty)&&(!st||x.status===st)&&(!p||x.priority===p))}\nfunction month(){const y=focusDate.getFullYear(),m=focusDate.getMonth(),start=new Date(y,m,1);start.setDate(1-start.getDay());let h='',wd=ar()?['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت']:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];for(let i=0;i<42;i++){let d=new Date(start);d.setDate(start.getDate()+i);let di=iso(d),ev=visible().filter(x=>(x.due||x.date)===di);h+=`<div class="v2cal-day ${d.getMonth()!==m?'muted':''} ${di===today()?'today':''}" onclick="v2OpenTask('${di}')"><div class="v2cal-num">${d.getDate()}</div>${ev.slice(0,5).map(x=>`<span class="v2cal-event enf-cal21-event priority-${esc(x.priority||'Normal')} ${x.status==='Completed'?'done':''}" data-type="${esc(x.type||'')}" onclick="event.stopPropagation();v2OpenTask('', '${esc(x.id)}')">${x.allDay?tr('All day','طوال اليوم'):(x.time||'')} ${esc(x.title||x.task||'')}</span>`).join('')}${ev.length>5?`<small>+${ev.length-5} ${tr('more','أخرى')}</small>`:''}</div>`}E('v2calShell').innerHTML=`<div class="v2cal-weekdays">${wd.map(x=>`<div>${x}</div>`).join('')}</div><div class="v2cal-month">${h}</div>`;E('v2calPeriod').textContent=focusDate.toLocaleDateString(ar()?'ar-BH':'en-US',{month:'long',year:'numeric'})}\nfunction week(){let s=new Date(focusDate);s.setDate(s.getDate()-s.getDay());let ds=Array.from({length:7},(_,i)=>{let d=new Date(s);d.setDate(s.getDate()+i);return d}),h='<div style="overflow:auto"><div class="v2week"><div class="v2week-head"></div>'+ds.map(d=>`<div class="v2week-head">${d.toLocaleDateString(ar()?'ar-BH':'en-US',{weekday:'short',day:'numeric'})}</div>`).join('');for(let hr=6;hr<=22;hr++){h+=`<div class="v2week-time">${pad(hr)}:00</div>`;ds.forEach(d=>{let di=iso(d),ev=visible().filter(x=>(x.due||x.date)===di&&Number((x.time||'00').split(':')[0])===hr);h+=`<div class="v2week-cell" onclick="v2OpenTask('${di}')">${ev.map(x=>`<div class="v2week-event enf-cal21-event" onclick="event.stopPropagation();v2OpenTask('', '${esc(x.id)}')">${esc(x.time||'')} ${esc(x.title||'')}</div>`).join('')}</div>`})}h+='</div></div>';E('v2calShell').innerHTML=h;E('v2calPeriod').textContent=s.toLocaleDateString(ar()?'ar-BH':'en-US',{month:'short',day:'numeric'})+' — '+ds[6].toLocaleDateString(ar()?'ar-BH':'en-US',{month:'short',day:'numeric',year:'numeric'})}\nfunction day(){let di=iso(focusDate),h='<div class="v2day">';for(let hr=6;hr<=23;hr++){let ev=visible().filter(x=>(x.due||x.date)===di&&Number((x.time||'00').split(':')[0])===hr),now=new Date(),nowClass=di===today()&&now.getHours()===hr?' enf-cal21-now':'';h+=`<div class="v2day-time">${pad(hr)}:00</div><div class="v2day-slot${nowClass}" onclick="v2OpenTask('${di}')">${ev.map(x=>`<div class="v2cal-event enf-cal21-event" onclick="event.stopPropagation();v2OpenTask('', '${esc(x.id)}')">${esc(x.time||'')}–${esc(x.endTime||'')} ${esc(x.title||'')}</div>`).join('')}</div>`}E('v2calShell').innerHTML=h+'</div>';E('v2calPeriod').textContent=focusDate.toLocaleDateString(ar()?'ar-BH':'en-US',{dateStyle:'full'})}\nfunction agenda(){let a=visible().filter(x=>(x.due||x.date)>='1900-01-01').sort((x,y)=>String(x.due||x.date).localeCompare(String(y.due||y.date))||String(x.time||'').localeCompare(String(y.time||''))),last='',h='<div class="v2cal-agenda">';if(!a.length){E('v2calShell').innerHTML=`<div class="v2cal-agenda-empty"><b>${tr('No matching events','لا توجد أحداث مطابقة')}</b></div>`;return}a.forEach(x=>{let d=x.due||x.date||'';if(d!==last){h+=`<div class="v2agenda-date">${esc(d)}</div>`;last=d}h+=`<div class="v2agenda-item" onclick="v2OpenTask('', '${esc(x.id)}')"><div class="v2agenda-time">${x.allDay?tr('All day','طوال اليوم'):esc(x.time||'—')}</div><div><b>${esc(x.title||x.task||'')}</b><small>${esc(x.file||tr('No file linked','غير مرتبط بملف'))} · ${esc(x.type||'Task')} · ${esc(x.location||'')}</small></div><span class="v2agenda-status">${esc(x.status||'Open')}</span></div>`});E('v2calShell').innerHTML=h+'</div>';E('v2calPeriod').textContent=tr('Agenda','جدول الأعمال')}\nfunction stats(){let host=E('v2CalendarPage')?.querySelector('.v2cal-dashboard');if(!host)return;let a=tasks(),td=today();let vals=[a.filter(x=>(x.due||x.date)===td&&x.status!=='Completed').length,a.filter(x=>(x.due||x.date)<td&&!['Completed','Cancelled'].includes(x.status)).length,a.filter(x=>(x.due||x.date)>td&&!['Completed','Cancelled'].includes(x.status)).length,a.filter(x=>x.status==='Completed').length];host.querySelectorAll('.v2cal-mini b').forEach((x,i)=>x.textContent=vals[i]??0)}\nfunction render(){fillFilters();if(!E('v2calShell'))return;if(view==='week')week();else if(view==='day')day();else if(view==='agenda')agenda();else month();stats()}\nwindow.v2SetView=function(v,b){view=v;document.querySelectorAll('.v2cal-switch .v2cal-btn').forEach(x=>x.classList.remove('active'));if(b)b.classList.add('active');render()}\nwindow.v2CalMove=function(n){if(view==='month')focusDate.setMonth(focusDate.getMonth()+n);else if(view==='week')focusDate.setDate(focusDate.getDate()+7*n);else focusDate.setDate(focusDate.getDate()+n);render()}\nwindow.v2CalToday=function(){focusDate=new Date();render()}\nfunction clearForm(date){editing=null;['v2taskTitle','v2taskTime','v2taskNotes','v21EndTime','v21Assignee','v21Location','v21People','v21Description'].forEach(id=>{if(E(id))E(id).value=''});if(E('v2taskDate'))E('v2taskDate').value=date||today();if(E('v2taskPriority'))E('v2taskPriority').value='Normal';if(E('v2taskType'))E('v2taskType').value='Follow-up';if(E('v2taskReminder'))E('v2taskReminder').value='None';if(E('v21Status'))E('v21Status').value='Open';if(E('v21Repeat'))E('v21Repeat').value='None';if(E('v21AllDay'))E('v21AllDay').checked=false}\nfunction fillFileSelect(){let s=E('v2taskFile');if(!s)return;s.innerHTML='<option value="">—</option>'+files().map(f=>{let id=f.id||f.ref||f.fileNo||'';return `<option value="${esc(id)}">${esc(id)} · ${esc(f.title||f.caseName||'')}</option>`}).join('')}\nwindow.v2OpenTask=function(date,id){ensureFields();fillFileSelect();clearForm(date);editing=id||null;let x=id?tasks().find(z=>z.id===id):null;if(x){E('v2taskTitle').value=x.title||x.task||'';E('v2taskDate').value=x.due||x.date||today();E('v2taskTime').value=x.time||'';E('v2taskFile').value=x.file||'';E('v2taskPriority').value=x.priority||'Normal';E('v2taskType').value=x.type||'Follow-up';E('v2taskReminder').value=x.reminder||'None';E('v2taskNotes').value=x.notes||'';E('v21EndTime').value=x.endTime||'';E('v21Status').value=x.status||'Open';E('v21Assignee').value=x.assignee||'';E('v21Location').value=x.location||'';E('v21Repeat').value=x.repeat||'None';E('v21AllDay').checked=!!x.allDay;E('v21People').value=x.people||'';E('v21Description').value=x.description||''}E('v2taskEditActions').style.display=x?'grid':'none';E('v2taskHead').textContent=x?tr('Event Details','تفاصيل الحدث'):tr('New Event / Task','حدث / مهمة جديدة');E('v2TaskDrawer').classList.add('open')}\nwindow.v2CloseTask=function(){E('v2TaskDrawer')?.classList.remove('open')}\nfunction record(){return {title:E('v2taskTitle').value.trim(),due:E('v2taskDate').value,time:E('v2taskTime').value,endTime:E('v21EndTime')?.value||'',file:E('v2taskFile').value,priority:E('v2taskPriority').value,type:E('v2taskType').value,reminder:E('v2taskReminder').value,notes:E('v2taskNotes').value,status:E('v21Status')?.value||'Open',assignee:E('v21Assignee')?.value||'',location:E('v21Location')?.value||'',repeat:E('v21Repeat')?.value||'None',allDay:!!E('v21AllDay')?.checked,people:E('v21People')?.value||'',description:E('v21Description')?.value||''}}\nwindow.v2SaveTask=function(){let r=record();if(!r.title||!r.due){alert(tr('Title and date are required.','العنوان والتاريخ مطلوبان.'));return}if(r.time&&r.endTime&&r.endTime<r.time&&!r.allDay){alert(tr('End time must be after start time.','يجب أن يكون وقت النهاية بعد وقت البداية.'));return}if(editing){let x=tasks().find(z=>z.id===editing);if(x)Object.assign(x,r)}else{r.id='TSK-'+Date.now().toString(36).toUpperCase();tasks().push(r)}editing=null;v2CloseTask();render();if(typeof window.v210Refresh==='function')window.v210Refresh()}\nwindow.v2CompleteTask=function(){let x=tasks().find(z=>z.id===editing);if(x)x.status='Completed';editing=null;v2CloseTask();render()}\nwindow.v2DeleteTask=function(){if(!editing)return;if(!confirm(tr('Delete this event?','حذف هذا الحدث؟')))return;let i=tasks().findIndex(z=>z.id===editing);if(i>=0)tasks().splice(i,1);editing=null;v2CloseTask();render()}\nfunction parseDate(text){let d=new Date(),n=norm(text);if(/غدا|tomorrow/.test(n))d.setDate(d.getDate()+1);else if(/بعد غد|day after tomorrow/.test(n))d.setDate(d.getDate()+2);let m=text.match(/(20\d{2})[-\/]([01]?\d)[-\/]([0-3]?\d)|([0-3]?\d)[-\/]([01]?\d)[-\/](20\d{2})/);if(m)d=m[1]?new Date(+m[1],+m[2]-1,+m[3]):new Date(+m[6],+m[5]-1,+m[4]);return iso(d)}\nfunction parseTime(text){let m=text.match(/(?:الساعة|الساعه|at)?\s*(\d{1,2})(?::(\d{2}))?\s*(صباحا|صباحًا|مساء|مساءً|ص|م|am|pm)?/i);if(!m)return'';let h=+m[1],mi=m[2]||'00',ap=(m[3]||'').toLowerCase();if(/مساء|م|pm/.test(ap)&&h<12)h+=12;if(/صباح|ص|am/.test(ap)&&h===12)h=0;return pad(Math.min(23,h))+':'+mi}\nfunction amount(text){let m=text.match(/(?:BHD|د\.?ب|دينار(?:\s+بحريني)?)\s*([0-9٠-٩,.]+)|([0-9٠-٩,.]+)\s*(?:BHD|د\.?ب|دينار(?:\s+بحريني)?)/i);if(!m)return null;return Number((m[1]||m[2]).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/,/g,''))}\nfunction fileId(text){let m=text.match(/(?:ENF|EF)[- ]?[A-Za-z0-9]+/i);return m?m[0].replace(' ','-').toUpperCase():''}\nfunction intent(text){let n=norm(text);if(/(انشئ|انشاء|افتح|create|new).*(ملف|file)/i.test(n))return'file';if(/(تحصيل|سداد|دفع|استلام|collection|payment|رصيد)/i.test(n))return'collection';if(/(مهمه|موعد|اجتماع|جلسه|متابعه|ذكرني|task|meeting|hearing|deadline|remind)/i.test(n))return'task';return'dictation'}\nfunction cleanVoice(text){let w=String(text||'').replace(/\s+/g,' ').trim().split(' ').filter(Boolean);for(let size=Math.min(16,Math.floor(w.length/2));size>=1;size--){let changed=true;while(changed){changed=false;for(let i=0;i+size*2<=w.length;i++){let a=norm(w.slice(i,i+size).join(' ')),b=norm(w.slice(i+size,i+2*size).join(' '));if(a&&a===b){w.splice(i+size,size);changed=true;break}}}}return w.join(' ')}\nfunction command(text){text=cleanVoice(text);let it=intent(text),fid=fileId(text),amt=amount(text);if(it==='task'){v2OpenTask(parseDate(text));E('v2taskTitle').value=text;let tm=parseTime(text);if(tm)E('v2taskTime').value=tm;if(fid)E('v2taskFile').value=fid;if(/عالي|high/i.test(text))E('v2taskPriority').value='High';if(/حرج|critical/i.test(text))E('v2taskPriority').value='Critical';if(/جلسه|hearing/i.test(norm(text)))E('v2taskType').value='Hearing';else if(/اجتماع|meeting/i.test(norm(text)))E('v2taskType').value='Meeting';else if(/تحصيل|collection/i.test(norm(text)))E('v2taskType').value='Collection';return}\n if(it==='file'){if(typeof window.v2OpenFileWizard==='function')window.v2OpenFileWizard();else if(typeof window.openQuickAdd==='function')window.openQuickAdd('files');setTimeout(()=>{let candidates=[['enfIntakeAmount',amt],['fileAmount',amt],['claimAmount',amt]];candidates.forEach(([id,v])=>{if(v!=null&&E(id))E(id).value=v})},150);return}\n if(it==='collection'){if(typeof window.openPage==='function')try{openPage('collections')}catch(e){};setTimeout(()=>{[['collectionAmount',amt],['amount',amt],['collectionFile',fid],['fileId',fid]].forEach(([id,v])=>{if(v!==null&&v!==''&&E(id))E(id).value=v})},150);return}\n if(typeof window.enfVoiceOpen==='function')window.enfVoiceOpen(document.activeElement)}\nwindow.enfRunVoiceCommand=command;\nfunction voiceBuild(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR)return null;let r=new SR();r.lang=ar()?'ar-BH':'en-US';r.continuous=true;r.interimResults=true;r.maxAlternatives=1;r.onstart=()=>{voiceStarting=false;let st=E('enfVoiceStatus');if(st)st.textContent=tr('Listening…','جاري الاستماع…')};r.onresult=e=>{voiceInterim='';for(let i=0;i<e.results.length;i++){let z=cleanVoice(e.results[i][0]?.transcript||'');if(!z)continue;if(e.results[i].isFinal)voiceFinal.set(i,z);else voiceInterim+=(voiceInterim?' ':'')+z}let text=cleanVoice([...voiceFinal.keys()].sort((a,b)=>a-b).map(k=>voiceFinal.get(k)).join(' ')+' '+voiceInterim),box=E('enfVoiceOriginal');if(box)box.value=text;if(typeof window.enfVoiceProcess==='function')window.enfVoiceProcess()};r.onend=()=>{voiceStarting=false;if(voiceWanted){clearTimeout(voiceTimer);voiceTimer=setTimeout(()=>voiceStart(false),220)}};r.onerror=e=>{if(!['no-speech','aborted'].includes(e.error)){let st=E('enfVoiceStatus');if(st)st.textContent=e.error}};return r}\nfunction voiceStart(reset){if(voiceStarting)return;if(reset){voiceFinal.clear();voiceInterim='';if(E('enfVoiceOriginal'))E('enfVoiceOriginal').value=''}voiceRec=voiceBuild();if(!voiceRec)return;try{voiceStarting=true;voiceRec.start()}catch(e){voiceStarting=false}}\nwindow.enfVoiceToggle=function(){if(voiceWanted){voiceWanted=false;clearTimeout(voiceTimer);try{voiceRec?.stop()}catch(e){};return}voiceWanted=true;voiceStart(true)}\nwindow.enfVoiceCommandOpen=function(){if(typeof window.enfVoiceOpen==='function'){window.enfVoiceOpen(null);setTimeout(()=>{let u=E('enfVoiceWarning');if(u)u.textContent=tr('Speak a command. ENFORZA will prepare it for review before saving.','تحدث بالأمر. سيقوم ENFORZA بتجهيزه للمراجعة قبل الحفظ.')},0)}}\nconst oldUse=window.enfVoiceUse;window.enfVoiceUse=function(){let text=cleanVoice(E('enfVoiceOriginal')?.value||E('enfVoiceSmart')?.value||'');voiceWanted=false;clearTimeout(voiceTimer);try{voiceRec?.stop()}catch(e){};if(text&&intent(text)!=='dictation'){if(typeof window.enfVoiceClose==='function')window.enfVoiceClose();command(text);return}if(typeof oldUse==='function')oldUse()}\nfunction init(){ensureFields();filters();fillFilters();document.documentElement.dataset.enforzaCalendar=V;let nav=[...document.querySelectorAll('.nav-item')].find(x=>(x.dataset.page||x.getAttribute('data-page'))==='tasks');if(nav)nav.addEventListener('click',()=>setTimeout(()=>{ensureFields();filters();render()},20),true);render()}\nif(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();\n})();\n</script>\n</body>
 </html>
