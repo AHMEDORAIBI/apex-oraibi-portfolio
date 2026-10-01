@@ -4133,5 +4133,68 @@ function examples(){
  )}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",examples);else examples();
 })();
+</script><style id="enforza-creditor-experience-css">
+/* DEMO — Creditor Experience Completion */
+.enf-cx{position:fixed;inset:0;z-index:330000;background:#f4f5f5;display:none;overflow:auto;color:#172028}.enf-cx.open{display:block}
+.enf-cx-top{position:sticky;top:0;z-index:5;background:rgba(255,255,255,.95);backdrop-filter:blur(14px);border-bottom:1px solid #e1e4e5;padding:13px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.enf-cx-brand{display:flex;align-items:center;gap:10px}.enf-cx-logo{width:37px;height:37px;border-radius:11px;background:#172129;color:#d4a16e;display:grid;place-items:center;font-weight:950}.enf-cx-brand b{display:block;font-size:12px}.enf-cx-brand small{display:block;color:#7d878e;font-size:8px;margin-top:2px}.enf-cx-user{display:flex;align-items:center;gap:8px;font-size:9px}.enf-cx-user button{border:1px solid #dadddf;background:#fff;border-radius:9px;padding:8px 10px;cursor:pointer}
+.enf-cx-wrap{width:min(1180px,94vw);margin:0 auto;padding:28px 0 48px}.enf-cx-hero{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:18px}.enf-cx-kicker{font-size:8px;font-weight:950;letter-spacing:.13em;color:#9b6a3c}.enf-cx-hero h1{font-size:30px!important;margin:5px 0}.enf-cx-hero p{margin:0;color:#77828a;font-size:10px}
+.enf-cx-select{min-width:220px;border:1px solid #dadddf;border-radius:10px;padding:10px;background:#fff}
+.enf-cx-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}.enf-cx-kpi{background:#fff;border:1px solid #e0e3e4;border-radius:14px;padding:16px}.enf-cx-kpi small{display:block;color:#7d878e;font-size:8px;font-weight:900}.enf-cx-kpi b{display:block;font-size:21px;margin-top:6px}.enf-cx-kpi span{display:block;color:#8a9399;font-size:8px;margin-top:4px}
+.enf-cx-grid{display:grid;grid-template-columns:1.5fr .85fr;gap:12px}.enf-cx-panel{background:#fff;border:1px solid #e0e3e4;border-radius:14px;padding:16px;margin-bottom:12px}.enf-cx-panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:11px}.enf-cx-panel h3{font-size:13px!important;margin:0}.enf-cx-status{padding:5px 8px;border-radius:999px;background:#edf3ee;color:#52735a;font-size:8px;font-weight:950}
+.enf-cx-info{display:grid;grid-template-columns:1fr 1fr;gap:8px}.enf-cx-info div{padding:9px;border-radius:9px;background:#f7f8f8}.enf-cx-info small{display:block;color:#879097;font-size:8px}.enf-cx-info b{display:block;font-size:10px;margin-top:3px}
+.enf-cx-timeline{display:grid;gap:10px}.enf-cx-event{position:relative;padding-inline-start:19px}.enf-cx-event:before{content:"";position:absolute;inset-inline-start:2px;top:5px;width:7px;height:7px;border-radius:50%;background:#b9814c}.enf-cx-event:after{content:"";position:absolute;inset-inline-start:5px;top:14px;bottom:-12px;width:1px;background:#e1e3e4}.enf-cx-event:last-child:after{display:none}.enf-cx-event b{display:block;font-size:9px}.enf-cx-event small{display:block;color:#8a9399;font-size:8px;margin-top:2px}
+.enf-cx-doc{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid #edf0f1}.enf-cx-doc:last-child{border-bottom:0}.enf-cx-doc b{font-size:9px}.enf-cx-doc small{font-size:8px;color:#8a9399}.enf-cx-empty{padding:20px;text-align:center;color:#8a9399;font-size:9px}
+body.enf-dark .enf-cx{background:#0f151a;color:#eef2f5}body.enf-dark .enf-cx-top,body.enf-dark .enf-cx-panel,body.enf-dark .enf-cx-kpi,body.enf-dark .enf-cx-select,body.enf-dark .enf-cx-user button{background:#171d23;color:#eef2f5;border-color:#2a333b}body.enf-dark .enf-cx-info div{background:#11171c}
+@media(max-width:800px){.enf-cx-wrap{width:min(94vw,650px);padding-top:20px}.enf-cx-hero{align-items:stretch;flex-direction:column}.enf-cx-select{width:100%}.enf-cx-kpis{grid-template-columns:1fr 1fr}.enf-cx-grid{grid-template-columns:1fr}.enf-cx-top{padding:11px 14px}}
+@media(max-width:480px){.enf-cx-kpis,.enf-cx-info{grid-template-columns:1fr}.enf-cx-hero h1{font-size:24px!important}}
+</style>
+<div class="enf-cx" id="enfCreditorExperience">
+<header class="enf-cx-top"><div class="enf-cx-brand"><div class="enf-cx-logo">E</div><div><b>ENFORZA</b><small id="cxBrandSub">Creditor Access</small></div></div><div class="enf-cx-user"><span id="cxUser"></span><button onclick="enfCreditorExit()" id="cxExit">Sign Out</button></div></header>
+<main class="enf-cx-wrap"><section class="enf-cx-hero"><div><div class="enf-cx-kicker">ENFORCEMENT PORTFOLIO</div><h1 id="cxHello">Your enforcement files</h1><p id="cxIntro">A clear view of your claims, collections and latest case activity.</p></div><select class="enf-cx-select" id="cxFileSelect"></select></section>
+<section class="enf-cx-kpis" id="cxKpis"></section><div class="enf-cx-grid"><div><section class="enf-cx-panel"><div class="enf-cx-panel-head"><h3 id="cxFileTitle">File overview</h3><span class="enf-cx-status" id="cxStatus"></span></div><div class="enf-cx-info" id="cxInfo"></div></section><section class="enf-cx-panel"><div class="enf-cx-panel-head"><h3 id="cxTimelineTitle">Latest activity</h3></div><div class="enf-cx-timeline" id="cxTimeline"></div></section></div><aside><section class="enf-cx-panel"><div class="enf-cx-panel-head"><h3 id="cxDocsTitle">Documents</h3></div><div id="cxDocs"></div></section><section class="enf-cx-panel"><div class="enf-cx-panel-head"><h3 id="cxUpdateTitle">Current position</h3></div><div id="cxPosition"></div></section></aside></div></main></div>
+<script id="enforza-creditor-experience-js">
+(function(){
+"use strict";
+function ar(){return (window.currentLang||document.documentElement.lang||"en").toLowerCase().startsWith("ar")}function t(e,a){return ar()?a:e}
+function A(n){return window.DATA&&Array.isArray(DATA[n])?DATA[n]:[]}
+function sess(){try{return JSON.parse(sessionStorage.getItem("enforzaSessionV2")||"null")}catch(e){return null}}
+function num(v){v=Number(String(v??0).replace(/,/g,""));return Number.isFinite(v)?v:0}function money(v){return "BHD "+num(v).toLocaleString("en-US",{minimumFractionDigits:3,maximumFractionDigits:3})}
+function fid(f){return String(f.id||f.ref||f.fileNumber||f.caseNumber||"")}
+function creditorFiles(){
+ let u=sess()||window.currentUser||{},ref=String(u.creditorId||"").trim();
+ let fs=A("files").filter(f=>!f.archived);
+ if(ref)fs=fs.filter(f=>[f.creditorId,f.creditorRef,f.clientId,f.creditorName].some(v=>String(v||"")===ref));
+ return u.role==="creditor"?fs:A("files").filter(f=>!f.archived)
+}
+function transactions(id){return A("financialTransactions").filter(x=>String(x.fileId||x.fileRef||"")===id)}
+function docs(id){return A("documents").filter(x=>String(x.fileId||x.fileRef||"")===id)}
+function tasks(id){return A("smartTasks").filter(x=>String(x.fileId||x.fileRef||"")===id)}
+function claim(f){return num(f.claimAmount||f.amount||f.totalClaim||f.principal)}
+function collected(f,id){let explicit=f.collectedAmount;if(explicit!==undefined&&explicit!=="")return num(explicit);return transactions(id).filter(x=>/collection|payment|receipt|تحصيل|سداد/i.test(String(x.type||x.category||""))).reduce((a,x)=>a+num(x.amount),0)}
+function events(f,id){
+ let e=[];tasks(id).forEach(x=>e.push({date:x.date||x.dueDate||x.createdAt,title:x.title||x.subject||t("Task update","تحديث مهمة")}));
+ transactions(id).forEach(x=>e.push({date:x.date||x.createdAt,title:(x.type||t("Financial update","تحديث مالي"))+(x.amount?" · "+money(x.amount):"")}));
+ docs(id).forEach(x=>e.push({date:x.date||x.createdAt,title:t("Document added: ","تمت إضافة مستند: ")+(x.name||x.title||x.type||"")}));
+ return e.sort((a,b)=>String(b.date||"").localeCompare(String(a.date||""))).slice(0,6)
+}
+function render(id){
+ let fs=creditorFiles(),f=fs.find(x=>fid(x)===String(id))||fs[0],u=sess()||{};
+ document.getElementById("cxUser").textContent=u.name||u.username||t("Creditor","الدائن");
+ if(!f){["cxKpis","cxInfo","cxTimeline","cxDocs","cxPosition"].forEach(x=>document.getElementById(x).innerHTML=`<div class="enf-cx-empty">${t("No enforcement files are linked to this account.","لا توجد ملفات تنفيذ مرتبطة بهذا الحساب.")}</div>`);return}
+ let idd=fid(f),cl=claim(f),co=collected(f,idd),bal=Math.max(0,cl-co),ev=events(f,idd),ds=docs(idd);
+ document.getElementById("cxStatus").textContent=f.status||t("Active","نشط");
+ document.getElementById("cxKpis").innerHTML=[[t("Claim Amount","مبلغ المطالبة"),money(cl),t("Original claim","أصل المطالبة")],[t("Collected","المحصل"),money(co),t("Received to date","المحصل حتى تاريخه")],[t("Outstanding","المتبقي"),money(bal),t("Current balance","الرصيد الحالي")],[t("Progress","نسبة التحصيل"),cl?Math.min(100,(co/cl)*100).toFixed(1)+"%":"0%",t("Collection progress","تقدم التحصيل")]].map(x=>`<div class="enf-cx-kpi"><small>${x[0]}</small><b>${x[1]}</b><span>${x[2]}</span></div>`).join("");
+ document.getElementById("cxInfo").innerHTML=[[t("File Reference","مرجع الملف"),idd||"-"],[t("Case Number","رقم القضية"),f.caseNumber||"-"],[t("Debtor","المدين"),f.debtorName||f.debtor||"-"],[t("Creditor","الدائن"),f.creditorName||f.creditor||"-"],[t("Opened","تاريخ الفتح"),f.openDate||f.createdAt||"-"],[t("Officer","موظف التنفيذ"),f.officerName||f.officer||"-"]].map(x=>`<div><small>${x[0]}</small><b>${x[1]}</b></div>`).join("");
+ document.getElementById("cxTimeline").innerHTML=ev.length?ev.map(x=>`<div class="enf-cx-event"><b>${x.title}</b><small>${x.date||""}</small></div>`).join(""):`<div class="enf-cx-empty">${t("No activity yet.","لا توجد تحديثات حتى الآن.")}</div>`;
+ document.getElementById("cxDocs").innerHTML=ds.length?ds.slice(0,6).map(x=>`<div class="enf-cx-doc"><div><b>${x.name||x.title||x.type||t("Document","مستند")}</b><small>${x.date||x.createdAt||""}</small></div><span>›</span></div>`).join(""):`<div class="enf-cx-empty">${t("No documents available.","لا توجد مستندات متاحة.")}</div>`;
+ document.getElementById("cxPosition").innerHTML=`<div class="enf-cx-info"><div><small>${t("Last Update","آخر تحديث")}</small><b>${ev[0]?.date||f.updatedAt||"-"}</b></div><div><small>${t("Status","الحالة")}</small><b>${f.status||t("Active","نشط")}</b></div></div>`;
+}
+function text(){document.getElementById("cxBrandSub").textContent=t("Creditor Access","بوابة الدائن");document.getElementById("cxHello").textContent=t("Your enforcement files","ملفات التنفيذ الخاصة بك");document.getElementById("cxIntro").textContent=t("A clear view of your claims, collections and latest case activity.","عرض واضح للمطالبات والتحصيلات وآخر تطورات ملفات التنفيذ.");document.getElementById("cxFileTitle").textContent=t("File overview","نظرة عامة على الملف");document.getElementById("cxTimelineTitle").textContent=t("Latest activity","آخر الإجراءات");document.getElementById("cxDocsTitle").textContent=t("Documents","المستندات");document.getElementById("cxUpdateTitle").textContent=t("Current position","الموقف الحالي");document.getElementById("cxExit").textContent=t("Sign Out","تسجيل الخروج")}
+window.enfOpenCreditorExperience=function(){text();let fs=creditorFiles(),sel=document.getElementById("cxFileSelect");sel.innerHTML=fs.length?fs.map(f=>`<option value="${fid(f)}">${fid(f)} · ${f.debtorName||f.debtor||f.title||t("Enforcement File","ملف تنفيذ")}</option>`).join(""):`<option>${t("No linked files","لا توجد ملفات مرتبطة")}</option>`;document.getElementById("enfCreditorExperience").classList.add("open");render(sel.value)}
+window.enfCreditorExit=function(){document.getElementById("enfCreditorExperience")?.classList.remove("open");if(typeof window.enfLogout==="function")window.enfLogout()}
+function init(){document.getElementById("cxFileSelect")?.addEventListener("change",e=>render(e.target.value));let u=sess();if(u?.role==="creditor")setTimeout(()=>window.enfOpenCreditorExperience(),180)}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
+})();
 </script></body>
 </html>
