@@ -528,10 +528,20 @@ html[dir="rtl"] .main{margin-left:0!important;margin-right:260px!important}.nav-
 .p26-latest{display:grid;grid-template-columns:1fr 1fr;gap:10px}.p26-latest-card{border:1px solid #ebe5de;border-radius:11px;padding:13px}.p26-latest-card small{color:#a87448;font-weight:900}.p26-latest-card strong,.p26-latest-card span{display:block}.p26-latest-card strong{margin-top:5px;color:#111923}.p26-latest-card span{margin-top:4px;color:#75808a}
 @media(max-width:950px){.p26-statusbar{grid-template-columns:1fr 1fr}.p26-status-main{grid-column:1/-1}.p26-grid{grid-template-columns:1fr}}
 @media(max-width:560px){.p26-statusbar{grid-template-columns:1fr 1fr}.p26-latest{grid-template-columns:1fr}}
+</style><style id="phase27-notification-center">
+/* PHASE 27 — EXECUTIVE NOTIFICATION CENTER */
+.p27-bell{position:relative;border:1px solid #e1dad2!important;background:#fff!important;border-radius:10px!important;width:43px;height:43px;font-size:19px!important}
+.p27-badge{position:absolute;top:-6px;right:-6px;min-width:20px;height:20px;padding:0 5px;border-radius:99px;background:#a94b45;color:#fff;font-size:12px!important;display:grid;place-items:center;font-weight:900;border:2px solid #fff}
+.p27-drawer{position:fixed;inset:0;z-index:1400;display:none;background:rgba(8,13,18,.35)}.p27-drawer.open{display:block}.p27-panel{position:absolute;right:0;top:0;height:100%;width:min(480px,100%);background:#f6f4f1;box-shadow:-25px 0 70px rgba(17,25,35,.18);display:flex;flex-direction:column}.p27-head{background:linear-gradient(135deg,#111923,#263440);color:#fff;padding:20px}.p27-head-row{display:flex;justify-content:space-between;align-items:center}.p27-head h2{color:#fff!important;margin:0}.p27-head p{color:#cbd2d8;margin:6px 0 0}.p27-head button{border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.08);color:#fff;border-radius:9px;width:38px;height:38px;font-size:21px}
+.p27-filters{display:flex;gap:6px;padding:11px;background:#fff;border-bottom:1px solid #e5ded6;overflow:auto}.p27-filter{white-space:nowrap;border:1px solid #e5ded6;background:#fff;border-radius:99px;padding:7px 10px;font-weight:800;color:#68737d}.p27-filter.active{background:#111923;color:#fff;border-color:#111923}
+.p27-list{padding:11px;overflow:auto;flex:1}.p27-note{background:#fff;border:1px solid #e5ded6;border-radius:12px;padding:13px;margin-bottom:8px;cursor:pointer}.p27-note.critical{border-left:4px solid #a94b45}.p27-note.warning{border-left:4px solid #b78a5d}.p27-note.info{border-left:4px solid #61788c}.p27-note-head{display:flex;justify-content:space-between;gap:8px}.p27-note strong{color:#111923}.p27-note span{display:block;color:#75808a;margin-top:4px}.p27-type{display:inline-flex!important;padding:4px 7px;border-radius:99px;background:#f5f1ec;color:#93643c!important;font-size:13px!important;font-weight:900}.p27-note button{margin-top:9px;border:0;background:#111923;color:#fff;border-radius:8px;padding:8px 10px;font-weight:800}
+.p27-empty{text-align:center;padding:35px 15px;color:#7b858e}.p27-footer{padding:10px 12px;background:#fff;border-top:1px solid #e5ded6;display:flex;gap:8px}.p27-footer button{flex:1;border:1px solid #e5ded6;background:#fff;border-radius:9px;padding:9px;font-weight:800}
+html[dir="rtl"] .p27-panel{right:auto;left:0;box-shadow:25px 0 70px rgba(17,25,35,.18)}html[dir="rtl"] .p27-note.critical,html[dir="rtl"] .p27-note.warning,html[dir="rtl"] .p27-note.info{border-left:1px solid #e5ded6;border-right-width:4px}
+@media(max-width:560px){.p27-panel{width:100%}}
 </style></head>
 <div class="exec-action-sheet" id="execActionSheet"><div class="exec-action-box"><div class="minutes-head"><div><h2>New Action</h2><p>Choose what you want to add to this enforcement file.</p></div><button class="top-btn" onclick="closeExecActionSheet()">×</button></div><div class="exec-action-grid">
 <div class="exec-action-card" onclick="execAction('task')"><b>✓</b><strong>Task</strong></div><div class="exec-action-card" onclick="execAction('minutes')"><b>✎</b><strong>Minutes</strong></div><div class="exec-action-card" onclick="execAction('collection')"><b>◉</b><strong>Collection</strong></div><div class="exec-action-card" onclick="execAction('document')"><b>▧</b><strong>Document</strong></div><div class="exec-action-card" onclick="execAction('camera')"><b>📷</b><strong>Camera / Evidence</strong></div><div class="exec-action-card" onclick="execAction('settlement')"><b>◇</b><strong>Settlement</strong></div></div></div></div>
-<button class="exec-ai-fab" onclick="openAI()">✦ AI</button><body>
+<button class="exec-ai-fab" onclick="openAI()">✦ AI</button><div class="p27-drawer" id="p27Drawer" onclick="if(event.target===this)closeP27Notifications()"><aside class="p27-panel"><div class="p27-head"><div class="p27-head-row"><div><h2 id="p27Title">Notifications</h2><p id="p27Subtitle">Important items that need your attention.</p></div><button onclick="closeP27Notifications()">×</button></div></div><div class="p27-filters" id="p27Filters"></div><div class="p27-list" id="p27List"></div><div class="p27-footer"><button onclick="p27MarkViewed()">✓ <span id="p27ViewedText">Mark Viewed</span></button><button onclick="openPage('smarttasks');closeP27Notifications()">▧ <span id="p27TasksText">Tasks</span></button></div></aside></div><body>
 
 
 
@@ -1919,6 +1929,54 @@ if(typeof phase24Workspace==="function"){
  let p26oldWorkspace=phase24Workspace;
  phase24Workspace=function(f){p26oldWorkspace(f);setTimeout(()=>p26Workspace(f),20)}
 }
+</script><script id="phase27-notification-center-js">
+let p27Filter="all",p27Viewed=new Set();
+function p27Days(v){if(!v)return 999;let d=new Date(v);if(isNaN(d))return 999;return Math.floor((Date.now()-d.getTime())/86400000)}
+function p27Notifications(){
+ let n=[],today=new Date().toISOString().slice(0,10),tasks=DATA.smartTasks||[],files=DATA.files||[];
+ tasks.filter(x=>x.status!=="Completed").forEach(x=>{
+   let state=typeof taskState==="function"?taskState(x):"open";
+   if(state==="overdue")n.push({id:"task-"+x.id,type:"task",level:"critical",title:x.title,detail:(currentLang==="ar"?"مهمة متأخرة":"Overdue task")+" · "+x.due+" · "+x.assignee,file:x.file,task:x.id});
+   else if(state==="today")n.push({id:"task-"+x.id,type:"task",level:"warning",title:x.title,detail:(currentLang==="ar"?"مستحقة اليوم":"Due today")+" · "+x.assignee,file:x.file,task:x.id});
+ });
+ (DATA.settlements||[]).forEach(x=>{if(x.next&&x.next<=today&&String(x.status||"").toLowerCase()!=="completed")n.push({id:"set-"+x.id,type:"settlement",level:x.next<today?"critical":"warning",title:(currentLang==="ar"?"استحقاق تسوية":"Settlement Due")+" · "+x.id,detail:`${x.next} · ${money(x.amount||0)}`,file:x.file})});
+ (DATA.minutes||[]).filter(x=>!x.locked&&String(x.status||"").toLowerCase()!=="approved").forEach(x=>n.push({id:"min-"+x.id,type:"minutes",level:"info",title:x.subject||x.id,detail:currentLang==="ar"?"محضر يحتاج مراجعة أو اعتماد":"Minutes need review or approval",file:x.file}));
+ (DATA.smartDocuments||[]).filter(x=>String(x.status||x.action||"").toLowerCase().includes("review")).forEach(x=>n.push({id:"doc-"+x.id,type:"document",level:"info",title:x.title,detail:currentLang==="ar"?"مستند يحتاج مراجعة":"Document needs review",file:x.file}));
+ files.filter(f=>f.status!=="Closed").forEach(f=>{
+   let dates=[];
+   (DATA.smartTasks||[]).filter(x=>x.file===f.id).forEach(x=>dates.push(x.created,x.completed,x.due));
+   (DATA.minutes||[]).filter(x=>x.file===f.id).forEach(x=>dates.push(x.date,x.created));
+   (DATA.collections||[]).filter(x=>x.file===f.id).forEach(x=>dates.push(x.date));
+   let valid=dates.filter(Boolean).map(x=>new Date(x)).filter(x=>!isNaN(x)).sort((a,b)=>b-a),last=valid[0];
+   if(last&&Math.floor((Date.now()-last.getTime())/86400000)>=14)n.push({id:"idle-"+f.id,type:"file",level:"warning",title:`${f.id} · ${f.debtor}`,detail:(currentLang==="ar"?"الملف بلا حركة منذ ":"No file activity for ")+Math.floor((Date.now()-last.getTime())/86400000)+(currentLang==="ar"?" يوم":" days"),file:f.id});
+ });
+ return n.sort((a,b)=>({critical:0,warning:1,info:2}[a.level]-{critical:0,warning:1,info:2}[b.level]));
+}
+function p27Unread(){return p27Notifications().filter(x=>!p27Viewed.has(x.id)).length}
+function p27UpdateBadge(){let b=document.getElementById("p27Badge");if(!b)return;let c=p27Unread();b.textContent=c>99?"99+":c;b.style.display=c?"grid":"none"}
+function openP27Notifications(){document.getElementById("p27Drawer").classList.add("open");p27Render()}
+function closeP27Notifications(){document.getElementById("p27Drawer").classList.remove("open")}
+function p27SetFilter(v,btn){p27Filter=v;document.querySelectorAll(".p27-filter").forEach(x=>x.classList.remove("active"));btn?.classList.add("active");p27RenderList()}
+function p27Render(){
+ document.getElementById("p27Title").textContent=currentLang==="ar"?"مركز الإشعارات":"Notification Center";
+ document.getElementById("p27Subtitle").textContent=currentLang==="ar"?"الأمور المهمة التي تحتاج انتباهك الآن.":"Important items that need your attention now.";
+ document.getElementById("p27ViewedText").textContent=currentLang==="ar"?"اعتبارها مشاهدة":"Mark Viewed";document.getElementById("p27TasksText").textContent=currentLang==="ar"?"المهام":"Tasks";
+ let filters=[["all",currentLang==="ar"?"الكل":"All"],["task",currentLang==="ar"?"المهام":"Tasks"],["settlement",currentLang==="ar"?"التسويات":"Settlements"],["file",currentLang==="ar"?"الملفات":"Files"],["minutes",currentLang==="ar"?"المحاضر":"Minutes"],["document",currentLang==="ar"?"المستندات":"Documents"]];
+ document.getElementById("p27Filters").innerHTML=filters.map(x=>`<button class="p27-filter ${p27Filter===x[0]?"active":""}" onclick="p27SetFilter('${x[0]}',this)">${x[1]}</button>`).join("");p27RenderList()
+}
+function p27RenderList(){
+ let a=p27Notifications();if(p27Filter!=="all")a=a.filter(x=>x.type===p27Filter);
+ document.getElementById("p27List").innerHTML=a.length?a.map(x=>`<div class="p27-note ${x.level}" onclick="p27Open('${x.id}')"><div class="p27-note-head"><div><span class="p27-type">${p27TypeName(x.type)}</span><strong>${x.title}</strong></div>${!p27Viewed.has(x.id)?'<span style="color:#a94b45">●</span>':""}</div><span>${x.detail}</span>${x.file?`<button>${currentLang==="ar"?"فتح الملف":"Open File"} →</button>`:""}</div>`).join(""):`<div class="p27-empty">${currentLang==="ar"?"لا توجد إشعارات ضمن هذا التصنيف.":"No notifications in this category."}</div>`;
+}
+function p27TypeName(x){let a={task:["Task","مهمة"],settlement:["Settlement","تسوية"],file:["File","ملف"],minutes:["Minutes","محضر"],document:["Document","مستند"]};return a[x]?(currentLang==="ar"?a[x][1]:a[x][0]):x}
+function p27Open(id){let x=p27Notifications().find(a=>a.id===id);if(!x)return;p27Viewed.add(id);p27UpdateBadge();closeP27Notifications();if(x.file)openDetail("files",x.file);else if(x.type==="task")openPage("smarttasks")}
+function p27MarkViewed(){p27Notifications().forEach(x=>p27Viewed.add(x.id));p27UpdateBadge();p27RenderList()}
+function p27InstallBell(){
+ let top=document.querySelector(".topbar");if(!top||document.getElementById("p27Bell"))return;
+ let b=document.createElement("button");b.id="p27Bell";b.className="p27-bell";b.innerHTML=`🔔<span class="p27-badge" id="p27Badge"></span>`;b.onclick=openP27Notifications;
+ let right=top.querySelector(".top-actions,.topbar-actions,.actions");(right||top).appendChild(b);p27UpdateBadge();
+}
+setTimeout(p27InstallBell,100);setInterval(p27UpdateBadge,30000);
 </script></body></html>`);w.document.close();
 }
 Object.assign(I18N.ar,{"Attendees & Capacities":"الحاضرون وصفاتهم","Add Attendee":"إضافة حاضر","Name":"الاسم","Capacity":"الصفة","Location / Site":"الموقع","Prepared By":"أعد المحضر","Officer Signature":"توقيع المنفذ","Sign using mouse or touch.":"وقع باستخدام الفأرة أو شاشة اللمس.","Clear Signature":"مسح التوقيع","Final Approval & Lock":"الاعتماد النهائي وقفل المحضر","Once approved, the original minutes are locked. Later changes are recorded as amendments.":"بعد الاعتماد يقفل أصل المحضر، وأي تعديل لاحق يسجل كملحق تعديل مستقل.","Approve & Lock":"اعتماد وقفل","Image":"صورة","Minutes Approved & Locked":"تم اعتماد وقفل المحضر","Minutes approved and locked.":"تم اعتماد المحضر وقفل النسخة الأصلية.","Enter the minutes text before approval.":"أدخل نص المحضر قبل الاعتماد.","Enter amendment / additional note":"أدخل ملحق التعديل أو الملاحظة الإضافية","Minutes Amendment Added":"تمت إضافة ملحق للمحضر","Amendment added without changing the approved original.":"تمت إضافة الملحق دون تغيير أصل المحضر المعتمد.","APPROVED":"معتمد","attendees":"حاضرين","amendments recorded":"ملحقات تعديل مسجلة","Add Amendment":"إضافة ملحق","Print":"طباعة","Enforcement Minutes":"محضر تنفيذ","Amendment":"ملحق تعديل"});
