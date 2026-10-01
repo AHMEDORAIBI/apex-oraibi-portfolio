@@ -2685,7 +2685,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 </script><section class="page" id="enfFinancePage" style="display:none"><div class="enf-fin" id="enfFinRoot"></div></section>
 <div class="enf-fin-modal" id="enfFinModal" onclick="if(event.target===this)enfFinClose()"><div class="enf-fin-modal-card">
 <div class="enf-fin-modal-head"><h2 id="enfFinModalTitle">Add Transaction</h2><button class="enf-field-close" onclick="enfFinClose()">×</button></div>
-<div class="enf-fin-form"><div class="enf-fin-field"><label>Enforcement File</label><select id="enfFinFile"></select></div><div class="enf-fin-field"><label>Transaction Type</label><select id="enfFinType"><option>Collection</option><option>Expense</option><option>Fee</option><option>Claim Adjustment</option></select></div><div class="enf-fin-field"><label>Date</label><input type="date" id="enfFinDate"></div><div class="enf-fin-field"><label>Amount (BHD)</label><input type="number" step="0.001" min="0" id="enfFinAmount"></div><div class="enf-fin-field"><label>Payment Method</label><select id="enfFinMethod"><option>Bank Transfer</option><option>Cash</option><option>Cheque</option><option>BenefitPay</option><option>Other</option></select></div><div class="enf-fin-field"><label>Reference</label><input id="enfFinRef"></div><div class="enf-fin-field full"><label>Description / Notes</label><textarea id="enfFinNotes"></textarea></div></div>
+<div class="enf-fin-form"><div class="enf-fin-field"><label>Enforcement File</label><select id="enfFinFile"></select></div><div class="enf-fin-field"><label>Transaction Type</label><select id="enfFinType"><option>Collection</option><option>Expense</option><option>Fee</option><option>Claim Adjustment</option><option>Client Transfer</option></select></div><div class="enf-fin-field"><label>Date</label><input type="date" id="enfFinDate"></div><div class="enf-fin-field"><label>Amount (BHD)</label><input type="number" step="0.001" min="0" id="enfFinAmount"></div><div class="enf-fin-field"><label>Payment Method</label><select id="enfFinMethod"><option>Bank Transfer</option><option>Cash</option><option>Cheque</option><option>BenefitPay</option><option>Other</option></select></div><div class="enf-fin-field"><label>Reference</label><input id="enfFinRef"></div><div class="enf-fin-field full"><label>Description / Notes</label><textarea id="enfFinNotes"></textarea></div></div>
 <div class="enf-fin-modal-foot"><button class="enf-ms-btn" onclick="enfFinClose()">Cancel</button><button class="enf-ms-btn primary" onclick="enfFinSave()">Save Transaction</button></div></div></div><script id="enforza-v2-phase17-finance-js">
 (function(){
 "use strict";let selectedFile="all";
@@ -2697,7 +2697,7 @@ function fileId(f){return f.id||f.ref||""}
 function claims(list){return list.reduce((a,f)=>a+Number(f.amount||f.claimAmount||0),0)}
 function calc(){
  let fs=selectedFile==="all"?files():files().filter(f=>fileId(f)===selectedFile),ids=new Set(fs.map(fileId)),a=tx().filter(x=>selectedFile==="all"||ids.has(x.file));
- let claim=claims(fs)+a.filter(x=>x.type==="Claim Adjustment").reduce((z,x)=>z+Number(x.amount||0),0),col=a.filter(x=>x.type==="Collection").reduce((z,x)=>z+Number(x.amount||0),0),exp=a.filter(x=>x.type==="Expense"||x.type==="Fee").reduce((z,x)=>z+Number(x.amount||0),0);
+ let claim=claims(fs)+a.filter(x=>x.type==="Claim Adjustment"&&(x.status||"Posted")!=="Reversed").reduce((z,x)=>z+Number(x.amount||0),0),col=a.filter(x=>x.type==="Collection"&&(x.status||"Posted")!=="Reversed").reduce((z,x)=>z+Number(x.amount||0),0),exp=a.filter(x=>(x.type==="Expense"||x.type==="Fee")&&(x.status||"Posted")!=="Reversed").reduce((z,x)=>z+Number(x.amount||0),0);
  return {fs,a,claim,col,exp,out:Math.max(0,claim-col)}
 }
 function render(){
@@ -2710,7 +2710,7 @@ function render(){
 window.enfFinSelect=v=>{selectedFile=v;render()}
 window.enfFinOpenCore=function(type){let m=document.getElementById("enfFinModal");m.classList.add("open");let f=document.getElementById("enfFinFile");f.innerHTML=`<option value="">${t("Select file","اختر الملف")}</option>`+files().map(x=>`<option value="${fileId(x)}">${fileId(x)} · ${x.title||x.caseName||t("File","ملف")}</option>`).join("");document.getElementById("enfFinType").value=type||"Collection";document.getElementById("enfFinDate").value=new Date().toISOString().slice(0,10)}
 window.enfFinClose=()=>document.getElementById("enfFinModal").classList.remove("open")
-window.enfFinSave=function(){let file=document.getElementById("enfFinFile").value,amount=Number(document.getElementById("enfFinAmount").value||0);if(!file||amount<=0)return;tx().push({id:"FIN-"+String(tx().length+1).padStart(5,"0"),file,type:document.getElementById("enfFinType").value,date:document.getElementById("enfFinDate").value,amount,method:document.getElementById("enfFinMethod").value,reference:document.getElementById("enfFinRef").value.trim(),notes:document.getElementById("enfFinNotes").value.trim(),status:"Posted"});enfFinClose();["enfFinAmount","enfFinRef","enfFinNotes"].forEach(i=>document.getElementById(i).value="");render();if(typeof v210Refresh==="function")setTimeout(v210Refresh,0)}
+window.enfFinSaveCore=function(){let file=document.getElementById("enfFinFile").value,amount=Number(document.getElementById("enfFinAmount").value||0);if(!file||amount<=0)return;tx().push({id:"FIN-"+String(tx().length+1).padStart(5,"0"),file,type:document.getElementById("enfFinType").value,date:document.getElementById("enfFinDate").value,amount,method:document.getElementById("enfFinMethod").value,reference:document.getElementById("enfFinRef").value.trim(),notes:document.getElementById("enfFinNotes").value.trim(),status:"Posted"});enfFinClose();["enfFinAmount","enfFinRef","enfFinNotes"].forEach(i=>document.getElementById(i).value="");render();if(typeof v210Refresh==="function")setTimeout(v210Refresh,0)}
 function open(){document.querySelectorAll(".page").forEach(p=>p.style.display="none");document.getElementById("enfFinancePage").style.display="block";render()}
 function wire(){["collections","expenses","claims","treasury"].forEach(p=>document.querySelectorAll(`.nav-item[data-page="${p}"]`).forEach(n=>n.addEventListener("click",e=>{e.preventDefault();e.stopImmediatePropagation();open()},true)))}
 window.enfOpenFinance=open;
@@ -2818,12 +2818,12 @@ function fid(f){return f.id||f.ref||""}function money(v){return "BHD "+Number(v|
 function file(){return A("files").find(f=>fid(f)===current)}
 function related(n){return A(n).filter(x=>x.file===current)}
 function tx(){return related("financialTransactions")}function tasks(){return related("smartTasks")}function mins(){return related("minutes")}function docs(){return related("documents")}function ev(){return related("evidence")}
-function financial(f){let claim=Number(f?.amount||f?.claimAmount||0)+tx().filter(x=>x.type==="Claim Adjustment").reduce((a,x)=>a+Number(x.amount||0),0),col=tx().filter(x=>x.type==="Collection").reduce((a,x)=>a+Number(x.amount||0),0),exp=tx().filter(x=>x.type==="Expense"||x.type==="Fee").reduce((a,x)=>a+Number(x.amount||0),0);return{claim,col,exp,out:Math.max(0,claim-col),pct:claim?Math.min(100,col/claim*100):0}}
+function financial(f){let ok=x=>(x.status||"Posted")!=="Reversed",claim=Number(f?.amount||f?.claimAmount||0)+tx().filter(x=>x.type==="Claim Adjustment"&&ok(x)).reduce((a,x)=>a+Number(x.amount||0),0),col=tx().filter(x=>x.type==="Collection"&&ok(x)).reduce((a,x)=>a+Number(x.amount||0),0),exp=tx().filter(x=>(x.type==="Expense"||x.type==="Fee")&&ok(x)).reduce((a,x)=>a+Number(x.amount||0),0),trans=tx().filter(x=>x.type==="Client Transfer"&&ok(x)).reduce((a,x)=>a+Number(x.amount||0),0);return{claim,col,exp,trans,held:Math.max(0,col-trans),out:Math.max(0,claim-col),pct:claim?Math.min(100,col/claim*100):0}}
 function list(items,fn){return items.length?`<div class="enf360-list">${items.map(fn).join("")}</div>`:`<div class="enf360-empty">${t("No records yet.","لا توجد سجلات حتى الآن.")}</div>`}
 function main(f){
  let F=financial(f);
  if(tab==="overview")return `<div class="enf360-card"><h2>${t("Case & File Information","بيانات القضية والملف")}</h2><div class="enf360-info">${info(t("Case Number","رقم القضية"),f.caseNumber)}${info(t("Court / Authority","المحكمة / الجهة"),f.court)}${info(t("Case Type","نوع القضية"),f.caseType)}${info(t("Judgment Reference","مرجع الحكم"),f.judgmentRef)}${info(t("Client / Customer","الموكل / العميل"),f.clientName||((f.clientSide==="Creditor")?f.creditor:(f.clientSide==="Debtor")?f.debtor:""))}${info(t("We Represent","نمثل"),f.clientSide)}${info(t("Client ID / CR","هوية / سجل الموكل"),f.clientId)}${info(t("Client Contact","تواصل الموكل"),f.clientContact)}${info(t("Creditor","الدائن"),f.creditor)}${info(t("Debtor","المدين"),f.debtor)}${info(t("Intake Source","مصدر الملف"),f.intakeType)}${info(t("Assigned Officer","المسؤول"),f.assignedOfficer)}</div></div>`;
- if(tab==="financial")return `<div class="enf360-card"><h2>${t("Financial Position","المركز المالي")}</h2><div class="enf360-kpis"><div class="enf360-kpi"><small>${t("CLAIM","المطالبة")}</small><b>${money(F.claim)}</b></div><div class="enf360-kpi"><small>${t("COLLECTED","المحصل")}</small><b>${money(F.col)}</b></div><div class="enf360-kpi"><small>${t("OUTSTANDING","المتبقي")}</small><b>${money(F.out)}</b></div></div><div class="enf360-progress"><i style="width:${F.pct}%"></i></div><div style="margin-top:12px">${list(tx().slice().reverse(),x=>`<div class="enf360-item"><b>${x.type} · ${money(x.amount)}</b><small>${x.date||""} · ${x.reference||""} · ${x.notes||""}</small></div>`)}</div></div>`;
+ if(tab==="financial")return `<div class="enf360-card"><h2>${t("Financial Position","المركز المالي")}</h2><div class="enf360-kpis"><div class="enf360-kpi"><small>${t("CLAIM","المطالبة")}</small><b>${money(F.claim)}</b></div><div class="enf360-kpi"><small>${t("COLLECTED","المحصل")}</small><b>${money(F.col)}</b></div><div class="enf360-kpi"><small>${t("OUTSTANDING","المتبقي")}</small><b>${money(F.out)}</b></div><div class="enf360-kpi"><small>${t("TRANSFERRED TO CLIENT","المحول للموكل")}</small><b>${money(F.trans)}</b></div><div class="enf360-kpi"><small>${t("HELD / AVAILABLE","المحتجز / المتاح")}</small><b>${money(F.held)}</b></div></div><div class="enf360-progress"><i style="width:${F.pct}%"></i></div><div style="margin-top:12px">${list(tx().slice().reverse(),x=>`<div class="enf360-item"><b>${x.type} · ${money(x.amount)}</b><small>${x.date||""} · ${x.reference||""} · ${x.notes||""}</small></div>`)}</div></div>`;
  if(tab==="tasks")return `<div class="enf360-card"><h2>${t("Tasks & Calendar","المهام والتقويم")}</h2>${list(tasks(),x=>`<div class="enf360-item" onclick="v2OpenTask('', '${x.id}')"><b>${x.title||x.task||t("Task","مهمة")}</b><small>${x.due||x.date||""} · ${x.priority||"Normal"} · ${x.status||"Open"}</small></div>`)}</div>`;
  if(tab==="minutes")return `<div class="enf360-card"><h2>${t("Minutes","المحاضر")}</h2>${list(mins(),x=>`<div class="enf360-item"><b>${x.title||t("Minute","محضر")}</b><small>${x.date||""} · ${x.type||""}</small></div>`)}</div>`;
  if(tab==="documents")return `<div class="enf360-card"><h2>${t("Documents & Evidence","المستندات والأدلة")}</h2>${list([...docs(),...ev()],x=>`<div class="enf360-item"><b>${x.title||x.name||t("Record","سجل")}</b><small>${x.date||""} · ${x.recordType||x.type||""} · ${x.origin||""}</small></div>`)}</div>`;
@@ -4056,6 +4056,66 @@ function wire(){
  let nav=document.querySelector('.nav-item[data-page="files"]');if(nav&&!nav.dataset.client360){nav.dataset.client360="1";nav.onclick=function(e){e.preventDefault();enfFiles360Open();return false}}
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",wire);else wire();
+})();
+</script>
+
+<style id="enforza-financial-engine-v2-css">
+.enf-fe2-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0}.enf-fe2-mini{border:1px solid var(--line);border-radius:12px;padding:10px;background:var(--surface)}.enf-fe2-mini small{display:block;color:var(--muted);font-size:7px}.enf-fe2-mini b{font-size:13px}
+.enf-fe2-row-actions{display:flex;gap:5px;flex-wrap:wrap}.enf-fe2-btn{border:1px solid var(--line);background:transparent;color:inherit;border-radius:7px;padding:4px 7px;font-size:7px;cursor:pointer}.enf-fe2-btn:hover{border-color:var(--bronze)}
+.enf-fe2-status{font-size:7px;border-radius:999px;padding:4px 7px;border:1px solid var(--line)}.enf-fe2-status.posted{background:rgba(55,130,90,.08)}.enf-fe2-status.reversed{opacity:.55;text-decoration:line-through}
+.enf-fe2-client{margin-top:12px;border-top:1px solid var(--line);padding-top:10px}.enf-fe2-client h3{margin:0 0 8px}.enf-fe2-client-line{display:grid;grid-template-columns:1fr auto;gap:8px;padding:7px 0;border-bottom:1px solid var(--line);font-size:8px}
+.enf-fe2-warning{padding:8px 10px;border-radius:9px;background:rgba(178,122,67,.10);font-size:8px;margin-top:8px}
+@media(max-width:800px){.enf-fe2-strip{grid-template-columns:1fr 1fr}}
+</style>
+
+<script id="enforza-financial-engine-v2-js">
+(function(){
+"use strict";
+function ar2(){return (window.currentLang||document.documentElement.lang||"en").toLowerCase().startsWith("ar")}
+function T2(e,a){return ar2()?a:e}
+function A2(n){return window.DATA&&Array.isArray(DATA[n])?DATA[n]:[]}
+function F2(id){return A2("files").find(f=>(f.id||f.ref||"")===id)}
+function M2(v){return "BHD "+Number(v||0).toLocaleString("en-BH",{minimumFractionDigits:3,maximumFractionDigits:3})}
+function posted2(x){return (x.status||"Posted")!=="Reversed"}
+function sum2(file,type){return A2("financialTransactions").filter(x=>x.file===file&&x.type===type&&posted2(x)).reduce((a,x)=>a+Number(x.amount||0),0)}
+function pos2(f){let id=f.id||f.ref||"",claim=Number(f.amount||f.claimAmount||0)+sum2(id,"Claim Adjustment"),col=sum2(id,"Collection"),exp=sum2(id,"Expense")+sum2(id,"Fee"),trans=sum2(id,"Client Transfer"),held=Math.max(0,col-trans);return{claim,col,exp,trans,held,out:Math.max(0,claim-col)}}
+function nextId2(){let a=A2("financialTransactions"),mx=a.reduce((m,x)=>Math.max(m,Number(String(x.id||"").replace(/\D/g,""))||0),0);return"FIN-"+String(mx+1).padStart(5,"0")}
+function refresh2(){if(typeof window.enfFiles360Render==="function")window.enfFiles360Render();if(typeof window.v210Refresh==="function")window.v210Refresh();if(typeof window.enfModernCalendarRender==="function")window.enfModernCalendarRender()}
+window.enfFinancialPosition=function(fileId){let f=F2(fileId);return f?pos2(f):null}
+window.enfFinReverse=function(id){let x=A2("financialTransactions").find(z=>z.id===id);if(!x||x.status==="Reversed")return;if(!confirm(T2("Reverse this transaction? The original record will remain in the ledger.","عكس هذه الحركة؟ سيبقى السجل الأصلي ظاهرًا في دفتر الحركات.")))return;x.status="Reversed";x.reversedAt=new Date().toISOString();x.reversalReason=prompt(T2("Reason for reversal:","سبب العكس:"),"")||"";if(typeof window.enfOpenFinance==="function")window.enfOpenFinance();refresh2()}
+window.enfFinClientTransfer=function(fileId){let f=F2(fileId);if(!f)return;let p=pos2(f),max=p.held;if(max<=0)return alert(T2("There is no collected amount available to transfer to the client.","لا يوجد مبلغ محصل متاح للتحويل إلى الموكل."));let a=Number(prompt(T2("Amount to transfer to client. Available: ","مبلغ التحويل إلى الموكل. المتاح: ")+M2(max),max.toFixed(3))||0);if(a<=0||a>max)return alert(T2("Invalid transfer amount.","مبلغ التحويل غير صحيح."));let ref=prompt(T2("Transfer reference:","مرجع التحويل:"),"")||"";A2("financialTransactions").push({id:nextId2(),file:fileId,type:"Client Transfer",date:new Date().toISOString().slice(0,10),amount:a,method:"Bank Transfer",reference:ref,notes:T2("Amount transferred to client","مبلغ محول إلى الموكل"),status:"Posted"});if(typeof window.enfOpenFinance==="function")window.enfOpenFinance();refresh2()}
+window.enfFinStatement=function(fileId){let f=F2(fileId);if(!f)return;let p=pos2(f),a=A2("financialTransactions").filter(x=>x.file===fileId),client=f.clientName||((f.clientSide==="Creditor")?f.creditor:(f.clientSide==="Debtor")?f.debtor:"")||"Client";let lines=a.map(x=>`${x.date||""} | ${x.type} | ${M2(x.amount)} | ${x.status||"Posted"} | ${x.reference||""}`).join("\n");alert(`${T2("CLIENT STATEMENT","كشف حساب الموكل")}\n${client}\n${fileId}\n\n${T2("Claim","المطالبة")}: ${M2(p.claim)}\n${T2("Collected","المحصل")}: ${M2(p.col)}\n${T2("Transferred to Client","المحول للموكل")}: ${M2(p.trans)}\n${T2("Held / Available","المحتجز / المتاح")}: ${M2(p.held)}\n${T2("Outstanding","المتبقي")}: ${M2(p.out)}\n\n${lines||T2("No transactions","لا توجد حركات")}`)}
+function enhanceModal(){
+ let form=document.querySelector("#enfFinModal .enf-fin-form");if(!form||document.getElementById("enfFinStatus"))return;
+ let d=document.createElement("div");d.className="enf-fin-field";d.innerHTML=`<label>${T2("Posting Status","حالة القيد")}</label><select id="enfFinStatus"><option>Posted</option><option>Draft</option></select>`;form.appendChild(d)
+}
+const coreSave=window.enfFinSaveCore;
+window.enfFinSave=function(){
+ let file=document.getElementById("enfFinFile")?.value,type=document.getElementById("enfFinType")?.value,amount=Number(document.getElementById("enfFinAmount")?.value||0),f=F2(file);
+ if(!file||!f||amount<=0)return alert(T2("Select a valid file and amount.","اختر ملفًا ومبلغًا صحيحين."));
+ let p=pos2(f);
+ if(type==="Collection"&&amount>p.out&&p.out>0&&!confirm(T2("Collection exceeds the current outstanding balance. Continue?","مبلغ التحصيل يتجاوز الرصيد المتبقي الحالي. هل تريد المتابعة؟")))return;
+ let before=A2("financialTransactions").length;
+ if(coreSave)coreSave();
+ let x=A2("financialTransactions")[A2("financialTransactions").length-1];
+ if(A2("financialTransactions").length>before&&x){x.status=document.getElementById("enfFinStatus")?.value||"Posted";x.createdAt=new Date().toISOString();x.createdBy="Administrator"}
+ refresh2()
+}
+function augmentFinance(){
+ let root=document.getElementById("enfFinRoot");if(!root)return;
+ let select=root.querySelector(".enf-fin-select"),fileId=select?.value||"all";if(fileId==="all")return;
+ let f=F2(fileId);if(!f)return;let p=pos2(f),card=root.querySelector(".enf-fin-card:nth-child(2)");if(!card)return;
+ let old=card.querySelector(".enf-fe2-client");if(old)old.remove();let box=document.createElement("div");box.className="enf-fe2-client";box.innerHTML=`<h3>${T2("Client Funds","أموال الموكل")}</h3><div class="enf-fe2-client-line"><span>${T2("Collected","المحصل")}</span><b>${M2(p.col)}</b></div><div class="enf-fe2-client-line"><span>${T2("Transferred to Client","المحول للموكل")}</span><b>${M2(p.trans)}</b></div><div class="enf-fe2-client-line"><span>${T2("Held / Available","المحتجز / المتاح")}</span><b>${M2(p.held)}</b></div><div class="enf-fe2-row-actions" style="margin-top:9px"><button class="enf-fe2-btn" onclick="enfFinClientTransfer('${fileId}')">${T2("Transfer to Client","تحويل للموكل")}</button><button class="enf-fe2-btn" onclick="enfFinStatement('${fileId}')">${T2("Client Statement","كشف حساب الموكل")}</button></div>`;card.appendChild(box)
+}
+const coreOpen=window.enfOpenFinance;
+window.enfOpenFinance=function(){if(coreOpen)coreOpen();setTimeout(augmentFinance,0)}
+const coreSelect=window.enfFinSelect;
+window.enfFinSelect=function(v){if(coreSelect)coreSelect(v);setTimeout(augmentFinance,0)}
+function wire(){
+ enhanceModal();
+ let root=document.getElementById("enfFinRoot");if(root)new MutationObserver(()=>{clearTimeout(window.__enfFe2T);window.__enfFe2T=setTimeout(augmentFinance,30)}).observe(root,{childList:true,subtree:true});
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",wire);else wire()
 })();
 </script>
 </body>
