@@ -346,9 +346,34 @@ body.role-officer .admin-only{display:none!important}
 .session-log{position:fixed;right:22px;bottom:130px;width:min(360px,calc(100vw - 28px));max-height:360px;overflow:auto;background:#fff;border:1px solid var(--border);border-radius:10px;box-shadow:0 18px 50px rgba(0,0,0,.2);z-index:930;display:none}.session-log-head{padding:12px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between}.session-log-head h3{font-size:10px;color:var(--navy)}.session-log-item{padding:10px 12px;border-bottom:1px solid #edf1f3}.session-log-item strong{font-size:8px;color:var(--navy);display:block}.session-log-item span{font-size:7px;color:var(--muted);display:block;margin-top:3px}
 @media(max-width:720px){.demo-engine-bar{align-items:flex-start}.demo-engine-bar .spacer{display:none}.session-log{left:7px;right:7px;bottom:68px;width:auto}}
 
+
+/* ===== ENFORZA PHASE 12 — SMART FILE CREATION WIZARD ===== */
+.file-wizard{position:fixed;inset:0;background:rgba(12,18,23,.58);backdrop-filter:blur(5px);z-index:1100;display:none;place-items:center;padding:18px}
+.file-wizard-shell{width:min(920px,100%);max-height:92vh;overflow:hidden;background:#fff;border-radius:15px;box-shadow:0 30px 90px rgba(0,0,0,.32);display:grid;grid-template-columns:220px 1fr}
+.wizard-side{background:linear-gradient(160deg,#17120f,#2d2119);color:#fff;padding:25px 18px}.wizard-side h3{font-size:15px}.wizard-side p{font-size:8px;color:#cdb9a7;line-height:1.6;margin-top:6px}.wizard-steps{margin-top:24px;display:grid;gap:8px}.wizard-step{padding:10px;border:1px solid rgba(255,255,255,.1);border-radius:8px;font-size:8px;color:#a99d94}.wizard-step.active{border-color:#c9976e;color:#fff;background:rgba(201,151,110,.12)}.wizard-step.done{color:#d7b89d}
+.wizard-main{padding:25px;overflow:auto;max-height:92vh}.wizard-main-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.wizard-main-head h2{font-size:18px;color:var(--navy)}.wizard-main-head p{font-size:8px;color:var(--muted);margin-top:5px}.wizard-panel{display:none;margin-top:20px}.wizard-panel.active{display:block}.wizard-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.wizard-field label{display:block;font-size:8px;color:var(--muted);font-weight:800;margin-bottom:5px}.wizard-field input,.wizard-field select,.wizard-field textarea{width:100%;border:1px solid var(--border);border-radius:8px;padding:11px;font-size:9px;background:#fff}.wizard-field textarea{min-height:80px;resize:vertical}.wizard-field.full{grid-column:1/-1}
+.wizard-actions{display:flex;justify-content:space-between;gap:8px;margin-top:22px;padding-top:15px;border-top:1px solid var(--border)}.wizard-actions button{border:1px solid var(--border);background:#fff;border-radius:8px;padding:10px 14px;font-size:8px;font-weight:900;color:var(--navy)}.wizard-actions button.primary{background:var(--bronze);color:#fff;border-color:var(--bronze)}
+.wizard-review{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.wizard-review div{background:#f7f9fa;border-radius:8px;padding:10px}.wizard-review span{font-size:7px;color:var(--muted);display:block}.wizard-review strong{font-size:9px;color:var(--navy);display:block;margin-top:4px}
+.ai-wizard-tip{margin-top:14px;border:1px solid #ead7c6;background:#fffaf6;border-radius:9px;padding:12px;font-size:8px;color:var(--navy);line-height:1.7}
+@media(max-width:720px){.file-wizard{padding:0}.file-wizard-shell{display:block;width:100%;height:100vh;max-height:none;border-radius:0;overflow:auto}.wizard-side{padding:16px}.wizard-side p{display:none}.wizard-steps{display:flex;overflow:auto;margin-top:12px}.wizard-step{white-space:nowrap;padding:8px}.wizard-main{padding:17px;max-height:none}.wizard-grid,.wizard-review{grid-template-columns:1fr}.wizard-field.full{grid-column:auto}}
+
 </style>
 </head>
 <body>
+
+<div class="file-wizard" id="fileWizard"><div class="file-wizard-shell">
+ <aside class="wizard-side"><h3 data-i18n="New Enforcement File">New Enforcement File</h3><p data-i18n="Guided demo file creation">Guided creation with parties, financials, workflow and AI review.</p><div class="wizard-steps">
+  <div class="wizard-step active" data-wstep="1">1 · <span data-i18n="File Details">File Details</span></div><div class="wizard-step" data-wstep="2">2 · <span data-i18n="Parties">Parties</span></div><div class="wizard-step" data-wstep="3">3 · <span data-i18n="Financials">Financials</span></div><div class="wizard-step" data-wstep="4">4 · <span data-i18n="Workflow">Workflow</span></div><div class="wizard-step" data-wstep="5">5 · <span data-i18n="AI Review">AI Review</span></div>
+ </div></aside>
+ <main class="wizard-main"><div class="wizard-main-head"><div><h2 id="wizardTitle">File Details</h2><p data-i18n="Complete the demo information below.">Complete the demo information below.</p></div><button class="top-btn" onclick="closeFileWizard()">×</button></div>
+  <div class="wizard-panel active" data-panel="1"><div class="wizard-grid"><div class="wizard-field"><label data-i18n="Reference">Reference</label><input id="wfRef" readonly></div><div class="wizard-field"><label data-i18n="Opened Date">Opened Date</label><input id="wfDate" type="date"></div><div class="wizard-field"><label data-i18n="Case Type">Case Type</label><select id="wfType"><option>Commercial Claim</option><option>Judgment Enforcement</option><option>Settlement Enforcement</option></select></div><div class="wizard-field"><label data-i18n="Assigned Officer">Assigned Officer</label><select id="wfOfficer"><option>Ali Hassan</option><option>Fatima Ahmed</option><option>Mohammed Ali</option></select></div></div></div>
+  <div class="wizard-panel" data-panel="2"><div class="wizard-grid"><div class="wizard-field"><label data-i18n="Creditor Name">Creditor Name</label><input id="wfCreditor" value="Demo Creditor W.L.L."></div><div class="wizard-field"><label data-i18n="Debtor Name">Debtor Name</label><input id="wfDebtor" value="Demo Debtor W.L.L."></div><div class="wizard-field"><label data-i18n="Creditor Contact">Creditor Contact</label><input id="wfCreditorContact" value="+973 1700 0000"></div><div class="wizard-field"><label data-i18n="Debtor Contact">Debtor Contact</label><input id="wfDebtorContact" value="+973 3900 0000"></div></div></div>
+  <div class="wizard-panel" data-panel="3"><div class="wizard-grid"><div class="wizard-field"><label data-i18n="Claim Amount">Claim Amount</label><input id="wfClaim" type="number" value="25000"></div><div class="wizard-field"><label data-i18n="Opening Collection">Opening Collection</label><input id="wfCollected" type="number" value="0"></div><div class="wizard-field"><label data-i18n="Currency">Currency</label><select id="wfCurrency"><option>BHD</option></select></div><div class="wizard-field"><label data-i18n="Priority">Priority</label><select id="wfPriority"><option>Normal</option><option>High</option><option>Critical</option></select></div></div></div>
+  <div class="wizard-panel" data-panel="4"><div class="wizard-grid"><div class="wizard-field"><label data-i18n="Initial Status">Initial Status</label><select id="wfStatus"><option>Active</option><option>Pending</option><option>On Hold</option></select></div><div class="wizard-field"><label data-i18n="Next Action">Next Action</label><select id="wfNext"><option>Party Verification</option><option>Bank Inquiry</option><option>Asset Inquiry</option><option>Settlement Contact</option></select></div><div class="wizard-field full"><label data-i18n="Internal Note">Internal Note</label><textarea id="wfNote" placeholder="Demo internal note..."></textarea></div></div></div>
+  <div class="wizard-panel" data-panel="5"><div class="wizard-review" id="wizardReview"></div><div class="ai-wizard-tip" id="wizardAITip">✦ ENFORZA AI will review the demo file before creation.</div></div>
+  <div class="wizard-actions"><button id="wizardBack" onclick="wizardMove(-1)" data-i18n="Back">Back</button><div><button onclick="closeFileWizard()" data-i18n="Cancel">Cancel</button> <button class="primary" id="wizardNext" onclick="wizardMove(1)" data-i18n="Next">Next</button></div></div>
+ </main>
+</div></div>
 <div class="login-gate" id="loginGate">
  <div class="login-shell">
   <section class="login-brand">
@@ -1285,6 +1310,38 @@ demoAlert=function(type){
 renderSessionLog();
 Object.assign(I18N.ar,{
 "Live Demo Data Engine":"محرك بيانات الديمو المباشر","Changes in this session update the demo instantly.":"التغييرات خلال الجلسة تنعكس على الديمو مباشرة.","Session Activity":"نشاط الجلسة","Reset Demo":"إعادة ضبط الديمو","Demo Session Activity":"نشاط جلسة الديمو","No session changes yet.":"لا توجد تغييرات في الجلسة حتى الآن.","Demo data restored.":"تمت إعادة بيانات الديمو الأصلية.","Demo Reset":"إعادة ضبط الديمو","Original demo dataset restored":"تمت استعادة بيانات الديمو الأصلية","Collection Recorded":"تم تسجيل التحصيل","Settlement Created":"تم إنشاء التسوية","Enforcement Action Created":"تم إنشاء الإجراء التنفيذي","Task Created":"تم إنشاء المهمة","Demo record saved and dashboard updated.":"تم حفظ السجل التجريبي وتحديث لوحة التحكم.","Enforcement File Created":"تم إنشاء ملف التنفيذ","New demo enforcement file created.":"تم إنشاء ملف تنفيذ تجريبي جديد."
+});
+
+
+let wizardStep=1;
+function openFileWizard(){
+ wizardStep=1;document.getElementById("wfRef").value="ENF-"+String(260220+(DATA.files?.length||0));document.getElementById("wfDate").value=new Date().toISOString().slice(0,10);document.getElementById("fileWizard").style.display="grid";renderWizard();
+}
+function closeFileWizard(){document.getElementById("fileWizard").style.display="none"}
+function renderWizard(){
+ document.querySelectorAll(".wizard-panel").forEach(x=>x.classList.toggle("active",+x.dataset.panel===wizardStep));
+ document.querySelectorAll(".wizard-step").forEach(x=>{const n=+x.dataset.wstep;x.classList.toggle("active",n===wizardStep);x.classList.toggle("done",n<wizardStep)});
+ const titles=["","File Details","Parties","Financials","Workflow","AI Review"];document.getElementById("wizardTitle").textContent=t(titles[wizardStep]);document.getElementById("wizardBack").style.visibility=wizardStep===1?"hidden":"visible";document.getElementById("wizardNext").textContent=wizardStep===5?t("Create File"):t("Next");
+ if(wizardStep===5)renderWizardReview();
+}
+function wizardMove(d){if(d>0&&wizardStep===5)return commitWizardFile();wizardStep=Math.max(1,Math.min(5,wizardStep+d));renderWizard()}
+function renderWizardReview(){
+ const v=id=>document.getElementById(id).value,claim=+v("wfClaim")||0,col=+v("wfCollected")||0,out=claim-col,priority=v("wfPriority");
+ document.getElementById("wizardReview").innerHTML=[[t("Reference"),v("wfRef")],[t("Creditor"),v("wfCreditor")],[t("Debtor"),v("wfDebtor")],[t("Claim"),money(claim)],[t("Outstanding"),money(out)],[t("Officer"),v("wfOfficer")],[t("Status"),v("wfStatus")],[t("Next Action"),v("wfNext")]].map(x=>`<div><span>${x[0]}</span><strong>${x[1]}</strong></div>`).join("");
+ let risk=claim>=50000?82:claim>=25000?66:48;if(priority==="Critical")risk+=10;if(priority==="High")risk+=5;risk=Math.min(96,risk);
+ document.getElementById("wizardAITip").innerHTML=`✦ <strong>${t("ENFORZA AI Review")}</strong><br>${t("Estimated demo risk score")}: ${risk}/100. ${t("Recommended first action")}: ${v("wfNext")}. ${t("The file will be added to the live demo dashboard and AI priority engine.")}`;
+}
+function commitWizardFile(){
+ const v=id=>document.getElementById(id).value,claim=+v("wfClaim")||0,col=+v("wfCollected")||0;
+ const f={id:v("wfRef"),creditor:v("wfCreditor"),debtor:v("wfDebtor"),claim,collected:col,status:v("wfStatus"),officer:v("wfOfficer"),next:v("wfNext"),opened:v("wfDate"),priority:v("wfPriority"),type:v("wfType"),note:v("wfNote")};
+ DATA.files.unshift(f);logDemo(t("Enforcement File Created"),`${f.id} · ${f.debtor} · ${money(claim)}`);
+ ACTION_CENTER.unshift({id:"ACT-"+String(261000+ACTION_CENTER.length+1),file:f.id,type:f.next,officer:f.officer,due:"Next follow-up",outcome:"Created by demo wizard",status:"Pending"});
+ closeFileWizard();liveRefresh();showToast(t("File created successfully and added to AI monitoring."));openDetail("files",f.id);setTimeout(()=>{currentFileForAI=f;buildAIIntelligence(f)},50);
+}
+const _demoAlertP12=demoAlert;
+demoAlert=function(type){if(type==="add"&&currentModule==="files")return openFileWizard();return _demoAlertP12(type)}
+Object.assign(I18N.ar,{
+"New Enforcement File":"ملف تنفيذ جديد","Guided demo file creation":"إنشاء موجه يشمل الأطراف والبيانات المالية ومسار العمل ومراجعة الذكاء الاصطناعي.","File Details":"بيانات الملف","Parties":"الأطراف","Financials":"البيانات المالية","Workflow":"مسار العمل","AI Review":"مراجعة الذكاء الاصطناعي","Complete the demo information below.":"أكمل بيانات الديمو أدناه.","Reference":"المرجع","Opened Date":"تاريخ الفتح","Case Type":"نوع الملف","Assigned Officer":"المنفذ المسؤول","Creditor Name":"اسم الدائن","Debtor Name":"اسم المدين","Creditor Contact":"تواصل الدائن","Debtor Contact":"تواصل المدين","Claim Amount":"مبلغ المطالبة","Opening Collection":"تحصيل افتتاحي","Currency":"العملة","Priority":"الأولوية","Initial Status":"الحالة الأولية","Next Action":"الإجراء التالي","Internal Note":"ملاحظة داخلية","Back":"السابق","Cancel":"إلغاء","Next":"التالي","Create File":"إنشاء الملف","ENFORZA AI Review":"مراجعة ENFORZA AI","Estimated demo risk score":"درجة المخاطر التجريبية المقدرة","Recommended first action":"الإجراء الأول المقترح","The file will be added to the live demo dashboard and AI priority engine.":"سيضاف الملف إلى لوحة الديمو المباشرة ومحرك الأولويات الذكي.","File created successfully and added to AI monitoring.":"تم إنشاء الملف وإضافته إلى مراقبة الذكاء الاصطناعي."
 });
 
 renderDashboard();renderUsers();renderAudit();renderPermissions();showReport("executive");applyLanguage();
