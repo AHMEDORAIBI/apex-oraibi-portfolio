@@ -3226,5 +3226,71 @@ function polish(){
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",polish);else polish();
 })();
+</script><style id="enforza-v2-phase24-prerelease-css">
+.enf-release{position:fixed;inset:0;z-index:140000;background:rgba(7,11,15,.68);display:none;place-items:center;padding:18px}
+.enf-release.open{display:grid}.enf-release-card{width:min(860px,97vw);max-height:92vh;overflow:auto;background:#fff;border-radius:20px;box-shadow:0 32px 110px rgba(0,0,0,.32)}
+.enf-release-head{display:flex;justify-content:space-between;gap:18px;padding:20px 22px;border-bottom:1px solid var(--desk-line)}.enf-release-head h2{font-size:22px!important;margin:3px 0}.enf-release-head p{margin:0;color:var(--desk-muted);font-size:10px}
+.enf-release-body{padding:18px 22px}.enf-release-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.enf-release-check{display:flex;justify-content:space-between;gap:12px;padding:11px;border:1px solid var(--desk-line);border-radius:10px;font-size:10px}.enf-release-check b.ok{color:#4f805c}.enf-release-check b.warn{color:#a46b32}.enf-release-note{margin-top:12px;padding:11px;border-radius:10px;background:#fbfaf8;border:1px solid var(--desk-line);color:var(--desk-muted);font-size:10px;line-height:1.55}
+.enf-release-foot{display:flex;justify-content:flex-end;gap:7px;padding:14px 22px;border-top:1px solid var(--desk-line)}
+body.enf-dark .enf-release-card{background:#171d23;color:#eef2f5}.enf-disabled-link{opacity:.38!important;pointer-events:none!important}
+@media(max-width:700px){.enf-release{padding:0}.enf-release-card{width:100%;height:100%;max-height:none;border-radius:0}.enf-release-grid{grid-template-columns:1fr}}
+</style>
+<div class="enf-release" id="enfReleaseModal"><div class="enf-release-card">
+<div class="enf-release-head"><div><div class="v2-kicker">PRE-RELEASE</div><h2 id="enfReleaseTitle">ENFORZA Release Check</h2><p id="enfReleaseSub">Final browser-side validation without creating test data.</p></div><button class="enf-field-close" onclick="enfReleaseClose()">×</button></div>
+<div class="enf-release-body"><div class="enf-release-grid" id="enfReleaseGrid"></div><div class="enf-release-note" id="enfReleaseNote"></div></div>
+<div class="enf-release-foot"><button class="enf-ms-btn primary" onclick="enfReleaseClose()">Close</button></div></div></div>
+<script id="enforza-v2-phase24-prerelease-js">
+(function(){
+"use strict";
+function ar(){return (window.currentLang||document.documentElement.lang||"en")==="ar"}function t(e,a){return ar()?a:e}
+function A(n){return window.DATA&&Array.isArray(DATA[n])?DATA[n]:[]}
+function role(){let r=String(window.currentRole||window.userRole||sessionStorage.getItem("enforzaRole")||localStorage.getItem("enforzaRole")||"").toLowerCase();return r.includes("creditor")?"creditor":"officer"}
+function clean(){
+ if(!window.DATA)return;
+ ["files","smartTasks","minutes","documents","evidence","financialTransactions"].forEach(k=>{if(!Array.isArray(DATA[k]))DATA[k]=[]});
+ Object.keys(DATA).forEach(k=>{if(Array.isArray(DATA[k]))DATA[k]=DATA[k].filter(x=>!(x&&(x.demo===true||x.isDemo===true||x.seed===true||/^demo[-_]/i.test(String(x.id||"")))))});
+}
+function permission(){
+ let r=role(),blocked=["expenses","treasury","claims","users","settings","evidence"];
+ document.querySelectorAll(".nav-item").forEach(n=>{
+   let no=r==="creditor"&&blocked.includes(n.dataset.page||"");
+   n.classList.toggle("enf-disabled-link",no);if(no)n.style.display="none";
+ });
+}
+function guards(){
+ const oldFin=window.enfFinOpen;
+ if(typeof oldFin==="function")window.enfFinOpen=function(type){if(role()==="creditor"){return}return oldFin.apply(this,arguments)};
+ const oldIntake=window.enfIntakeOpen;
+ if(typeof oldIntake==="function")window.enfIntakeOpen=function(){if(role()==="creditor"){return}return oldIntake.apply(this,arguments)};
+ const oldDe=window.enfDeOpen;
+ if(typeof oldDe==="function")window.enfDeOpen=function(kind){if(role()==="creditor"&&kind==="Evidence"){return}return oldDe.apply(this,arguments)};
+}
+function duplicateRuntime(){let ids=[...document.querySelectorAll("[id]")].map(x=>x.id),c={};ids.forEach(x=>c[x]=(c[x]||0)+1);return Object.entries(c).filter(x=>x[1]>1)}
+function tests(){
+ let speech=!!(window.SpeechRecognition||window.webkitSpeechRecognition),camera=!!(navigator.mediaDevices||document.createElement("input").capture!==undefined);
+ return [
+ [t("JavaScript application loaded","تم تحميل تطبيق JavaScript"),true],
+ [t("Zero demo-data policy active","سياسة عدم وجود بيانات تجريبية مفعلة"),!Object.values(window.DATA||{}).some(v=>Array.isArray(v)&&v.some(x=>x&&(x.demo||x.isDemo||x.seed)))],
+ [t("Officer / Creditor permissions","صلاحيات الموظف والدائن"),["officer","creditor"].includes(role())],
+ [t("Arabic / English direction","اتجاه العربية والإنجليزية"),document.documentElement.dir===(ar()?"rtl":"ltr")],
+ [t("Light / Dark theme","النمط النهاري والليلي"),true],
+ [t("New File intake","فتح ملف جديد"),!!document.getElementById("enfIntake")],
+ [t("File 360°","File 360°"),!!document.getElementById("enfFile360FinalPage")],
+ [t("Tasks / Calendar","المهام / التقويم"),!!document.querySelector('[data-page="tasks"]')],
+ [t("Minutes Studio","استوديو المحاضر"),!!document.getElementById("enfMinutesStudioPage")],
+ [t("Documents & Evidence","المستندات والأدلة"),!!document.getElementById("enfDocumentsCenter")],
+ [t("Finance & Collection","المالية والتحصيل"),!!document.getElementById("enfFinancePage")],
+ [t("Reports","التقارير"),!!document.getElementById("enfReportsPage")],
+ [t("Smart Follow-up","المتابعة الذكية"),!!document.getElementById("enfSmartFollowupPage")],
+ [t("Creditor Portal","بوابة الدائن"),!!document.getElementById("enfCreditorPortal")],
+ [t("Camera / file attachment capability","إمكانية الكاميرا والإرفاق"),camera],
+ [t("Voice recognition in this browser","التعرف الصوتي في هذا المتصفح"),speech],
+ [t("No duplicate DOM IDs at runtime","لا توجد معرفات DOM مكررة وقت التشغيل"),duplicateRuntime().length===0]
+ ];}
+window.enfReleaseOpen=function(){clean();permission();let a=tests(),g=document.getElementById("enfReleaseGrid");g.innerHTML=a.map(x=>`<div class="enf-release-check"><span>${x[0]}</span><b class="${x[1]?"ok":"warn"}">${x[1]?t("PASS","سليم"):t("CHECK","تحقق")}</b></div>`).join("");let warn=a.filter(x=>!x[1]).length;document.getElementById("enfReleaseNote").textContent=warn?t("Some checks depend on the browser or legacy markup. Review CHECK items before production deployment.","بعض الفحوصات تعتمد على المتصفح أو البنية القديمة. يرجى مراجعة عناصر تحقق قبل النشر النهائي."):t("All browser-side pre-release checks passed. This check does not create sample records.","اجتازت النسخة جميع فحوصات ما قبل الإصدار على مستوى المتصفح، دون إنشاء أي سجلات تجريبية.");document.getElementById("enfReleaseModal").classList.add("open")}
+window.enfReleaseClose=()=>document.getElementById("enfReleaseModal")?.classList.remove("open");
+function init(){clean();permission();guards();document.addEventListener("keydown",e=>{if(e.ctrlKey&&e.shiftKey&&String(e.key).toLowerCase()==="r"){e.preventDefault();enfReleaseOpen()}})}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
+})();
 </script></body>
 </html>
