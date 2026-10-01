@@ -4290,5 +4290,57 @@ window.enfDemoRefresh=safeRefresh;
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});else boot()
 })();
 </script>
+
+<script id="enforza-final-router-fix-js">
+(function(){
+"use strict";
+const previousOpen=window.openPage;
+function showOnly(id){
+ document.querySelectorAll(".page").forEach(p=>{p.classList.add("hidden");p.style.display="none"});
+ const p=document.getElementById(id);
+ if(!p)return false;
+ p.classList.remove("hidden");p.style.display="block";
+ document.querySelectorAll(".nav-item").forEach(n=>n.classList.toggle("active",n.dataset.page===window.currentModule));
+ const sb=document.getElementById("sidebar");if(sb)sb.classList.remove("open");
+ window.scrollTo(0,0);return true
+}
+window.openPage=function(page){
+ window.currentModule=page;
+ try{
+  if(page==="files"){
+   if(typeof window.enfFiles360Open==="function"){window.enfFiles360Open();return}
+   if(showOnly("enfFilesClient360Page"))return
+  }
+  if(["tasks","smarttasks","calendar"].includes(page)){
+   if(typeof window.v210Go==="function"){window.v210Go(page==="calendar"?"calendar":"tasks");return}
+   const id=page==="calendar"?"v2CalendarPage":"v2TasksPage";
+   if(showOnly(id))return
+  }
+  if(page==="reports"){
+   if(showOnly("reportsPage")){if(typeof window.enfReportsV2Render==="function")window.enfReportsV2Render();return}
+  }
+  if(page==="dashboard"){
+   if(showOnly("dashboardPage")){if(typeof window.enfExecutiveDashboardRender==="function")window.enfExecutiveDashboardRender();return}
+  }
+  if(typeof previousOpen==="function")return previousOpen(page)
+ }catch(err){console.error("[ENFORZA ROUTER]",page,err);if(typeof previousOpen==="function")try{return previousOpen(page)}catch(e){}}
+};
+function bind(){
+ document.querySelectorAll(".nav-item[data-page]").forEach(n=>{
+  if(n.dataset.finalRoute==="1")return;
+  n.dataset.finalRoute="1";
+  n.addEventListener("click",function(e){
+   const p=this.dataset.page;if(!p)return;
+   if(["files","tasks","smarttasks","calendar","reports","dashboard"].includes(p)){
+    e.preventDefault();e.stopImmediatePropagation();window.openPage(p)
+   }
+  },true)
+ });
+ // ensure visible action buttons cannot submit accidental forms
+ document.querySelectorAll("button").forEach(b=>{if(!b.type)b.type="button"});
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind,{once:true});else bind();
+})();
+</script>
 </body>
 </html>
