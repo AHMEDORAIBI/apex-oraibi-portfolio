@@ -337,6 +337,15 @@ body.role-creditor .admin-only,body.role-creditor .officer-only{display:none!imp
 body.role-officer .admin-only{display:none!important}
 @media(max-width:720px){.login-gate{padding:0;background:#fff}.login-shell{display:block;border-radius:0;min-height:100vh}.login-brand{padding:25px;min-height:225px}.login-brand h1{font-size:23px;margin-top:14px}.login-brand p{margin-top:8px}.login-feature{display:none}.login-form-side{padding:24px 18px}.role-picker{margin-top:17px}.login-credit{margin-top:20px}.login-shell{overflow:auto}.role-option{padding:11px 5px}}
 
+
+/* ===== ENFORZA PHASE 11 — LIVE DEMO DATA ENGINE ===== */
+.demo-engine-bar{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-bottom:14px;padding:10px 12px;border:1px solid #ead7c6;background:#fffaf6;border-radius:9px}
+.demo-engine-bar strong{font-size:9px;color:var(--navy)}.demo-engine-bar span{font-size:7px;color:var(--muted)}.demo-engine-bar .spacer{flex:1}
+.demo-engine-bar button{border:1px solid var(--border);background:#fff;border-radius:7px;padding:7px 9px;font-size:7px;font-weight:800;color:var(--bronze)}
+.live-dot{width:7px;height:7px;border-radius:50%;background:#48a06d;display:inline-block;box-shadow:0 0 0 4px rgba(72,160,109,.12)}
+.session-log{position:fixed;right:22px;bottom:130px;width:min(360px,calc(100vw - 28px));max-height:360px;overflow:auto;background:#fff;border:1px solid var(--border);border-radius:10px;box-shadow:0 18px 50px rgba(0,0,0,.2);z-index:930;display:none}.session-log-head{padding:12px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between}.session-log-head h3{font-size:10px;color:var(--navy)}.session-log-item{padding:10px 12px;border-bottom:1px solid #edf1f3}.session-log-item strong{font-size:8px;color:var(--navy);display:block}.session-log-item span{font-size:7px;color:var(--muted);display:block;margin-top:3px}
+@media(max-width:720px){.demo-engine-bar{align-items:flex-start}.demo-engine-bar .spacer{display:none}.session-log{left:7px;right:7px;bottom:68px;width:auto}}
+
 </style>
 </head>
 <body>
@@ -643,7 +652,7 @@ body.role-officer .admin-only{display:none!important}
 <button class="ai-fab" onclick="openAI()">✦ ENFORZA AI</button>
 <div class="ai-panel" id="aiPanel"><div class="ai-head"><div><h3>✦ ENFORZA AI Assistant</h3><p>AI Demo Simulation · Context-aware enforcement copilot</p></div><button class="top-btn" onclick="closeAI()">×</button></div><div class="ai-body" id="aiBody"><div class="ai-msg bot">Welcome. I can summarize files, highlight risks, suggest next actions and analyze recovery using demo data.</div></div><div class="ai-quick"><button onclick="askAI('summary')">Summarize file</button><button onclick="askAI('today')">Attention today</button><button onclick="askAI('recovery')">Analyze recovery</button><button onclick="askAI('next')">Next action</button></div><div class="ai-input"><input id="aiInput" placeholder="Ask ENFORZA AI..." onkeydown="if(event.key==='Enter')sendAIInput()"><button onclick="sendAIInput()">→</button></div></div>
 <div class="capture-toolbar" id="captureToolbar"><button onclick="exitCaptureMode()">Exit</button><button class="primary" onclick="window.print()">Print / Save PDF</button></div>
-<footer class="footer"><span>ENFORZA — Private Enforcement Management System</span><span><span data-i18n="Designed & Developed by">Designed & Developed by</span> <strong style="color:var(--bronze)">APEX ORAIBI</strong></span></footer>
+<div class="session-log" id="sessionLog"><div class="session-log-head"><h3 data-i18n="Demo Session Activity">Demo Session Activity</h3><button class="top-btn" onclick="toggleSessionLog()">×</button></div><div id="sessionLogBody"></div></div><footer class="footer"><span>ENFORZA — Private Enforcement Management System</span><span><span data-i18n="Designed & Developed by">Designed & Developed by</span> <strong style="color:var(--bronze)">APEX ORAIBI</strong></span></footer>
 
 <div class="modal-backdrop" id="modalBackdrop" onclick="closeQuickModal()"></div>
 <div class="demo-modal" id="quickModal">
@@ -1228,6 +1237,54 @@ function loginDemo(){
 function logoutDemo(){closeAI();closeVoice();document.getElementById("loginGate").style.display="grid";document.getElementById("smartNotifyPanel").style.display="none"}
 Object.assign(I18N.ar,{
 "Login brand text":"ديمو تفاعلي لإدارة التنفيذ يشمل مسار العمل والتحصيلات والتسويات والإشعارات الذكية واستخدام الهاتف وENFORZA AI.","Welcome to ENFORZA":"مرحبًا بك في ENFORZA","Choose a demo role to experience the system.":"اختر صفة الدخول لتجربة النظام.","Management":"الإدارة","Enforcement Officer":"منفذ خاص","Creditor":"الدائن","Username":"اسم المستخدم","Password":"كلمة المرور","Enter Demo":"دخول الديمو","Demo login note":"نسخة تجريبية فقط. اختر أي صفة ثم ادخل. لا تستخدم بيانات عملاء حقيقية أو مصادقة فعلية.","Demo session started":"تم بدء جلسة الديمو"
+});
+
+
+const DEMO_ORIGINAL=JSON.parse(JSON.stringify(DATA));
+let DEMO_SESSION_LOG=[];
+function logDemo(action,detail){DEMO_SESSION_LOG.unshift({time:new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"}),action,detail});renderSessionLog()}
+function renderSessionLog(){const e=document.getElementById("sessionLogBody");if(!e)return;e.innerHTML=DEMO_SESSION_LOG.length?DEMO_SESSION_LOG.map(x=>`<div class="session-log-item"><strong>${x.action}</strong><span>${x.time} · ${x.detail}</span></div>`).join(""):`<div class="session-log-item"><span>${t("No session changes yet.")}</span></div>`}
+function toggleSessionLog(){const e=document.getElementById("sessionLog");e.style.display=e.style.display==="block"?"none":"block";renderSessionLog()}
+function resetLiveDemo(){
+ Object.keys(DATA).forEach(k=>delete DATA[k]);Object.assign(DATA,JSON.parse(JSON.stringify(DEMO_ORIGINAL)));DEMO_SESSION_LOG=[];renderSessionLog();renderDashboard();showToast(t("Demo data restored."));logDemo(t("Demo Reset"),t("Original demo dataset restored"));
+ if(currentModule==="files")renderModule("files");
+}
+function liveRefresh(){renderDashboard();if(currentModule&&["files","collections","settlements","expenses","tasks"].includes(currentModule))renderModule(currentModule);if(currentModule==="actionsCenter")renderActionCenter();if(currentModule==="followupBoard")renderFollowups("today")}
+function nextDemoId(prefix,arr){return prefix+"-"+String((arr?.length||0)+1).padStart(4,"0")}
+function saveDemoModal(){
+ const title=document.getElementById("quickModalTitle")?.textContent||"",inputs=[...document.querySelectorAll("#quickModalBody input,#quickModalBody select,#quickModalBody textarea")].map(x=>x.value);
+ if(title.includes("Collection")||title.includes("تحصيل")){
+   const file=inputs[0]||"ENF-260184",amount=parseFloat(String(inputs[1]||"1000").replace(/,/g,""))||1000,method=inputs[2]||"Bank Transfer",ref=inputs[3]||nextDemoId("RC",DATA.collections);
+   DATA.collections.unshift({id:ref,file,date:new Date().toLocaleDateString("en-GB"),amount,method,status:"Posted"});
+   const f=DATA.files.find(x=>x.id===file);if(f)f.collected=(f.collected||0)+amount;
+   logDemo(t("Collection Recorded"),`${file} · ${money(amount)}`);
+ } else if(title.includes("Settlement")||title.includes("تسوية")){
+   const file=inputs[0]||"ENF-260219",amount=parseFloat(String(inputs[2]||"32000").replace(/,/g,""))||32000;
+   DATA.settlements.unshift({id:nextDemoId("SET",DATA.settlements),file,amount,status:"Active",next:"01 Sep 2026"});
+   logDemo(t("Settlement Created"),`${file} · ${money(amount)}`);
+ } else if(title.includes("Enforcement Action")||title.includes("تنفيذي")){
+   const active=document.querySelector("#quickModalBody .action-type.active")?.textContent||"Bank Attachment",file=inputs[0]||"ENF-260184",officer=inputs[1]||"Ali Hassan",due=inputs[2]||"24 Aug 2026";
+   ACTION_CENTER.unshift({id:"ACT-"+String(260900+ACTION_CENTER.length+1),file,type:active,officer,due,outcome:"New demo action",status:"Pending"});
+   logDemo(t("Enforcement Action Created"),`${file} · ${active}`);
+ } else {
+   DATA.tasks.unshift({id:nextDemoId("TSK",DATA.tasks),title:inputs[2]||"Demo follow-up task",file:inputs[1]||"ENF-260184",assignee:inputs[0]||"Ali Hassan",status:"Open"});
+   logDemo(t("Task Created"),inputs[2]||"Demo follow-up task");
+ }
+ closeQuickModal();liveRefresh();showToast(t("Demo record saved and dashboard updated."));
+}
+function createDemoFile(){
+ const id="ENF-"+String(260220+(DATA.files?.length||0));
+ DATA.files.unshift({id,creditor:"Demo Creditor W.L.L.",debtor:"New Demo Debtor",claim:25000,collected:0,status:"Active",officer:"Ali Hassan",next:"Party Verification",opened:new Date().toLocaleDateString("en-GB")});
+ logDemo(t("Enforcement File Created"),`${id} · ${money(25000)}`);liveRefresh();showToast(t("New demo enforcement file created."));openPage("files");
+}
+const _demoAlertP11=demoAlert;
+demoAlert=function(type){
+ if(type==="add"&&currentModule==="files")return createDemoFile();
+ return _demoAlertP11(type);
+}
+renderSessionLog();
+Object.assign(I18N.ar,{
+"Live Demo Data Engine":"محرك بيانات الديمو المباشر","Changes in this session update the demo instantly.":"التغييرات خلال الجلسة تنعكس على الديمو مباشرة.","Session Activity":"نشاط الجلسة","Reset Demo":"إعادة ضبط الديمو","Demo Session Activity":"نشاط جلسة الديمو","No session changes yet.":"لا توجد تغييرات في الجلسة حتى الآن.","Demo data restored.":"تمت إعادة بيانات الديمو الأصلية.","Demo Reset":"إعادة ضبط الديمو","Original demo dataset restored":"تمت استعادة بيانات الديمو الأصلية","Collection Recorded":"تم تسجيل التحصيل","Settlement Created":"تم إنشاء التسوية","Enforcement Action Created":"تم إنشاء الإجراء التنفيذي","Task Created":"تم إنشاء المهمة","Demo record saved and dashboard updated.":"تم حفظ السجل التجريبي وتحديث لوحة التحكم.","Enforcement File Created":"تم إنشاء ملف التنفيذ","New demo enforcement file created.":"تم إنشاء ملف تنفيذ تجريبي جديد."
 });
 
 renderDashboard();renderUsers();renderAudit();renderPermissions();showReport("executive");applyLanguage();
