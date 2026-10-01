@@ -4354,5 +4354,34 @@ window.enfLogout=function(){
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",forcePicker,{once:true});else forcePicker();
 })();
+</script><style id="enforza-demo-polish-css">
+/* DEMO POLISH — unified UX */
+:root{--enf-radius:13px;--enf-shadow:0 14px 38px rgba(17,24,32,.08)}
+button,.nav-item,[role="button"]{transition:transform .12s ease,box-shadow .12s ease,background .12s ease,border-color .12s ease}
+button:not(:disabled):active,[role="button"]:active{transform:translateY(1px)}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid rgba(181,124,72,.48);outline-offset:2px}
+input,select,textarea{max-width:100%}
+.enf-demo-toast{position:fixed;z-index:400000;inset-inline-end:20px;bottom:20px;min-width:240px;max-width:min(390px,90vw);padding:12px 14px;border-radius:12px;background:#172129;color:#fff;box-shadow:0 18px 50px rgba(0,0,0,.22);font-size:10px;line-height:1.5;opacity:0;transform:translateY(10px);pointer-events:none;transition:.18s ease}.enf-demo-toast.show{opacity:1;transform:none}
+.enf-empty-v2{display:grid;place-items:center;text-align:center;min-height:170px;padding:25px;color:var(--desk-muted)}.enf-empty-v2 i{width:45px;height:45px;border-radius:13px;background:#f1e7dd;color:#8a5c31;display:grid;place-items:center;font-style:normal;font-weight:950;margin-bottom:9px}.enf-empty-v2 b{font-size:11px}.enf-empty-v2 small{font-size:8px;margin-top:4px}
+.enf-demo-mode-pill{position:fixed;z-index:90000;inset-inline-end:14px;top:13px;padding:5px 8px;border-radius:999px;background:rgba(23,33,41,.9);color:#fff;font-size:7px;font-weight:950;letter-spacing:.08em;pointer-events:none}
+body.enf-dark .enf-empty-v2 i{background:#28221e}
+@media(max-width:700px){.enf-demo-toast{inset-inline:12px;bottom:12px;max-width:none}.enf-demo-mode-pill{top:auto;bottom:8px;inset-inline-end:8px;opacity:.7}}
+</style>
+<div class="enf-demo-toast" id="enfDemoToast"></div><div class="enf-demo-mode-pill">DEMO</div>
+<script id="enforza-demo-polish-js">
+(function(){
+"use strict";
+function ar(){return (window.currentLang||document.documentElement.lang||"en").toLowerCase().startsWith("ar")}function t(e,a){return ar()?a:e}
+let timer;
+window.enfToast=function(msg){let x=document.getElementById("enfDemoToast");if(!x)return;x.textContent=msg;x.classList.add("show");clearTimeout(timer);timer=setTimeout(()=>x.classList.remove("show"),2200)}
+function direction(){let a=ar();document.documentElement.lang=a?"ar":"en";document.documentElement.dir=a?"rtl":"ltr"}
+function polishButtons(){document.querySelectorAll("button").forEach(b=>{if(!b.getAttribute("type")&&!b.closest("form"))b.type="button"})}
+function protectDoubleSubmit(){document.addEventListener("click",e=>{let b=e.target.closest("button");if(!b||b.dataset.enfBusy==="1"||b.closest("#enfAuthV3"))return;if(/save|حفظ|confirm|تأكيد/i.test(b.textContent||"")){b.dataset.enfBusy="1";setTimeout(()=>delete b.dataset.enfBusy,450)}},true)}
+function escClose(){document.addEventListener("keydown",e=>{if(e.key!=="Escape")return;let open=[...document.querySelectorAll(".open")].filter(x=>getComputedStyle(x).position==="fixed");let x=open.at(-1);if(x&&!x.matches("#enfAuthV3"))x.classList.remove("open")})}
+function emptyStates(){document.querySelectorAll(".enf360-empty").forEach(x=>{if(x.dataset.polished)return;x.dataset.polished="1";let text=x.textContent.trim();x.classList.add("enf-empty-v2");x.innerHTML=`<i>—</i><b>${text||t("No records yet","لا توجد سجلات حتى الآن")}</b><small>${t("Add your first record when ready.","أضف أول سجل عندما تكون جاهزًا.")}</small>`})}
+function observe(){new MutationObserver(()=>{polishButtons();emptyStates()}).observe(document.body,{childList:true,subtree:true})}
+function init(){direction();polishButtons();protectDoubleSubmit();escClose();emptyStates();observe();window.addEventListener("online",()=>enfToast(t("Connection restored","تم استعادة الاتصال")));window.addEventListener("offline",()=>enfToast(t("You are offline — demo data remains local","لا يوجد اتصال — بيانات الديمو ما زالت محفوظة محليًا")))}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
+})();
 </script></body>
 </html>
