@@ -3715,5 +3715,91 @@ function boot(){fillFileSelect();wrapOpen();wrapSave()}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});else boot()
 })();
 </script>
+
+<style id="enforza-calendar-pro-css">
+#v2CalendarPage .v2cal{max-width:1500px;margin:auto}
+#v2CalendarPage .v2cal-top{align-items:center}
+.enf-cal-summary{display:grid;grid-template-columns:repeat(4,minmax(130px,1fr));gap:9px;margin:10px 0 12px}
+.enf-cal-stat{border:1px solid var(--line,#e7dfd6);background:var(--surface,#fff);border-radius:12px;padding:10px 12px}
+.enf-cal-stat small{display:block;color:var(--muted,#78818b);font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:.05em}
+.enf-cal-stat b{display:block;font-size:18px;margin-top:4px}
+.enf-cal-tools{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin:0 0 10px}
+.enf-cal-search,.enf-cal-filter{border:1px solid var(--line,#e7dfd6);background:var(--surface,#fff);color:inherit;border-radius:9px;padding:8px 10px;font-size:9px}
+.enf-cal-search{min-width:220px;flex:1}
+.enf-cal-today{border:1px solid var(--line,#e7dfd6);border-radius:9px;padding:8px 10px;background:var(--surface,#fff);font-size:9px;cursor:pointer}
+.enf-cal-today:hover{border-color:var(--bronze,#a66f37)}
+.enf-cal-overdue{color:#9d3434}
+@media(max-width:760px){.enf-cal-summary{grid-template-columns:repeat(2,1fr)}.enf-cal-search{min-width:100%}}
+</style>
+<script id="enforza-calendar-pro-js">
+(function(){
+"use strict";
+var filter={q:"",priority:"all",file:"all"};
+function arr(){return window.DATA&&Array.isArray(DATA.smartTasks)?DATA.smartTasks:[]}
+function today(){var d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function dateOf(x){return String(x.due||x.date||"").slice(0,10)}
+function active(x){return String(x.status||"").toLowerCase()!=="completed"}
+function filtered(){
+ return arr().filter(function(x){
+  var hay=[x.title,x.task,x.file,x.fileId,x.notes,x.type,x.priority].join(" ").toLowerCase();
+  if(filter.q&&hay.indexOf(filter.q)<0)return false;
+  if(filter.priority!=="all"&&String(x.priority||"Normal")!==filter.priority)return false;
+  if(filter.file!=="all"&&String(x.file||x.fileId||"")!==filter.file)return false;
+  return true
+ })
+}
+function ensureUI(){
+ var root=document.querySelector("#v2CalendarPage .v2cal");if(!root)return;
+ if(!document.getElementById("enfCalSummary")){
+  var summary=document.createElement("div");summary.id="enfCalSummary";summary.className="enf-cal-summary";
+  var top=root.querySelector(".v2cal-toolbar");if(top)top.insertAdjacentElement("afterend",summary);else root.prepend(summary)
+ }
+ if(!document.getElementById("enfCalTools")){
+  var tools=document.createElement("div");tools.id="enfCalTools";tools.className="enf-cal-tools";
+  tools.innerHTML='<input id="enfCalSearch" class="enf-cal-search" placeholder="Search tasks, file, notes...">'+
+  '<select id="enfCalPriority" class="enf-cal-filter"><option value="all">All priorities</option><option>Normal</option><option>High</option><option>Critical</option></select>'+
+  '<select id="enfCalFile" class="enf-cal-filter"><option value="all">All files</option></select>'+
+  '<button type="button" class="enf-cal-today" id="enfCalQuickToday">Today</button>';
+  document.getElementById("enfCalSummary").insertAdjacentElement("afterend",tools);
+  document.getElementById("enfCalSearch").addEventListener("input",function(){filter.q=this.value.trim().toLowerCase();refresh()});
+  document.getElementById("enfCalPriority").addEventListener("change",function(){filter.priority=this.value;refresh()});
+  document.getElementById("enfCalFile").addEventListener("change",function(){filter.file=this.value;refresh()});
+  document.getElementById("enfCalQuickToday").onclick=function(){if(typeof window.v2CalToday==="function")window.v2CalToday();refresh()}
+ }
+}
+function fillFiles(){
+ var sel=document.getElementById("enfCalFile");if(!sel)return;
+ var keep=sel.value,ids=[...new Set(arr().map(function(x){return String(x.file||x.fileId||"")}).filter(Boolean))];
+ sel.innerHTML='<option value="all">All files</option>'+ids.map(function(x){return '<option value="'+x.replace(/"/g,"&quot;")+'">'+x+'</option>'}).join("");
+ if([...sel.options].some(function(o){return o.value===keep}))sel.value=keep
+}
+function stats(){
+ var a=filtered(),td=today(),open=a.filter(active),todayN=open.filter(function(x){return dateOf(x)===td}).length;
+ var overdue=open.filter(function(x){var d=dateOf(x);return d&&d<td}).length;
+ var critical=open.filter(function(x){return String(x.priority||"")==="Critical"}).length;
+ var el=document.getElementById("enfCalSummary");if(!el)return;
+ el.innerHTML='<div class="enf-cal-stat"><small>Open Tasks</small><b>'+open.length+'</b></div>'+
+ '<div class="enf-cal-stat"><small>Today</small><b>'+todayN+'</b></div>'+
+ '<div class="enf-cal-stat"><small>Overdue</small><b class="enf-cal-overdue">'+overdue+'</b></div>'+
+ '<div class="enf-cal-stat"><small>Critical</small><b>'+critical+'</b></div>'
+}
+function decorate(){
+ var page=document.getElementById("v2CalendarPage");if(!page)return;
+ var allowed=new Set(filtered().map(function(x){return String(x.id||"")}));
+ page.querySelectorAll("[data-task-id]").forEach(function(el){
+   var id=String(el.dataset.taskId||"");
+   el.style.display=(allowed.size===0&&arr().length===0)||allowed.has(id)?"":"none"
+ })
+}
+function refresh(){ensureUI();fillFiles();stats();decorate()}
+window.enfCalendarProRefresh=refresh;
+function boot(){
+ ensureUI();refresh();
+ var page=document.getElementById("v2CalendarPage");
+ if(page)new MutationObserver(function(){stats();decorate()}).observe(page,{childList:true,subtree:true});
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});else boot();
+})();
+</script>
 </body>
 </html>
