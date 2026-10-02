@@ -3963,5 +3963,88 @@ function boot(){
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});else boot()
 })();
 </script>
+
+<style id="enforza-financial-file-engine-css">
+.enf-fin-balance{display:grid;grid-template-columns:repeat(4,minmax(120px,1fr));gap:8px;margin:8px 0 12px}
+.enf-fin-balance>div{border:1px solid var(--line,#e6ded5);background:var(--surface,#fff);border-radius:11px;padding:9px 10px}
+.enf-fin-balance small{display:block;color:var(--muted,#75808a);font-size:8px;font-weight:800;text-transform:uppercase}
+.enf-fin-balance b{display:block;font-size:15px;margin-top:4px}
+@media(max-width:720px){.enf-fin-balance{grid-template-columns:repeat(2,1fr)}}
+</style>
+<script id="enforza-financial-file-engine-js">
+(function(){
+"use strict";
+function A(n){if(!window.DATA)return[];if(!Array.isArray(DATA[n]))DATA[n]=[];return DATA[n]}
+function fid(f){return String(f?.id||f?.ref||f?.fileNo||"")}
+function file(id){return A("files").find(function(f){return fid(f)===String(id||"")})}
+function txFile(x){return String(x?.file||x?.fileId||x?.enforcementFile||"")}
+function n(v){return Number(v||0)||0}
+function sum(a){return a.reduce(function(t,x){return t+n(x.amount||x.value||x.total)},0)}
+function related(name,id){return A(name).filter(function(x){return txFile(x)===String(id||"")})}
+function calculate(id){
+ var f=file(id);if(!f)return null;
+ var claim=n(f.claimAmount||f.amount||f.originalAmount||f.outstanding||0);
+ var collections=sum(related("collections",id));
+ var expenses=sum(related("expenses",id));
+ var adjustments=sum(A("claims").filter(function(x){return txFile(x)===String(id)&&String(x.type||"").toLowerCase().includes("adjust")}));
+ var outstanding=Math.max(0,claim+adjustments-collections);
+ return {claim:claim,collections:collections,expenses:expenses,adjustments:adjustments,outstanding:outstanding}
+}
+window.enfFileFinancialSummary=calculate;
+function sync(id){
+ var f=file(id),z=calculate(id);if(!f||!z)return;
+ f.collected=z.collections;f.expenses=z.expenses;f.outstanding=z.outstanding;
+ if(typeof window.enfDemoSaveNow==="function")try{window.enfDemoSaveNow()}catch(e){}
+ if(typeof window.enfFile360CommandRefresh==="function")try{window.enfFile360CommandRefresh()}catch(e){}
+ if(typeof window.enfExecutiveDashboardRender==="function")try{window.enfExecutiveDashboardRender()}catch(e){}
+ if(typeof window.enfReportsV2Render==="function")try{window.enfReportsV2Render()}catch(e){}
+}
+window.enfSyncFileFinancials=sync;
+function selectedFile(){
+ var e=document.getElementById("enfFinFile");return e?e.value:""
+}
+function routeTransaction(){
+ var type=String(document.getElementById("enfFinType")?.value||"").toLowerCase();
+ var id=selectedFile(),amt=n(document.getElementById("enfFinAmount")?.value);
+ if(!id||!amt)return;
+ var common={id:"FIN-"+Date.now(),file:id,fileId:id,date:document.getElementById("enfFinDate")?.value||new Date().toISOString().slice(0,10),
+ amount:amt,method:document.getElementById("enfFinMethod")?.value||"",reference:document.getElementById("enfFinRef")?.value||"",
+ description:document.getElementById("enfFinNotes")?.value||"",notes:document.getElementById("enfFinNotes")?.value||""};
+ if(type.includes("collection"))A("collections").push({...common,type:"Collection"});
+ else if(type.includes("expense")||type.includes("fee"))A("expenses").push({...common,type:type.includes("fee")?"Fee":"Expense"});
+ else A("claims").push({...common,type:"Claim Adjustment"});
+ sync(id)
+}
+function wrapSave(){
+ var old=window.enfFinSave;if(typeof old!=="function"||old.__enfFileFinancial)return;
+ var w=function(){
+   var id=selectedFile(),before={
+     c:A("collections").length,e:A("expenses").length,q:A("claims").length
+   };
+   var r=old.apply(this,arguments);
+   setTimeout(function(){
+     /* If legacy save did not persist into the canonical arrays, route it once. */
+     if(A("collections").length===before.c&&A("expenses").length===before.e&&A("claims").length===before.q)routeTransaction();
+     else sync(id)
+   },0);
+   return r
+ };
+ w.__enfFileFinancial=true;window.enfFinSave=w
+}
+function preselect(){
+ var f=window.current360||window.enfCurrentFile360||window.currentFile360;
+ var id=f&&fid(f),sel=document.getElementById("enfFinFile");
+ if(id&&sel){sel.value=id;sel.dispatchEvent(new Event("change",{bubbles:true}))}
+}
+function wrapOpen(){
+ var old=window.enfOpenFinance;if(typeof old!=="function"||old.__enfFileFinancial)return;
+ var w=function(){var r=old.apply(this,arguments);setTimeout(preselect,0);return r};
+ w.__enfFileFinancial=true;window.enfOpenFinance=w
+}
+function syncAll(){A("files").forEach(function(f){sync(fid(f))})}
+function boot(){wrapSave();wrapOpen();setTimeout(syncAll,0)}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});else boot()
+})();
+</script>
 </body>
 </html>
