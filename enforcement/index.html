@@ -176,6 +176,19 @@ html[dir="rtl"] .cal-event{text-align:right;border-left:0;border-right:3px solid
  .mobile-command-dock{left:8px;right:8px;border-radius:20px}.main{padding-inline:9px!important}.mobile-action-grid,.mobile-more-grid{grid-template-columns:1fr 1fr}.grid4,.stask-kpis,.f360-kpis{grid-template-columns:1fr 1fr!important}
 }
 </style>
+
+<style id="enforza-mobile-smart-fab-hardening-v1">
+@media(max-width:768px){
+ .mcd-fab,.mcd-item,.mobile-action-grid button,.mobile-more-grid button{
+   touch-action:manipulation;
+   -webkit-tap-highlight-color:transparent;
+   user-select:none;
+ }
+ .mcd-fab:active{transform:translateY(-14px) scale(.94)}
+ .mobile-action-grid>button:active,.mobile-more-grid button:active{transform:scale(.98)}
+ .mcd-fab{z-index:2}
+}
+</style>
 </head><body><div class="app"><aside class="side" id="side"><div class="brand"><div class="brandmark">E</div><div><b>ENFORZA</b><small>PRIVATE ENFORCEMENT</small></div></div>
 <div class="group">WORKSPACE</div><div class="nav active" data-route="dashboard"><span class="ico">⌂</span>Command Center</div><div class="nav" data-route="files"><span class="ico">▤</span>Files</div><div class="nav" data-route="claims"><span class="ico">§</span>Financial Claims</div><div class="nav" data-route="calendar"><span class="ico">✓</span>Calendar</div><div class="nav" data-route="tasks"><span class="ico">◷</span>Smart Tasks</div>
 <div class="group">FINANCIAL</div><div class="nav" data-route="collections"><span class="ico">↙</span>Collections &amp; Settlements</div><div class="nav" data-route="expenses"><span class="ico">↗</span>Expenses</div><div class="nav" data-route="treasury"><span class="ico">▣</span>Banking &amp; Treasury</div>
@@ -602,8 +615,13 @@ function moneyForm(type,title,fid=''){
 function simpleForm(type,title,fields){if(!Array.isArray(DB[type])){toast('Unable to open this module');return}openModal(title,`<form id="simpleForm"><div class="formgrid">${fields.map(x=>x[0]==='file'?selectField(x[1],'file',options()):formField(x[1],x[0],x[2]||'text',x[3]||'')).join('')}</div><div style="margin-top:16px;text-align:right"><button class="btn primary">Save</button></div></form>`);let f=document.getElementById('simpleForm');if(!f)return;f.onsubmit=e=>{e.preventDefault();let o=Object.fromEntries(new FormData(e.target));if(o.file&&!DB.files.some(x=>x.id===o.file)){toast('Linked file was not found');return}o.id=id(type.slice(0,3).toUpperCase());o.created=now();DB[type].unshift(o);save('Added '+type+' record');closeModal();route(type);toast('Saved successfully')}}
 
 function mobileCurrentFileId(){
- let modal=document.querySelector('#modal [data-action="newTaskForFile"],#modal [data-action="newCalendarEventForFile"],#modal [data-action="addExecutionAction"]');
- return modal?.dataset?.id||'';
+ let explicit=document.querySelector('[data-mobile-file-id]');
+ if(explicit?.dataset?.mobileFileId)return explicit.dataset.mobileFileId;
+ let modal=document.querySelector('#modal [data-action="newTaskForFile"],#modal [data-action="newCalendarEventForFile"],#modal [data-action="addExecutionAction"],#modal [data-action="openFile"]');
+ if(modal?.dataset?.id)return modal.dataset.id;
+ let openFileButton=document.querySelector('.file360 [data-action="newTaskForFile"],.file360 [data-action="newCalendarEventForFile"],.file360 [data-action="addExecutionAction"],.file360 [data-action="openFile"]');
+ if(openFileButton?.dataset?.id)return openFileButton.dataset.id;
+ return '';
 }
 function mobileSheet(showId){
  document.querySelectorAll('.mobile-sheet-backdrop').forEach(x=>{x.classList.remove('show');x.setAttribute('aria-hidden','true')});
@@ -646,6 +664,8 @@ document.addEventListener('click',e=>{
  if(e.target.classList.contains('mobile-sheet-backdrop'))mobileSheet('');
  let r=e.target.closest('.mobile-command-dock [data-route],.mobile-more-grid [data-route]');
  if(r)mobileSheet('');
+ let qa=e.target.closest('#mobileSmartActionGrid [data-action]');
+ if(qa)mobileSheet('');
 },true);
 
 function action(a,i){({mobileSmartActions:()=>mobileSmartActions(),closeMobileSheet:()=>mobileSheet(''),mobileMore:()=>mobileSheet('mobileMoreSheet'),newFile,openFile:()=>openFile(i),editFile:()=>editFile(i),addExecutionAction:()=>executionActionForm(i),newTask:()=>taskForm('',current==='calendar'?'calendar':'tasks'),newTaskForFile:()=>taskForm(i,'tasks'),completeTask:()=>completeTaskForm(i),openTask:()=>openTask(i),editTask:()=>editTask(i),taskViewAll:()=>{TASKVIEW='all';render()},taskViewToday:()=>{TASKVIEW='today';render()},taskViewCritical:()=>{TASKVIEW='critical';render()},taskViewCompleted:()=>{TASKVIEW='completed';render()},prevMonth:()=>{CAL.setMonth(CAL.getMonth()-1);render()},nextMonth:()=>{CAL.setMonth(CAL.getMonth()+1);render()},calendarToday:()=>{CAL=new Date();render()},calendarViewMonth:()=>{CALVIEW='month';render()},calendarViewWeek:()=>{CALVIEW='week';render()},calendarViewDay:()=>{CALVIEW='day';render()},calendarViewAgenda:()=>{CALVIEW='agenda';render()},newCalendarEvent:()=>calendarEventForm(),newCalendarEventForFile:()=>calendarEventForm('',i),calendarDay:()=>{CAL=new Date(i+'T12:00:00');calendarEventForm(i)},openCalendarEvent:()=>openCalendarEvent(i),completeCalendarEvent:()=>{let x=DB.calendarEvents.find(x=>x.id===i);if(x){x.status='Completed';if(save('Completed calendar event '+i)){closeModal();route('calendar');toast('Calendar event completed')}}},deleteCalendarEvent:()=>{DB.calendarEvents=DB.calendarEvents.filter(x=>x.id!==i);if(save('Deleted calendar event '+i)){closeModal();route('calendar');toast('Calendar event deleted')}}, newCollection:()=>moneyForm('collections','Add Collection'),newCollectionForFile:()=>moneyForm('collections','Add Collection',i),newExpense:()=>moneyForm('expenses','Add Expense'),newSettlement:()=>moneyForm('collections','Add Collection / Settlement'),newTreasury:()=>moneyForm('treasury','Add Treasury Transaction'),newMinute:()=>simpleForm('minutes','New Minute',[['file','Linked File'],['date','Date','date','required'],['subject','Subject'],['notes','Notes']]),newEvidence:()=>simpleForm('evidence','Add Field Evidence',[['file','Linked File'],['date','Date','date','required'],['type','Evidence Type'],['description','Description']]),newDocument:()=>simpleForm('documents','Add Document',[['file','Linked File'],['date','Date','date','required'],['type','Document Type'],['name','Document Name']]),deleteFile:()=>{if(confirm('Delete this file and its linked records?')){DB.files=DB.files.filter(x=>x.id!==i);DB.tasks=DB.tasks.filter(x=>x.file!==i);DB.collections=DB.collections.filter(x=>x.file!==i);save('Deleted file '+i);closeModal();route('files')}}}[a]||(()=>{}))()}
