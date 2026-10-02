@@ -4046,5 +4046,86 @@ function boot(){wrapSave();wrapOpen();setTimeout(syncAll,0)}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});else boot()
 })();
 </script>
+
+<style id="enforza-client-money-css">
+.enf-cm-grid{display:grid;grid-template-columns:repeat(5,minmax(115px,1fr));gap:8px;margin-top:10px}
+.enf-cm-card{border:1px solid var(--line,#e6ded5);background:var(--surface,#fff);border-radius:11px;padding:9px 10px}
+.enf-cm-card small{display:block;color:var(--muted,#75808a);font-size:8px;font-weight:800;text-transform:uppercase}
+.enf-cm-card b{display:block;font-size:14px;margin-top:4px}.enf-cm-due b{font-size:17px}
+.enf-cm-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.enf-cm-actions button{border:1px solid var(--line,#e6ded5);background:var(--surface,#fff);color:inherit;border-radius:8px;padding:7px 9px;font-size:8px;cursor:pointer}
+.enf-cm-actions button:hover{border-color:var(--bronze,#a66f37)}
+@media(max-width:900px){.enf-cm-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:520px){.enf-cm-grid{grid-template-columns:1fr}}
+</style>
+<script id="enforza-client-money-js">
+(function(){
+"use strict";
+function A(n){if(!window.DATA)return[];if(!Array.isArray(DATA[n]))DATA[n]=[];return DATA[n]}
+function id(f){return String(f?.id||f?.ref||f?.fileNo||"")}
+function txid(x){return String(x?.file||x?.fileId||x?.enforcementFile||"")}
+function num(v){return Number(v||0)||0}
+function sum(a){return a.reduce(function(t,x){return t+num(x.amount||x.value||x.total)},0)}
+function related(n,fid){return A(n).filter(function(x){return txid(x)===String(fid)})}
+function fees(fid){
+ return sum(A("claims").filter(function(x){
+  var type=String(x.type||x.category||"").toLowerCase();
+  return txid(x)===String(fid)&&(type.includes("fee")||type.includes("professional"));
+ }))
+}
+function transfers(fid){
+ return sum(A("clientTransfers").filter(function(x){return txid(x)===String(fid)}))
+}
+function calc(fid){
+ var collections=sum(related("collections",fid));
+ var expenses=sum(related("expenses",fid));
+ var professionalFees=fees(fid);
+ var netClient=Math.max(0,collections-expenses-professionalFees);
+ var transferred=transfers(fid);
+ return {collections:collections,expenses:expenses,fees:professionalFees,netClient:netClient,transferred:transferred,due:Math.max(0,netClient-transferred)}
+}
+window.enfClientMoneySummary=calc;
+function money(v){return "BHD "+num(v).toFixed(3)}
+function current(){
+ var f=window.current360||window.enfCurrentFile360||window.currentFile360;
+ if(f&&typeof f==="object")return f;
+ return null
+}
+function render(){
+ var f=current(),host=document.getElementById("enf360Command");if(!f||!host)return;
+ var old=document.getElementById("enfClientMoney");if(old)old.remove();
+ var z=calc(id(f)),box=document.createElement("div");box.id="enfClientMoney";
+ box.innerHTML='<div class="enf-cm-grid">'+
+ '<div class="enf-cm-card"><small>Total Collected</small><b>'+money(z.collections)+'</b></div>'+
+ '<div class="enf-cm-card"><small>Execution Expenses</small><b>'+money(z.expenses)+'</b></div>'+
+ '<div class="enf-cm-card"><small>Professional Fees</small><b>'+money(z.fees)+'</b></div>'+
+ '<div class="enf-cm-card"><small>Transferred to Client</small><b>'+money(z.transferred)+'</b></div>'+
+ '<div class="enf-cm-card enf-cm-due"><small>Due to Client</small><b>'+money(z.due)+'</b></div></div>'+
+ '<div class="enf-cm-actions"><button type="button" onclick="enfClientTransferOpen()">＋ Transfer to Client</button></div>';
+ host.appendChild(box)
+}
+window.enfClientMoneyRefresh=render;
+window.enfClientTransferOpen=function(){
+ var f=current();if(!f)return;
+ var z=calc(id(f)),raw=prompt("Amount to transfer to client (BHD)",z.due.toFixed(3));
+ if(raw===null)return;
+ var amount=num(raw);if(amount<=0||amount>z.due){alert("Transfer amount must be greater than zero and not exceed the amount due to client.");return}
+ var ref=prompt("Transfer reference / note","")||"";
+ A("clientTransfers").push({id:"CTR-"+Date.now(),file:id(f),fileId:id(f),date:new Date().toISOString().slice(0,10),amount:amount,reference:ref,status:"Posted"});
+ if(typeof window.enfDemoSaveNow==="function")window.enfDemoSaveNow();
+ if(typeof window.enfSyncFileFinancials==="function")window.enfSyncFileFinancials(id(f));
+ render()
+};
+function boot(){
+ if(!window.DATA)return;
+ A("clientTransfers");
+ var old=window.enfFile360CommandRefresh;
+ if(typeof old==="function"&&!old.__enfCM){
+  var w=function(){var r=old.apply(this,arguments);setTimeout(render,0);return r};w.__enfCM=true;window.enfFile360CommandRefresh=w
+ }
+ setTimeout(render,0)
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});else boot()
+})();
+</script>
 </body>
 </html>
