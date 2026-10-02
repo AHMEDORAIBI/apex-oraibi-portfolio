@@ -189,6 +189,14 @@ html[dir="rtl"] .cal-event{text-align:right;border-left:0;border-right:3px solid
  .mcd-fab{z-index:2}
 }
 </style>
+
+<style id="enforza-mobile-plus-direct-v2">
+@media(max-width:768px){
+ #mobileSmartFab{pointer-events:auto!important;cursor:pointer!important}
+ #mobileActionSheet.show{display:flex!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important}
+ #mobileActionSheet .mobile-action-sheet{position:relative;z-index:9201}
+}
+</style>
 </head><body><div class="app"><aside class="side" id="side"><div class="brand"><div class="brandmark">E</div><div><b>ENFORZA</b><small>PRIVATE ENFORCEMENT</small></div></div>
 <div class="group">WORKSPACE</div><div class="nav active" data-route="dashboard"><span class="ico">⌂</span>Command Center</div><div class="nav" data-route="files"><span class="ico">▤</span>Files</div><div class="nav" data-route="claims"><span class="ico">§</span>Financial Claims</div><div class="nav" data-route="calendar"><span class="ico">✓</span>Calendar</div><div class="nav" data-route="tasks"><span class="ico">◷</span>Smart Tasks</div>
 <div class="group">FINANCIAL</div><div class="nav" data-route="collections"><span class="ico">↙</span>Collections &amp; Settlements</div><div class="nav" data-route="expenses"><span class="ico">↗</span>Expenses</div><div class="nav" data-route="treasury"><span class="ico">▣</span>Banking &amp; Treasury</div>
@@ -628,7 +636,7 @@ function mobileSheet(showId){
  if(showId){let x=document.getElementById(showId);if(x){x.classList.add('show');x.setAttribute('aria-hidden','false')}}
 }
 function mobileSmartActions(){
- let fid=mobileCurrentFileId(),items=[];
+ let fid=mobileCurrentFileId(),page=(typeof current==='string'?current:'dashboard'),items=[];
  if(fid){
   items=[
    ['addExecutionAction','Execution Action','＋','Add a new enforcement action'],
@@ -636,18 +644,25 @@ function mobileSmartActions(){
    ['newCollectionForFile','Collection / Settlement','◎','Record a financial movement'],
    ['newCalendarEventForFile','Appointment','□','Add to calendar']
   ];
- }else if(current==='calendar'){
+ }else if(page==='calendar'){
   items=[['newCalendarEvent','New Appointment','□','Add a calendar event'],['newTask','New Task','✓','Create a follow-up']];
- }else if(current==='tasks'){
+ }else if(page==='tasks'){
   items=[['newTask','New Task','✓','Create a linked smart task'],['newCalendarEvent','New Appointment','□','Add to calendar']];
- }else if(current==='files'){
+ }else if(page==='files'){
   items=[['newFile','New Enforcement File','▣','Create a new file'],['newTask','New Task','✓','Create a follow-up'],['newCalendarEvent','New Appointment','□','Add to calendar']];
  }else{
   items=[['newFile','New Enforcement File','▣','Create a new file'],['newTask','New Task','✓','Create a follow-up'],['newCalendarEvent','New Appointment','□','Add to calendar'],['newCollection','New Collection','◎','Record a collection']];
  }
- let grid=document.getElementById('mobileSmartActionGrid');if(!grid)return;
- grid.innerHTML=items.map(x=>`<button type="button" data-action="${x[0]}" ${fid?`data-id="${fid}"`:''}><span>${x[2]}</span><div><b>${x[1]}</b><small>${x[3]}</small></div></button>`).join('');
- mobileSheet('mobileActionSheet');
+ let grid=document.getElementById('mobileSmartActionGrid'),sheet=document.getElementById('mobileActionSheet');
+ if(!grid||!sheet)throw new Error('Mobile Quick Actions DOM is unavailable');
+ grid.innerHTML=items.map(x=>`<button type="button" onclick="mobileRunQuickAction(event,'${x[0]}','${fid||''}')"><span>${x[2]}</span><div><b>${x[1]}</b><small>${x[3]}</small></div></button>`).join('');
+ sheet.classList.add('show');sheet.setAttribute('aria-hidden','false');
+}
+function mobileRunQuickAction(e,a,i){
+ if(e){e.preventDefault();e.stopPropagation();}
+ mobileSheet('');
+ setTimeout(()=>action(a,i||''),0);
+ return false;
 }
 function mobileUpdateDock(){
  if(innerWidth>768)return;
@@ -671,21 +686,24 @@ document.addEventListener('click',e=>{
 },true);
 
 
-function bindMobileSmartFab(){
- let fab=document.querySelector('#mobileCommandDock .mcd-fab');
- if(!fab||fab.dataset.bound==='1')return;
- fab.dataset.bound='1';
- fab.addEventListener('click',function(e){
-   e.preventDefault();
-   e.stopPropagation();
-   mobileSmartActions();
- },{passive:false});
- mobileUpdateDock();
-}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bindMobileSmartFab,{once:true});
-else setTimeout(bindMobileSmartFab,0);
 
-function action(a,i){({mobileSmartActions:()=>mobileSmartActions(),closeMobileSheet:()=>mobileSheet(''),mobileMore:()=>mobileSheet('mobileMoreSheet'),newFile,openFile:()=>openFile(i),editFile:()=>editFile(i),addExecutionAction:()=>executionActionForm(i),newTask:()=>taskForm('',current==='calendar'?'calendar':'tasks'),newTaskForFile:()=>taskForm(i,'tasks'),completeTask:()=>completeTaskForm(i),openTask:()=>openTask(i),editTask:()=>editTask(i),taskViewAll:()=>{TASKVIEW='all';render()},taskViewToday:()=>{TASKVIEW='today';render()},taskViewCritical:()=>{TASKVIEW='critical';render()},taskViewCompleted:()=>{TASKVIEW='completed';render()},prevMonth:()=>{CAL.setMonth(CAL.getMonth()-1);render()},nextMonth:()=>{CAL.setMonth(CAL.getMonth()+1);render()},calendarToday:()=>{CAL=new Date();render()},calendarViewMonth:()=>{CALVIEW='month';render()},calendarViewWeek:()=>{CALVIEW='week';render()},calendarViewDay:()=>{CALVIEW='day';render()},calendarViewAgenda:()=>{CALVIEW='agenda';render()},newCalendarEvent:()=>calendarEventForm(),newCalendarEventForFile:()=>calendarEventForm('',i),calendarDay:()=>{CAL=new Date(i+'T12:00:00');calendarEventForm(i)},openCalendarEvent:()=>openCalendarEvent(i),completeCalendarEvent:()=>{let x=DB.calendarEvents.find(x=>x.id===i);if(x){x.status='Completed';if(save('Completed calendar event '+i)){closeModal();route('calendar');toast('Calendar event completed')}}},deleteCalendarEvent:()=>{DB.calendarEvents=DB.calendarEvents.filter(x=>x.id!==i);if(save('Deleted calendar event '+i)){closeModal();route('calendar');toast('Calendar event deleted')}}, newCollection:()=>moneyForm('collections','Add Collection'),newCollectionForFile:()=>moneyForm('collections','Add Collection',i),newExpense:()=>moneyForm('expenses','Add Expense'),newSettlement:()=>moneyForm('collections','Add Collection / Settlement'),newTreasury:()=>moneyForm('treasury','Add Treasury Transaction'),newMinute:()=>simpleForm('minutes','New Minute',[['file','Linked File'],['date','Date','date','required'],['subject','Subject'],['notes','Notes']]),newEvidence:()=>simpleForm('evidence','Add Field Evidence',[['file','Linked File'],['date','Date','date','required'],['type','Evidence Type'],['description','Description']]),newDocument:()=>simpleForm('documents','Add Document',[['file','Linked File'],['date','Date','date','required'],['type','Document Type'],['name','Document Name']]),deleteFile:()=>{if(confirm('Delete this file and its linked records?')){DB.files=DB.files.filter(x=>x.id!==i);DB.tasks=DB.tasks.filter(x=>x.file!==i);DB.collections=DB.collections.filter(x=>x.file!==i);save('Deleted file '+i);closeModal();route('files')}}}[a]||(()=>{}))()}
+window.ENFORZA_MOBILE_PLUS=function(e){
+ try{
+   if(e){e.preventDefault();e.stopPropagation();}
+   mobileSmartActions();
+ }catch(err){
+   console.error('[ENFORZA MOBILE PLUS]',err);
+   let sheet=document.getElementById('mobileActionSheet'),
+       grid=document.getElementById('mobileSmartActionGrid');
+   if(grid)grid.innerHTML=`<button type="button" onclick="newFile()"><span>▣</span><div><b>New Enforcement File</b><small>Create a new file</small></div></button>
+   <button type="button" onclick="taskForm('','tasks')"><span>✓</span><div><b>New Task</b><small>Create a follow-up</small></div></button>
+   <button type="button" onclick="calendarEventForm()"><span>□</span><div><b>New Appointment</b><small>Add to calendar</small></div></button>`;
+   if(sheet){sheet.classList.add('show');sheet.setAttribute('aria-hidden','false');}
+ }
+ return false;
+};
+
+function action(a,i){({closeMobileSheet:()=>mobileSheet(''),mobileMore:()=>mobileSheet('mobileMoreSheet'),newFile,openFile:()=>openFile(i),editFile:()=>editFile(i),addExecutionAction:()=>executionActionForm(i),newTask:()=>taskForm('',current==='calendar'?'calendar':'tasks'),newTaskForFile:()=>taskForm(i,'tasks'),completeTask:()=>completeTaskForm(i),openTask:()=>openTask(i),editTask:()=>editTask(i),taskViewAll:()=>{TASKVIEW='all';render()},taskViewToday:()=>{TASKVIEW='today';render()},taskViewCritical:()=>{TASKVIEW='critical';render()},taskViewCompleted:()=>{TASKVIEW='completed';render()},prevMonth:()=>{CAL.setMonth(CAL.getMonth()-1);render()},nextMonth:()=>{CAL.setMonth(CAL.getMonth()+1);render()},calendarToday:()=>{CAL=new Date();render()},calendarViewMonth:()=>{CALVIEW='month';render()},calendarViewWeek:()=>{CALVIEW='week';render()},calendarViewDay:()=>{CALVIEW='day';render()},calendarViewAgenda:()=>{CALVIEW='agenda';render()},newCalendarEvent:()=>calendarEventForm(),newCalendarEventForFile:()=>calendarEventForm('',i),calendarDay:()=>{CAL=new Date(i+'T12:00:00');calendarEventForm(i)},openCalendarEvent:()=>openCalendarEvent(i),completeCalendarEvent:()=>{let x=DB.calendarEvents.find(x=>x.id===i);if(x){x.status='Completed';if(save('Completed calendar event '+i)){closeModal();route('calendar');toast('Calendar event completed')}}},deleteCalendarEvent:()=>{DB.calendarEvents=DB.calendarEvents.filter(x=>x.id!==i);if(save('Deleted calendar event '+i)){closeModal();route('calendar');toast('Calendar event deleted')}}, newCollection:()=>moneyForm('collections','Add Collection'),newCollectionForFile:()=>moneyForm('collections','Add Collection',i),newExpense:()=>moneyForm('expenses','Add Expense'),newSettlement:()=>moneyForm('collections','Add Collection / Settlement'),newTreasury:()=>moneyForm('treasury','Add Treasury Transaction'),newMinute:()=>simpleForm('minutes','New Minute',[['file','Linked File'],['date','Date','date','required'],['subject','Subject'],['notes','Notes']]),newEvidence:()=>simpleForm('evidence','Add Field Evidence',[['file','Linked File'],['date','Date','date','required'],['type','Evidence Type'],['description','Description']]),newDocument:()=>simpleForm('documents','Add Document',[['file','Linked File'],['date','Date','date','required'],['type','Document Type'],['name','Document Name']]),deleteFile:()=>{if(confirm('Delete this file and its linked records?')){DB.files=DB.files.filter(x=>x.id!==i);DB.tasks=DB.tasks.filter(x=>x.file!==i);DB.collections=DB.collections.filter(x=>x.file!==i);save('Deleted file '+i);closeModal();route('files')}}}[a]||(()=>{}))()}
 document.getElementById('globalSearch').addEventListener('keydown',e=>{if(e.key==='Enter'){let q=e.target.value.trim().toLowerCase();if(!q)return;route('files');setTimeout(()=>{let el=document.getElementById('fileSearch');if(el){el.value=q;filterFiles(q)}},0)}});
 function voice(){let SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){toast('Voice recognition is not supported in this browser');return}let r=new SR();r.lang='en-US';r.interimResults=false;r.onresult=e=>{let t=e.results[0][0].transcript.toLowerCase();if(t.includes('new file')||t.includes('create file'))newFile();else if(t.includes('task'))taskForm();else if(t.includes('calendar'))route('calendar');else if(t.includes('files'))route('files');else toast('Voice command not recognized')};r.onerror=()=>toast('Voice command could not be completed');r.start();toast('Listening...')}document.getElementById('voiceBtn').onclick=voice;
 window.addEventListener('error',e=>console.error('[ENFORZA RUNTIME]',e.error||e.message));window.addEventListener('unhandledrejection',e=>console.error('[ENFORZA PROMISE]',e.reason));
@@ -825,7 +843,7 @@ observer.observe(document.documentElement,{childList:true,subtree:true});
 <div id="mobileCommandDock" class="mobile-command-dock" aria-label="Mobile command dock">
   <button class="mcd-item" data-route="dashboard" aria-label="Home"><span class="mcd-icon">⌂</span><small>Home</small></button>
   <button class="mcd-item" data-route="files" aria-label="Files"><span class="mcd-icon">▣</span><small>Files</small></button>
-  <button class="mcd-fab" data-action="mobileSmartActions" aria-label="Quick actions"><span>＋</span></button>
+  <button class="mcd-fab" id="mobileSmartFab" type="button" aria-label="Quick actions" onclick="window.ENFORZA_MOBILE_PLUS(event)"><span>＋</span></button>
   <button class="mcd-item mcd-calendar" data-route="calendar" aria-label="Calendar"><span class="mcd-icon">□</span><small>Calendar</small><b id="mobileCalendarBadge" class="mcd-badge"></b></button>
   <button class="mcd-item mcd-tasks" data-route="tasks" aria-label="Tasks"><span class="mcd-icon">✓</span><small>Tasks</small><b id="mobileTaskBadge" class="mcd-badge"></b></button>
 </div>
