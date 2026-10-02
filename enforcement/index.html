@@ -4176,86 +4176,75 @@ window.enfAiComingSoon=function(){
 <style id="enforza-ai-coming-soon-css">
 .nav-item[data-page="aiInsights"] .future-tag{margin-inline-start:auto;font-size:7px;font-weight:900;letter-spacing:.06em;opacity:.75}
 </style>
-<script id="enforza-single-router-08-js">
+
+
+<script id="enforza-single-router-09-js">
 (function(){
 "use strict";
-
-function allPages(){
- return Array.from(document.querySelectorAll(".page"));
+function byId(id){return document.getElementById(id)}
+function hideAll(){
+ document.querySelectorAll(".page").forEach(function(p){p.classList.add("hidden");p.style.display="none"});
 }
-function showPage(el){
- allPages().forEach(function(p){p.classList.add("hidden");p.style.display="none"});
- if(el){el.classList.remove("hidden");el.style.display="block"}
+function show(id){
+ var p=byId(id);if(!p){console.error("[ROUTER] Missing page:",id);return false}
+ hideAll();p.classList.remove("hidden");p.style.display="block";window.scrollTo(0,0);return true
 }
-function setActive(key){
- document.querySelectorAll(".nav-item[data-page]").forEach(function(n){
-   n.classList.toggle("active",n.dataset.page===key);
- });
+function active(key){
+ document.querySelectorAll(".nav-item[data-page]").forEach(function(n){n.classList.toggle("active",n.dataset.page===key)})
 }
-function filesPage(){
- return document.getElementById("filesPage") ||
-        document.querySelector('.page[data-page="files"]') ||
-        document.getElementById("genericPage");
-}
-function calendarPage(){
- return document.getElementById("v2CalendarPage") ||
-        document.querySelector('.page[data-page="calendar"]');
+function generic(key){
+ window.currentModule=key;
+ if(!show("genericListPage"))return false;
+ if(typeof window.loadGeneric==="function")window.loadGeneric(key);
+ active(key);return false
 }
 function route(key){
  try{
-   if(key==="files"){
-     window.currentModule="files";
-     var fp=filesPage(); showPage(fp); setActive("files");
-     if(typeof window.loadGeneric==="function")window.loadGeneric("files");
-     if(typeof window.renderGenericTable==="function")window.renderGenericTable();
-     return false;
-   }
-   if(key==="tasks" || key==="calendar"){
-     var cp=calendarPage(); showPage(cp); setActive("tasks");
-     if(typeof window.renderMonth==="function")window.renderMonth();
-     if(typeof window.enfCalendarProRefresh==="function")window.enfCalendarProRefresh();
-     return false;
-   }
-   if(key==="aiInsights"){
-     if(typeof window.enfAiComingSoon==="function")window.enfAiComingSoon();
-     return false;
-   }
-   /* Core pages keep their existing renderer, but navigation itself is owned here. */
-   if(typeof window.openPage==="function"){
-     window.openPage(key);
-     setActive(key);
-     return false;
-   }
- }catch(err){console.error("[ENFORZA ROUTER]",key,err)}
- return false;
+  if(key==="dashboard"){show("dashboardPage");active(key);if(typeof window.renderDashboard==="function")window.renderDashboard();return false}
+  if(["files","parties","claims","tasks","collections","expenses","settlements","treasury"].includes(key))return generic(key);
+  if(key==="smarttasks"){show("smarttasksPage");active(key);if(typeof window.renderSmartTasks==="function")window.renderSmartTasks();return false}
+  if(key==="minutes"){show("minutesPage");active(key);if(typeof window.renderMinutes==="function")window.renderMinutes();return false}
+  if(key==="evidence"){show("evidencePage");active(key);if(typeof window.renderEvidence==="function")window.renderEvidence();return false}
+  if(key==="documents"){show("documentsPage");active(key);if(typeof window.renderDocuments==="function")window.renderDocuments();return false}
+  if(key==="reports"){show("reportsPage");active(key);if(typeof window.showReport==="function")window.showReport("executive");return false}
+  if(key==="audit"){show("auditPage");active(key);if(typeof window.renderAudit==="function")window.renderAudit();return false}
+  if(key==="users"){show("usersPage");active(key);if(typeof window.renderUsers==="function")window.renderUsers();return false}
+  if(key==="settings"){show("settingsPage");active(key);return false}
+  if(key==="presentation"){show("presentationPage");active(key);return false}
+  if(key==="creditorPortal"){show("creditorPortalPage");active(key);return false}
+  if(key==="actionsCenter"){show("actionsCenterPage");active(key);return false}
+  if(key==="followupBoard"){show("followupBoardPage");active(key);return false}
+  if(key==="aiInsights"){if(typeof window.enfAiComingSoon==="function")window.enfAiComingSoon();return false}
+  console.warn("[ROUTER] Unmapped:",key);return false
+ }catch(e){console.error("[ROUTER]",key,e);return false}
+}
+function calendar(){
+ try{
+  if(!show("v2CalendarPage"))return false;active("tasks");
+  if(typeof window.renderMonth==="function")window.renderMonth();
+  if(typeof window.enfCalendarProRefresh==="function")window.enfCalendarProRefresh();
+ }catch(e){console.error("[CALENDAR]",e)}
+ return false
 }
 window.enfRoute=route;
+window.enfOpenCalendar=calendar;
 window.enfOpenFiles=function(){return route("files")};
-window.enfOpenCalendar=function(){return route("tasks")};
 
 document.addEventListener("click",function(e){
  var nav=e.target.closest(".nav-item[data-page]");
- if(nav){
-   e.preventDefault(); e.stopImmediatePropagation();
-   route(nav.dataset.page); return;
- }
- var a=e.target.closest('a[href="#"],a[href=""]');
- if(a){e.preventDefault();e.stopImmediatePropagation()}
+ if(!nav)return;
+ e.preventDefault();e.stopImmediatePropagation();
+ if(nav.dataset.page==="tasks")calendar(); else route(nav.dataset.page);
 },true);
 
-/* UI buttons are never implicit submitters. */
-document.querySelectorAll("button:not([type])").forEach(function(b){b.type="button"});
-new MutationObserver(function(ms){
- ms.forEach(function(m){m.addedNodes.forEach(function(n){
-  if(n.nodeType!==1)return;
-  if(n.matches&&n.matches("button:not([type])"))n.type="button";
-  if(n.querySelectorAll)n.querySelectorAll("button:not([type])").forEach(function(b){b.type="button"});
- })})
-}).observe(document.documentElement,{childList:true,subtree:true});
-
-/* Internal forms must not reload this single-page interface. */
-document.addEventListener("submit",function(e){
- if(e.target && e.target.closest(".app")){e.preventDefault();e.stopImmediatePropagation()}
+/* top dashboard calendar buttons/links */
+document.addEventListener("click",function(e){
+ var el=e.target.closest("button,a");
+ if(!el)return;
+ var tx=(el.textContent||"").trim().toLowerCase();
+ if(tx==="open calendar"||tx==="view calendar →"||tx==="view calendar"){
+   e.preventDefault();e.stopImmediatePropagation();calendar();
+ }
 },true);
 })();
 </script>
