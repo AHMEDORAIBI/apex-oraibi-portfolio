@@ -1251,10 +1251,26 @@ function formatVal(k,v){if(["amount","claim","collected","paid","balance","outst
 function titleCase(s){return s.replace(/([A-Z])/g," $1").replace(/^./,c=>c.toUpperCase())}
 function openTab(tab,btn){document.querySelectorAll(".tab-panel").forEach(x=>x.classList.remove("active"));document.querySelectorAll(".tab-btn").forEach(x=>x.classList.remove("active"));document.getElementById("tab-"+tab).classList.add("active");if(btn)btn.classList.add("active")}
 function renderDashboard(){
- const p=DATA.files.slice(0,3);document.getElementById("priorityFiles").innerHTML=p.map(r=>`<tr><td><button class="link-btn" onclick="openDetail('files','${r.id}')">${r.id}</button></td><td>${r.creditor}</td><td>${r.debtor}</td><td>${money(r.claim)}</td><td>${money(r.claim-r.collected)}</td><td>${r.next}</td><td><span class="badge ${badgeClass(r.status)}">${r.status}</span></td></tr>`).join("");
- document.getElementById("upcomingActions").innerHTML=DATA.tasks.slice(0,3).map(x=>`<div class="list-row"><div class="list-left"><div class="list-icon">✓</div><div><strong>${x.title}</strong><span>${x.file} · ${x.due}</span></div></div><span class="badge ${x.priority==="High"?"escalated":"pending"}">${x.priority}</span></div>`).join("");
- document.getElementById("recentFinancial").innerHTML=[...DATA.collections.slice(0,2).map(x=>({title:"Collection Received",sub:x.id+" · "+x.debtor,amt:money(x.amount),icon:"↙"})),...DATA.expenses.slice(0,1).map(x=>({title:"Expense Recorded",sub:x.id+" · "+x.category,amt:money(x.amount),icon:"↗"}))].map(x=>`<div class="list-row"><div class="list-left"><div class="list-icon">${x.icon}</div><div><strong>${x.title}</strong><span>${x.sub}</span></div></div><strong>${x.amt}</strong></div>`).join("");
- let months=["Mar","Apr","May","Jun","Jul","Aug"],claims=[58,66,72,69,83,91],cols=[28,34,38,43,48,57];document.getElementById("barChart").innerHTML=months.map((m,i)=>`<div style="flex:1;text-align:center"><div style="height:175px;display:flex;align-items:flex-end;justify-content:center;gap:6px"><div style="width:18px;height:${claims[i]}%;background:var(--navy);border-radius:3px 3px 0 0"></div><div style="width:18px;height:${cols[i]}%;background:var(--bronze);border-radius:3px 3px 0 0"></div></div><div style="font-size:8px;color:var(--muted);margin-top:8px">${m}</div></div>`).join("")
+ /* Phase 10 replaces the legacy dashboard DOM. Never write into removed legacy nodes. */
+ const page=document.getElementById("dashboardPage");
+ if(page && page.querySelector(".v2-command")){
+   if(typeof window.v210Refresh==="function")window.v210Refresh();
+   return;
+ }
+ const priority=document.getElementById("priorityFiles");
+ const upcoming=document.getElementById("upcomingActions");
+ const recent=document.getElementById("recentFinancial");
+ const chart=document.getElementById("barChart");
+ if(priority){
+   const p=DATA.files.slice(0,3);
+   priority.innerHTML=p.map(r=>`<tr><td><button class="link-btn" onclick="openDetail('files','${r.id}')">${r.id}</button></td><td>${r.creditor}</td><td>${r.debtor}</td><td>${money(r.claim)}</td><td>${money(r.claim-r.collected)}</td><td>${r.next}</td><td><span class="badge ${badgeClass(r.status)}">${r.status}</span></td></tr>`).join("");
+ }
+ if(upcoming)upcoming.innerHTML=DATA.tasks.slice(0,3).map(x=>`<div class="list-row"><div class="list-left"><div class="list-icon">✓</div><div><strong>${x.title}</strong><span>${x.file} · ${x.due}</span></div></div><span class="badge ${x.priority==="High"?"escalated":"pending"}">${x.priority}</span></div>`).join("");
+ if(recent)recent.innerHTML=[...DATA.collections.slice(0,2).map(x=>({title:"Collection Received",sub:x.id+" · "+x.debtor,amt:money(x.amount),icon:"↙"})),...DATA.expenses.slice(0,1).map(x=>({title:"Expense Recorded",sub:x.id+" · "+x.category,amt:money(x.amount),icon:"↗"}))].map(x=>`<div class="list-row"><div class="list-left"><div class="list-icon">${x.icon}</div><div><strong>${x.title}</strong><span>${x.sub}</span></div></div><strong>${x.amt}</strong></div>`).join("");
+ if(chart){
+   let months=["Mar","Apr","May","Jun","Jul","Aug"],claims=[58,66,72,69,83,91],cols=[28,34,38,43,48,57];
+   chart.innerHTML=months.map((m,i)=>`<div style="flex:1;text-align:center"><div style="height:175px;display:flex;align-items:flex-end;justify-content:center;gap:6px"><div style="width:18px;height:${claims[i]}%;background:var(--navy);border-radius:3px 3px 0 0"></div><div style="width:18px;height:${cols[i]}%;background:var(--bronze);border-radius:3px 3px 0 0"></div></div><div style="font-size:8px;color:var(--muted);margin-top:8px">${m}</div></div>`).join("");
+ }
 }
 function renderUsers(){document.getElementById("usersBody").innerHTML=USERS.map(u=>`<tr><td><strong>${u.name}</strong></td><td>${u.username}</td><td>${u.role}</td><td>${u.dept}</td><td><span class="badge active">${u.status}</span></td><td>${u.login}</td></tr>`).join("")}
 const PERMS={Administrator:["Dashboard","Enforcement Files","Parties","Financial Claims","Tasks & Follow-ups","Collections","Expenses","Settlements","Banking & Treasury","Reports & Analytics","Settings"],"Enforcement Officer":["Dashboard","Enforcement Files","Parties","Financial Claims","Tasks & Follow-ups","Collections","Settlements"],Finance:["Dashboard","Collections","Expenses","Banking & Treasury","Reports & Analytics"],Management:["Dashboard","Enforcement Files","Collections","Settlements","Reports & Analytics"]};
@@ -2517,7 +2533,7 @@ function render10(){
   <div class="v210-kpi"><div class="v210-kpi-top"><small>${t10("REQUIRES ATTENTION","تحتاج إلى متابعة")}</small><i class="v210-kpi-icon">!</i></div><b>${over.length}</b><span>${t10("Overdue open tasks","مهام مفتوحة متأخرة")}</span></div>
  </div>
  <div class="v210-grid"><div class="v210-card"><div class="v210-card-head"><h2>${t10("My Day","يومي")}</h2><button class="v210-link" onclick="v210Go('tasks')">${t10("View Calendar","عرض التقويم")} →</button></div>${td.length?`<div class="v210-agenda">${td.slice(0,6).map(x=>`<div class="v210-task" onclick="v2OpenTask('', '${x.id}')"><div class="v210-time">${x.time||"—"}</div><div><b>${x.title||x.task||""}</b><small>${x.file||t10("No file linked","غير مرتبط بملف")}</small></div><span class="v210-tag">${x.priority||"Normal"}</span></div>`).join("")}</div>`:`<div class="v210-empty"><div><b>${t10("Your day is clear","لا توجد مهام لليوم")}</b><span>${t10("Today's tasks and enforcement appointments will appear here automatically.","ستظهر مهام اليوم ومواعيد التنفيذ هنا تلقائيًا.")}</span></div></div>`}</div>
- <div class="v210-card v210-ai"><div class="v210-card-head"><h2>✦ ENFORZA AI</h2></div><div class="v210-ai-state"><b>${t10("Smart brief ready","الملخص الذكي جاهز")}</b><p>${files.length?t10("AI insights will be generated from the real file and task data you enter.","سيتم إنشاء الرؤى الذكية من بيانات الملفات والمهام الفعلية التي تدخلها."):t10("Add your first file to start building AI recommendations and daily priorities.","أضف أول ملف لبدء بناء التوصيات الذكية وأولويات اليوم.")}</p></div><div class="v210-ai-actions"><button onclick="v210Go('files')">${t10("Review Files","مراجعة الملفات")}</button><button onclick="v210Go('tasks')">${t10("Plan Day","تخطيط اليوم")}</button></div></div></div>
+ <div class="v210-card v210-ai enf-ai-disabled"><div class="v210-card-head"><h2>✦ ENFORZA AI</h2></div><div class="v210-ai-state"><b>COMING SOON</b><p>AI Management Insights will be available in a future release.</p></div></div></div>
  <div class="v210-bottom"><div class="v210-card"><div class="v210-card-head"><h2>${t10("Collection Progress","تقدم التحصيل")}</h2><span>${pct.toFixed(1)}%</span></div><div class="v210-progress"><i style="width:${pct}%"></i></div><div class="v210-row"><span>${t10("Recorded Claims","المطالبات المسجلة")}</span><b>${money10(claim)}</b></div><div class="v210-row"><span>${t10("Collected","المحصل")}</span><b>${money10(collected)}</b></div></div>
  <div class="v210-card"><div class="v210-card-head"><h2>${t10("Workload","عبء العمل")}</h2></div><div class="v210-row"><span>${t10("Today","اليوم")}</span><b>${td.length}</b></div><div class="v210-row"><span>${t10("Overdue","متأخرة")}</span><b>${over.length}</b></div><div class="v210-row"><span>${t10("Upcoming","قادمة")}</span><b>${up.length}</b></div></div></div>
  </section>`;
@@ -4207,7 +4223,8 @@ function route(key){
   switch(key){
    case "dashboard":
      show("dashboardPage");active(key);
-     if(typeof window.renderDashboard==="function")window.renderDashboard();
+     if(typeof window.v210Refresh==="function")window.v210Refresh();
+     else if(typeof window.renderDashboard==="function")window.renderDashboard();
      return false;
    case "files": return openFiles();
    case "tasks": return openCalendar();
@@ -4306,7 +4323,6 @@ function boot(){
  document.querySelectorAll("#loginGate,.login-gate,#loginDemo,.login-demo").forEach(function(x){x.remove()});
  document.body.classList.remove("login-open","demo-open","modal-open");
  document.documentElement.classList.remove("login-open","demo-open");
- disableAI();
  route("dashboard");
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});else boot();
