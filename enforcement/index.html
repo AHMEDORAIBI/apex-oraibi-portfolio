@@ -214,6 +214,20 @@ function files(){
  <div class="card"><div style="display:flex;justify-content:flex-end;margin-bottom:14px"><input id="fileSearch" type="search" placeholder="Search by file, client, debtor or case number..." oninput="filterFiles(this.value)" style="max-width:420px"></div><div id="fileTable">${fileTable(DB.files)}</div></div>`;
 }
 
+function table(rows,cols){
+ rows=Array.isArray(rows)?rows:[];
+ cols=Array.isArray(cols)?cols:[];
+ if(!rows.length)return `<div class="empty">No records yet</div>`;
+ let th=cols.map(c=>`<th>${esc(c[0]||'')}</th>`).join('');
+ let body=rows.map(r=>`<tr>${cols.map(c=>{
+   let spec=c[1],v='';
+   try{v=typeof spec==='function'?spec(r):r?.[spec]}catch(err){console.error('[ENFORZA TABLE CELL]',err);v='—'}
+   if(v===undefined||v===null||v==='')v='—';
+   return `<td>${typeof spec==='function'?v:esc(v)}</td>`;
+ }).join('')}</tr>`).join('');
+ return `<div class="tablewrap"><table><thead><tr>${th}</tr></thead><tbody>${body}</tbody></table></div>`;
+}
+
 function fileTable(rows){
  return table(rows,[['Execution File',r=>`<button class="link" data-action="openFile" data-id="${r.id}"><b>${esc(r.ref||r.id)}</b></button><div class="sub">${esc(r.courtExecutionNo||'No court execution number')}</div>`],['Execution Creditor',r=>`<b>${esc(r.client||'—')}</b><div class="sub">${esc(r.clientId||'')}</div>`],['Execution Debtor',r=>`<b>${esc(r.counterparty||'—')}</b>${r.additionalDebtors?`<div class="sub">+ ${esc(r.additionalDebtors)}</div>`:''}`],['Primary Case',r=>`<b>${esc(r.primaryCase||'—')}</b><div class="sub">${r.appealCase?'Appeal: '+esc(r.appealCase):''}${r.cassationCase?' · Cassation: '+esc(r.cassationCase):''}</div>`],['Claim',r=>money(r.claim)],['Status',r=>`<span class="badge ${esc(r.status)}">${esc(r.status)}</span>`],['Next Action',r=>`${esc(r.next||'—')}<div class="sub">${esc(r.nextDate||'')}</div>`]])
 }
