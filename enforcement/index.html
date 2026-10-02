@@ -3601,5 +3601,52 @@ window.enfRc3Close=()=>document.getElementById("enfRc3")?.classList.remove("open
 function init(){noSeed();document.documentElement.dataset.enforzaVersion=VERSION;document.addEventListener("keydown",e=>{if(e.ctrlKey&&e.shiftKey&&String(e.key).toLowerCase()==="w"){e.preventDefault();enfRc3Open()}})}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
 })();
-</script></body>
+</script>
+<style id="enforza-demo-health-css">
+#enfHealthBadge{position:fixed;right:14px;bottom:14px;z-index:9995;border:1px solid rgba(166,111,55,.35);
+background:#fff;color:#17212b;border-radius:999px;padding:7px 10px;font:700 8px Arial;box-shadow:0 8px 24px rgba(0,0,0,.08);cursor:pointer}
+html[dir="rtl"] #enfHealthBadge{right:auto;left:14px}
+#enfHealthPanel{display:none;position:fixed;right:14px;bottom:52px;z-index:9996;width:310px;max-height:60vh;overflow:auto;
+background:#fff;color:#17212b;border:1px solid #e6ded5;border-radius:14px;padding:12px;box-shadow:0 18px 45px rgba(0,0,0,.14);font:11px Arial}
+html[dir="rtl"] #enfHealthPanel{right:auto;left:14px}
+#enfHealthPanel.open{display:block}.enf-h-row{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid #eee}
+.enf-h-ok{font-weight:900}.enf-h-note{font-size:9px;color:#76808c;margin-top:8px}
+</style>
+<script id="enforza-demo-health-js">
+(function(){
+"use strict";
+var runtimeErrors=[];
+window.addEventListener("error",function(e){runtimeErrors.push((e.message||"Error")+" @ "+(e.lineno||"?"));update()});
+window.addEventListener("unhandledrejection",function(e){runtimeErrors.push("Promise: "+String(e.reason||"rejection"));update()});
+function exists(id){return !!document.getElementById(id)}
+function check(){
+ var rows=[
+  ["DATA bridge",!!window.DATA],
+  ["Dashboard",exists("dashboardPage")],
+  ["Files",document.querySelectorAll('.nav-item[data-page="files"]').length>0],
+  ["Tasks",document.querySelectorAll('.nav-item[data-page="tasks"],.nav-item[data-page="smartTasks"]').length>0],
+  ["Calendar",exists("v2CalendarPage")],
+  ["File 360",exists("v2File360Page")||exists("enfFilesClient360Page")],
+  ["Runtime errors",runtimeErrors.length===0]
+ ];
+ return rows
+}
+function update(){
+ var rows=check(),ok=rows.filter(function(x){return x[1]}).length;
+ var b=document.getElementById("enfHealthBadge"),p=document.getElementById("enfHealthBody");
+ if(b)b.textContent="DEMO HEALTH "+ok+"/"+rows.length;
+ if(p)p.innerHTML=rows.map(function(x){return '<div class="enf-h-row"><span>'+x[0]+'</span><span class="enf-h-ok">'+(x[1]?"✓":"✕")+'</span></div>'}).join("")+
+ (runtimeErrors.length?'<div class="enf-h-note">'+runtimeErrors.slice(-3).join("<br>")+'</div>':'<div class="enf-h-note">Working build monitor — no navigation or data functions are replaced.</div>')
+}
+function boot(){
+ if(document.getElementById("enfHealthBadge"))return;
+ var b=document.createElement("button");b.id="enfHealthBadge";b.type="button";b.onclick=function(){document.getElementById("enfHealthPanel").classList.toggle("open");update()};
+ b.textContent="DEMO HEALTH";
+ var p=document.createElement("div");p.id="enfHealthPanel";p.innerHTML='<b>ENFORZA Demo Health</b><div id="enfHealthBody"></div>';
+ document.body.appendChild(b);document.body.appendChild(p);update()
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});else boot()
+})();
+</script>
+</body>
 </html>
