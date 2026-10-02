@@ -1510,8 +1510,13 @@ function buildMobileFileCards(){
  if(!host){host=document.createElement("div");host.className="mobile-file-cards";const tw=page.querySelector(".table-wrap");if(tw)tw.parentNode.insertBefore(host,tw)}
  host.innerHTML=(DATA.files||[]).map(f=>`<div class="mfile"><div class="mfile-top"><div><h4>${f.id}</h4><p>${f.creditor} → ${f.debtor}</p></div><span class="badge ${badgeClass(f.status)}">${f.status}</span></div><div class="mfile-kpis"><div><span>${t("Claim")}</span><strong>${money(f.claim)}</strong></div><div><span>${t("Outstanding")}</span><strong>${money(f.claim-f.collected)}</strong></div></div><div class="mfile-actions"><button onclick="openDetail('files','${f.id}')">${t("Open File")}</button><button onclick="currentFileForAI=DATA.files.find(x=>x.id==='${f.id}');openAI();askAI('summary')">✦ AI</button></div></div>`).join("");
 }
-const _renderModuleP7=renderModule;
-renderModule=function(m){_renderModuleP7(m);if(m==="files")setTimeout(buildMobileFileCards,0)}
+/* Phase 7 compatibility: the original app uses loadGeneric(), not renderModule(). */
+function renderModule(m){
+  if(typeof window.loadGeneric==="function") window.loadGeneric(m);
+  else if(typeof loadGeneric==="function") loadGeneric(m);
+  if(m==="files" && typeof buildMobileFileCards==="function") setTimeout(buildMobileFileCards,0);
+}
+window.renderModule=renderModule;
 Object.assign(I18N.ar,{"More":"المزيد","Documents":"المستندات","Reports":"التقارير","Creditor Portal":"بوابة الدائن","Presentation":"العرض","Open File":"فتح الملف"});
 
 
@@ -1591,10 +1596,10 @@ renderSmartNotifications("all");
 Object.assign(I18N.ar,{"Morning Management Brief":"الموجز الصباحي للإدارة","Read Aloud":"قراءة صوتية","Morning brief text":"لديك اليوم 9 إجراءات مستحقة و3 متابعات متأخرة ودفعتا تسوية تقتربان من الاستحقاق وملفان مرتفعا القيمة يحتاجان إلى اهتمام الإدارة.","Arabic and English voice control":"تحكم صوتي بالعربية والإنجليزية","Tap microphone and speak":"اضغط الميكروفون وتحدث","Try a navigation or AI command":"جرب أمر تنقل أو أمر للذكاء الاصطناعي","Smart Notifications":"الإشعارات الذكية","AI-ranked operational alerts":"تنبيهات تشغيلية مرتبة بالذكاء الاصطناعي","All":"الكل","Critical":"حرج","Mark all read":"تحديد الكل كمقروء","Settlement installment due":"قسط تسوية مستحق","High-value file inactive":"ملف مرتفع القيمة بلا حركة","Bank response received":"تم استلام رد البنك","Asset inquiry overdue":"استعلام أصول متأخر","Listening...":"جاري الاستماع...","Executing command...":"جاري تنفيذ الأمر...","Voice recognition is not supported in this browser":"التعرف الصوتي غير مدعوم في هذا المتصفح","Could not understand. Try again.":"لم يتم فهم الأمر. حاول مرة أخرى."});
 
 
-var selectedDemoRole="management"; var activeDemoRole="management"; window.selectedDemoRole=selectedDemoRole; window.activeDemoRole=activeDemoRole;
+var selectedDemoRole="management",activeDemoRole="management"; window.selectedDemoRole=selectedDemoRole; window.activeDemoRole=activeDemoRole;
 
 function applyRoleAccess(role){
- activeDemoRole=role;window.activeDemoRole=role;document.body.classList.remove("role-management","role-officer","role-creditor");document.body.classList.add("role-"+role);
+ activeDemoRole=role;document.body.classList.remove("role-management","role-officer","role-creditor");document.body.classList.add("role-"+role);
  const pill=document.getElementById("activeRolePill");if(pill)pill.textContent=role==="management"?t("Management"):role==="officer"?t("Enforcement Officer"):t("Creditor");
  const adminPages=["users","settings","audit","permissions","presentation","aiInsights"];
  document.querySelectorAll(".nav-item").forEach(n=>{
@@ -3917,7 +3922,7 @@ function startDirect(){
     sessionStorage.removeItem("enforzaRole");
     sessionStorage.removeItem("enforzaUserId");
   }catch(e){}
-  window.activeDemoRole="management"; window.selectedDemoRole="management";
+  if(typeof window.applyRoleAccess==="function")window.applyRoleAccess("management");
   document.querySelectorAll(".nav-item").forEach(function(n){n.style.removeProperty("display")});
   if(typeof window.openPage==="function")window.openPage("dashboard");
 }
@@ -4545,36 +4550,6 @@ function install(){
  let side=document.getElementById("eiRepresent");side?.addEventListener("change",()=>setTimeout(render,0));
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",install,{once:true});else install()
-})();
-</script>
-
-<style id="enforza-clean-click-fix">
-#enfReleaseModal:not(.open),#enfRcCenter:not(.open),#enfRc2Modal:not(.open),
-#enfRc3Modal:not(.open),#enfOpsReady:not(.open),#enfP22Health:not(.open),
-#futureModuleModal:not(.open),.modal:not(.open),.drawer:not(.open){
-  pointer-events:none!important;
-}
-.page.hidden{display:none!important}
-</style>
-
-<script id="enforza-clean-nav-binding">
-(function(){
-"use strict";
-function bind(){
- document.querySelectorAll(".nav-item[data-page]").forEach(function(n){
-   if(n.dataset.cleanBound==="1")return;
-   n.dataset.cleanBound="1";
-   n.addEventListener("click",function(e){
-     var p=this.dataset.page;
-     if(!p || typeof window.openPage!=="function")return;
-     e.preventDefault();
-     e.stopPropagation();
-     try{window.openPage(p)}catch(err){console.error("[ENFORZA NAV]",p,err)}
-   },false);
- });
-}
-if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind,{once:true});
-else bind();
 })();
 </script>
 </body>
