@@ -1,11 +1,12 @@
-<!doctype html><html lang="en" dir="ltr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ENFORZA Private Enforcement</title>
+<!DOCTYPE html>
+<html dir="ltr" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>ENFORZA Private Enforcement</title>
 <style>
 :root{--nav:#111820;--nav2:#1b242d;--gold:#b57a3f;--gold2:#d7b58f;--bg:#f6f2ec;--card:#fff;--text:#14202a;--muted:#71808e;--line:#e5ddd3;--danger:#a94646;--ok:#47765a;--warn:#a36c26;--shadow:0 8px 26px rgba(20,25,30,.06)}*{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text);font-size:14px}button,input,select,textarea{font:inherit}.app{min-height:100vh;display:grid;grid-template-columns:246px 1fr}.side{background:var(--nav);color:#eef3f5;padding:26px 14px;position:fixed;left:0;top:0;bottom:0;width:246px;overflow:auto}.brand{display:flex;gap:12px;align-items:center;padding:10px 12px 26px;border-bottom:1px solid #26313a}.brandmark{width:42px;height:42px;border:1px solid var(--gold);border-radius:8px;display:grid;place-items:center;color:#f2c997;font-weight:900}.brand b{letter-spacing:.08em}.brand small{display:block;color:#a7b1ba;font-size:8px;letter-spacing:.14em;margin-top:4px}.group{font-size:8px;letter-spacing:.2em;color:#b99a7d;font-weight:900;margin:25px 8px 8px}.nav{display:flex;align-items:center;gap:12px;padding:13px 12px;border-radius:10px;color:#e4e8eb;cursor:pointer;margin:2px 0}.nav:hover,.nav.active{background:#2a2826;color:#fff}.nav.active{box-shadow:inset 2px 0 var(--gold)}.ico{width:18px;color:#c78b50;text-align:center}.main{grid-column:2;min-width:0}.top{height:96px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;padding:0 34px;position:sticky;top:0;z-index:10}.top .mini{display:flex;align-items:center;gap:10px;margin-right:auto}.top .mini .m{width:30px;height:30px;border-radius:8px;background:var(--nav);color:#e8b97d;display:grid;place-items:center;font-weight:900}.search{width:min(430px,40vw);border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:#fbfaf8}.pill{padding:10px 14px;border-radius:999px;background:#f3eadf;color:#6f4c2d;font-size:11px;font-weight:800}.iconbtn{border:1px solid var(--line);background:#fff;border-radius:9px;padding:10px 12px;cursor:pointer}.content{padding:32px 38px 70px;max-width:1500px}.page{display:none}.page.active{display:block}.eyebrow{font-size:10px;color:#a66b34;font-weight:900;letter-spacing:.18em}.titlebar{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:24px}.titlebar h1{margin:7px 0 4px;font-size:30px}.sub{color:var(--muted)}.btn{border:0;border-radius:9px;padding:11px 15px;font-weight:800;cursor:pointer}.btn.primary{background:var(--nav);color:#fff}.btn.gold{background:var(--gold);color:#fff}.btn.light{background:#fff;border:1px solid var(--line)}.btn.danger{background:#fff0f0;color:var(--danger);border:1px solid #f1cccc}.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.kpi,.card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow)}.kpi{padding:20px}.kpi small{color:var(--muted);font-weight:800;font-size:10px}.kpi strong{display:block;font-size:24px;margin:18px 0 8px}.dashgrid{display:grid;grid-template-columns:1.4fr .9fr;gap:14px;margin-top:14px}.card{padding:18px}.card h2{margin:0 0 14px;font-size:18px}.ai{background:var(--nav);color:#fff}.ai p{color:#b8c0c7}.soon{display:inline-block;border:1px solid #46515a;border-radius:999px;padding:8px 12px;color:#e8b97d;font-weight:900;letter-spacing:.12em}.tablewrap{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:auto}.toolbar{display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap}.toolbar input,.toolbar select{border:1px solid var(--line);background:#fff;border-radius:9px;padding:10px 12px}.toolbar input{min-width:260px}table{border-collapse:collapse;width:100%;min-width:820px}th,td{padding:13px 14px;border-bottom:1px solid #eee7df;text-align:left}th{font-size:10px;color:#6e7982;background:#fbfaf8;text-transform:uppercase}td{font-size:12px}.link{border:0;background:none;color:#9a5f2b;font-weight:900;cursor:pointer;padding:0}.badge{display:inline-block;padding:5px 8px;border-radius:999px;font-size:10px;font-weight:800;background:#eef2f3}.badge.Active,.badge.Paid,.badge.Completed{background:#e8f3ec;color:#3f7151}.badge.Overdue,.badge.Critical{background:#f8e8e8;color:#a34545}.empty{padding:44px;text-align:center;color:var(--muted)}.calendar{display:grid;grid-template-columns:repeat(7,1fr);border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff}.calhead{padding:12px;text-align:center;background:#faf8f5;font-size:10px;font-weight:900}.day{min-height:115px;border-top:1px solid var(--line);border-right:1px solid var(--line);padding:9px}.day.muted{background:#fbfaf9;color:#aaa}.date{font-weight:900}.event{margin-top:7px;padding:6px;border-radius:6px;background:#f3eadf;font-size:9px;color:#714a28}.formgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.field label{display:block;font-size:10px;font-weight:800;color:#68737c;margin-bottom:5px}.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);border-radius:8px;padding:10px;background:#fff}.field textarea{min-height:90px}.modal{position:fixed;inset:0;background:rgba(10,15,20,.55);display:none;align-items:center;justify-content:center;z-index:50;padding:20px}.modal.open{display:flex}.modalbox{background:#fff;border-radius:16px;width:min(760px,96vw);max-height:90vh;overflow:auto;padding:24px}.modalhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.modalhead h2{margin:0}.x{border:0;background:#f2eee9;border-radius:8px;width:34px;height:34px;cursor:pointer}.file360{display:grid;grid-template-columns:1fr 1fr;gap:14px}.statrow{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.stat{background:#faf8f5;border:1px solid var(--line);border-radius:10px;padding:12px}.stat b{display:block;font-size:18px;margin-top:5px}.toast{position:fixed;right:24px;bottom:24px;background:#14202a;color:#fff;padding:12px 16px;border-radius:10px;display:none;z-index:80}.toast.show{display:block}.mobile{display:none}@media(max-width:900px){.app{display:block}.side{transform:translateX(-100%);z-index:40}.side.open{transform:none}.main{grid-column:auto}.top{padding:0 14px}.mobile{display:inline-block}.content{padding:22px 14px}.grid4{grid-template-columns:1fr 1fr}.dashgrid,.file360{grid-template-columns:1fr}.search{width:45vw}}@media(max-width:560px){.grid4,.formgrid,.statrow{grid-template-columns:1fr}.top .mini span{display:none}.pill{display:none}.calendar{grid-template-columns:repeat(7,minmax(90px,1fr));overflow:auto}}
 </style></head><body><div class="app"><aside class="side" id="side"><div class="brand"><div class="brandmark">E</div><div><b>ENFORZA</b><small>PRIVATE ENFORCEMENT</small></div></div>
-<div class="group">WORKSPACE</div><div class="nav active" data-route="dashboard"><span class="ico">⌂</span>Command Center</div><div class="nav" data-route="files"><span class="ico">▤</span>Files</div><div class="nav" data-route="claims"><span class="ico">§</span>Financial Claims</div><div class="nav" data-route="calendar"><span class="ico">✓</span>Calendar</div><div class="nav" data-route="tasks"><span class="ico">◷</span>Smart Tasks</div>
-<div class="group">FINANCIAL</div><div class="nav" data-route="collections"><span class="ico">↙</span>Collections</div><div class="nav" data-route="expenses"><span class="ico">↗</span>Expenses</div><div class="nav" data-route="settlements"><span class="ico">≈</span>Settlements</div><div class="nav" data-route="treasury"><span class="ico">▣</span>Banking & Treasury</div>
-<div class="group">MANAGEMENT</div><div class="nav" data-route="minutes"><span class="ico">⌕</span>Minutes</div><div class="nav" data-route="evidence"><span class="ico">▧</span>Field Evidence</div><div class="nav" data-route="documents"><span class="ico">▤</span>Documents</div><div class="nav" data-route="reports"><span class="ico">◩</span>Reports & Analytics</div><div class="nav" data-route="audit"><span class="ico">⊙</span>Audit Log</div><div class="group">FUTURE MODULES</div><div class="nav" data-route="ai"><span class="ico">✦</span>ENFORZA AI</div></aside>
-<main class="main"><header class="top"><button class="iconbtn mobile" id="menuBtn">☰</button><div class="mini"><div class="m">EN</div><span><b>ENFORZA</b><small style="display:block;color:#8b969f">PRIVATE ENFORCEMENT</small></span></div><input class="search" id="globalSearch" placeholder="Search files, tasks, documents..."><span class="pill">Enforcement Officer</span><button class="iconbtn" id="voiceBtn" title="Voice command">◯</button></header><div class="content" id="content"></div></main></div>
+<div class="group">WORKSPACE</div><div class="nav active" data-route="dashboard"><span class="ico" data-i18n="nav.dashboard">⌂</span>Command Center</div><div class="nav" data-route="files"><span class="ico" data-i18n="nav.files">▤</span>Files</div><div class="nav" data-route="claims"><span class="ico" data-i18n="nav.claims">§</span>Financial Claims</div><div class="nav" data-route="calendar"><span class="ico" data-i18n="nav.calendar">✓</span>Calendar</div><div class="nav" data-route="tasks"><span class="ico" data-i18n="nav.tasks">◷</span>Smart Tasks</div>
+<div class="group">FINANCIAL</div><div class="nav" data-route="collections"><span class="ico" data-i18n="nav.collections">↙</span>Collections</div><div class="nav" data-route="expenses"><span class="ico" data-i18n="nav.expenses">↗</span>Expenses</div><div class="nav" data-route="settlements"><span class="ico" data-i18n="nav.settlements">≈</span>Settlements</div><div class="nav" data-route="treasury"><span class="ico" data-i18n="nav.treasury">▣</span>Banking &amp; Treasury</div>
+<div class="group">MANAGEMENT</div><div class="nav" data-route="minutes"><span class="ico" data-i18n="nav.minutes">⌕</span>Minutes</div><div class="nav" data-route="evidence"><span class="ico" data-i18n="nav.evidence">▧</span>Field Evidence</div><div class="nav" data-route="documents"><span class="ico" data-i18n="nav.documents">▤</span>Documents</div><div class="nav" data-route="reports"><span class="ico" data-i18n="nav.reports">◩</span>Reports &amp; Analytics</div><div class="nav" data-route="audit"><span class="ico" data-i18n="nav.audit">⊙</span>Audit Log</div><div class="group">FUTURE MODULES</div><div class="nav" data-route="ai"><span class="ico" data-i18n="nav.ai">✦</span>ENFORZA AI</div></aside>
+<main class="main"><header class="top"><button class="iconbtn mobile" id="menuBtn">☰</button><div class="mini"><div class="m">EN</div><span><b>ENFORZA</b><small style="display:block;color:#8b969f">PRIVATE ENFORCEMENT</small></span></div><input class="search" id="globalSearch" placeholder="Search files, tasks, documents..."/><span class="pill">Enforcement Officer</span><button class="iconbtn" id="voiceBtn" title="Voice command">◯</button></header><div class="content" id="content"></div></main></div>
 <div class="modal" id="modal"><div class="modalbox"><div class="modalhead"><h2 id="modalTitle"></h2><button class="x" id="closeModal">×</button></div><div id="modalBody"></div></div></div><div class="toast" id="toast"></div>
 <script>
 'use strict';
@@ -43,123 +44,106 @@ function voice(){let SR=window.SpeechRecognition||window.webkitSpeechRecognition
 window.addEventListener('error',e=>console.error('[ENFORZA RUNTIME]',e.error||e.message));window.addEventListener('unhandledrejection',e=>console.error('[ENFORZA PROMISE]',e.reason));
 window.ENFORZA={version:'PRODUCTION-STABLE-1.0',route,health(){return {route:ROUTE,files:DB.files.length,tasks:DB.tasks.length,storage:true,pages:15}}};render();
 </script>
-<style id="enforza-bilingual-css">
+
+
+
+<style id="enforza-full-i18n-css">
 html[dir="rtl"] body{direction:rtl}
-html[dir="rtl"] .sidebar,html[dir="rtl"] .main,html[dir="rtl"] .page{text-align:right}
-html[dir="rtl"] table{text-align:right}
-#langSwitch{min-width:78px;font-weight:800}
+html[dir="rtl"] .sidebar,html[dir="rtl"] .main,html[dir="rtl"] .page,html[dir="rtl"] .modal{text-align:right}
+html[dir="rtl"] table,html[dir="rtl"] th,html[dir="rtl"] td{text-align:right}
+html[dir="rtl"] .nav{direction:rtl}
+#langSwitch{min-width:82px;font-weight:900}
 </style>
-<script id="enforza-bilingual-js">
+<script id="enforza-full-i18n-js">
 (function(){
 "use strict";
-const AR={
-"Command Center":"مركز التحكم",
-"Files":"الملفات",
-"Financial Claims":"المطالبات المالية",
-"Calendar":"التقويم",
-"Smart Tasks":"المهام الذكية",
-"Collections":"التحصيلات",
-"Expenses":"المصروفات",
-"Settlements":"التسويات",
-"Banking & Treasury":"البنوك والخزينة",
-"Minutes":"المحاضر",
-"Field Evidence":"الأدلة الميدانية",
-"Documents":"المستندات",
-"Reports & Analytics":"التقارير والتحليلات",
-"Audit Log":"سجل التدقيق",
-"AI Management Insights":"رؤى الإدارة بالذكاء الاصطناعي",
-"New File":"ملف جديد",
-"New Task":"مهمة جديدة",
-"New Collection":"تحصيل جديد",
-"Open Calendar":"فتح التقويم",
-"Total Files":"إجمالي الملفات",
-"Active Files":"الملفات النشطة",
-"Total Claims":"إجمالي المطالبات",
-"Total Collected":"إجمالي المحصل",
-"Outstanding":"الرصيد القائم",
-"Open Tasks":"المهام المفتوحة",
-"Overdue Tasks":"المهام المتأخرة",
-"Recent Collections":"آخر التحصيلات",
-"Critical Files":"الملفات الحرجة",
-"Client Money Due":"مبالغ مستحقة للموكلين",
-"Search":"بحث",
-"Status":"الحالة",
-"Client":"الموكل",
-"Customer":"العميل",
-"Creditor":"الدائن",
-"Debtor":"المدين",
-"Amount":"المبلغ",
-"Claim Amount":"مبلغ المطالبة",
-"Collected":"المحصل",
-"Balance":"الرصيد",
-"Responsible":"المسؤول",
-"Priority":"الأولوية",
-"Date":"التاريخ",
-"Due Date":"تاريخ الاستحقاق",
-"Description":"البيان",
-"Reference":"المرجع",
-"Method":"الطريقة",
-"Notes":"ملاحظات",
-"Save":"حفظ",
-"Cancel":"إلغاء",
-"Close":"إغلاق",
-"Add":"إضافة",
-"Edit":"تعديل",
-"Delete":"حذف",
-"View":"عرض",
-"Open":"مفتوح",
-"Active":"نشط",
-"Completed":"مكتمل",
-"Cancelled":"ملغي",
-"Pending":"قيد الانتظار",
-"High":"عالية",
-"Critical":"حرجة",
-"Normal":"عادية",
-"Today":"اليوم",
-"COMING SOON":"قريبًا",
-"ENFORZA AI":"الذكاء الاصطناعي ENFORZA",
-"Create File":"إنشاء ملف",
-"Create Task":"إنشاء مهمة",
-"Create Collection":"إنشاء تحصيل",
-"File No.":"رقم الملف",
-"File":"الملف",
-"Title":"العنوان",
-"Type":"النوع",
-"Location":"الموقع",
-"Professional Fees":"الأتعاب المهنية",
-"Execution Expenses":"مصروفات التنفيذ",
-"Transferred to Client":"المحول للموكل",
-"Due to Client":"المستحق للموكل",
-"Total Collected":"إجمالي المحصل"
+const D={
+"nav.dashboard":["Command Center","مركز التحكم"],
+"nav.files":["Files","الملفات"],
+"nav.claims":["Financial Claims","المطالبات المالية"],
+"nav.calendar":["Calendar","التقويم"],
+"nav.tasks":["Smart Tasks","المهام الذكية"],
+"nav.collections":["Collections","التحصيلات"],
+"nav.expenses":["Expenses","المصروفات"],
+"nav.settlements":["Settlements","التسويات"],
+"nav.treasury":["Banking & Treasury","البنوك والخزينة"],
+"nav.minutes":["Minutes","المحاضر"],
+"nav.evidence":["Field Evidence","الأدلة الميدانية"],
+"nav.documents":["Documents","المستندات"],
+"nav.reports":["Reports & Analytics","التقارير والتحليلات"],
+"nav.audit":["Audit Log","سجل التدقيق"],
+"nav.ai":["AI Management Insights","رؤى الإدارة بالذكاء الاصطناعي"],
+"action.newFile":["New File","ملف جديد"],
+"action.newTask":["New Task","مهمة جديدة"],
+"action.newCollection":["New Collection","تحصيل جديد"],
+"action.openCalendar":["Open Calendar","فتح التقويم"],
+"action.save":["Save","حفظ"],"action.cancel":["Cancel","إلغاء"],"action.close":["Close","إغلاق"],
+"action.add":["Add","إضافة"],"action.edit":["Edit","تعديل"],"action.delete":["Delete","حذف"],"action.search":["Search","بحث"],
+"Command Center":["Command Center","مركز التحكم"],"Executive operational overview":["Executive operational overview","نظرة تنفيذية على العمليات"],
+"Total Files":["Total Files","إجمالي الملفات"],"Active Files":["Active Files","الملفات النشطة"],
+"Total Claims":["Total Claims","إجمالي المطالبات"],"Total Collected":["Total Collected","إجمالي المحصل"],
+"Outstanding":["Outstanding","الرصيد القائم"],"Open Tasks":["Open Tasks","المهام المفتوحة"],
+"Overdue Tasks":["Overdue Tasks","المهام المتأخرة"],"Critical Files":["Critical Files","الملفات الحرجة"],
+"Recent Collections":["Recent Collections","آخر التحصيلات"],"Client Money Due":["Client Money Due","مبالغ مستحقة للموكلين"],
+"Files":["Files","الملفات"],"Financial Claims":["Financial Claims","المطالبات المالية"],"Calendar":["Calendar","التقويم"],
+"Smart Tasks":["Smart Tasks","المهام الذكية"],"Collections":["Collections","التحصيلات"],"Expenses":["Expenses","المصروفات"],
+"Settlements":["Settlements","التسويات"],"Banking & Treasury":["Banking & Treasury","البنوك والخزينة"],
+"Minutes":["Minutes","المحاضر"],"Field Evidence":["Field Evidence","الأدلة الميدانية"],"Documents":["Documents","المستندات"],
+"Reports & Analytics":["Reports & Analytics","التقارير والتحليلات"],"Audit Log":["Audit Log","سجل التدقيق"],
+"Status":["Status","الحالة"],"Client":["Client","الموكل"],"Customer":["Customer","العميل"],"Creditor":["Creditor","الدائن"],
+"Debtor":["Debtor","المدين"],"Amount":["Amount","المبلغ"],"Claim Amount":["Claim Amount","مبلغ المطالبة"],
+"Collected":["Collected","المحصل"],"Balance":["Balance","الرصيد"],"Responsible":["Responsible","المسؤول"],
+"Priority":["Priority","الأولوية"],"Date":["Date","التاريخ"],"Due Date":["Due Date","تاريخ الاستحقاق"],
+"Description":["Description","البيان"],"Reference":["Reference","المرجع"],"Method":["Method","الطريقة"],"Notes":["Notes","ملاحظات"],
+"File":["File","الملف"],"File No.":["File No.","رقم الملف"],"Title":["Title","العنوان"],"Type":["Type","النوع"],"Location":["Location","الموقع"],
+"Professional Fees":["Professional Fees","الأتعاب المهنية"],"Execution Expenses":["Execution Expenses","مصروفات التنفيذ"],
+"Transferred to Client":["Transferred to Client","المحول للموكل"],"Due to Client":["Due to Client","المستحق للموكل"],
+"Active":["Active","نشط"],"Open":["Open","مفتوح"],"Completed":["Completed","مكتمل"],"Pending":["Pending","قيد الانتظار"],
+"Cancelled":["Cancelled","ملغي"],"Critical":["Critical","حرج"],"High":["High","عالية"],"Normal":["Normal","عادية"],
+"Today":["Today","اليوم"],"COMING SOON":["COMING SOON","قريبًا"],
+"AI Management Insights will be available in a future release.":["AI Management Insights will be available in a future release.","ستتوفر رؤى الإدارة بالذكاء الاصطناعي في إصدار لاحق."]
 };
-const EN=Object.fromEntries(Object.entries(AR).map(([k,v])=>[v,k]));
-let lang=localStorage.getItem("enforzaLanguage")||"en";
-function translateText(root,dict){
- const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
- const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);
- nodes.forEach(n=>{
-  if(["SCRIPT","STYLE","TEXTAREA"].includes(n.parentElement?.tagName))return;
-  const raw=n.nodeValue,trim=raw.trim();if(!trim)return;
-  if(dict[trim])n.nodeValue=raw.replace(trim,dict[trim]);
- });
- root.querySelectorAll("input[placeholder],textarea[placeholder]").forEach(el=>{
-  const p=el.getAttribute("placeholder");if(dict[p])el.setAttribute("placeholder",dict[p]);
+let lang=localStorage.getItem("enforzaLanguage")==="ar"?"ar":"en";
+const idx=()=>lang==="ar"?1:0;
+function byKey(root){
+ (root||document).querySelectorAll("[data-i18n]").forEach(el=>{
+   const row=D[el.dataset.i18n];if(row)el.textContent=row[idx()];
  });
 }
-function apply(){
- const ar=lang==="ar",dict=ar?AR:EN;
- document.documentElement.lang=lang;
- document.documentElement.dir=ar?"rtl":"ltr";
- translateText(document.body,dict);
- const b=document.getElementById("langSwitch");if(b)b.textContent=ar?"English":"العربية";
+function exact(root){
+ const walker=document.createTreeWalker(root||document.body,NodeFilter.SHOW_TEXT);
+ const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);
+ nodes.forEach(n=>{
+   if(!n.parentElement||["SCRIPT","STYLE","TEXTAREA"].includes(n.parentElement.tagName))return;
+   const raw=n.nodeValue,trim=raw.trim();if(!trim)return;
+   const row=D[trim];if(row)n.nodeValue=raw.replace(trim,row[idx()]);
+   else{
+     for(const row2 of Object.values(D)){
+       const other=row2[lang==="ar"?0:1];
+       if(trim===other){n.nodeValue=raw.replace(trim,row2[idx()]);break}
+     }
+   }
+ });
+}
+function placeholders(root){
+ (root||document).querySelectorAll("[placeholder]").forEach(el=>{
+   const p=el.getAttribute("placeholder");
+   const row=D[p]||Object.values(D).find(x=>x.includes(p));
+   if(row)el.setAttribute("placeholder",row[idx()]);
+ });
+}
+function apply(root){
+ document.documentElement.lang=lang;document.documentElement.dir=lang==="ar"?"rtl":"ltr";
+ byKey(root||document);exact(root||document.body);placeholders(root||document);
+ const b=document.getElementById("langSwitch");if(b)b.textContent=lang==="ar"?"English":"العربية";
  localStorage.setItem("enforzaLanguage",lang);
 }
 window.toggleLanguage=function(){lang=lang==="en"?"ar":"en";apply()};
-window.enfApplyLanguage=apply;
-if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",apply,{once:true});else apply();
-new MutationObserver(function(ms){
- if(lang!=="ar")return;
- ms.forEach(m=>m.addedNodes.forEach(n=>{if(n.nodeType===1)translateText(n,AR)}));
+window.enfApplyLanguage=function(){apply()};
+window.enfT=function(key){const row=D[key];return row?row[idx()]:key};
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>apply(),{once:true});else apply();
+new MutationObserver(ms=>{
+ ms.forEach(m=>m.addedNodes.forEach(n=>{if(n.nodeType===1)apply(n)}));
 }).observe(document.documentElement,{childList:true,subtree:true});
 })();
 </script>
