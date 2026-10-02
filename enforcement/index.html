@@ -153,6 +153,29 @@ html[dir="rtl"] .cal-event{text-align:right;border-left:0;border-right:3px solid
 @media(max-width:900px){.stask-kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.stask-grid{grid-template-columns:1fr}}
 @media(max-width:600px){.stask-kpis{grid-template-columns:1fr 1fr}.stask-toolbar{align-items:stretch;flex-direction:column}.stask-toolbar input{max-width:none;width:100%}.stask-tabs{overflow:auto}.stask-card{padding:12px}}
 </style>
+
+<style id="enforza-mobile-luxury-command-dock-v1">
+.mobile-command-dock,.mobile-sheet-backdrop{display:none}
+@media(max-width:768px){
+ body{padding-bottom:calc(92px + env(safe-area-inset-bottom))}
+ .sidebar{display:none!important}
+ .main{margin-left:0!important;margin-right:0!important;width:100%!important;padding:14px 12px 105px!important}
+ .topbar{padding-inline:12px!important}
+ .mobile-command-dock{position:fixed;display:grid;grid-template-columns:1fr 1fr 72px 1fr 1fr;align-items:center;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom));height:68px;padding:5px 7px;border:1px solid rgba(199,167,132,.28);border-radius:22px;background:rgba(17,26,35,.96);box-shadow:0 18px 45px rgba(7,12,18,.28);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);z-index:9000}
+ .mcd-item{position:relative;height:56px;border:0;background:transparent;color:rgba(255,255,255,.64);display:grid;place-items:center;align-content:center;gap:2px;border-radius:15px;font:inherit;cursor:pointer}.mcd-item.active{color:#fff;background:rgba(255,255,255,.075)}.mcd-item.active:after{content:"";position:absolute;bottom:4px;width:18px;height:2px;border-radius:2px;background:#c7a784}.mcd-icon{font-size:19px;line-height:1}.mcd-item small{font-size:9px;font-weight:800;letter-spacing:.02em}
+ .mcd-fab{width:58px;height:58px;align-self:start;justify-self:center;transform:translateY(-16px);border-radius:19px;border:1px solid rgba(255,255,255,.38);background:linear-gradient(145deg,#d1b08a,#a87745);color:#fff;box-shadow:0 10px 24px rgba(132,89,47,.36);font:inherit;cursor:pointer}.mcd-fab span{font-size:31px;font-weight:300;line-height:1}
+ .mcd-badge{display:none;position:absolute;top:3px;right:14px;min-width:16px;height:16px;padding:0 4px;border-radius:999px;background:#b75b52;color:#fff;font-size:8px;place-items:center;border:2px solid #111a23}.mcd-badge.show{display:grid}
+ .mobile-sheet-backdrop{position:fixed;inset:0;background:rgba(7,12,18,.48);z-index:9100;align-items:flex-end;padding:10px 10px calc(10px + env(safe-area-inset-bottom));backdrop-filter:blur(3px)}.mobile-sheet-backdrop.show{display:flex}
+ .mobile-action-sheet{width:100%;max-height:78vh;overflow:auto;border:1px solid rgba(199,167,132,.35);border-radius:26px;background:#fbfaf8;padding:9px 14px 18px;box-shadow:0 -18px 60px rgba(7,12,18,.24);animation:mSheetUp .18s ease-out}.mobile-sheet-handle{width:38px;height:4px;border-radius:99px;background:#d4cec6;margin:1px auto 12px}.mobile-sheet-head{display:flex;align-items:center;justify-content:space-between;padding:0 3px 12px}.mobile-sheet-head small{font-size:9px;font-weight:900;letter-spacing:.15em;color:#a87745}.mobile-sheet-head h3{margin:2px 0 0;font-size:21px}.mobile-sheet-head>button{width:34px;height:34px;border:1px solid var(--line);border-radius:11px;background:#fff;font-size:20px}
+ .mobile-action-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.mobile-action-grid>button{min-height:82px;border:1px solid var(--line);border-radius:16px;background:#fff;padding:12px;text-align:start;display:flex;align-items:center;gap:11px;font:inherit}.mobile-action-grid>button>span{width:38px;height:38px;border-radius:12px;background:#111a23;color:#d9ba95;display:grid;place-items:center;font-size:19px;flex:0 0 auto}.mobile-action-grid b,.mobile-action-grid small{display:block}.mobile-action-grid b{font-size:12px}.mobile-action-grid small{font-size:9px;color:var(--muted);margin-top:3px;line-height:1.3}
+ .mobile-more-button{width:100%;margin-top:10px;border:0;border-radius:14px;background:#111a23;color:#fff;padding:13px;font:inherit;font-weight:800}.mobile-more-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.mobile-more-grid button{border:1px solid var(--line);background:#fff;border-radius:15px;padding:14px 10px;min-height:72px;font:inherit;font-size:11px;font-weight:800;display:grid;gap:5px;place-items:center}.mobile-more-grid span{font-size:20px;color:#a87745}
+ .grid4,.stask-kpis,.f360-kpis{grid-template-columns:1fr 1fr!important}.dashgrid,.f360-two,.stask-grid{grid-template-columns:1fr!important}.card,.kpi{border-radius:14px!important}.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch}.f360-tabs{position:static!important;overflow-x:auto;scrollbar-width:none}.f360-tabs::-webkit-scrollbar{display:none}.f360-tab{min-height:42px}.btn{min-height:42px}.stask-actions .btn,.stask-actions .link{min-height:38px}
+ @keyframes mSheetUp{from{transform:translateY(20px);opacity:.7}to{transform:translateY(0);opacity:1}}
+}
+@media(max-width:420px){
+ .mobile-command-dock{left:8px;right:8px;border-radius:20px}.main{padding-inline:9px!important}.mobile-action-grid,.mobile-more-grid{grid-template-columns:1fr 1fr}.grid4,.stask-kpis,.f360-kpis{grid-template-columns:1fr 1fr!important}
+}
+</style>
 </head><body><div class="app"><aside class="side" id="side"><div class="brand"><div class="brandmark">E</div><div><b>ENFORZA</b><small>PRIVATE ENFORCEMENT</small></div></div>
 <div class="group">WORKSPACE</div><div class="nav active" data-route="dashboard"><span class="ico">⌂</span>Command Center</div><div class="nav" data-route="files"><span class="ico">▤</span>Files</div><div class="nav" data-route="claims"><span class="ico">§</span>Financial Claims</div><div class="nav" data-route="calendar"><span class="ico">✓</span>Calendar</div><div class="nav" data-route="tasks"><span class="ico">◷</span>Smart Tasks</div>
 <div class="group">FINANCIAL</div><div class="nav" data-route="collections"><span class="ico">↙</span>Collections &amp; Settlements</div><div class="nav" data-route="expenses"><span class="ico">↗</span>Expenses</div><div class="nav" data-route="treasury"><span class="ico">▣</span>Banking &amp; Treasury</div>
@@ -577,7 +600,55 @@ function moneyForm(type,title,fid=''){
  f.onsubmit=e=>{e.preventDefault();let o=Object.fromEntries(new FormData(e.target)),amount=Number(o.amount);if(!Number.isFinite(amount)||amount<=0){toast('Amount must be greater than zero');return}if(o.file&&!DB.files.some(x=>x.id===o.file)){toast('Linked file was not found');return}o.id=id(type.slice(0,3).toUpperCase());o.amount=Math.round(amount*1000)/1000;DB[type].unshift(o);if(!save('Added '+type+' transaction')){DB[type]=DB[type].filter(x=>x.id!==o.id);return}closeModal();route(type);toast('Saved successfully')}
 }
 function simpleForm(type,title,fields){if(!Array.isArray(DB[type])){toast('Unable to open this module');return}openModal(title,`<form id="simpleForm"><div class="formgrid">${fields.map(x=>x[0]==='file'?selectField(x[1],'file',options()):formField(x[1],x[0],x[2]||'text',x[3]||'')).join('')}</div><div style="margin-top:16px;text-align:right"><button class="btn primary">Save</button></div></form>`);let f=document.getElementById('simpleForm');if(!f)return;f.onsubmit=e=>{e.preventDefault();let o=Object.fromEntries(new FormData(e.target));if(o.file&&!DB.files.some(x=>x.id===o.file)){toast('Linked file was not found');return}o.id=id(type.slice(0,3).toUpperCase());o.created=now();DB[type].unshift(o);save('Added '+type+' record');closeModal();route(type);toast('Saved successfully')}}
-function action(a,i){({newFile,openFile:()=>openFile(i),editFile:()=>editFile(i),addExecutionAction:()=>executionActionForm(i),newTask:()=>taskForm('',current==='calendar'?'calendar':'tasks'),newTaskForFile:()=>taskForm(i,'tasks'),completeTask:()=>completeTaskForm(i),openTask:()=>openTask(i),editTask:()=>editTask(i),taskViewAll:()=>{TASKVIEW='all';render()},taskViewToday:()=>{TASKVIEW='today';render()},taskViewCritical:()=>{TASKVIEW='critical';render()},taskViewCompleted:()=>{TASKVIEW='completed';render()},prevMonth:()=>{CAL.setMonth(CAL.getMonth()-1);render()},nextMonth:()=>{CAL.setMonth(CAL.getMonth()+1);render()},calendarToday:()=>{CAL=new Date();render()},calendarViewMonth:()=>{CALVIEW='month';render()},calendarViewWeek:()=>{CALVIEW='week';render()},calendarViewDay:()=>{CALVIEW='day';render()},calendarViewAgenda:()=>{CALVIEW='agenda';render()},newCalendarEvent:()=>calendarEventForm(),newCalendarEventForFile:()=>calendarEventForm('',i),calendarDay:()=>{CAL=new Date(i+'T12:00:00');calendarEventForm(i)},openCalendarEvent:()=>openCalendarEvent(i),completeCalendarEvent:()=>{let x=DB.calendarEvents.find(x=>x.id===i);if(x){x.status='Completed';if(save('Completed calendar event '+i)){closeModal();route('calendar');toast('Calendar event completed')}}},deleteCalendarEvent:()=>{DB.calendarEvents=DB.calendarEvents.filter(x=>x.id!==i);if(save('Deleted calendar event '+i)){closeModal();route('calendar');toast('Calendar event deleted')}}, newCollection:()=>moneyForm('collections','Add Collection'),newCollectionForFile:()=>moneyForm('collections','Add Collection',i),newExpense:()=>moneyForm('expenses','Add Expense'),newSettlement:()=>moneyForm('collections','Add Collection / Settlement'),newTreasury:()=>moneyForm('treasury','Add Treasury Transaction'),newMinute:()=>simpleForm('minutes','New Minute',[['file','Linked File'],['date','Date','date','required'],['subject','Subject'],['notes','Notes']]),newEvidence:()=>simpleForm('evidence','Add Field Evidence',[['file','Linked File'],['date','Date','date','required'],['type','Evidence Type'],['description','Description']]),newDocument:()=>simpleForm('documents','Add Document',[['file','Linked File'],['date','Date','date','required'],['type','Document Type'],['name','Document Name']]),deleteFile:()=>{if(confirm('Delete this file and its linked records?')){DB.files=DB.files.filter(x=>x.id!==i);DB.tasks=DB.tasks.filter(x=>x.file!==i);DB.collections=DB.collections.filter(x=>x.file!==i);save('Deleted file '+i);closeModal();route('files')}}}[a]||(()=>{}))()}
+
+function mobileCurrentFileId(){
+ let modal=document.querySelector('#modal [data-action="newTaskForFile"],#modal [data-action="newCalendarEventForFile"],#modal [data-action="addExecutionAction"]');
+ return modal?.dataset?.id||'';
+}
+function mobileSheet(showId){
+ document.querySelectorAll('.mobile-sheet-backdrop').forEach(x=>{x.classList.remove('show');x.setAttribute('aria-hidden','true')});
+ if(showId){let x=document.getElementById(showId);if(x){x.classList.add('show');x.setAttribute('aria-hidden','false')}}
+}
+function mobileSmartActions(){
+ let fid=mobileCurrentFileId(),items=[];
+ if(fid){
+  items=[
+   ['addExecutionAction','Execution Action','＋','Add a new enforcement action'],
+   ['newTaskForFile','Task / Follow-up','✓','Create a linked task'],
+   ['newCollectionForFile','Collection / Settlement','◎','Record a financial movement'],
+   ['newCalendarEventForFile','Appointment','□','Add to calendar']
+  ];
+ }else if(current==='calendar'){
+  items=[['newCalendarEvent','New Appointment','□','Add a calendar event'],['newTask','New Task','✓','Create a follow-up']];
+ }else if(current==='tasks'){
+  items=[['newTask','New Task','✓','Create a linked smart task'],['newCalendarEvent','New Appointment','□','Add to calendar']];
+ }else if(current==='files'){
+  items=[['newFile','New Enforcement File','▣','Create a new file'],['newTask','New Task','✓','Create a follow-up'],['newCalendarEvent','New Appointment','□','Add to calendar']];
+ }else{
+  items=[['newFile','New Enforcement File','▣','Create a new file'],['newTask','New Task','✓','Create a follow-up'],['newCalendarEvent','New Appointment','□','Add to calendar'],['newCollection','New Collection','◎','Record a collection']];
+ }
+ let grid=document.getElementById('mobileSmartActionGrid');if(!grid)return;
+ grid.innerHTML=items.map(x=>`<button type="button" data-action="${x[0]}" ${fid?`data-id="${fid}"`:''}><span>${x[2]}</span><div><b>${x[1]}</b><small>${x[3]}</small></div></button>`).join('');
+ mobileSheet('mobileActionSheet');
+}
+function mobileUpdateDock(){
+ if(innerWidth>768)return;
+ document.querySelectorAll('.mobile-command-dock [data-route]').forEach(x=>x.classList.toggle('active',x.dataset.route===current));
+ let td=today(),open=(DB.tasks||[]).filter(x=>x.status!=='Completed'&&x.status!=='Cancelled'),
+ taskCount=open.filter(x=>!x.due||x.due<=td).length,
+ calCount=calendarEvents().filter(x=>x.date===td&&x.status!=='Completed'&&x.status!=='Cancelled').length,
+ tb=document.getElementById('mobileTaskBadge'),cb=document.getElementById('mobileCalendarBadge');
+ if(tb){tb.textContent=taskCount>9?'9+':taskCount||'';tb.classList.toggle('show',taskCount>0)}
+ if(cb){cb.textContent=calCount>9?'9+':calCount||'';cb.classList.toggle('show',calCount>0)}
+}
+window.addEventListener('resize',()=>mobileUpdateDock());
+document.addEventListener('click',e=>{
+ if(e.target.classList.contains('mobile-sheet-backdrop'))mobileSheet('');
+ let r=e.target.closest('.mobile-command-dock [data-route],.mobile-more-grid [data-route]');
+ if(r)mobileSheet('');
+},true);
+
+function action(a,i){({mobileSmartActions:()=>mobileSmartActions(),closeMobileSheet:()=>mobileSheet(''),mobileMore:()=>mobileSheet('mobileMoreSheet'),newFile,openFile:()=>openFile(i),editFile:()=>editFile(i),addExecutionAction:()=>executionActionForm(i),newTask:()=>taskForm('',current==='calendar'?'calendar':'tasks'),newTaskForFile:()=>taskForm(i,'tasks'),completeTask:()=>completeTaskForm(i),openTask:()=>openTask(i),editTask:()=>editTask(i),taskViewAll:()=>{TASKVIEW='all';render()},taskViewToday:()=>{TASKVIEW='today';render()},taskViewCritical:()=>{TASKVIEW='critical';render()},taskViewCompleted:()=>{TASKVIEW='completed';render()},prevMonth:()=>{CAL.setMonth(CAL.getMonth()-1);render()},nextMonth:()=>{CAL.setMonth(CAL.getMonth()+1);render()},calendarToday:()=>{CAL=new Date();render()},calendarViewMonth:()=>{CALVIEW='month';render()},calendarViewWeek:()=>{CALVIEW='week';render()},calendarViewDay:()=>{CALVIEW='day';render()},calendarViewAgenda:()=>{CALVIEW='agenda';render()},newCalendarEvent:()=>calendarEventForm(),newCalendarEventForFile:()=>calendarEventForm('',i),calendarDay:()=>{CAL=new Date(i+'T12:00:00');calendarEventForm(i)},openCalendarEvent:()=>openCalendarEvent(i),completeCalendarEvent:()=>{let x=DB.calendarEvents.find(x=>x.id===i);if(x){x.status='Completed';if(save('Completed calendar event '+i)){closeModal();route('calendar');toast('Calendar event completed')}}},deleteCalendarEvent:()=>{DB.calendarEvents=DB.calendarEvents.filter(x=>x.id!==i);if(save('Deleted calendar event '+i)){closeModal();route('calendar');toast('Calendar event deleted')}}, newCollection:()=>moneyForm('collections','Add Collection'),newCollectionForFile:()=>moneyForm('collections','Add Collection',i),newExpense:()=>moneyForm('expenses','Add Expense'),newSettlement:()=>moneyForm('collections','Add Collection / Settlement'),newTreasury:()=>moneyForm('treasury','Add Treasury Transaction'),newMinute:()=>simpleForm('minutes','New Minute',[['file','Linked File'],['date','Date','date','required'],['subject','Subject'],['notes','Notes']]),newEvidence:()=>simpleForm('evidence','Add Field Evidence',[['file','Linked File'],['date','Date','date','required'],['type','Evidence Type'],['description','Description']]),newDocument:()=>simpleForm('documents','Add Document',[['file','Linked File'],['date','Date','date','required'],['type','Document Type'],['name','Document Name']]),deleteFile:()=>{if(confirm('Delete this file and its linked records?')){DB.files=DB.files.filter(x=>x.id!==i);DB.tasks=DB.tasks.filter(x=>x.file!==i);DB.collections=DB.collections.filter(x=>x.file!==i);save('Deleted file '+i);closeModal();route('files')}}}[a]||(()=>{}))()}
 document.getElementById('globalSearch').addEventListener('keydown',e=>{if(e.key==='Enter'){let q=e.target.value.trim().toLowerCase();if(!q)return;route('files');setTimeout(()=>{let el=document.getElementById('fileSearch');if(el){el.value=q;filterFiles(q)}},0)}});
 function voice(){let SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){toast('Voice recognition is not supported in this browser');return}let r=new SR();r.lang='en-US';r.interimResults=false;r.onresult=e=>{let t=e.results[0][0].transcript.toLowerCase();if(t.includes('new file')||t.includes('create file'))newFile();else if(t.includes('task'))taskForm();else if(t.includes('calendar'))route('calendar');else if(t.includes('files'))route('files');else toast('Voice command not recognized')};r.onerror=()=>toast('Voice command could not be completed');r.start();toast('Listening...')}document.getElementById('voiceBtn').onclick=voice;
 window.addEventListener('error',e=>console.error('[ENFORZA RUNTIME]',e.error||e.message));window.addEventListener('unhandledrejection',e=>console.error('[ENFORZA PROMISE]',e.reason));
@@ -713,4 +784,37 @@ const observer=new MutationObserver(ms=>{
 });
 observer.observe(document.documentElement,{childList:true,subtree:true});
 })();
-</script></body></html>
+</script>
+<div id="mobileCommandDock" class="mobile-command-dock" aria-label="Mobile command dock">
+  <button class="mcd-item" data-route="dashboard" aria-label="Home"><span class="mcd-icon">⌂</span><small>Home</small></button>
+  <button class="mcd-item" data-route="files" aria-label="Files"><span class="mcd-icon">▣</span><small>Files</small></button>
+  <button class="mcd-fab" data-action="mobileSmartActions" aria-label="Quick actions"><span>＋</span></button>
+  <button class="mcd-item mcd-calendar" data-route="calendar" aria-label="Calendar"><span class="mcd-icon">□</span><small>Calendar</small><b id="mobileCalendarBadge" class="mcd-badge"></b></button>
+  <button class="mcd-item mcd-tasks" data-route="tasks" aria-label="Tasks"><span class="mcd-icon">✓</span><small>Tasks</small><b id="mobileTaskBadge" class="mcd-badge"></b></button>
+</div>
+<div id="mobileActionSheet" class="mobile-sheet-backdrop" aria-hidden="true">
+ <div class="mobile-action-sheet">
+  <div class="mobile-sheet-handle"></div>
+  <div class="mobile-sheet-head"><div><small>ENFORZA</small><h3>Quick Actions</h3></div><button type="button" data-action="closeMobileSheet">×</button></div>
+  <div id="mobileSmartActionGrid" class="mobile-action-grid"></div>
+  <button class="mobile-more-button" type="button" data-action="mobileMore">More Workspace</button>
+ </div>
+</div>
+<div id="mobileMoreSheet" class="mobile-sheet-backdrop" aria-hidden="true">
+ <div class="mobile-action-sheet mobile-more-sheet">
+  <div class="mobile-sheet-handle"></div>
+  <div class="mobile-sheet-head"><div><small>WORKSPACE</small><h3>More</h3></div><button type="button" data-action="closeMobileSheet">×</button></div>
+  <div class="mobile-more-grid">
+   <button data-route="claims"><span>◈</span>Financial Claims</button>
+   <button data-route="collections"><span>◎</span>Collections & Settlements</button>
+   <button data-route="expenses"><span>↘</span>Expenses</button>
+   <button data-route="treasury"><span>▤</span>Banking & Treasury</button>
+   <button data-route="minutes"><span>≡</span>Minutes</button>
+   <button data-route="evidence"><span>◇</span>Field Evidence</button>
+   <button data-route="documents"><span>▧</span>Documents</button>
+   <button data-route="reports"><span>▥</span>Reports</button>
+  </div>
+ </div>
+</div>
+
+</body></html>
