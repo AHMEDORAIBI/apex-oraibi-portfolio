@@ -3884,5 +3884,84 @@ function boot(){ensure();wrapOpen();wrapSave()}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});else boot()
 })();
 </script>
+
+<style id="enforza-file360-command-css">
+.enf360-command{margin-top:12px}.enf360-command-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.enf360-command-card{border:1px solid var(--line,#e6ded5);background:var(--surface,#fff);border-radius:12px;padding:10px}
+.enf360-command-card small{display:block;color:var(--muted,#75808a);font-size:8px;font-weight:800;text-transform:uppercase}
+.enf360-command-card b{display:block;font-size:15px;margin-top:4px}.enf360-command-card span{display:block;font-size:8px;color:var(--muted,#75808a);margin-top:3px}
+.enf360-command-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.enf360-command-actions button{border:1px solid var(--line,#e6ded5);background:var(--surface,#fff);color:inherit;border-radius:8px;padding:7px 9px;font-size:8px;cursor:pointer}
+.enf360-command-actions button:hover{border-color:var(--bronze,#a66f37)}
+.enf360-activity{margin-top:10px;border:1px solid var(--line,#e6ded5);border-radius:12px;padding:10px;background:var(--surface,#fff)}
+.enf360-activity h4{margin:0 0 7px;font-size:10px}.enf360-activity-row{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-top:1px solid var(--line,#eee);font-size:8px}
+@media(max-width:850px){.enf360-command-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:520px){.enf360-command-grid{grid-template-columns:1fr}}
+</style>
+<script id="enforza-file360-command-js">
+(function(){
+"use strict";
+function A(n){return window.DATA&&Array.isArray(DATA[n])?DATA[n]:[]}
+function id(f){return String(f?.id||f?.ref||f?.fileNo||"")}
+function current(){
+ var c=window.current360||window.enfCurrentFile360||window.currentFile360;
+ if(c&&typeof c==="object")return c;
+ var root=document.getElementById("v2360Root"),rid=root?.dataset?.fileId;
+ return rid?A("files").find(function(f){return id(f)===rid}):null
+}
+function related(name,f){
+ var x=id(f);return A(name).filter(function(r){return String(r.file||r.fileId||r.ref||r.enforcementFile||"")===x})
+}
+function amount(list){return list.reduce(function(a,x){return a+Number(x.amount||x.value||x.total||0)},0)}
+function money(v){return "BHD "+Number(v||0).toFixed(3)}
+function client(f){return f?.clientName||((f?.clientSide==="Creditor")?f?.creditor:(f?.clientSide==="Debtor")?f?.debtor:"")||f?.creditor||f?.debtor||"—"}
+function dateOf(x){return x.date||x.due||x.createdAt||x.time||""}
+function latest(f){
+ var out=[];
+ [["smartTasks","Task"],["collections","Collection"],["expenses","Expense"],["documents","Document"],["minutes","Minute"],["activities","Activity"]].forEach(function(pair){
+   related(pair[0],f).forEach(function(x){out.push({kind:pair[1],title:x.title||x.task||x.description||x.subject||x.type||pair[1],date:dateOf(x)})})
+ });
+ return out.sort(function(a,b){return String(b.date).localeCompare(String(a.date))}).slice(0,5)
+}
+function actions(f){
+ var x=id(f).replace(/'/g,"&#39;");
+ return '<div class="enf360-command-actions">'+
+ '<button onclick="enfTaskForFile(\''+x+'\')">＋ Task / Appointment</button>'+
+ '<button onclick="if(typeof enfOpenFinance===\'function\')enfOpenFinance()">＋ Financial</button>'+
+ '<button onclick="if(typeof enfDeOpen===\'function\')enfDeOpen()">＋ Document</button>'+
+ '<button onclick="if(typeof enfOpenMinutesStudio===\'function\')enfOpenMinutesStudio()">＋ Minute</button></div>'
+}
+function html(f){
+ var tasks=related("smartTasks",f),open=tasks.filter(function(x){return String(x.status||"").toLowerCase()!=="completed"});
+ var col=related("collections",f),exp=related("expenses",f),docs=related("documents",f),mins=related("minutes",f),acts=latest(f);
+ return '<div class="enf360-command">'+
+ '<div class="enf360-command-grid">'+
+ '<div class="enf360-command-card"><small>Client / Customer</small><b>'+client(f)+'</b><span>'+id(f)+'</span></div>'+
+ '<div class="enf360-command-card"><small>Open Tasks</small><b>'+open.length+'</b><span>'+tasks.length+' total tasks / appointments</span></div>'+
+ '<div class="enf360-command-card"><small>Collections</small><b>'+money(amount(col))+'</b><span>'+col.length+' transaction(s)</span></div>'+
+ '<div class="enf360-command-card"><small>Expenses</small><b>'+money(amount(exp))+'</b><span>'+exp.length+' transaction(s)</span></div>'+
+ '<div class="enf360-command-card"><small>Documents</small><b>'+docs.length+'</b><span>Linked to this file</span></div>'+
+ '<div class="enf360-command-card"><small>Minutes</small><b>'+mins.length+'</b><span>Meetings / field records</span></div>'+
+ '<div class="enf360-command-card"><small>Outstanding</small><b>'+money(f.outstanding||f.amount||0)+'</b><span>Current file balance</span></div>'+
+ '<div class="enf360-command-card"><small>Responsible</small><b>'+(f.officer||f.assignedTo||f.owner||f.responsible||"—")+'</b><span>'+(f.status||"Active")+'</span></div>'+
+ '</div>'+actions(f)+
+ '<div class="enf360-activity"><h4>Latest File Activity</h4>'+
+ (acts.length?acts.map(function(x){return '<div class="enf360-activity-row"><span><b>'+x.kind+'</b> · '+x.title+'</span><span>'+String(x.date||"—").slice(0,16)+'</span></div>'}).join(""):'<div class="enf360-activity-row"><span>No activity recorded yet.</span><span>—</span></div>')+
+ '</div></div>'
+}
+function inject(){
+ var f=current(),root=document.getElementById("v2360Root");if(!f||!root)return;
+ var old=document.getElementById("enf360Command");if(old)old.remove();
+ var box=document.createElement("div");box.id="enf360Command";box.innerHTML=html(f);
+ root.appendChild(box)
+}
+window.enfFile360CommandRefresh=inject;
+function boot(){
+ var root=document.getElementById("v2360Root");if(root)new MutationObserver(function(){setTimeout(inject,0)}).observe(root,{childList:true,subtree:true});
+ var old=window.openFile360;if(typeof old==="function"&&!old.__enfCommand){
+   var w=function(){var r=old.apply(this,arguments);setTimeout(inject,0);return r};w.__enfCommand=true;window.openFile360=w
+ }
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});else boot()
+})();
+</script>
 </body>
 </html>
