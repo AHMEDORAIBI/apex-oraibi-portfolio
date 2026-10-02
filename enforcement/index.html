@@ -846,7 +846,7 @@ body.enf-dark .enf360-actions button,body.enf-dark .enf360-tab,body.enf-dark .en
     <a class="nav-item" data-page="files" href="#" onclick="openPage('files');return false;"><span class="nav-icon">▤</span><span data-i18n="Enforcement Files">Enforcement Files</span></a>
     <a class="nav-item" data-page="parties" href="#" onclick="openPage('parties');return false;"><span class="nav-icon">♙</span><span data-i18n="Parties">Parties</span></a>
     <a class="nav-item" data-page="claims" href="#" onclick="openPage('claims');return false;"><span class="nav-icon">§</span><span data-i18n="Financial Claims">Financial Claims</span></a>
-    <a class="nav-item" data-page="tasks" href="#" onclick="openPage('tasks');return false;"><span class="nav-icon">✓</span><span data-i18n="Tasks & Follow-ups">Tasks & Follow-ups</span></a>
+    <a class="nav-item" data-page="tasks" href="#" onclick="enfOpenCalendar();return false;"><span class="nav-icon">✓</span><span data-i18n="Tasks & Follow-ups">Tasks & Follow-ups</span></a>
     <a class="nav-item" data-page="actionsCenter" href="#" onclick="openPage('actionsCenter');return false;"><span class="nav-icon">⚑</span><span data-i18n="Execution Action Center">Execution Action Center</span></a>
     <a class="nav-item" data-page="followupBoard" href="#" onclick="openPage('followupBoard');return false;"><span class="nav-icon">◷</span><span data-i18n="Daily Follow-up Board">Daily Follow-up Board</span></a>
   </div>
@@ -1269,7 +1269,7 @@ function renderGenericTable(){
 }
 function rowHtml(m,r){
  const btn=(label=r.id)=>`<button class="link-btn" onclick="openDetail('${m}','${r.id}')">${label}</button>`;
- if(m==="files")return `<tr><td>${btn()}</td><td>${r.creditor}</td><td>${r.debtor}</td><td>${money(r.claim)}</td><td>${money(r.collected)}</td><td>${money(r.claim-r.collected)}</td><td>${r.officer}</td><td><span class="badge ${badgeClass(r.status)}">${r.status}</span></td></tr>`;
+ if(m==="files"){let claim=Number(r.claim??r.claimAmount??r.amount??0),col=Number(r.collected||0);return `<tr><td>${btn()}</td><td>${r.creditor||"—"}</td><td>${r.debtor||"—"}</td><td>${money(claim)}</td><td>${money(col)}</td><td>${money(Math.max(0,claim-col))}</td><td>${r.officer||r.assignedOfficer||"—"}</td><td><span class="badge ${badgeClass(r.status||"Active")}">${r.status||"Active"}</span></td></tr>`;}
  if(m==="parties")return `<tr><td>${btn()}</td><td>${r.name}</td><td>${r.type}</td><td>${r.ref}</td><td>${r.mobile}</td><td>${r.files}</td><td>${money(r.balance)}</td><td><span class="badge active">${r.status}</span></td></tr>`;
  if(m==="claims")return `<tr><td>${btn()}</td><td>${r.file}</td><td>${r.party}</td><td>${r.type}</td><td>${money(r.amount)}</td><td>${money(r.paid)}</td><td>${money(r.amount-r.paid)}</td><td><span class="badge ${badgeClass(r.status)}">${r.status}</span></td></tr>`;
  if(m==="tasks")return `<tr><td>${btn()}</td><td>${r.title}</td><td>${r.file}</td><td>${r.officer}</td><td>${r.due}</td><td>${r.priority}</td><td><span class="badge pending">${r.status}</span></td></tr>`;
@@ -2174,17 +2174,8 @@ renderDashboard();renderUsers();renderAudit();renderPermissions();showReport("ex
 "use strict";
 function ar(){return (window.currentLang||document.documentElement.lang||"en")==="ar"}
 function tx(en,ara){return ar()?ara:en}
-function clearLegacyDemoStorage(){
- try{
-   ["enforzaData","ENFORZA_DATA","enforza_demo_data","ENFORZA_REAL_DATA_V34"].forEach(k=>localStorage.removeItem(k));
- }catch(e){}
-}
-function zeroRuntime(){
- if(!window.DATA)return;
- ["files","parties","claims","tasks","collections","expenses","settlements","treasury","smartTasks","minutes","evidence","documents","notifications","activities","audit"].forEach(k=>{
-   if(Array.isArray(DATA[k])) DATA[k].length=0;
- });
-}
+function clearLegacyDemoStorage(){ /* disabled: preserve working demo data */ }
+function zeroRuntime(){ /* disabled: do not erase user-created demo records */ }
 function kpi(label,value,note){return `<div class="v2-card v2-kpi"><div class="v2-kpi-label">${label}</div><div class="v2-kpi-value">${value}</div><div class="v2-kpi-note">${note}</div></div>`}
 function empty(icon,title,text){return `<div class="v2-empty"><div><div class="v2-empty-icon">${icon}</div><h3>${title}</h3><p>${text}</p></div></div>`}
 function render(){
@@ -2340,7 +2331,7 @@ function hidePages360(){document.querySelectorAll(".page").forEach(p=>p.style.di
 function blank360(text){return `<div class="v2360-blank">${text}</div>`}
 function related(arr,key,val){return window.DATA&&Array.isArray(DATA[arr])?DATA[arr].filter(x=>(x[key]||x.file||x.fileId)===val):[]}
 function renderEmpty360(){
- document.getElementById("v2360Root").innerHTML=`<div class="v2360-empty"><div class="v2360-emptybox"><div class="v2360-emptyicon">360°</div><h1>${T360("File 360°","ملف 360°")}</h1><p>${T360("No enforcement file is open yet. Create your first file, then all actions, financials, tasks, minutes, documents and evidence will be available from one workspace.","لا يوجد ملف تنفيذ مفتوح حتى الآن. أنشئ أول ملف، وبعدها ستتوفر الإجراءات والبيانات المالية والمهام والمحاضر والمستندات والأدلة في مساحة عمل واحدة.")}</p><button class="v2-btn primary" onclick="try{openQuickAdd('files')}catch(e){}">+ ${T360("Create First File","إنشاء أول ملف")}</button></div></div>`;
+ document.getElementById("enf360Root").innerHTML=`<div class="v2360-empty"><div class="v2360-emptybox"><div class="v2360-emptyicon">360°</div><h1>${T360("File 360°","ملف 360°")}</h1><p>${T360("No enforcement file is open yet. Create your first file, then all actions, financials, tasks, minutes, documents and evidence will be available from one workspace.","لا يوجد ملف تنفيذ مفتوح حتى الآن. أنشئ أول ملف، وبعدها ستتوفر الإجراءات والبيانات المالية والمهام والمحاضر والمستندات والأدلة في مساحة عمل واحدة.")}</p><button class="v2-btn primary" onclick="try{openQuickAdd('files')}catch(e){}">+ ${T360("Create First File","إنشاء أول ملف")}</button></div></div>`;
 }
 function tabBody360(f){
  const id=f.id||f.ref||f.fileNo||"";
@@ -2352,7 +2343,7 @@ function tabBody360(f){
 function render360(){
  const f=current360;if(!f){renderEmpty360();return}
  const id=f.id||f.ref||f.fileNo||"—",tabs=[["overview","Overview","نظرة عامة"],["actions","Actions","الإجراءات"],["financial","Financial","المالي"],["tasks","Tasks","المهام"],["minutes","Minutes","المحاضر"],["documents","Documents","المستندات"],["evidence","Evidence","الأدلة"],["timeline","Timeline","التسلسل الزمني"]];
- document.getElementById("v2360Root").innerHTML=`<div class="v2360-head"><div class="v2360-headtop"><div><div class="v2360-ref">${id}</div><h1>${f.title||f.caseName||T360("Enforcement File","ملف التنفيذ")}</h1><div class="v2360-meta"><span>${f.caseNo||T360("No case number","بدون رقم قضية")}</span><span>•</span><span>${f.creditor||T360("Creditor not entered","لم يتم إدخال الدائن")}</span><span>→</span><span>${f.debtor||T360("Debtor not entered","لم يتم إدخال المدين")}</span></div></div><div class="v2360-status">${f.status||T360("Active","نشط")}</div></div><div class="v2360-flow">${["Received","Reviewed","Filed","Served","Enforcement","Collection","Closed"].map((x,i)=>`<div class="v2360-step ${i===0?"active":""}">${T360(x,["مستلم","مراجع","مقيد","مبلغ","تنفيذ","تحصيل","مغلق"][i])}</div>`).join("")}</div></div>
+ document.getElementById("enf360Root").innerHTML=`<div class="v2360-head"><div class="v2360-headtop"><div><div class="v2360-ref">${id}</div><h1>${f.title||f.caseName||T360("Enforcement File","ملف التنفيذ")}</h1><div class="v2360-meta"><span>${f.caseNo||T360("No case number","بدون رقم قضية")}</span><span>•</span><span>${f.creditor||T360("Creditor not entered","لم يتم إدخال الدائن")}</span><span>→</span><span>${f.debtor||T360("Debtor not entered","لم يتم إدخال المدين")}</span></div></div><div class="v2360-status">${f.status||T360("Active","نشط")}</div></div><div class="v2360-flow">${["Received","Reviewed","Filed","Served","Enforcement","Collection","Closed"].map((x,i)=>`<div class="v2360-step ${i===0?"active":""}">${T360(x,["مستلم","مراجع","مقيد","مبلغ","تنفيذ","تحصيل","مغلق"][i])}</div>`).join("")}</div></div>
  <div class="v2360-layout"><main class="v2360-main"><div class="v2360-tabs">${tabs.map(t=>`<button class="v2360-tab ${current360Tab===t[0]?"active":""}" onclick="v2360Tab('${t[0]}')">${T360(t[1],t[2])}</button>`).join("")}</div><div class="v2360-content">${tabBody360(f)}</div></main>
  <aside class="v2360-side"><h3>${T360("Smart Panel","اللوحة الذكية")}</h3><div class="v2360-smart"><b>✦ ENFORZA AI</b><br><small>${T360("Recommendations will appear after enough file data is entered.","ستظهر التوصيات بعد إدخال بيانات كافية للملف.")}</small></div><div class="v2360-sideitem"><small>${T360("Next Recommended Action","الإجراء المقترح التالي")}</small><b>—</b></div><div class="v2360-sideitem"><small>${T360("Upcoming Deadline","الموعد القادم")}</small><b>—</b></div><div class="v2360-sideitem"><small>${T360("Outstanding","المبلغ القائم")}</small><b>${money360(f.outstanding||f.amount)}</b></div><div class="v2360-sideitem"><small>${T360("Assigned Officer","الموظف المسؤول")}</small><b>${f.officer||"—"}</b></div><button class="v2360-sidebtn" onclick="v2OpenTask('',null)">${T360("+ Add Task","+ إضافة مهمة")}</button></aside></div>`;
 }
@@ -2511,7 +2502,7 @@ window.v2360EnhancedBody=function(f,tab){
 const oldRender8=window.v2360Tab;
 window.v2360Tab=function(tab){if(oldRender8)oldRender8(tab);setTimeout(enhance8,0)}
 function enhance8(){
- let root=document.getElementById("v2360Root");if(!root||!root.querySelector(".v2360-main"))return;
+ let root=document.getElementById("enf360Root");if(!root||!root.querySelector(".v2360-main"))return;
  let ref=root.querySelector(".v2360-ref");if(!ref)return;let id=ref.textContent.trim(),f=(window.DATA&&DATA.files||[]).find(x=>id8(x)===id);if(!f)return;
  let active=root.querySelector(".v2360-tab.active"),tab="overview";if(active){let oc=active.getAttribute("onclick")||"";let m=oc.match(/v2360Tab\('([^']+)'\)/);if(m)tab=m[1]}
  let content=root.querySelector(".v2360-content");if(content)content.innerHTML=window.v2360EnhancedBody(f,tab);
@@ -2950,8 +2941,9 @@ function pick(inp){attachments=[...(inp.files||[])].map(f=>({name:f.name,type:f.
 function review(){let a=[[t("Intake Type","نوع فتح الملف"),type],[t("Case Number","رقم القضية"),val("eiCase")||"—"],[t("Court / Authority","المحكمة / الجهة"),val("eiCourt")||"—"],[t("Creditor","الدائن"),val("eiCreditor")||"—"],[t("Debtor","المدين"),val("eiDebtor")||"—"],[t("Claim","المطالبة"),"BHD "+Number(val("eiAmount")||0).toFixed(3)],[t("Assigned Officer","المسؤول"),val("eiOfficer")||"—"],[t("Attachments","المرفقات"),String(attachments.length)]];document.getElementById("eiReview").innerHTML=a.map(x=>`<div><small>${x[0]}</small><b>${x[1]}</b></div>`).join("")}
 function create(){
  let n=files().length+1,id="ENF-"+String(n).padStart(5,"0"),title=val("eiCase")?t("Case ","قضية ")+val("eiCase"):t("Enforcement File ","ملف تنفيذ ")+id;
- let f={id,title,status:"Active",intakeType:type,caseNumber:val("eiCase"),court:val("eiCourt"),caseType:val("eiCaseType"),judgmentRef:val("eiJudgment"),lawFirm:val("eiLawFirm"),externalRef:val("eiExternalRef"),sourceNotes:val("eiSourceNotes"),creditor:val("eiCreditor"),creditorId:val("eiCreditorId"),debtor:val("eiDebtor"),debtorId:val("eiDebtorId"),amount:Number(val("eiAmount")||0),assignedOfficer:val("eiOfficer"),summary:val("eiSummary"),attachments:[...attachments],openedDate:new Date().toISOString().slice(0,10)};
+ let f={id,title,status:"Active",intakeType:type,caseNumber:val("eiCase"),court:val("eiCourt"),caseType:val("eiCaseType"),judgmentRef:val("eiJudgment"),lawFirm:val("eiLawFirm"),externalRef:val("eiExternalRef"),sourceNotes:val("eiSourceNotes"),creditor:val("eiCreditor"),creditorId:val("eiCreditorId"),debtor:val("eiDebtor"),debtorId:val("eiDebtorId"),amount:Number(val("eiAmount")||0),claim:Number(val("eiAmount")||0),claimAmount:Number(val("eiAmount")||0),collected:0,outstanding:Number(val("eiAmount")||0),assignedOfficer:val("eiOfficer"),officer:val("eiOfficer"),clientName:val("eiClientName")||(val("eiRepresent")==="Debtor"?val("eiDebtor"):val("eiCreditor")),clientId:val("eiClientId")||(val("eiRepresent")==="Debtor"?val("eiDebtorId"):val("eiCreditorId")),clientContact:val("eiClientContact"),clientSide:val("eiRepresent"),summary:val("eiSummary"),attachments:[...attachments],openedDate:new Date().toISOString().slice(0,10)};
  files().push(f);
+ if(typeof window.enfPersistNow==="function")window.enfPersistNow();
  if(window.DATA&&Array.isArray(DATA.documents))attachments.forEach((a,i)=>DATA.documents.push({id:"DOC-"+String(DATA.documents.length+1).padStart(4,"0"),file:id,title:a.name,recordType:"Initial Document",date:f.openedDate,origin:type,source:"Intake",attachments:[a],status:"Recorded"}));
  enfIntakeClose();if(typeof v210Refresh==="function")v210Refresh();if(typeof openFile360==="function")setTimeout(()=>openFile360(id),50)
 }
@@ -3904,7 +3896,7 @@ function id(f){return String(f?.id||f?.ref||f?.fileNo||"")}
 function current(){
  var c=window.current360||window.enfCurrentFile360||window.currentFile360;
  if(c&&typeof c==="object")return c;
- var root=document.getElementById("v2360Root"),rid=root?.dataset?.fileId;
+ var root=document.getElementById("enf360Root"),rid=root?.dataset?.fileId;
  return rid?A("files").find(function(f){return id(f)===rid}):null
 }
 function related(name,f){
@@ -3948,14 +3940,14 @@ function html(f){
  '</div></div>'
 }
 function inject(){
- var f=current(),root=document.getElementById("v2360Root");if(!f||!root)return;
+ var f=current(),root=document.getElementById("enf360Root");if(!f||!root)return;
  var old=document.getElementById("enf360Command");if(old)old.remove();
  var box=document.createElement("div");box.id="enf360Command";box.innerHTML=html(f);
  root.appendChild(box)
 }
 window.enfFile360CommandRefresh=inject;
 function boot(){
- var root=document.getElementById("v2360Root");if(root)new MutationObserver(function(){setTimeout(inject,0)}).observe(root,{childList:true,subtree:true});
+ var root=document.getElementById("enf360Root");if(root)new MutationObserver(function(){setTimeout(inject,0)}).observe(root,{childList:true,subtree:true});
  var old=window.openFile360;if(typeof old==="function"&&!old.__enfCommand){
    var w=function(){var r=old.apply(this,arguments);setTimeout(inject,0);return r};w.__enfCommand=true;window.openFile360=w
  }
@@ -4211,5 +4203,86 @@ function boot(){
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});else boot()
 })();
 </script>
+
+<script id="enforza-integration-repair-js">
+(function(){
+"use strict";
+const KEY="enforzaWorkingDemoStateV1";
+const ARRAYS=["files","parties","claims","tasks","collections","expenses","settlements","treasury","smartTasks","minutes","evidence","documents","notifications","activities","audit","financialTransactions","clientTransfers"];
+function ensure(){
+ if(!window.DATA)return;
+ ARRAYS.forEach(function(k){if(!Array.isArray(DATA[k]))DATA[k]=[]})
+}
+function restore(){
+ ensure();
+ try{
+  var raw=localStorage.getItem(KEY);if(!raw)return;
+  var saved=JSON.parse(raw);
+  ARRAYS.forEach(function(k){if(Array.isArray(saved[k])){DATA[k].length=0;DATA[k].push.apply(DATA[k],saved[k])}})
+ }catch(e){console.error("[ENFORZA RESTORE]",e)}
+}
+function save(){
+ ensure();
+ try{
+  var out={};ARRAYS.forEach(function(k){out[k]=DATA[k]});
+  localStorage.setItem(KEY,JSON.stringify(out));return true
+ }catch(e){console.error("[ENFORZA SAVE]",e);return false}
+}
+window.enfPersistNow=save;
+restore();
+
+window.enfOpenCalendar=function(){
+ document.querySelectorAll(".page").forEach(function(p){p.classList.add("hidden");p.style.display="none"});
+ var page=document.getElementById("v2CalendarPage");if(!page)return false;
+ page.classList.remove("hidden");page.style.display="block";
+ document.querySelectorAll(".nav-item").forEach(function(n){n.classList.toggle("active",n.dataset.page==="tasks")});
+ try{if(typeof window.renderMonth==="function")window.renderMonth()}catch(e){}
+ try{if(typeof window.enfCalendarProRefresh==="function")window.enfCalendarProRefresh()}catch(e){}
+ window.scrollTo(0,0);return true
+};
+
+/* Dashboard "Open Calendar" and any v210Go('tasks') now open the advanced calendar. */
+var oldGo=window.v210Go;
+window.v210Go=function(page){
+ if(page==="tasks"||page==="calendar")return window.enfOpenCalendar();
+ return typeof oldGo==="function"?oldGo(page):undefined
+};
+
+/* Keep current File 360 context public so all linked panels use the same file. */
+var old360=window.openFile360;
+if(typeof old360==="function"){
+ window.openFile360=function(fileId){
+  var f=DATA.files.find(function(x){return String(x.id||x.ref||"")===String(fileId||"")});
+  if(f)window.enfCurrentFile360=f;
+  var r=old360.apply(this,arguments);
+  setTimeout(function(){
+   try{if(typeof window.enfFile360CommandRefresh==="function")window.enfFile360CommandRefresh()}catch(e){}
+   try{if(typeof window.enfClientMoneyRefresh==="function")window.enfClientMoneyRefresh()}catch(e){}
+  },0);
+  return r
+ }
+}
+
+/* Save after the real intake wizard creates a file. */
+var oldNext=window.enfIntakeNext;
+if(typeof oldNext==="function"){
+ window.enfIntakeNext=function(){
+  var before=DATA.files.length,r=oldNext.apply(this,arguments);
+  setTimeout(function(){
+   if(DATA.files.length!==before){
+    save();
+    if(window.currentModule==="files"&&typeof window.renderGenericTable==="function")window.renderGenericTable();
+   }
+  },0);return r
+ }
+}
+window.addEventListener("beforeunload",save);
+document.addEventListener("visibilitychange",function(){if(document.hidden)save()});
+})();
+</script>
+<style id="enforza-integration-repair-css">
+/* Make the advanced calendar unmistakable in the navigation. */
+.nav-item[data-page="tasks"] span[data-i18n="Tasks & Follow-ups"]::after{content:" · Calendar";font-size:8px;opacity:.65}
+</style>
 </body>
 </html>
