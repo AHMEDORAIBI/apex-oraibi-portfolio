@@ -814,22 +814,7 @@ body.enf-dark .enf360-actions button,body.enf-dark .enf360-tab,body.enf-dark .en
 <div class="wizard-actions"><button data-i18n="Back" id="wizardBack" onclick="wizardMove(-1)" type="button">Back</button><div><button data-i18n="Cancel" onclick="closeFileWizard()" type="button">Cancel</button> <button class="primary" data-i18n="Next" id="wizardNext" onclick="wizardMove(1)" type="button">Next</button></div></div>
 </main>
 </div></div>
-<div class="login-gate" id="loginGate">
-<div class="login-shell">
-<section class="login-brand">
-<div><div class="mark">E</div><h1>ENFORZA<span>PRIVATE ENFORCEMENT</span></h1><p data-i18n="Login brand text">Interactive enforcement management demo with workflow, collections, settlements, smart notifications, mobile access and ENFORZA AI.</p>
-<div class="login-feature"><div>✦ ENFORZA AI</div><div>🎙 Voice Command</div><div>◷ Smart Follow-up</div><div>◈ Creditor Portal</div></div></div>
-<div class="login-credit">APEX ORAIBI — SYSTEM DESIGN &amp; DEVELOPMENT</div>
-</section>
-<section class="login-form-side">
-<h2 data-i18n="Welcome to ENFORZA">Welcome to ENFORZA</h2><p data-i18n="Choose a demo role to experience the system.">Choose a demo role to experience the system.</p>
-<div class="role-picker"><div class="role-option active" data-role="management" onclick="selectDemoRole('management',this)"><b>◆</b><strong data-i18n="Management">Management</strong></div><div class="role-option" data-role="officer" onclick="selectDemoRole('officer',this)"><b>⚑</b><strong data-i18n="Enforcement Officer">Enforcement Officer</strong></div><div class="role-option" data-role="creditor" onclick="selectDemoRole('creditor',this)"><b>◈</b><strong data-i18n="Creditor">Creditor</strong></div></div>
-<div class="login-fields"><label data-i18n="Username">Username<input id="demoUsername" value="admin"/></label><label data-i18n="Password">Password<input id="demoPassword" type="password" value="demo123"/></label></div>
-<button class="login-submit" data-i18n="Enter Demo" onclick="loginDemo()" type="button">Enter Demo</button>
-<div class="login-demo-note" data-i18n="Demo login note">Demo only. Select any role and enter. No real authentication or client data is used.</div>
-</section>
-</div>
-</div>
+
 <div class="app">
 <aside class="sidebar" id="sidebar">
 <div class="brand"><div class="brand-mark">E</div><div><strong>ENFORZA</strong><span>PRIVATE ENFORCEMENT</span></div></div>
@@ -1195,7 +1180,7 @@ function t(k){return currentLang==="ar"?(I18N.ar[k]||k):k}
 function setLanguage(lang){currentLang=lang;localStorage.setItem("enforzaLang",lang);applyLanguage()}
 function applyLanguage(){
  document.documentElement.lang=currentLang==="ar"?"ar":"en";document.documentElement.dir=currentLang==="ar"?"rtl":"ltr";
- document.getElementById("langEn").classList.toggle("active",currentLang==="en");document.getElementById("langAr").classList.toggle("active",currentLang==="ar");
+ (document.getElementById("langEn")||{classList:{add:function(){},remove:function(){},toggle:function(){}}}).classList.toggle("active",currentLang==="en");(document.getElementById("langAr")||{classList:{add:function(){},remove:function(){},toggle:function(){}}}).classList.toggle("active",currentLang==="ar");
  document.querySelectorAll("[data-i18n]").forEach(el=>el.textContent=t(el.dataset.i18n));
  document.querySelectorAll("[data-i18n-placeholder]").forEach(el=>el.placeholder=t(el.dataset.i18nPlaceholder));
 }
@@ -1651,11 +1636,7 @@ function applyRoleAccess(role){
    document.querySelectorAll(".nav-item").forEach(n=>{n.style.display=(n.classList.contains("admin-only"))?"none":""});
  } else document.querySelectorAll(".nav-item").forEach(n=>n.style.display="");
 }
-function loginDemo(){
- const gate=document.getElementById("loginGate");gate.style.display="none";applyRoleAccess(selectedDemoRole);
- if(selectedDemoRole==="creditor")openPage("creditorPortal");else if(selectedDemoRole==="officer")openPage("followupBoard");else openPage("dashboard");
- showToast(t("Demo session started"));
-}
+function loginDemo(){ if(typeof window.enfRoute==="function") return window.enfRoute("dashboard"); return false; }
 function logoutDemo(){closeAI();closeVoice();document.getElementById("loginGate").style.display="grid";document.getElementById("smartNotifyPanel").style.display="none"}
 Object.assign(I18N.ar,{
 "Login brand text":"ديمو تفاعلي لإدارة التنفيذ يشمل مسار العمل والتحصيلات والتسويات والإشعارات الذكية واستخدام الهاتف وENFORZA AI.","Welcome to ENFORZA":"مرحبًا بك في ENFORZA","Choose a demo role to experience the system.":"اختر صفة الدخول لتجربة النظام.","Management":"الإدارة","Enforcement Officer":"منفذ خاص","Creditor":"الدائن","Username":"اسم المستخدم","Password":"كلمة المرور","Enter Demo":"دخول الديمو","Demo login note":"نسخة تجريبية فقط. اختر أي صفة ثم ادخل. لا تستخدم بيانات عملاء حقيقية أو مصادقة فعلية.","Demo session started":"تم بدء جلسة الديمو"
@@ -4176,8 +4157,6 @@ window.enfAiComingSoon=function(){
 <style id="enforza-ai-coming-soon-css">
 .nav-item[data-page="aiInsights"] .future-tag{margin-inline-start:auto;font-size:7px;font-weight:900;letter-spacing:.06em;opacity:.75}
 </style>
-
-
 <script id="enforza-single-router-09-js">
 (function(){
 "use strict";
@@ -4246,6 +4225,35 @@ document.addEventListener("click",function(e){
    e.preventDefault();e.stopImmediatePropagation();calendar();
  }
 },true);
+})();
+</script>
+
+<script id="enforza-direct-entry-10-js">
+(function(){
+"use strict";
+function directEntry(){
+  try{
+    var gates=document.querySelectorAll("#loginGate,.login-gate,#loginDemo,.login-demo");
+    gates.forEach(function(g){g.remove()});
+    document.body.classList.remove("login-open","demo-open","modal-open");
+    document.documentElement.classList.remove("login-open","demo-open");
+    if(typeof window.enfRoute==="function"){
+      window.enfRoute("dashboard");
+    }else{
+      var d=document.getElementById("dashboardPage");
+      if(d){
+        document.querySelectorAll(".page").forEach(function(p){p.classList.add("hidden");p.style.display="none"});
+        d.classList.remove("hidden");d.style.display="block";
+      }
+    }
+  }catch(e){console.error("[ENFORZA DIRECT ENTRY]",e)}
+}
+window.loginDemo=function(){directEntry();return false};
+if(document.readyState==="loading"){
+ document.addEventListener("DOMContentLoaded",directEntry,{once:true});
+}else{
+ directEntry();
+}
 })();
 </script>
 </body>
