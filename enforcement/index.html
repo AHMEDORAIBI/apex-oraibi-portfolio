@@ -42,4 +42,125 @@ document.getElementById('globalSearch').addEventListener('keydown',e=>{if(e.key=
 function voice(){let SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){toast('Voice recognition is not supported in this browser');return}let r=new SR();r.lang='en-US';r.interimResults=false;r.onresult=e=>{let t=e.results[0][0].transcript.toLowerCase();if(t.includes('new file')||t.includes('create file'))newFile();else if(t.includes('task'))taskForm();else if(t.includes('calendar'))route('calendar');else if(t.includes('files'))route('files');else toast('Voice command not recognized')};r.onerror=()=>toast('Voice command could not be completed');r.start();toast('Listening...')}document.getElementById('voiceBtn').onclick=voice;
 window.addEventListener('error',e=>console.error('[ENFORZA RUNTIME]',e.error||e.message));window.addEventListener('unhandledrejection',e=>console.error('[ENFORZA PROMISE]',e.reason));
 window.ENFORZA={version:'PRODUCTION-STABLE-1.0',route,health(){return {route:ROUTE,files:DB.files.length,tasks:DB.tasks.length,storage:true,pages:15}}};render();
-</script></body></html>
+</script>
+<style id="enforza-bilingual-css">
+html[dir="rtl"] body{direction:rtl}
+html[dir="rtl"] .sidebar,html[dir="rtl"] .main,html[dir="rtl"] .page{text-align:right}
+html[dir="rtl"] table{text-align:right}
+#langSwitch{min-width:78px;font-weight:800}
+</style>
+<script id="enforza-bilingual-js">
+(function(){
+"use strict";
+const AR={
+"Command Center":"مركز التحكم",
+"Files":"الملفات",
+"Financial Claims":"المطالبات المالية",
+"Calendar":"التقويم",
+"Smart Tasks":"المهام الذكية",
+"Collections":"التحصيلات",
+"Expenses":"المصروفات",
+"Settlements":"التسويات",
+"Banking & Treasury":"البنوك والخزينة",
+"Minutes":"المحاضر",
+"Field Evidence":"الأدلة الميدانية",
+"Documents":"المستندات",
+"Reports & Analytics":"التقارير والتحليلات",
+"Audit Log":"سجل التدقيق",
+"AI Management Insights":"رؤى الإدارة بالذكاء الاصطناعي",
+"New File":"ملف جديد",
+"New Task":"مهمة جديدة",
+"New Collection":"تحصيل جديد",
+"Open Calendar":"فتح التقويم",
+"Total Files":"إجمالي الملفات",
+"Active Files":"الملفات النشطة",
+"Total Claims":"إجمالي المطالبات",
+"Total Collected":"إجمالي المحصل",
+"Outstanding":"الرصيد القائم",
+"Open Tasks":"المهام المفتوحة",
+"Overdue Tasks":"المهام المتأخرة",
+"Recent Collections":"آخر التحصيلات",
+"Critical Files":"الملفات الحرجة",
+"Client Money Due":"مبالغ مستحقة للموكلين",
+"Search":"بحث",
+"Status":"الحالة",
+"Client":"الموكل",
+"Customer":"العميل",
+"Creditor":"الدائن",
+"Debtor":"المدين",
+"Amount":"المبلغ",
+"Claim Amount":"مبلغ المطالبة",
+"Collected":"المحصل",
+"Balance":"الرصيد",
+"Responsible":"المسؤول",
+"Priority":"الأولوية",
+"Date":"التاريخ",
+"Due Date":"تاريخ الاستحقاق",
+"Description":"البيان",
+"Reference":"المرجع",
+"Method":"الطريقة",
+"Notes":"ملاحظات",
+"Save":"حفظ",
+"Cancel":"إلغاء",
+"Close":"إغلاق",
+"Add":"إضافة",
+"Edit":"تعديل",
+"Delete":"حذف",
+"View":"عرض",
+"Open":"مفتوح",
+"Active":"نشط",
+"Completed":"مكتمل",
+"Cancelled":"ملغي",
+"Pending":"قيد الانتظار",
+"High":"عالية",
+"Critical":"حرجة",
+"Normal":"عادية",
+"Today":"اليوم",
+"COMING SOON":"قريبًا",
+"ENFORZA AI":"الذكاء الاصطناعي ENFORZA",
+"Create File":"إنشاء ملف",
+"Create Task":"إنشاء مهمة",
+"Create Collection":"إنشاء تحصيل",
+"File No.":"رقم الملف",
+"File":"الملف",
+"Title":"العنوان",
+"Type":"النوع",
+"Location":"الموقع",
+"Professional Fees":"الأتعاب المهنية",
+"Execution Expenses":"مصروفات التنفيذ",
+"Transferred to Client":"المحول للموكل",
+"Due to Client":"المستحق للموكل",
+"Total Collected":"إجمالي المحصل"
+};
+const EN=Object.fromEntries(Object.entries(AR).map(([k,v])=>[v,k]));
+let lang=localStorage.getItem("enforzaLanguage")||"en";
+function translateText(root,dict){
+ const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
+ const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);
+ nodes.forEach(n=>{
+  if(["SCRIPT","STYLE","TEXTAREA"].includes(n.parentElement?.tagName))return;
+  const raw=n.nodeValue,trim=raw.trim();if(!trim)return;
+  if(dict[trim])n.nodeValue=raw.replace(trim,dict[trim]);
+ });
+ root.querySelectorAll("input[placeholder],textarea[placeholder]").forEach(el=>{
+  const p=el.getAttribute("placeholder");if(dict[p])el.setAttribute("placeholder",dict[p]);
+ });
+}
+function apply(){
+ const ar=lang==="ar",dict=ar?AR:EN;
+ document.documentElement.lang=lang;
+ document.documentElement.dir=ar?"rtl":"ltr";
+ translateText(document.body,dict);
+ const b=document.getElementById("langSwitch");if(b)b.textContent=ar?"English":"العربية";
+ localStorage.setItem("enforzaLanguage",lang);
+}
+window.toggleLanguage=function(){lang=lang==="en"?"ar":"en";apply()};
+window.enfApplyLanguage=apply;
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",apply,{once:true});else apply();
+new MutationObserver(function(ms){
+ if(lang!=="ar")return;
+ ms.forEach(m=>m.addedNodes.forEach(n=>{if(n.nodeType===1)translateText(n,AR)}));
+}).observe(document.documentElement,{childList:true,subtree:true});
+})();
+</script>
+</body></html>
