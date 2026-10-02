@@ -4284,5 +4284,85 @@ document.addEventListener("visibilitychange",function(){if(document.hidden)save(
 /* Make the advanced calendar unmistakable in the navigation. */
 .nav-item[data-page="tasks"] span[data-i18n="Tasks & Follow-ups"]::after{content:" · Calendar";font-size:8px;opacity:.65}
 </style>
+
+<script id="enforza-files-calendar-repair2-js">
+(function(){
+"use strict";
+function A(n){if(!window.DATA)return[];if(!Array.isArray(DATA[n]))DATA[n]=[];return DATA[n]}
+function num(v){return Number(v||0)||0}
+function fid(f){return String(f?.id||f?.ref||f?.fileNo||"")}
+function claim(f){return num(f.claim??f.claimAmount??f.amount)}
+function collected(f){return num(f.collected)}
+function outstanding(f){return num(f.outstanding ?? Math.max(0,claim(f)-collected(f)))}
+function liveFileKpis(){
+ if(window.currentModule!=="files")return;
+ var f=A("files"),active=f.filter(x=>String(x.status||"Active").toLowerCase()!=="closed");
+ var esc=f.filter(x=>["escalated","critical","urgent"].includes(String(x.status||"").toLowerCase()));
+ var set=f.filter(x=>String(x.status||"").toLowerCase().includes("settlement"));
+ var vals=[
+  ["Total Files",f.length],["Active Files",active.length],["Escalated",esc.length],
+  ["Settlement",set.length],["Claim Value","BHD "+f.reduce((a,x)=>a+claim(x),0).toFixed(3)]
+ ];
+ var host=document.getElementById("genericKpis");
+ if(host)host.innerHTML=vals.map(x=>'<div class="kpi-card"><span class="kpi-label">'+x[0]+'</span><strong class="kpi-value">'+x[1]+'</strong></div>').join("")
+}
+var oldLoad=window.loadGeneric;
+if(typeof oldLoad==="function"&&!oldLoad.__repair2){
+ window.loadGeneric=function(module){
+   var r=oldLoad.apply(this,arguments);
+   if(module==="files")setTimeout(liveFileKpis,0);
+   return r
+ };window.loadGeneric.__repair2=true
+}
+var oldRender=window.renderGenericTable;
+if(typeof oldRender==="function"&&!oldRender.__repair2){
+ window.renderGenericTable=function(){
+   var r=oldRender.apply(this,arguments);
+   setTimeout(liveFileKpis,0);return r
+ };window.renderGenericTable.__repair2=true
+}
+
+/* Canonical task persistence and refresh */
+var oldSave=window.v2SaveTask;
+if(typeof oldSave==="function"&&!oldSave.__repair2){
+ window.v2SaveTask=function(){
+   var before=A("smartTasks").length;
+   var r=oldSave.apply(this,arguments);
+   setTimeout(function(){
+     if(A("smartTasks").length>=before){
+       if(typeof window.enfPersistNow==="function")window.enfPersistNow();
+       try{if(typeof window.renderMonth==="function")window.renderMonth()}catch(e){}
+       try{if(typeof window.enfCalendarProRefresh==="function")window.enfCalendarProRefresh()}catch(e){}
+       try{if(typeof window.v210Refresh==="function")window.v210Refresh()}catch(e){}
+       try{if(typeof window.enfExecutiveDashboardV2Render==="function")window.enfExecutiveDashboardV2Render()}catch(e){}
+     }
+   },0);
+   return r
+ };window.v2SaveTask.__repair2=true
+}
+
+/* When Files nav is opened, always render live records instead of stale placeholders. */
+document.addEventListener("click",function(e){
+ var n=e.target.closest('.nav-item[data-page="files"]');if(!n)return;
+ setTimeout(function(){
+  if(typeof window.renderGenericTable==="function")window.renderGenericTable();
+  liveFileKpis()
+ },20)
+},true);
+
+/* expose a tiny integrity checker for future repairs */
+window.enfIntegrityCheck=function(){
+ return {
+  files:Array.isArray(DATA.files),
+  fileCount:A("files").length,
+  smartTasks:Array.isArray(DATA.smartTasks),
+  taskCount:A("smartTasks").length,
+  persistence:typeof window.enfPersistNow==="function",
+  calendar:!!document.getElementById("v2CalendarPage"),
+  file360:!!document.getElementById("enf360Root")
+ }
+};
+})();
+</script>
 </body>
 </html>
