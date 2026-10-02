@@ -1211,7 +1211,10 @@ function openPage(page){
  else if(page==="audit"){document.getElementById("auditPage").classList.remove("hidden");setHeading("Audit Log","Track system, enforcement and financial activity.");renderAudit()}
  document.getElementById("sidebar").classList.remove("open");window.scrollTo(0,0);applyLanguage()
 }
-function setHeading(title,sub){document.getElementById("pageTitle").textContent=t(title);document.getElementById("pageSubtitle").textContent=t(sub)}
+function setHeading(title,sub){
+ const a=document.getElementById("pageTitle"),b=document.getElementById("pageSubtitle");
+ if(a)a.textContent=t(title);if(b)b.textContent=t(sub);
+}
 function money(v){return "BHD "+Number(v).toLocaleString(undefined,{minimumFractionDigits:3,maximumFractionDigits:3})}
 function loadGeneric(module){
  const c=CONFIG[module];setHeading(c.title,c.desc);document.getElementById("genericTitle").textContent=t(c.title);document.getElementById("genericDesc").textContent=t(c.desc);document.getElementById("genericAddLabel").textContent=t(c.add);
@@ -1543,7 +1546,10 @@ function buildMobileFileCards(){
  if(!host){host=document.createElement("div");host.className="mobile-file-cards";const tw=page.querySelector(".table-wrap");if(tw)tw.parentNode.insertBefore(host,tw)}
  host.innerHTML=(DATA.files||[]).map(f=>`<div class="mfile"><div class="mfile-top"><div><h4>${f.id}</h4><p>${f.creditor} → ${f.debtor}</p></div><span class="badge ${badgeClass(f.status)}">${f.status}</span></div><div class="mfile-kpis"><div><span>${t("Claim")}</span><strong>${money(f.claim)}</strong></div><div><span>${t("Outstanding")}</span><strong>${money(f.claim-f.collected)}</strong></div></div><div class="mfile-actions"><button onclick="openDetail('files','${f.id}')">${t("Open File")}</button><button onclick="currentFileForAI=DATA.files.find(x=>x.id==='${f.id}');openAI();askAI('summary')">✦ AI</button></div></div>`).join("");
 }
-const _renderModuleP7=renderModule;
+const _renderModuleP7=(typeof renderModule==="function")?renderModule:function(m){
+  if(typeof loadGeneric==="function")loadGeneric(m);
+  if(typeof renderGenericTable==="function")renderGenericTable();
+};
 renderModule=function(m){_renderModuleP7(m);if(m==="files")setTimeout(buildMobileFileCards,0)}
 Object.assign(I18N.ar,{"More":"المزيد","Documents":"المستندات","Reports":"التقارير","Creditor Portal":"بوابة الدائن","Presentation":"العرض","Open File":"فتح الملف"});
 
@@ -4148,7 +4154,7 @@ function boot(){
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});else boot()
 })();
 </script>
-<template data-disabled-script-id="enforza-integration-repair-js">
+<script id="enforza-integration-repair-js">
 (function(){
 "use strict";
 const KEY="enforzaWorkingDemoStateV1";
@@ -4215,7 +4221,7 @@ if(typeof oldNext==="function"){
   setTimeout(function(){
    if(DATA.files.length!==before){
     save();
-    if(window.currentModule==="files"&amp;&amp;typeof window.renderGenericTable==="function")window.renderGenericTable();
+    if(window.currentModule==="files"&&typeof window.renderGenericTable==="function")window.renderGenericTable();
    }
   },0);return r
  }
@@ -4223,12 +4229,12 @@ if(typeof oldNext==="function"){
 window.addEventListener("beforeunload",save);
 document.addEventListener("visibilitychange",function(){if(document.hidden)save()});
 })();
-</template>
+</script>
 <style id="enforza-integration-repair-css">
 /* Make the advanced calendar unmistakable in the navigation. */
 .nav-item[data-page="tasks"] span[data-i18n="Tasks & Follow-ups"]::after{content:""}
 </style>
-<template data-disabled-script-id="enforza-files-calendar-repair2-js">
+<script id="enforza-files-calendar-repair2-js">
 (function(){
 "use strict";
 function A(n){if(!window.DATA)return[];if(!Array.isArray(DATA[n]))DATA[n]=[];return DATA[n]}
@@ -4239,18 +4245,18 @@ function collected(f){return num(f.collected)}
 function outstanding(f){return num(f.outstanding ?? Math.max(0,claim(f)-collected(f)))}
 function liveFileKpis(){
  if(window.currentModule!=="files")return;
- var f=A("files"),active=f.filter(x=&gt;String(x.status||"Active").toLowerCase()!=="closed");
- var esc=f.filter(x=&gt;["escalated","critical","urgent"].includes(String(x.status||"").toLowerCase()));
- var set=f.filter(x=&gt;String(x.status||"").toLowerCase().includes("settlement"));
+ var f=A("files"),active=f.filter(x=>String(x.status||"Active").toLowerCase()!=="closed");
+ var esc=f.filter(x=>["escalated","critical","urgent"].includes(String(x.status||"").toLowerCase()));
+ var set=f.filter(x=>String(x.status||"").toLowerCase().includes("settlement"));
  var vals=[
   ["Total Files",f.length],["Active Files",active.length],["Escalated",esc.length],
-  ["Settlement",set.length],["Claim Value","BHD "+f.reduce((a,x)=&gt;a+claim(x),0).toFixed(3)]
+  ["Settlement",set.length],["Claim Value","BHD "+f.reduce((a,x)=>a+claim(x),0).toFixed(3)]
  ];
  var host=document.getElementById("genericKpis");
- if(host)host.innerHTML=vals.map(x=&gt;'&lt;div class="kpi-card"&gt;&lt;span class="kpi-label"&gt;'+x[0]+'&lt;/span&gt;&lt;strong class="kpi-value"&gt;'+x[1]+'&lt;/strong&gt;&lt;/div&gt;').join("")
+ if(host)host.innerHTML=vals.map(x=>'<div class="kpi-card"><span class="kpi-label">'+x[0]+'</span><strong class="kpi-value">'+x[1]+'</strong></div>').join("")
 }
 var oldLoad=window.loadGeneric;
-if(typeof oldLoad==="function"&amp;&amp;!oldLoad.__repair2){
+if(typeof oldLoad==="function"&&!oldLoad.__repair2){
  window.loadGeneric=function(module){
    var r=oldLoad.apply(this,arguments);
    if(module==="files")setTimeout(liveFileKpis,0);
@@ -4258,7 +4264,7 @@ if(typeof oldLoad==="function"&amp;&amp;!oldLoad.__repair2){
  };window.loadGeneric.__repair2=true
 }
 var oldRender=window.renderGenericTable;
-if(typeof oldRender==="function"&amp;&amp;!oldRender.__repair2){
+if(typeof oldRender==="function"&&!oldRender.__repair2){
  window.renderGenericTable=function(){
    var r=oldRender.apply(this,arguments);
    setTimeout(liveFileKpis,0);return r
@@ -4267,12 +4273,12 @@ if(typeof oldRender==="function"&amp;&amp;!oldRender.__repair2){
 
 /* Canonical task persistence and refresh */
 var oldSave=window.v2SaveTask;
-if(typeof oldSave==="function"&amp;&amp;!oldSave.__repair2){
+if(typeof oldSave==="function"&&!oldSave.__repair2){
  window.v2SaveTask=function(){
    var before=A("smartTasks").length;
    var r=oldSave.apply(this,arguments);
    setTimeout(function(){
-     if(A("smartTasks").length&gt;=before){
+     if(A("smartTasks").length>=before){
        if(typeof window.enfPersistNow==="function")window.enfPersistNow();
        try{if(typeof window.renderMonth==="function")window.renderMonth()}catch(e){}
        try{if(typeof window.enfCalendarProRefresh==="function")window.enfCalendarProRefresh()}catch(e){}
@@ -4306,8 +4312,8 @@ window.enfIntegrityCheck=function(){
  }
 };
 })();
-</template>
-<template data-disabled-script-id="enforza-no-refresh-click-repair-js">
+</script>
+<script id="enforza-no-refresh-click-repair-js">
 (function(){
 "use strict";
 
@@ -4350,7 +4356,7 @@ new MutationObserver(function(ms){
  ms.forEach(function(m){m.addedNodes.forEach(function(n){if(n.nodeType===1)normalizeButtons(n)})})
 }).observe(document.documentElement,{childList:true,subtree:true});
 })();
-</template>
+</script>
 <script id="enforza-ai-coming-soon-js">
 (function(){
 "use strict";
@@ -4373,7 +4379,6 @@ window.enfAiComingSoon=function(){
 <style id="enforza-ai-coming-soon-css">
 .nav-item[data-page="aiInsights"] .future-tag{margin-inline-start:auto;font-size:7px;font-weight:900;letter-spacing:.06em;opacity:.75}
 </style>
-
 <style id="enforza-files-router-fix-css">
 /* Files page must occupy the working content area whenever active. */
 #filesPage.enf-files-active{display:block!important;visibility:visible!important;opacity:1!important}
@@ -4433,6 +4438,96 @@ window.enfFilesRouteHealth=function(){
    route:typeof window.enfOpenFiles==="function"
  };
 };
+})();
+</script>
+<style id="enforza-file360-stability-css">
+#enf360Page.enf360-active{display:block!important;visibility:visible!important;opacity:1!important}
+</style>
+<script id="enforza-file360-stability-js">
+(function(){
+"use strict";
+function files(){return window.DATA&&Array.isArray(DATA.files)?DATA.files:[]}
+function fid(f){return String(f?.id||f?.ref||f?.fileNo||"")}
+function normalize(f){
+ if(!f)return f;
+ var amount=Number(f.claim??f.claimAmount??f.amount??0)||0;
+ f.id=fid(f)||("ENF-"+Date.now());
+ f.claim=Number(f.claim??amount)||0;
+ f.claimAmount=Number(f.claimAmount??amount)||0;
+ f.amount=Number(f.amount??amount)||0;
+ f.collected=Number(f.collected||0)||0;
+ f.outstanding=Number(f.outstanding??Math.max(0,f.claimAmount-f.collected))||0;
+ f.officer=f.officer||f.assignedOfficer||f.assignedTo||"";
+ f.clientSide=f.clientSide||f.represent||f.representing||"";
+ f.clientName=f.clientName||((String(f.clientSide).toLowerCase().includes("debtor"))?f.debtor:f.creditor)||f.creditor||f.debtor||"";
+ f.status=f.status||"Active";
+ return f
+}
+function normalizeAll(){files().forEach(normalize)}
+function page(){
+ return document.getElementById("enf360Page")||
+        document.querySelector('.page[data-page="file360"]')||
+        document.getElementById("enfFilesClient360Page")
+}
+function show(p){
+ document.querySelectorAll(".page").forEach(function(x){x.classList.add("hidden");x.style.display="none"});
+ if(p){p.classList.remove("hidden");p.classList.add("enf360-active");p.style.display="block"}
+}
+function open(id){
+ normalizeAll();
+ var f=files().find(function(x){return fid(x)===String(id||"")});
+ if(!f){console.error("[FILE360] File not found:",id);return false}
+ window.enfCurrentFile360=f;
+ window.currentFile360=f;
+ var old=window.__enfLegacyOpenFile360;
+ if(typeof old==="function"){
+   try{old(id)}catch(e){console.error("[FILE360 legacy]",e)}
+ }
+ var p=page();if(p)show(p);
+ setTimeout(function(){
+   try{if(typeof window.enfFile360CommandRefresh==="function")window.enfFile360CommandRefresh()}catch(e){}
+   try{if(typeof window.enfClientMoneyRefresh==="function")window.enfClientMoneyRefresh()}catch(e){}
+ },0);
+ return true
+}
+if(typeof window.openFile360==="function"&&!window.__enfLegacyOpenFile360){
+ window.__enfLegacyOpenFile360=window.openFile360
+}
+window.openFile360=open;
+window.enfOpenFile360=open;
+
+/* Make every file row/button use the canonical opener, even if legacy markup survives. */
+document.addEventListener("click",function(e){
+ var el=e.target.closest("[data-file-id]");
+ if(!el)return;
+ var id=el.getAttribute("data-file-id");
+ if(!id)return;
+ e.preventDefault();e.stopImmediatePropagation();open(id)
+},true);
+
+normalizeAll();
+if(typeof window.enfPersistNow==="function")window.enfPersistNow();
+
+window.enfFile360Health=function(){
+ normalizeAll();
+ return {files:files().length,page:!!page(),opener:typeof window.openFile360==="function",
+ current:window.enfCurrentFile360?fid(window.enfCurrentFile360):null}
+};
+})();
+</script>
+
+<script id="enforza-runtime-recovery-07-js">
+(function(){
+"use strict";
+function safeBoot(){
+ try{
+  var gate=document.getElementById("loginGate");if(gate)gate.style.display="none";
+  if(typeof window.enfPersistNow==="function")window.enfPersistNow();
+  var cal=document.querySelector('.nav-item[data-page="tasks"] [data-i18n]');
+  if(cal)cal.textContent="Calendar";
+ }catch(e){console.error("[ENFORZA RECOVERY]",e)}
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",safeBoot,{once:true});else safeBoot();
 })();
 </script>
 </body>
