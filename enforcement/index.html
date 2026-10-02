@@ -3648,5 +3648,72 @@ function boot(){
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});else boot()
 })();
 </script>
+
+<script id="enforza-task-calendar-file-bridge-js">
+(function(){
+"use strict";
+function tasks(){
+ if(!window.DATA)return[];
+ if(!Array.isArray(DATA.smartTasks))DATA.smartTasks=[];
+ return DATA.smartTasks
+}
+function files(){return window.DATA&&Array.isArray(DATA.files)?DATA.files:[]}
+function fileId(f){return String(f?.id||f?.ref||f?.fileNo||"")}
+function fileLabel(f){return fileId(f)+(f?.title||f?.clientName?" · "+(f.title||f.clientName):"")}
+function fillFileSelect(){
+ var sel=document.getElementById("v2taskFile");if(!sel)return;
+ var keep=sel.value;
+ sel.innerHTML='<option value="">—</option>'+files().map(function(f){
+   var id=fileId(f);return '<option value="'+id.replace(/"/g,"&quot;")+'">'+fileLabel(f)+'</option>'
+ }).join("");
+ if([...sel.options].some(function(o){return o.value===keep}))sel.value=keep
+}
+function currentFileFromContext(){
+ return window.current360||window.enfCurrentFile360||window.currentFile360||null
+}
+function preselectFile(id){
+ fillFileSelect();
+ var sel=document.getElementById("v2taskFile");if(sel&&id)sel.value=String(id)
+}
+window.enfTaskForFile=function(id,date){
+ if(typeof window.v2OpenTask!=="function")return;
+ window.v2OpenTask(date||new Date().toISOString().slice(0,10));
+ setTimeout(function(){preselectFile(id)},0)
+}
+function wrapOpen(){
+ var old=window.v2OpenTask;
+ if(typeof old!=="function"||old.__enfFileBridge)return;
+ var w=function(date,id){
+   var r=old.apply(this,arguments);
+   setTimeout(function(){
+     fillFileSelect();
+     if(!id){
+       var f=currentFileFromContext(),fid=f&&fileId(f);
+       if(fid)preselectFile(fid)
+     }
+   },0);
+   return r
+ };
+ w.__enfFileBridge=true;window.v2OpenTask=w
+}
+function wrapSave(){
+ var old=window.v2SaveTask;
+ if(typeof old!=="function"||old.__enfFileBridge)return;
+ var w=function(){
+   var r=old.apply(this,arguments);
+   setTimeout(function(){
+     if(typeof window.v2RenderTasks==="function")try{window.v2RenderTasks()}catch(e){}
+     if(typeof window.v2RenderCalendar==="function")try{window.v2RenderCalendar()}catch(e){}
+     if(typeof window.renderMonth==="function")try{window.renderMonth()}catch(e){}
+     if(typeof window.enfDemoSaveNow==="function")try{window.enfDemoSaveNow()}catch(e){}
+   },0);
+   return r
+ };
+ w.__enfFileBridge=true;window.v2SaveTask=w
+}
+function boot(){fillFileSelect();wrapOpen();wrapSave()}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});else boot()
+})();
+</script>
 </body>
 </html>
