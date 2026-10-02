@@ -651,7 +651,9 @@ function mobileSmartActions(){
 }
 function mobileUpdateDock(){
  if(innerWidth>768)return;
- document.querySelectorAll('.mobile-command-dock [data-route]').forEach(x=>x.classList.toggle('active',x.dataset.route===current));
+ let dock=document.getElementById('mobileCommandDock');
+ if(!dock)return;
+ dock.querySelectorAll('[data-route]').forEach(x=>x.classList.toggle('active',x.dataset.route===current));
  let td=today(),open=(DB.tasks||[]).filter(x=>x.status!=='Completed'&&x.status!=='Cancelled'),
  taskCount=open.filter(x=>!x.due||x.due<=td).length,
  calCount=calendarEvents().filter(x=>x.date===td&&x.status!=='Completed'&&x.status!=='Cancelled').length,
@@ -667,6 +669,21 @@ document.addEventListener('click',e=>{
  let qa=e.target.closest('#mobileSmartActionGrid [data-action]');
  if(qa)mobileSheet('');
 },true);
+
+
+function bindMobileSmartFab(){
+ let fab=document.querySelector('#mobileCommandDock .mcd-fab');
+ if(!fab||fab.dataset.bound==='1')return;
+ fab.dataset.bound='1';
+ fab.addEventListener('click',function(e){
+   e.preventDefault();
+   e.stopPropagation();
+   mobileSmartActions();
+ },{passive:false});
+ mobileUpdateDock();
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bindMobileSmartFab,{once:true});
+else setTimeout(bindMobileSmartFab,0);
 
 function action(a,i){({mobileSmartActions:()=>mobileSmartActions(),closeMobileSheet:()=>mobileSheet(''),mobileMore:()=>mobileSheet('mobileMoreSheet'),newFile,openFile:()=>openFile(i),editFile:()=>editFile(i),addExecutionAction:()=>executionActionForm(i),newTask:()=>taskForm('',current==='calendar'?'calendar':'tasks'),newTaskForFile:()=>taskForm(i,'tasks'),completeTask:()=>completeTaskForm(i),openTask:()=>openTask(i),editTask:()=>editTask(i),taskViewAll:()=>{TASKVIEW='all';render()},taskViewToday:()=>{TASKVIEW='today';render()},taskViewCritical:()=>{TASKVIEW='critical';render()},taskViewCompleted:()=>{TASKVIEW='completed';render()},prevMonth:()=>{CAL.setMonth(CAL.getMonth()-1);render()},nextMonth:()=>{CAL.setMonth(CAL.getMonth()+1);render()},calendarToday:()=>{CAL=new Date();render()},calendarViewMonth:()=>{CALVIEW='month';render()},calendarViewWeek:()=>{CALVIEW='week';render()},calendarViewDay:()=>{CALVIEW='day';render()},calendarViewAgenda:()=>{CALVIEW='agenda';render()},newCalendarEvent:()=>calendarEventForm(),newCalendarEventForFile:()=>calendarEventForm('',i),calendarDay:()=>{CAL=new Date(i+'T12:00:00');calendarEventForm(i)},openCalendarEvent:()=>openCalendarEvent(i),completeCalendarEvent:()=>{let x=DB.calendarEvents.find(x=>x.id===i);if(x){x.status='Completed';if(save('Completed calendar event '+i)){closeModal();route('calendar');toast('Calendar event completed')}}},deleteCalendarEvent:()=>{DB.calendarEvents=DB.calendarEvents.filter(x=>x.id!==i);if(save('Deleted calendar event '+i)){closeModal();route('calendar');toast('Calendar event deleted')}}, newCollection:()=>moneyForm('collections','Add Collection'),newCollectionForFile:()=>moneyForm('collections','Add Collection',i),newExpense:()=>moneyForm('expenses','Add Expense'),newSettlement:()=>moneyForm('collections','Add Collection / Settlement'),newTreasury:()=>moneyForm('treasury','Add Treasury Transaction'),newMinute:()=>simpleForm('minutes','New Minute',[['file','Linked File'],['date','Date','date','required'],['subject','Subject'],['notes','Notes']]),newEvidence:()=>simpleForm('evidence','Add Field Evidence',[['file','Linked File'],['date','Date','date','required'],['type','Evidence Type'],['description','Description']]),newDocument:()=>simpleForm('documents','Add Document',[['file','Linked File'],['date','Date','date','required'],['type','Document Type'],['name','Document Name']]),deleteFile:()=>{if(confirm('Delete this file and its linked records?')){DB.files=DB.files.filter(x=>x.id!==i);DB.tasks=DB.tasks.filter(x=>x.file!==i);DB.collections=DB.collections.filter(x=>x.file!==i);save('Deleted file '+i);closeModal();route('files')}}}[a]||(()=>{}))()}
 document.getElementById('globalSearch').addEventListener('keydown',e=>{if(e.key==='Enter'){let q=e.target.value.trim().toLowerCase();if(!q)return;route('files');setTimeout(()=>{let el=document.getElementById('fileSearch');if(el){el.value=q;filterFiles(q)}},0)}});
