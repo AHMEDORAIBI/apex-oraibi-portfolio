@@ -857,7 +857,7 @@ body.enf-dark .enf360-actions button,body.enf-dark .enf360-tab,body.enf-dark .en
 <a class="nav-item" data-page="evidence" href="#" onclick="openPage('evidence');return false;"><span class="nav-icon">▣</span><span data-i18n="Field Evidence">Field Evidence</span></a>
 <a class="nav-item" data-page="documents" href="#" onclick="openPage('documents');return false;"><span class="nav-icon">▤</span><span data-i18n="Document Center">Document Center</span></a>
 <a class="nav-item" data-page="creditorPortal" href="#" onclick="openPage('creditorPortal');return false;"><span class="nav-icon">◈</span><span data-i18n="Creditor Portal Preview">Creditor Portal Preview</span></a>
-<a class="nav-item" data-page="aiInsights" href="#" onclick="openPage('aiInsights');return false;"><span class="nav-icon">✦</span><span data-i18n="AI Management Insights">AI Management Insights</span></a>
+<a class="nav-item future-module" data-page="aiInsights" href="#" onclick="enfAiComingSoon();return false;"><span class="nav-icon">✦</span><span data-i18n="AI Management Insights">AI Management Insights</span><span class="future-tag">COMING SOON</span></a>
 <a class="nav-item" data-page="reports" href="#" onclick="openPage('reports');return false;"><span class="nav-icon">◩</span><span data-i18n="Reports &amp; Analytics">Reports &amp; Analytics</span></a>
 <a class="nav-item" data-page="users" href="#" onclick="openPage('users');return false;"><span class="nav-icon">♙</span><span data-i18n="Users &amp; Permissions">Users &amp; Permissions</span></a>
 <a class="nav-item" data-page="presentation" href="#" onclick="openPage('presentation');return false;"><span class="nav-icon">◉</span><span data-i18n="Demo Presentation Mode">Demo Presentation Mode</span></a>
@@ -4148,7 +4148,7 @@ function boot(){
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});else boot()
 })();
 </script>
-<script id="enforza-integration-repair-js">
+<template data-disabled-script-id="enforza-integration-repair-js">
 (function(){
 "use strict";
 const KEY="enforzaWorkingDemoStateV1";
@@ -4215,7 +4215,7 @@ if(typeof oldNext==="function"){
   setTimeout(function(){
    if(DATA.files.length!==before){
     save();
-    if(window.currentModule==="files"&&typeof window.renderGenericTable==="function")window.renderGenericTable();
+    if(window.currentModule==="files"&amp;&amp;typeof window.renderGenericTable==="function")window.renderGenericTable();
    }
   },0);return r
  }
@@ -4223,12 +4223,12 @@ if(typeof oldNext==="function"){
 window.addEventListener("beforeunload",save);
 document.addEventListener("visibilitychange",function(){if(document.hidden)save()});
 })();
-</script>
+</template>
 <style id="enforza-integration-repair-css">
 /* Make the advanced calendar unmistakable in the navigation. */
 .nav-item[data-page="tasks"] span[data-i18n="Tasks & Follow-ups"]::after{content:" · Calendar";font-size:8px;opacity:.65}
 </style>
-<script id="enforza-files-calendar-repair2-js">
+<template data-disabled-script-id="enforza-files-calendar-repair2-js">
 (function(){
 "use strict";
 function A(n){if(!window.DATA)return[];if(!Array.isArray(DATA[n]))DATA[n]=[];return DATA[n]}
@@ -4239,18 +4239,18 @@ function collected(f){return num(f.collected)}
 function outstanding(f){return num(f.outstanding ?? Math.max(0,claim(f)-collected(f)))}
 function liveFileKpis(){
  if(window.currentModule!=="files")return;
- var f=A("files"),active=f.filter(x=>String(x.status||"Active").toLowerCase()!=="closed");
- var esc=f.filter(x=>["escalated","critical","urgent"].includes(String(x.status||"").toLowerCase()));
- var set=f.filter(x=>String(x.status||"").toLowerCase().includes("settlement"));
+ var f=A("files"),active=f.filter(x=&gt;String(x.status||"Active").toLowerCase()!=="closed");
+ var esc=f.filter(x=&gt;["escalated","critical","urgent"].includes(String(x.status||"").toLowerCase()));
+ var set=f.filter(x=&gt;String(x.status||"").toLowerCase().includes("settlement"));
  var vals=[
   ["Total Files",f.length],["Active Files",active.length],["Escalated",esc.length],
-  ["Settlement",set.length],["Claim Value","BHD "+f.reduce((a,x)=>a+claim(x),0).toFixed(3)]
+  ["Settlement",set.length],["Claim Value","BHD "+f.reduce((a,x)=&gt;a+claim(x),0).toFixed(3)]
  ];
  var host=document.getElementById("genericKpis");
- if(host)host.innerHTML=vals.map(x=>'<div class="kpi-card"><span class="kpi-label">'+x[0]+'</span><strong class="kpi-value">'+x[1]+'</strong></div>').join("")
+ if(host)host.innerHTML=vals.map(x=&gt;'&lt;div class="kpi-card"&gt;&lt;span class="kpi-label"&gt;'+x[0]+'&lt;/span&gt;&lt;strong class="kpi-value"&gt;'+x[1]+'&lt;/strong&gt;&lt;/div&gt;').join("")
 }
 var oldLoad=window.loadGeneric;
-if(typeof oldLoad==="function"&&!oldLoad.__repair2){
+if(typeof oldLoad==="function"&amp;&amp;!oldLoad.__repair2){
  window.loadGeneric=function(module){
    var r=oldLoad.apply(this,arguments);
    if(module==="files")setTimeout(liveFileKpis,0);
@@ -4258,7 +4258,7 @@ if(typeof oldLoad==="function"&&!oldLoad.__repair2){
  };window.loadGeneric.__repair2=true
 }
 var oldRender=window.renderGenericTable;
-if(typeof oldRender==="function"&&!oldRender.__repair2){
+if(typeof oldRender==="function"&amp;&amp;!oldRender.__repair2){
  window.renderGenericTable=function(){
    var r=oldRender.apply(this,arguments);
    setTimeout(liveFileKpis,0);return r
@@ -4267,12 +4267,12 @@ if(typeof oldRender==="function"&&!oldRender.__repair2){
 
 /* Canonical task persistence and refresh */
 var oldSave=window.v2SaveTask;
-if(typeof oldSave==="function"&&!oldSave.__repair2){
+if(typeof oldSave==="function"&amp;&amp;!oldSave.__repair2){
  window.v2SaveTask=function(){
    var before=A("smartTasks").length;
    var r=oldSave.apply(this,arguments);
    setTimeout(function(){
-     if(A("smartTasks").length>=before){
+     if(A("smartTasks").length&gt;=before){
        if(typeof window.enfPersistNow==="function")window.enfPersistNow();
        try{if(typeof window.renderMonth==="function")window.renderMonth()}catch(e){}
        try{if(typeof window.enfCalendarProRefresh==="function")window.enfCalendarProRefresh()}catch(e){}
@@ -4306,8 +4306,8 @@ window.enfIntegrityCheck=function(){
  }
 };
 })();
-</script>
-<script id="enforza-no-refresh-click-repair-js">
+</template>
+<template data-disabled-script-id="enforza-no-refresh-click-repair-js">
 (function(){
 "use strict";
 
@@ -4350,6 +4350,28 @@ new MutationObserver(function(ms){
  ms.forEach(function(m){m.addedNodes.forEach(function(n){if(n.nodeType===1)normalizeButtons(n)})})
 }).observe(document.documentElement,{childList:true,subtree:true});
 })();
+</template>
+<script id="enforza-ai-coming-soon-js">
+(function(){
+"use strict";
+window.enfAiComingSoon=function(){
+  var modal=document.getElementById("futureModuleModal");
+  if(modal){
+    var title=modal.querySelector("h1,h2,h3,.modal-title");
+    var text=modal.querySelector("p,.modal-sub,.modal-text");
+    if(title)title.textContent="AI Management Insights";
+    if(text)text.textContent="COMING SOON";
+    modal.classList.add("open");
+    modal.style.display="";
+    return false;
+  }
+  alert("AI Management Insights — COMING SOON");
+  return false;
+};
+})();
 </script>
+<style id="enforza-ai-coming-soon-css">
+.nav-item[data-page="aiInsights"] .future-tag{margin-inline-start:auto;font-size:7px;font-weight:900;letter-spacing:.06em;opacity:.75}
+</style>
 </body>
 </html>
