@@ -4127,5 +4127,89 @@ function boot(){
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});else boot()
 })();
 </script>
+
+<style id="enforza-executive-dashboard-v2-css">
+.enf-exec2{margin-top:12px}.enf-exec2-grid{display:grid;grid-template-columns:repeat(4,minmax(140px,1fr));gap:9px}
+.enf-exec2-card{border:1px solid var(--line,#e6ded5);background:var(--surface,#fff);border-radius:13px;padding:11px}
+.enf-exec2-card small{display:block;color:var(--muted,#75808a);font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:.04em}
+.enf-exec2-card b{display:block;font-size:18px;margin-top:5px}.enf-exec2-card span{display:block;font-size:8px;color:var(--muted,#75808a);margin-top:3px}
+.enf-exec2-panels{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.enf-exec2-panel{border:1px solid var(--line,#e6ded5);background:var(--surface,#fff);border-radius:13px;padding:11px}
+.enf-exec2-panel h3{margin:0 0 8px;font-size:10px}.enf-exec2-row{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-top:1px solid var(--line,#eee);font-size:8px}
+.enf-exec2-row button{border:0;background:none;color:inherit;text-align:start;cursor:pointer;padding:0;font:inherit}.enf-exec2-row button:hover{text-decoration:underline}
+@media(max-width:900px){.enf-exec2-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:650px){.enf-exec2-panels{grid-template-columns:1fr}.enf-exec2-grid{grid-template-columns:1fr 1fr}}
+</style>
+<script id="enforza-executive-dashboard-v2-js">
+(function(){
+"use strict";
+function A(n){return window.DATA&&Array.isArray(DATA[n])?DATA[n]:[]}
+function num(v){return Number(v||0)||0}
+function fid(f){return String(f?.id||f?.ref||f?.fileNo||"")}
+function txid(x){return String(x?.file||x?.fileId||x?.enforcementFile||"")}
+function sum(a){return a.reduce(function(t,x){return t+num(x.amount||x.value||x.total)},0)}
+function money(v){return "BHD "+num(v).toFixed(3)}
+function claim(f){return num(f.claimAmount||f.amount||f.originalAmount||f.outstanding||0)}
+function totalClaims(){return A("files").reduce(function(t,f){return t+claim(f)},0)}
+function totalOutstanding(){return A("files").reduce(function(t,f){return t+num(f.outstanding)},0)}
+function totalCollected(){return sum(A("collections"))}
+function clientMoneyDue(){
+ return A("files").reduce(function(t,f){
+  if(typeof window.enfClientMoneySummary!=="function")return t;
+  var z=window.enfClientMoneySummary(fid(f));return t+num(z&&z.due)
+ },0)
+}
+function overdueTasks(){
+ var td=new Date().toISOString().slice(0,10);
+ return A("smartTasks").filter(function(x){
+  var d=String(x.due||x.date||"").slice(0,10),st=String(x.status||"").toLowerCase();
+  return d&&d<td&&st!=="completed"&&st!=="cancelled"
+ })
+}
+function criticalFiles(){
+ return A("files").filter(function(f){
+  var st=String(f.status||"").toLowerCase();
+  return st.includes("critical")||st.includes("urgent")||num(f.outstanding)>0&&overdueTasks().some(function(t){return txid(t)===fid(f)})
+ }).slice(0,6)
+}
+function recentCollections(){
+ return [...A("collections")].sort(function(a,b){return String(b.date||"").localeCompare(String(a.date||""))}).slice(0,6)
+}
+function openFile(id){
+ if(typeof window.openFile360==="function")window.openFile360(id);
+ else if(typeof window.openPage==="function")window.openPage("files")
+}
+function render(){
+ var root=document.getElementById("enfExecutiveDashboardRoot")||document.getElementById("dashboardPage");if(!root)return;
+ var old=document.getElementById("enfExecutiveDashboardV2");if(old)old.remove();
+ var overdue=overdueTasks(),crit=criticalFiles(),recent=recentCollections();
+ var box=document.createElement("section");box.id="enfExecutiveDashboardV2";box.className="enf-exec2";
+ box.innerHTML='<div class="enf-exec2-grid">'+
+ '<div class="enf-exec2-card"><small>Total Claims</small><b>'+money(totalClaims())+'</b><span>'+A("files").length+' enforcement file(s)</span></div>'+
+ '<div class="enf-exec2-card"><small>Total Collected</small><b>'+money(totalCollected())+'</b><span>'+A("collections").length+' collection transaction(s)</span></div>'+
+ '<div class="enf-exec2-card"><small>Outstanding</small><b>'+money(totalOutstanding())+'</b><span>Across active files</span></div>'+
+ '<div class="enf-exec2-card"><small>Client Money Due</small><b>'+money(clientMoneyDue())+'</b><span>Pending transfer to clients</span></div>'+
+ '<div class="enf-exec2-card"><small>Critical Files</small><b>'+crit.length+'</b><span>Requires management attention</span></div>'+
+ '<div class="enf-exec2-card"><small>Overdue Tasks</small><b>'+overdue.length+'</b><span>Past due and still open</span></div>'+
+ '<div class="enf-exec2-card"><small>Open Tasks</small><b>'+A("smartTasks").filter(function(x){return !["completed","cancelled"].includes(String(x.status||"").toLowerCase())}).length+'</b><span>Tasks and appointments</span></div>'+
+ '<div class="enf-exec2-card"><small>Recent Collections</small><b>'+recent.length+'</b><span>Latest recorded receipts</span></div>'+
+ '</div><div class="enf-exec2-panels">'+
+ '<div class="enf-exec2-panel"><h3>Critical / Attention Files</h3>'+
+ (crit.length?crit.map(function(f){return '<div class="enf-exec2-row"><button onclick="enfExecOpenFile(\''+fid(f).replace(/'/g,"&#39;")+'\')"><b>'+fid(f)+'</b> · '+(f.clientName||f.creditor||f.debtor||f.title||"File")+'</button><span>'+money(f.outstanding)+'</span></div>'}).join(""):'<div class="enf-exec2-row"><span>No critical files.</span><span>✓</span></div>')+
+ '</div><div class="enf-exec2-panel"><h3>Latest Collections</h3>'+
+ (recent.length?recent.map(function(x){return '<div class="enf-exec2-row"><span><b>'+String(x.date||"—").slice(0,10)+'</b> · '+txid(x)+'</span><span>'+money(x.amount||x.value||x.total)+'</span></div>'}).join(""):'<div class="enf-exec2-row"><span>No collections recorded.</span><span>—</span></div>')+
+ '</div></div>';
+ root.appendChild(box)
+}
+window.enfExecOpenFile=openFile;
+window.enfExecutiveDashboardV2Render=render;
+function boot(){
+ var old=window.enfExecutiveDashboardRender;
+ if(typeof old==="function"&&!old.__enfExecV2){
+  var w=function(){var r=old.apply(this,arguments);setTimeout(render,0);return r};w.__enfExecV2=true;window.enfExecutiveDashboardRender=w
+ }
+ setTimeout(render,0)
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});else boot()
+})();
+</script>
 </body>
 </html>
