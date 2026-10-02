@@ -1591,24 +1591,24 @@ renderSmartNotifications("all");
 Object.assign(I18N.ar,{"Morning Management Brief":"الموجز الصباحي للإدارة","Read Aloud":"قراءة صوتية","Morning brief text":"لديك اليوم 9 إجراءات مستحقة و3 متابعات متأخرة ودفعتا تسوية تقتربان من الاستحقاق وملفان مرتفعا القيمة يحتاجان إلى اهتمام الإدارة.","Arabic and English voice control":"تحكم صوتي بالعربية والإنجليزية","Tap microphone and speak":"اضغط الميكروفون وتحدث","Try a navigation or AI command":"جرب أمر تنقل أو أمر للذكاء الاصطناعي","Smart Notifications":"الإشعارات الذكية","AI-ranked operational alerts":"تنبيهات تشغيلية مرتبة بالذكاء الاصطناعي","All":"الكل","Critical":"حرج","Mark all read":"تحديد الكل كمقروء","Settlement installment due":"قسط تسوية مستحق","High-value file inactive":"ملف مرتفع القيمة بلا حركة","Bank response received":"تم استلام رد البنك","Asset inquiry overdue":"استعلام أصول متأخر","Listening...":"جاري الاستماع...","Executing command...":"جاري تنفيذ الأمر...","Voice recognition is not supported in this browser":"التعرف الصوتي غير مدعوم في هذا المتصفح","Could not understand. Try again.":"لم يتم فهم الأمر. حاول مرة أخرى."});
 
 
-/* DEMO DIRECT ACCESS — old role/login state removed to prevent TDZ conflicts */
-window.selectedDemoRole="management";
-window.activeDemoRole="management";
-window.applyRoleAccess=function(){
- window.selectedDemoRole="management";
- window.activeDemoRole="management";
- if(document.body){
-  document.body.classList.remove("role-officer","role-creditor");
-  document.body.classList.add("role-management");
-  document.body.dataset.enfRole="management";
- }
- const pill=document.getElementById("activeRolePill");
- if(pill)pill.textContent=(typeof t==="function"?t("Management"):"Management");
- document.querySelectorAll(".nav-item").forEach(function(n){
-  n.style.removeProperty("display");
+var selectedDemoRole="management"; var activeDemoRole="management"; window.selectedDemoRole=selectedDemoRole; window.activeDemoRole=activeDemoRole;
+
+function applyRoleAccess(role){
+ activeDemoRole=role;window.activeDemoRole=role;document.body.classList.remove("role-management","role-officer","role-creditor");document.body.classList.add("role-"+role);
+ const pill=document.getElementById("activeRolePill");if(pill)pill.textContent=role==="management"?t("Management"):role==="officer"?t("Enforcement Officer"):t("Creditor");
+ const adminPages=["users","settings","audit","permissions","presentation","aiInsights"];
+ document.querySelectorAll(".nav-item").forEach(n=>{
+  const p=n.dataset.page||"";
   n.classList.remove("admin-only","officer-only");
+  if(adminPages.includes(p))n.classList.add("admin-only");
+  if(["actionsCenter","treasury","expenses"].includes(p))n.classList.add("officer-only");
  });
-};
+ if(role==="creditor"){
+   document.querySelectorAll(".nav-item").forEach(n=>{const p=n.dataset.page||"";n.style.display=["dashboard","creditorPortal","documents","reports"].includes(p)?"":"none"});
+ } else if(role==="officer"){
+   document.querySelectorAll(".nav-item").forEach(n=>{n.style.display=(n.classList.contains("admin-only"))?"none":""});
+ } else document.querySelectorAll(".nav-item").forEach(n=>n.style.display="");
+}
 
 
 Object.assign(I18N.ar,{
@@ -3917,7 +3917,7 @@ function startDirect(){
     sessionStorage.removeItem("enforzaRole");
     sessionStorage.removeItem("enforzaUserId");
   }catch(e){}
-  if(typeof window.applyRoleAccess==="function")window.applyRoleAccess();
+  window.activeDemoRole="management"; window.selectedDemoRole="management";
   document.querySelectorAll(".nav-item").forEach(function(n){n.style.removeProperty("display")});
   if(typeof window.openPage==="function")window.openPage("dashboard");
 }
@@ -4292,7 +4292,57 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 })();
 </script>
 
-
+<script id="enforza-final-router-fix-js">
+(function(){
+"use strict";
+const previousOpen=window.openPage;
+function showOnly(id){
+ document.querySelectorAll(".page").forEach(p=>{p.classList.add("hidden");p.style.display="none"});
+ const p=document.getElementById(id);
+ if(!p)return false;
+ p.classList.remove("hidden");p.style.display="block";
+ document.querySelectorAll(".nav-item").forEach(n=>n.classList.toggle("active",n.dataset.page===window.currentModule));
+ const sb=document.getElementById("sidebar");if(sb)sb.classList.remove("open");
+ window.scrollTo(0,0);return true
+}
+window.openPage=function(page){
+ window.currentModule=page;
+ try{
+  if(page==="files"){
+   if(typeof window.enfFiles360Open==="function"){window.enfFiles360Open();return}
+   if(showOnly("enfFilesClient360Page"))return
+  }
+  if(["tasks","smarttasks","calendar"].includes(page)){
+   if(typeof window.v210Go==="function"){window.v210Go(page==="calendar"?"calendar":"tasks");return}
+   const id=page==="calendar"?"v2CalendarPage":"v2TasksPage";
+   if(showOnly(id))return
+  }
+  if(page==="reports"){
+   if(showOnly("reportsPage")){if(typeof window.enfReportsV2Render==="function")window.enfReportsV2Render();return}
+  }
+  if(page==="dashboard"){
+   if(showOnly("dashboardPage")){if(typeof window.enfExecutiveDashboardRender==="function")window.enfExecutiveDashboardRender();return}
+  }
+  if(typeof previousOpen==="function")return previousOpen(page)
+ }catch(err){console.error("[ENFORZA ROUTER]",page,err);if(typeof previousOpen==="function")try{return previousOpen(page)}catch(e){}}
+};
+function bind(){
+ document.querySelectorAll(".nav-item[data-page]").forEach(n=>{
+  if(n.dataset.finalRoute==="1")return;
+  n.dataset.finalRoute="1";
+  n.addEventListener("click",function(e){
+   const p=this.dataset.page;if(!p)return;
+   if(["files","tasks","smarttasks","calendar","reports","dashboard"].includes(p)){
+    e.preventDefault();e.stopImmediatePropagation();window.openPage(p)
+   }
+  },true)
+ });
+ // ensure visible action buttons cannot submit accidental forms
+ document.querySelectorAll("button").forEach(b=>{if(!b.type)b.type="button"});
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind,{once:true});else bind();
+})();
+</script>
 
 <style id="enforza-demo-ops-qa-css">
 .enf-opsqa{position:fixed;right:18px;bottom:18px;z-index:9997}
@@ -4498,113 +4548,33 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 })();
 </script>
 
-<style id="enforza-interaction-root-fix-css">
-/* Direct demo: old authentication and non-open validation layers must never capture clicks */
-.login-gate,#enfAuthV3,.enf-auth-v3{display:none!important;pointer-events:none!important}
-#enfReleaseModal:not(.open),.enf-rc-center:not(.open),.enf-rc2-modal:not(.open),
-.enf-rc3:not(.open),.enf-ops-ready:not(.open),.enf-p22-health:not(.open),
-#futureModuleModal:not(.open){pointer-events:none!important}
+<style id="enforza-clean-click-fix">
+#enfReleaseModal:not(.open),#enfRcCenter:not(.open),#enfRc2Modal:not(.open),
+#enfRc3Modal:not(.open),#enfOpsReady:not(.open),#enfP22Health:not(.open),
+#futureModuleModal:not(.open),.modal:not(.open),.drawer:not(.open){
+  pointer-events:none!important;
+}
+.page.hidden{display:none!important}
 </style>
-<script id="enforza-interaction-root-fix-js">
+
+<script id="enforza-clean-nav-binding">
 (function(){
 "use strict";
-
-function allPages(){
- return Array.from(document.querySelectorAll(".page, #enfFilesClient360Page, #enfFinancePage, #reportsPage, #dashboardPage, #v2TasksPage, #v2CalendarPage"));
-}
-function hideAll(){
- allPages().forEach(function(p){p.classList.add("hidden");p.style.display="none"});
-}
-function show(id){
- var p=document.getElementById(id);
- if(!p)return false;
- hideAll();
- p.classList.remove("hidden");
- p.style.display="block";
- window.scrollTo(0,0);
- return true;
-}
-function active(page){
- document.querySelectorAll(".nav-item").forEach(function(n){
-   n.classList.toggle("active",(n.dataset.page||"")===page);
+function bind(){
+ document.querySelectorAll(".nav-item[data-page]").forEach(function(n){
+   if(n.dataset.cleanBound==="1")return;
+   n.dataset.cleanBound="1";
+   n.addEventListener("click",function(e){
+     var p=this.dataset.page;
+     if(!p || typeof window.openPage!=="function")return;
+     e.preventDefault();
+     e.stopPropagation();
+     try{window.openPage(p)}catch(err){console.error("[ENFORZA NAV]",p,err)}
+   },false);
  });
 }
-function safe(fn){try{return fn()}catch(e){console.error("[ENFORZA ROOT ROUTER]",e);return false}}
-
-window.enfRootNavigate=function(page){
- page=String(page||"dashboard");
- window.currentModule=page;
- active(page);
-
- if(page==="dashboard"){
-   show("dashboardPage");
-   safe(function(){if(typeof window.enfExecutiveDashboardRender==="function")window.enfExecutiveDashboardRender()});
-   return true;
- }
- if(page==="files"){
-   if(document.getElementById("enfFilesClient360Page")){
-     show("enfFilesClient360Page");
-     safe(function(){if(typeof window.enfFiles360Render==="function")window.enfFiles360Render()});
-     return true;
-   }
- }
- if(page==="tasks"||page==="smartTasks"){
-   if(document.getElementById("v2TasksPage")){
-     show("v2TasksPage");
-     safe(function(){if(typeof window.v2RenderTasks==="function")window.v2RenderTasks()});
-     return true;
-   }
- }
- if(page==="calendar"){
-   if(document.getElementById("v2CalendarPage")){
-     show("v2CalendarPage");
-     safe(function(){if(typeof window.enfModernCalendarRender==="function")window.enfModernCalendarRender()});
-     return true;
-   }
- }
- if(["collections","expenses","claims","treasury"].includes(page) && document.getElementById("enfFinancePage")){
-   show("enfFinancePage");
-   safe(function(){if(typeof window.enfFinRender==="function")window.enfFinRender()});
-   return true;
- }
- if(page==="reports" && document.getElementById("reportsPage")){
-   show("reportsPage");
-   safe(function(){if(typeof window.enfReportsV2Render==="function")window.enfReportsV2Render()});
-   return true;
- }
-
- /* legacy page fallback without using the chain of old openPage overrides */
- var direct=document.getElementById(page+"Page");
- if(direct){show(page+"Page");return true}
- return false;
-};
-
-/* One authoritative navigation listener. It runs before the many legacy listeners. */
-document.addEventListener("click",function(e){
- var n=e.target.closest&&e.target.closest(".nav-item[data-page]");
- if(!n)return;
- var page=n.dataset.page;
- if(window.enfRootNavigate(page)){
-   e.preventDefault();
-   e.stopImmediatePropagation();
- }
-},true);
-
-/* Direct access only */
-window.currentRole="admin";
-window.userRole="admin";
-window.currentUserId="DIRECT-ADMIN";
-window.currentUser={id:"DIRECT-ADMIN",username:"admin",name:"Administrator",role:"admin"};
-window.selectedDemoRole="management";
-window.activeDemoRole="management";
-
-function boot(){
- document.querySelectorAll(".nav-item").forEach(function(n){n.style.removeProperty("display")});
- document.querySelectorAll("#enfAuthV3,.enf-auth-v3,.login-gate").forEach(function(x){x.remove()});
- window.enfRootNavigate("dashboard");
-}
-if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});
-else boot();
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind,{once:true});
+else bind();
 })();
 </script>
 </body>
