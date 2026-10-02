@@ -166,7 +166,8 @@ function save(action){
   return false;
  }
 }
-function id(p){return p+'-'+Date.now().toString(36).toUpperCase()+Math.random().toString(36).slice(2,5).toUpperCase()}function now(){return new Date().toLocaleString()}function money(n){return 'BHD '+(Number(n)||0).toFixed(3)}function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}function toast(s){let t=document.getElementById('toast');t.textContent=s;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}
+function id(p){return p+'-'+Date.now().toString(36).toUpperCase()+Math.random().toString(36).slice(2,5).toUpperCase()}function today(){let d=new Date(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return d.getFullYear()+'-'+m+'-'+day}
+function now(){return new Date().toLocaleString()}function money(n){return 'BHD '+(Number(n)||0).toFixed(3)}function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}function toast(s){let t=document.getElementById('toast');t.textContent=s;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}
 let ROUTE='dashboard',CAL=new Date();const content=document.getElementById('content');
 function route(r){if(r==='settlements')r='collections';ROUTE=r;document.querySelectorAll('.nav').forEach(n=>n.classList.toggle('active',n.dataset.route===r));document.getElementById('side').classList.remove('open');render()}
 document.addEventListener('click',e=>{let n=e.target.closest('[data-route]');if(n){e.preventDefault();route(n.dataset.route)}let a=e.target.closest('[data-action]');if(a){e.preventDefault();action(a.dataset.action,a.dataset.id)}});document.getElementById('menuBtn').onclick=()=>document.getElementById('side').classList.toggle('open');
