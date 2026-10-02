@@ -3801,5 +3801,88 @@ function boot(){
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});else boot();
 })();
 </script>
+
+<style id="enforza-task-form-pro-css">
+.enf-task-extra{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:2px}
+.enf-task-extra .v2task-field{min-width:0}
+.enf-task-context{grid-column:1/-1;border:1px solid var(--line,#e7dfd6);border-radius:10px;padding:8px 10px;background:rgba(166,111,55,.04);font-size:9px;color:var(--muted,#707984)}
+@media(max-width:760px){.enf-task-extra{grid-template-columns:1fr}}
+</style>
+<script id="enforza-task-form-pro-js">
+(function(){
+"use strict";
+function A(n){return window.DATA&&Array.isArray(DATA[n])?DATA[n]:[]}
+function fileById(id){return A("files").find(function(f){return String(f.id||f.ref||f.fileNo||"")===String(id||"")})}
+function fid(f){return String(f?.id||f?.ref||f?.fileNo||"")}
+function client(f){return f?.clientName||((f?.clientSide==="Creditor")?f?.creditor:(f?.clientSide==="Debtor")?f?.debtor:"")||f?.creditor||f?.debtor||""}
+function officers(){
+ var set=new Set();
+ A("files").forEach(function(f){[f.officer,f.assignedTo,f.owner,f.responsible].filter(Boolean).forEach(function(x){set.add(String(x))})});
+ return [...set]
+}
+function ensure(){
+ var grid=document.querySelector("#v2TaskDrawer .v2task-grid");if(!grid||document.getElementById("enfTaskExtra"))return;
+ var wrap=document.createElement("div");wrap.id="enfTaskExtra";wrap.className="enf-task-extra";
+ wrap.innerHTML=
+ '<div class="v2task-field"><label>Client / Customer</label><input id="enfTaskClient" readonly></div>'+
+ '<div class="v2task-field"><label>Responsible</label><select id="enfTaskResponsible"><option value="">—</option></select></div>'+
+ '<div class="v2task-field"><label>Status</label><select id="enfTaskStatus"><option>Open</option><option>In Progress</option><option>Waiting</option><option>Completed</option><option>Cancelled</option></select></div>'+
+ '<div class="v2task-field"><label>Appointment / Action</label><select id="enfTaskActionKind"><option>Task</option><option>Appointment</option><option>Hearing</option><option>Follow-up</option><option>Field Visit</option><option>Call</option><option>Deadline</option><option>Collection Follow-up</option></select></div>'+
+ '<div class="v2task-field"><label>End Time</label><input type="time" id="enfTaskEndTime"></div>'+
+ '<div class="v2task-field"><label>Location / Channel</label><input id="enfTaskLocation" placeholder="Court, office, online, phone..."></div>';
+ var ctx=document.createElement("div");ctx.id="enfTaskContext";ctx.className="enf-task-context";ctx.textContent="Select an enforcement file to load its client context.";
+ grid.appendChild(wrap);grid.appendChild(ctx);
+ var fs=document.getElementById("v2taskFile");if(fs)fs.addEventListener("change",syncFile);
+ fillOfficers();syncFile()
+}
+function fillOfficers(){
+ var sel=document.getElementById("enfTaskResponsible");if(!sel)return;
+ var keep=sel.value,list=officers();
+ sel.innerHTML='<option value="">—</option>'+list.map(function(x){return '<option value="'+x.replace(/"/g,"&quot;")+'">'+x+'</option>'}).join("");
+ if([...sel.options].some(function(o){return o.value===keep}))sel.value=keep
+}
+function syncFile(){
+ var fs=document.getElementById("v2taskFile"),f=fileById(fs?.value),cl=document.getElementById("enfTaskClient"),ctx=document.getElementById("enfTaskContext");
+ if(cl)cl.value=f?client(f):"";
+ if(ctx)ctx.textContent=f?(fid(f)+(client(f)?" · "+client(f):"")+" · "+(f.title||f.caseNo||f.court||"Enforcement File")):"Select an enforcement file to load its client context.";
+ if(f){
+   var r=document.getElementById("enfTaskResponsible"),v=f.officer||f.assignedTo||f.owner||f.responsible||"";
+   if(r&&v){if(![...r.options].some(function(o){return o.value===String(v)})){r.add(new Option(v,v))}r.value=v}
+ }
+}
+function latestTask(){
+ var a=A("smartTasks");return a.length?a[a.length-1]:null
+}
+function enrichAfterSave(beforeIds){
+ var a=A("smartTasks"),t=a.find(function(x){return !beforeIds.has(String(x.id||""))})||latestTask();if(!t)return;
+ var fs=document.getElementById("v2taskFile"),f=fileById(fs?.value);
+ t.file=fs?.value||t.file||t.fileId||"";t.fileId=t.file;
+ t.client=document.getElementById("enfTaskClient")?.value||client(f)||t.client||"";
+ t.responsible=document.getElementById("enfTaskResponsible")?.value||t.responsible||"";
+ t.status=document.getElementById("enfTaskStatus")?.value||t.status||"Open";
+ t.actionKind=document.getElementById("enfTaskActionKind")?.value||t.actionKind||"Task";
+ t.endTime=document.getElementById("enfTaskEndTime")?.value||t.endTime||"";
+ t.location=document.getElementById("enfTaskLocation")?.value||t.location||"";
+ if(typeof window.enfDemoSaveNow==="function")try{window.enfDemoSaveNow()}catch(e){}
+ if(typeof window.enfCalendarProRefresh==="function")try{window.enfCalendarProRefresh()}catch(e){}
+}
+function wrapSave(){
+ var old=window.v2SaveTask;if(typeof old!=="function"||old.__enfTaskPro)return;
+ var w=function(){
+   var before=new Set(A("smartTasks").map(function(x){return String(x.id||"")}));
+   var r=old.apply(this,arguments);setTimeout(function(){enrichAfterSave(before)},0);return r
+ };w.__enfTaskPro=true;window.v2SaveTask=w
+}
+function wrapOpen(){
+ var old=window.v2OpenTask;if(typeof old!=="function"||old.__enfTaskPro)return;
+ var w=function(){
+   var r=old.apply(this,arguments);
+   setTimeout(function(){ensure();fillOfficers();syncFile()},0);return r
+ };w.__enfTaskPro=true;window.v2OpenTask=w
+}
+function boot(){ensure();wrapOpen();wrapSave()}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});else boot()
+})();
+</script>
 </body>
 </html>
