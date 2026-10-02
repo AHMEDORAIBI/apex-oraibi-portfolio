@@ -836,7 +836,7 @@ body.enf-dark .enf360-actions button,body.enf-dark .enf360-tab,body.enf-dark .en
 <div class="nav-section">
 <div class="nav-label" data-i18n="WORKSPACE">WORKSPACE</div>
 <a class="nav-item active" data-page="dashboard" href="#" onclick="openPage('dashboard');return false;"><span class="nav-icon">⌂</span><span data-i18n="Dashboard">Dashboard</span></a>
-<a class="nav-item" data-page="files" href="#" onclick="openPage('files');return false;"><span class="nav-icon">▤</span><span data-i18n="Enforcement Files">Enforcement Files</span></a>
+<a class="nav-item" data-page="files" href="#" onclick="enfOpenFiles();return false;"><span class="nav-icon">▤</span><span data-i18n="Enforcement Files">Enforcement Files</span></a>
 <a class="nav-item" data-page="parties" href="#" onclick="openPage('parties');return false;"><span class="nav-icon">♙</span><span data-i18n="Parties">Parties</span></a>
 <a class="nav-item" data-page="claims" href="#" onclick="openPage('claims');return false;"><span class="nav-icon">§</span><span data-i18n="Financial Claims">Financial Claims</span></a>
 <a class="nav-item" data-page="tasks" href="#" onclick="enfOpenCalendar();return false;"><span class="nav-icon">✓</span><span data-i18n="Tasks &amp; Follow-ups">Tasks &amp; Follow-ups</span></a>
@@ -4226,7 +4226,7 @@ document.addEventListener("visibilitychange",function(){if(document.hidden)save(
 </template>
 <style id="enforza-integration-repair-css">
 /* Make the advanced calendar unmistakable in the navigation. */
-.nav-item[data-page="tasks"] span[data-i18n="Tasks & Follow-ups"]::after{content:" · Calendar";font-size:8px;opacity:.65}
+.nav-item[data-page="tasks"] span[data-i18n="Tasks & Follow-ups"]::after{content:""}
 </style>
 <template data-disabled-script-id="enforza-files-calendar-repair2-js">
 (function(){
@@ -4373,5 +4373,67 @@ window.enfAiComingSoon=function(){
 <style id="enforza-ai-coming-soon-css">
 .nav-item[data-page="aiInsights"] .future-tag{margin-inline-start:auto;font-size:7px;font-weight:900;letter-spacing:.06em;opacity:.75}
 </style>
+
+<style id="enforza-files-router-fix-css">
+/* Files page must occupy the working content area whenever active. */
+#filesPage.enf-files-active{display:block!important;visibility:visible!important;opacity:1!important}
+</style>
+<script id="enforza-files-router-fix-js">
+(function(){
+"use strict";
+function showOnly(page){
+ document.querySelectorAll(".page").forEach(function(p){
+   p.classList.add("hidden");p.style.display="none";
+ });
+ if(page){page.classList.remove("hidden");page.style.display="block"}
+}
+function filesPage(){
+ return document.getElementById("filesPage") ||
+        document.querySelector('.page[data-page="files"]') ||
+        document.getElementById("genericPage");
+}
+function renderFiles(){
+ var p=filesPage(); if(!p)return false;
+ showOnly(p); p.classList.add("enf-files-active");
+ window.currentModule="files";
+ try{if(typeof window.loadGeneric==="function")window.loadGeneric("files")}catch(e){console.error("[FILES loadGeneric]",e)}
+ try{if(typeof window.renderGenericTable==="function")window.renderGenericTable()}catch(e){console.error("[FILES render]",e)}
+ document.querySelectorAll(".nav-item").forEach(function(n){n.classList.toggle("active",n.dataset.page==="files")});
+ return true;
+}
+window.enfOpenFiles=renderFiles;
+
+/* Capture Files navigation before legacy routers can hide it again. */
+document.addEventListener("click",function(e){
+ var n=e.target.closest('.nav-item[data-page="files"]');
+ if(!n)return;
+ e.preventDefault();e.stopImmediatePropagation();
+ renderFiles();
+},true);
+
+/* Calendar: one visible label only. */
+function cleanCalendarLabel(){
+ var n=document.querySelector('.nav-item[data-page="tasks"]');
+ if(!n)return;
+ var span=n.querySelector('[data-i18n],span:not(.nav-icon)');
+ if(span)span.textContent="Calendar";
+ n.querySelectorAll(".future-tag,.calendar-duplicate-label").forEach(function(x){x.remove()});
+}
+cleanCalendarLabel();
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",cleanCalendarLabel,{once:true});
+
+/* Health check now includes actual Files renderability. */
+window.enfFilesRouteHealth=function(){
+ var p=filesPage();
+ return {
+   pageExists:!!p,
+   dataExists:!!(window.DATA&&Array.isArray(DATA.files)),
+   fileCount:(window.DATA&&Array.isArray(DATA.files))?DATA.files.length:0,
+   renderer:typeof window.renderGenericTable==="function",
+   route:typeof window.enfOpenFiles==="function"
+ };
+};
+})();
+</script>
 </body>
 </html>
